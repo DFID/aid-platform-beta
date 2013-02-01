@@ -8,9 +8,9 @@ object ApplicationBuild extends Build {
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-    // Add your project dependencies here,
     jdbc,
-    anorm
+    anorm,
+    "org.scalatest" %% "scalatest" % "1.9.1" % "test"
   )
 
   val validator = SubProject("validator")
@@ -19,7 +19,12 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-  ).dependsOn(loader)
+  ).dependsOn(
+    loader
+  ).aggregate(
+    loader,
+    validator
+  )
 
   /**
    * Creates a sub project reference with the necessary defaults for generating
@@ -31,7 +36,10 @@ object ApplicationBuild extends Build {
     Project(name, file("modules/" + name), settings =
       Defaults.defaultSettings ++ play.Project.intellijCommandSettings("SCALA")
     ).settings(
-      scalaVersion := "2.10.0"
+      scalaVersion := "2.10.0",
+      libraryDependencies ++= Seq(
+        "org.scalatest" %% "scalatest" % "1.9.1" % "test"
+      )
     )
   }
 }
