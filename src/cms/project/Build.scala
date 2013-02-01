@@ -13,7 +13,9 @@ object ApplicationBuild extends Build {
     anorm
   )
 
-  val loader = SubProject("loader")
+  val validator = SubProject("validator")
+
+  val loader = SubProject("loader").dependsOn(validator)
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
@@ -28,6 +30,8 @@ object ApplicationBuild extends Build {
   def SubProject(name: String) = {
     Project(name, file("modules/" + name), settings =
       Defaults.defaultSettings ++ play.Project.intellijCommandSettings("SCALA")
+    ).settings(
+      scalaVersion := "2.10.0"
     )
   }
 }
