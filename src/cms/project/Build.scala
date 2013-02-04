@@ -10,7 +10,10 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     jdbc,
     anorm,
-    "org.scalatest" %% "scalatest" % "1.9.1" % "test"
+    "org.scalatest" %% "scalatest" % "1.9.1" % "test",
+    "com.tzavellas" % "sse-guice" % "0.7.0",
+    "org.mindrot" % "jbcrypt" % "0.3m",
+    "org.mockito" % "mockito-all" % "1.9.5-rc1" % "test"
   )
 
   val validator = SubProject("validator")
