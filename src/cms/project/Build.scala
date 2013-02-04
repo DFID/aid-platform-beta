@@ -13,7 +13,7 @@ object ApplicationBuild extends Build {
     "org.scalatest" %% "scalatest" % "1.9.1" % "test",
     "com.tzavellas" % "sse-guice" % "0.7.0",
     "org.mindrot" % "jbcrypt" % "0.3m",
-    "org.mockito" % "mockito-all" % "1.9.5-rc1" % "test"
+    "org.mockito" % "mockito-all" % "1.9.5" % "test"
   )
 
   val validator = SubProject("validator")
@@ -41,7 +41,7 @@ object ApplicationBuild extends Build {
     ).settings(
       scalaVersion := "2.10.0",
       libraryDependencies ++= Seq(
-        "org.scalatest" %% "scalatest" % "1.9.1" % "test"
+        "org.specs2" % "specs2_2.10" % "1.13" % "test"
       )
     )
   }
