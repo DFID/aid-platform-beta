@@ -1,10 +1,99 @@
 ---
-title: Welcome to Middleman
+title: Aid Information Platform
 ---
+    
 
-<div class="welcome">
-  <h1>Middleman is Watching</h1>
-  <p class="doc">
-    <%= link_to "Read Online Documentation", "http://middlemanapp.com/" %>
-  </p><!-- .doc -->
-</div><!-- .welcome -->
+<header class="page-title">
+  <img src="/images/ukaid_logo.gif" style="float:right;">
+  <div style="padding-right: 90px;">
+    <h1>DEPARTMENT FOR INTERNATIONAL DEVELOPMENT</h1>
+    <h2> Aid Information </h2>
+  </div>
+</header>
+    
+
+<div id="search-bar" class="">
+     
+
+<form action="/projects" method="GET">
+    
+        <label for="query">
+            Search Projects
+            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+        </label>
+        <input type="submit" value="Search" class="button big">
+    
+</form>
+
+</div>
+    <style>
+        #whitehall-wrapper div .side-by-side-by-side a:hover { border: 2px solid #FFBF47; }
+    </style>
+    <div class="side-by-side-by-side">
+        <a href="/location" class="by-location">
+          <h2>Aid by Location</h2>
+        </a>
+        <div class="by-sector">
+          <h2>Aid by Sector</h2>
+        </div>
+    </div>
+    <div class="side-by-side-by-side" id="columar-tables">
+
+        <div id="top-5-countries">
+          <h3 class="info-notice">Where we work</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Country</th>
+                <th>Budget</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% countries_helper.each do |code, name, budget| %>
+                    <tr>
+                        <td> <a href="/countries/<%= code %>" class="truncate" title="<%= name %>"> <%= name %> </a> </td>
+                        <td> <%= budget %> </td>
+                    </tr>
+                <% end %>  
+            </tbody>
+          </table>
+        </div>
+        <div id="top-5-sectors">
+          <h3 class="info-notice">What we do</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Sector</th>
+                <th>Budget</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% sectors_helper.each do |name, budget| %>
+                    <tr>
+                        <td title="<%= name %>"><span class="truncate"><%= name %></span></td>
+                        <td> <%= budget %> </td>
+                    </tr>
+                <% end %>  
+            </tbody>
+          </table>
+        </div>
+        <div id="top-5-projects">
+          <h3 class="info-notice">What we achieve</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Budget</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% projects_helper.each do |name, budget| %>
+                    <tr>
+                        <td><span class="truncate"><%= name %></span></td>
+                        <td> <%= budget %> </td>
+                    </tr>
+                <% end %>  
+            </tbody>
+          </table>
+        </div>
+    </div>

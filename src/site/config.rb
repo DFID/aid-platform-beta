@@ -41,11 +41,37 @@
 # activate :automatic_image_sizes
 
 # Methods defined in the helpers block are available in templates
-# helpers do
-#   def some_helper
-#     "Helping"
-#   end
-# end
+helpers do
+   def countries_helper
+     countries = [
+        ["ET", "Ethiopia", "£238m"],
+        ["PK", "Pakistan", "£267m"],
+        ["IN", "India", "£264m"],
+        ["BD", "Bangladesh", "£210m"],
+        ["NG", "Nigeria", "£185m"]
+     ]
+   end
+
+   def sectors_helper
+      sectors = [
+        ["Economic and development policy/planning", "£1917m"],
+        ["Education policy and administrative management", "£1687m"],
+        ["Primary education", "£1687m"],
+        ["Social/ welfare services", "£1402m"],
+        ["Bio-diversity", "£1391m"]
+      ]
+   end
+
+   def projects_helper
+      projects = [
+        ["Malaria bed nets distributed","£12.2m"],
+        ["Children vaccinated","£12m"],
+        ["Access to financial services","£11.9m"],
+        ["Hygiene conditions improved","£7.4m"],
+        ["Emergency food assistance","£6m"]
+      ]
+   end
+end
 
 set :css_dir, 'stylesheets'
 
