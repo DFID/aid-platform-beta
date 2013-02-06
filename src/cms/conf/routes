@@ -5,11 +5,23 @@
 # Home page
 GET     /                           @controllers.Application.index
 
+# Organisations
+GET     /organisations              @controllers.OrganisationSources.index
+POST    /organisations              @controllers.OrganisationSources.save
+POST    /organisations/refresh      @controllers.OrganisationSources.refresh
+
+# Activities
+GET     /activities                 @controllers.ActivitySources.index
+POST    /activities                 @controllers.ActivitySources.save
+POST    /activities/refresh         @controllers.ActivitySources.refresh
 
 # Auth
 GET     /login                      @controllers.Authentication.login
 POST    /login                      @controllers.Authentication.authenticate
 GET     /logout                     @controllers.Authentication.logout
+
+# WebJar route
+GET     /webjars/*file              controllers.WebJars.at(file)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

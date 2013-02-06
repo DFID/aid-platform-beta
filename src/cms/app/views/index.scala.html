@@ -1,7 +1,16 @@
-@(message: String)
 
-@main{
+@main() {
+    <div class="hero-unit" style="text-align:center">
+        <a class="btn btn-danger btn-large" href="#">Deploy!</a>
+    </div>
 
-    <h1>Loader CMS</h1>
+    <ul>
+        <li>
+            <a href="@routes.OrganisationSources.index">Select Organisation File Sources</a>
+        </li>
+        <li>
+            <a href="@routes.ActivitySources.index">Select Activity File Sources</a>
+        </li>
+    </ul>
 
 }
