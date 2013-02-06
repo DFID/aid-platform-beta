@@ -17,4 +17,8 @@ object Implicits {
         Try(stringValue.toBoolean) getOrElse
         stringValue
   }
+
+  implicit class SuperXmlNode(node: xml.Node) {
+    def isTextNode = node.label.equals("#PCDATA")
+  }
 }
