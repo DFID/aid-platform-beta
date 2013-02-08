@@ -22,6 +22,9 @@ GEM
     http_router (0.10.2)
       rack (>= 1.0.0)
       url_mount (~> 0.2.1)
+    httparty (0.10.2)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
     i18n (0.6.1)
     listen (0.5.3)
     maruku (0.6.1)
@@ -57,6 +60,7 @@ GEM
       sprockets (~> 2.1, < 2.5)
       sprockets-sass (~> 0.9.0)
     multi_json (1.5.0)
+    multi_xml (0.5.3)
     padrino-core (0.10.7)
       activesupport (~> 3.2.0)
       http_router (~> 0.10.2)
@@ -100,4 +104,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  httparty
   middleman (~> 3.0.7)
