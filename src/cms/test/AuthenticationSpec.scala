@@ -6,10 +6,10 @@ import play.api.test._
 import play.api.test.Helpers._
 import controllers.Authentication
 import org.specs2.mock._
-import lib.Authenticator
 import org.scalatest.FunSpec
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.matchers.ShouldMatchers
+import lib.Authenticator
 
 
 class AuthenticationSpec extends Specification with Mockito  {
