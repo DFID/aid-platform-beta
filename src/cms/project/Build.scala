@@ -50,7 +50,7 @@ object ApplicationBuild extends Build {
       libraryDependencies ++= Seq(
         "org.specs2"    % "specs2_2.10"  % "1.13"    % "test",
         "org.mockito"   % "mockito-all"  % "1.9.5"   % "test",
-        "org.neo4j"     % "neo4j-kernel" % "1.9.M04",
+        "org.neo4j"     % "neo4j-kernel" % "1.8.1",
         "com.tzavellas" % "sse-guice"    % "0.7.0"
       )
     )
