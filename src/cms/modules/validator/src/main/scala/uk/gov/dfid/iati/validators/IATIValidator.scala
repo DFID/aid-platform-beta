@@ -1,5 +1,7 @@
 package uk.gov.dfid.iati.validators
 
+import java.io.InputStream
+
 
 /**
  * Simple trait for providing validation of the IATI Sources
@@ -12,7 +14,7 @@ trait IATIValidator {
    * @param version The version to validate against
    * @return True if valid; False Otherwise
    */
-  def validate(source: String, version: String): Boolean
+  def validate(source: InputStream, version: String, sourceType: String): Boolean
 }
 
 

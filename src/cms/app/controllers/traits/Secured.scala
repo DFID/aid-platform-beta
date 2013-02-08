@@ -1,6 +1,7 @@
-package controllers
+package controllers.traits
 
 import play.api.mvc._
+import controllers.routes
 
 trait Secured {
 

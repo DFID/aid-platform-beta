@@ -1,7 +1,24 @@
-@(message: String)
+@()(implicit flash: Flash)
+@main() {
 
-@main{
+    @flash.get("message").map { msg =>
+        <div class='alert @flash.get("type").map("alert-" + _).getOrElse("")'>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @msg
+        </div>
+    }
 
-    <h1>Loader CMS</h1>
+    <div class="hero-unit" style="text-align:center">
+        <a class="btn btn-danger btn-large" href="#deploy" data-toggle="modal">Deploy!</a>
+        @modal.deploy()
+    </div>
 
+    <ul>
+        <li>
+            <a href="@routes.OrganisationSources.index">Select Organisation File Sources</a>
+        </li>
+        <li>
+            <a href="@routes.ActivitySources.index">Select Activity File Sources</a>
+        </li>
+    </ul>
 }
