@@ -1,6 +1,7 @@
 package uk.gov.dfid.iati
 
 import util.Try
+import org.neo4j.graphdb.GraphDatabaseService
 
 /**
  * Sugar for the loading process
@@ -51,5 +52,22 @@ object Implicits {
      * @return
      */
     def isTextNode = node.label.equals("#PCDATA")
+  }
+
+  implicit class SuperGraphDatabaseService(db: GraphDatabaseService) {
+    def withTransaction[T](f: => T): T = {
+      val tx = db.beginTx
+      try {
+        val result = f
+        tx.success()
+        result
+      } catch {
+        case e: Throwable =>
+          tx.failure()
+          throw e
+      } finally {
+        tx.finish()
+      }
+    }
   }
 }

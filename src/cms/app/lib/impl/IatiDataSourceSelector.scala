@@ -1,4 +1,4 @@
-package lib.api
+package lib.impl
 
 import models.IatiDataSource
 import reactivemongo.bson._
@@ -11,13 +11,26 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import play.api.libs.json.JsArray
 import reactivemongo.bson.BSONBoolean
 import reactivemongo.bson.BSONString
+import lib.{MongoAccess, SourceSelector}
+import play.api.Logger
 
-class IatiDataSourcesApi extends SourceSelector with MongoAccess {
+class IatiDataSourceSelector extends SourceSelector with MongoAccess {
 
   private val datasources = database.collection("iati-datasources")
+  private val logger = Logger.logger
 
-  def get(sourceType: String) = {
-    datasources.find(BSONDocument("sourceType" -> BSONString(sourceType))).toList
+  def get(sourceType: String, activeOnly: Boolean) = {
+    val query = BSONDocument(Seq(
+      Some("sourceType" -> BSONString(sourceType)),
+      if(activeOnly)
+        Some("active" -> BSONBoolean(true))
+      else
+        None
+    ).flatten: _*)
+
+    logger.debug(s"Querying DB for ${query.elements.map(e => e.name + "=" + e.value.toString).mkString(",")}")
+
+    datasources.find(query).toList
   }
 
   def activate(sourceType: String, ids: String*) {

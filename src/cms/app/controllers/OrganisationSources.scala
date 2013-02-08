@@ -2,32 +2,16 @@ package controllers
 
 import play.api.mvc.Controller
 import com.google.inject.Inject
-import lib.api.{SourceSelector}
-import concurrent.ExecutionContext.Implicits.global
+import traits.{IatiDataSourceActions, Secured}
+import models.IatiDataSource
+import lib.SourceSelector
 
-class OrganisationSources @Inject()(val sources: SourceSelector) extends Controller with Secured {
+class OrganisationSources @Inject()(val sources: SourceSelector) extends Controller with Secured with IatiDataSourceActions {
+  val sourceType = "organisation"
 
-  def index = SecuredAction { user => request =>
-    Async {
-      sources.get("organisation").map { all =>
-        Ok(views.html.organisations(all))
-      }
-    }
-  }
-
-  def save = SecuredAction(parse.urlFormEncoded) { user => implicit request =>
-    val activated = request.body.get("active").getOrElse(Seq.empty)
-    sources.activate("organisation", activated: _*)
-    Redirect(routes.Application.index)
-  }
-
-  def refresh = SecuredAction { user => request =>
-    Async {
-      sources.load("organisation").map { _ =>
-        Redirect(routes.OrganisationSources.index).flashing(
-          "message" -> "OrganisationSource File sources refreshed"
-        )
-      }
-    }
+  def view(sources: List[IatiDataSource]) = {
+    views.html.organisations(sources)
   }
 }
+
+

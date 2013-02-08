@@ -3,16 +3,22 @@ package uk.gov.dfid.iati
 import Implicits._
 import org.neo4j.graphdb
 import graphdb.{Node, GraphDatabaseService, DynamicRelationshipType}
+import com.google.inject.Inject
 
-class XMLToNeo4JParser(val db: GraphDatabaseService) {
+class XmlToNeo4JMapper @Inject()(val db: GraphDatabaseService) extends SourceMapper[xml.Node, Node] {
 
   /**
    * Parses XML elements into Graph structures
    * @param el
    * @return
    */
-  def parse(el: xml.Node) : Node = {
-    
+  def map(el: xml.Node) = {
+    db.withTransaction {
+      performMap(el)
+    }
+  }
+
+  private def performMap(el: xml.Node): Node = {
     val node = db.createNode
 
     // update this node with the label
@@ -34,7 +40,7 @@ class XMLToNeo4JParser(val db: GraphDatabaseService) {
       val isNewEntity = children.isEmpty || !shouldBeProperty || children.size > 1
 
       if (isNewEntity) {
-        val childNode = parse(child)
+        val childNode = performMap(child)
         val relationship = DynamicRelationshipType.withName(child.label)
 
         // create a relationship to the current node to the child
@@ -55,7 +61,6 @@ class XMLToNeo4JParser(val db: GraphDatabaseService) {
 
     node
   }
-
   /**
    * Fills a neo4j node with properties from attributes
    * @param node

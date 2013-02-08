@@ -4,7 +4,7 @@ import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.neo4j.graphdb.{Node, GraphDatabaseService}
 
-class XmlToNeo4JParserSpec extends Specification with Mockito {
+class XmlToNeo4JMapperSpec extends Specification with Mockito {
 
   "The parsers parse(elem) method" should {
     "create a new node for the root element" in {
@@ -15,7 +15,7 @@ class XmlToNeo4JParserSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new XMLToNeo4JParser(db).parse(<my-node></my-node>)
+      new XmlToNeo4JMapper(db).map(<my-node></my-node>)
 
       // assert
       there was one(db).createNode
@@ -30,7 +30,7 @@ class XmlToNeo4JParserSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new XMLToNeo4JParser(db).parse(
+      new XmlToNeo4JMapper(db).map(
         <my-node name="arnold" age="45" is-human="true">
         </my-node>)
 
@@ -48,7 +48,7 @@ class XmlToNeo4JParserSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new XMLToNeo4JParser(db).parse(<my-node><my-title>Super Title</my-title></my-node>)
+      new XmlToNeo4JMapper(db).map(<my-node><my-title>Super Title</my-title></my-node>)
 
       there was one(db).createNode
       there was one(node).setProperty("my-title", "Super Title")
@@ -63,7 +63,7 @@ class XmlToNeo4JParserSpec extends Specification with Mockito {
       db.createNode returns root thenReturn child
 
       // act
-      new XMLToNeo4JParser(db).parse(<my-node><my-title name="arnold" /></my-node>)
+      new XmlToNeo4JMapper(db).map(<my-node><my-title name="arnold" /></my-node>)
 
       // assert
       there was two(db).createNode
