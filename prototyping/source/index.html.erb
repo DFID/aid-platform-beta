@@ -1,167 +1,151 @@
 ---
 title: Aid Information Platform
 ---
-    
 
-<header class="page-title">
-  <img src="/images/ukaid_logo.gif" style="float:right;">
-  <div style="padding-right: 90px;">
-    <h1>DEPARTMENT FOR INTERNATIONAL DEVELOPMENT</h1>
-    <h2> Aid Information </h2>
-  </div>
-</header>
-    
 
-<div id="search-bar" class="">
-     
-
-<form action="/projects" method="GET">
-    
-        <label for="query">
-            Search Projects
-            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-        </label>
-        <input type="submit" value="Search" class="button big">
-    
-</form>
-
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <h1>
+                <span>Department for International Development</span>
+                Aid Information
+            </h1>
+        </div>
+    </div>
 </div>
-    <style>
-        #whitehall-wrapper div .side-by-side-by-side a:hover { border: 2px solid #FFBF47; }
-    </style>
-    <div class="side-by-side-by-side">
-        <a href="/location" class="by-location">
-          <h2>Aid by Location</h2>
-        </a>
-        <div class="by-sector">
-          <h2>Aid by Sector</h2>
-        </div>
-        <div class="by-org">
-          <h2>Aid by Organisation</h2>
+
+
+<div class="row">
+    <div class="twelve columns">
+        <div id="search-bar">
+            <form action="/projects" method="GET">
+                <label for="query">
+                    <h3>Search Projects</h3>
+                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+                </label>
+                <input type="submit" value="Search" class="button">
+            </form>
         </div>
     </div>
-    <div class="side-by-side-by-side" id="columar-tables">
+</div>
 
-        <div id="top-5-countries">
-          <h3 class="info-notice">Where we work</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Country</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                
-                    <tr>
-                        <td><a href="/countries/ET" class="truncate" title="Ethiopia">Ethiopia</a></td>
-                        <td>£283m</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a href="/countries/PK" class="truncate" title="Pakistan">Pakistan</a></td>
-                        <td>£267m</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a href="/countries/IN" class="truncate" title="India">India</a></td>
-                        <td>£264m</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a href="/countries/BD" class="truncate" title="Bangladesh">Bangladesh</a></td>
-                        <td>£210m</td>
-                    </tr>
-                
-                    <tr>
-                        <td><a href="/countries/NG" class="truncate" title="Nigeria">Nigeria</a></td>
-                        <td>£185m</td>
-                    </tr>
-                
-            </tbody>
-          </table>
+<nav>
+    <div class="row" id="nav-entry">
+        <div class="four columns">
+            <h2>
+                <a href="/location" class="by-location">
+                    <span class="image-wrapper">
+                        <img src="/images/by-location.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Location</span>
+                </a>
+            </h2>         
         </div>
-        <div id="top-5-sectors">
-          <h3 class="info-notice">What we do</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Sector</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                 
-                    <tr>
-                        <td title="Economic and development policy/planning"><span class="truncate">Economic and development policy/planning</span></td>
-                        <td>£1917m</td>
-                    </tr>
-                
-                    <tr>
-                        <td title="Education policy and administrative management"><span class="truncate">Education policy and administrative management</span></td>
-                        <td>£1687m</td>
-                    </tr>
-                
-                    <tr>
-                        <td title="Primary education"><span class="truncate">Primary education</span></td>
-                        <td>£1628m</td>
-                    </tr>
-                
-                    <tr>
-                        <td title="Social/ welfare services"><span class="truncate">Social/ welfare services</span></td>
-                        <td>£1402m</td>
-                    </tr>
-                
-                    <tr>
-                        <td title="Bio-diversity"><span class="truncate">Bio-diversity</span></td>
-                        <td>£1391m</td>
-                    </tr>
-                
-            </tbody>
-          </table>
+        <div class="four columns">
+            <h2>
+                <a href="/location" class="by-sector">
+                    <span class="image-wrapper">
+                        <img src="/images/by-sector.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Sector</span>
+                </a>
+            </h2>
+            
         </div>
-        <div id="top-5-projects">
-          <h3 class="info-notice">What we achieve</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Project</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <span class="truncate">Malaria bed nets distributed</span>
-                    </td>
-                    <td>12.2m</td>
-                </tr>
-                 <tr>
-                    <td>
-                        <span class="truncate">Children vaccinated</span>
-                    </td>
-                    <td>12m</td>
-                </tr>
-                 <tr>
-                    <td>
-                        <span class="truncate">Access to financial services for </span>
-                    </td>
-                    <td>11.9m</td>
-                </tr>
-                 <tr>
-                    <td>
-                        <span class="truncate">Hygiene conditions improved for </span>
-                    </td>
-                    <td>7.4m</td>
-                </tr>
-                 <tr>
-                    <td>
-                        <span class="truncate">Emergency food assistance for</span>
-                    </td>
-                    <td>6m</td>
-                </tr>
-
-            </tbody>
-          </table>
+        <div class="four columns">
+            <h2>
+                <a href="/location" class="by-organisation">
+                    <span class="image-wrapper">
+                        <img src="/images/by-org.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Organisation</span>
+                </a>
+            </h2>
         </div>
     </div>
+</nav>
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">UK AID TOP 5s</h3> 
+    </div>
+</div>
+<div class="row">
+    <div class="four columns" id="top-5-countries">
+        <h4>Where we work</h4>
+        <ol>
+            <li>
+                <a href="/countries/ET" class="truncate" title="Ethiopia">Ethiopia</a>
+                <em><span class="visually-hidden">Budget</span>£283m</em>
+            </li>
+            <li>
+                <a href="/countries/PK" class="truncate" title="Pakistan">Pakistan</a>
+                <em><span class="visually-hidden">Budget</span>£267m</em>
+            </li>
+            <li>
+                <a href="/countries/IN" class="truncate" title="India">India</a>
+                <em><span class="visually-hidden">Budget</span>£264m</em>
+            </li>
+            <li>
+                <a href="/countries/BD" class="truncate" title="Bangladesh">Bangladesh</a>
+                <em><span class="visually-hidden">Budget</span>£210m</em>
+            </li>
+            <li>
+                <a href="/countries/NG" class="truncate" title="Nigeria">Nigeria</a>
+                <em><span class="visually-hidden">Budget</span>£185m</em>
+            </li>
+        </ol>
+    </div>
+
+    <div class="four columns" id="top-5-sectors">
+        <h4>What we do</h4>
+        <ol>
+            <li>
+                <a href="#" class="truncate" title="Economic and development policy/planning">Economic and development policy/planning</a>
+                <em><span class="visually-hidden">Budget</span>£1917m</em>
+            </li>
+            <li>
+                <a href="#" class="truncate" title="Education policy and administrative management">Education policy and administrative management</a>
+                <em><span class="visually-hidden">Budget</span>£1687m</em>
+            </li>
+            <li>
+                <a href="#" class="truncate" title="Primary education">Primary education</a>
+                <em><span class="visually-hidden">Budget</span>£1628m</em>
+            </li>
+            <li>
+                <a href="#" class="truncate" title="Social/welfare services">Social/welfare services</a>
+                <em><span class="visually-hidden">Budget</span>£1402m</em>
+            </li>
+            <li>
+                <a href="#" class="truncate" title="Bio-diversity">Bio-diversity</a>
+                <em><span class="visually-hidden">Budget</span>£1391m</em>
+            </li>
+        </ol>                
+    </div>
+    <div class="four columns" id="top-5-projects">
+        <h4>What we achieve</h4>
+        <ol>
+            <li>
+                <span class="truncate" title="Malaria bed nets distributed">Malaria bed nets distributed</span>
+                <em>£12.2m</em>
+            </li>
+            <li>
+                <span class="truncate" title="Children vaccinated">Children vaccinated</span>
+                <em>£12m</em>
+            </li>
+            <li>
+                <span class="truncate" title="Access to financial services for ">Access to financial services for </span>
+                <em>£11.9m</em>
+            </li>
+            <li>
+                <span class="truncate" title="Hygiene conditions improved for">Hygiene conditions improved for</span>
+                <em>£7.4m</em>
+            </li>
+            <li>
+                <span class="truncate" title="Emergency food assistance for">Emergency food assistance for</span>
+                <em>£6m</em>
+            </li>
+        </ol>  
+    </div>
+</div>
+

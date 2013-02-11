@@ -143,11 +143,11 @@ This is the current architectural vision
 
 The technologies suggested are only theoretical and I expect them to change as and when the components evolve.  For now bare minimum spikes through the system are essential to draw out requirements.
 
-- __Loader Admin__ - The alpha provided configuration through a simple file.  The loader admin will be a more user friendly approach to defining what XML files should be loaded as well as providing an area to add "annotations" to the IATI data.
+- __CMS__ - The alpha provided configuration through a simple file.  The loader admin will be a more user friendly approach to defining what XML files should be loaded as well as providing an area to add "annotations" to the IATI data.
 - __Loader__ - The loader pulls in the IATI XML data and loads it into the data stores of the API and Searcher
 - __Searcher__ - Provides faceted, fuzzy searching of loaded IATI data.  This is only available to the Platform and not through the API.  The rationale for doing this is that it is very much geared towards the aid-platform format rather than arbitrary API calls.  We can consider exposing this externally as we go on.  Potentially built on top of ElasticSearch.
 - __API__ - IATI Data API built against the working draft of the IATI API Standards.  Unlike the beta this wont be tailored specifically to DFIDs assumptions of the data shape.  Extra work will need to be carried out by the aid platform itself
-- __Platform__ - The aid platform will consume the API and generate a static site that can be hosted on any provider.
+- __Site__ - The aid platform will consume the API and generate a static site that can be hosted on any provider.
 
 ## <a name="development-guidelines"></a> Development Guidelines
 

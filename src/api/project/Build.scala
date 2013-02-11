@@ -8,7 +8,13 @@ object ApplicationBuild extends Build {
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-    "com.tzavellas" % "sse-guice" % "0.7.0"
+    // Application Dependencies
+    "com.tzavellas" % "sse-guice"    % "0.7.0",
+    "org.neo4j"     % "neo4j-kernel" % "1.8.1",
+    "org.neo4j"     % "neo4j-cypher" % "1.8.1",
+
+    // Testing Dependencies
+    "org.mockito"       %  "mockito-all"   % "1.9.5" % "test"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings()
