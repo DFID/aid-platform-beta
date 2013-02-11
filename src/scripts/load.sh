@@ -8,5 +8,6 @@
 sudo service elasticsearch start
 
 # Starts the cms project
-cd ../cms
+cd src/cms
 ../scripts/lib/sbt "project cms" run
+cd ../..

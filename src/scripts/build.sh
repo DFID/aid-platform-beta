@@ -7,5 +7,6 @@
 # A JavaScript runtime must also be installed, to do so, type:
 # sudo apt-get install nodejs
 
-cd ../site
+cd src/site/
 bundle exec middleman build --clean
+cd ../..

@@ -6,12 +6,13 @@ git pull origin master
 # start cms database
 
 # load IATI data
-./load.sh
+./src/scripts/load.sh
 
 # starting the api application
-cd ../api/
+cd src/api/
 ../scripts/lib/sbt "project api" run
+cd ../..
 
 # build and start the site application
-./build.sh
+./src/scripts/build.sh
 bundle exec middleman server
