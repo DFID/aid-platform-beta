@@ -24,26 +24,27 @@ class Deployinator @Inject()(val mapper: SourceMapper[XmlNode, GraphNode], val s
     // load the org files then the activity files
     // this could be made simpler but i am not sure about
     // the extra memory overhead
-    Seq("organisation").map { sourceType =>
-      logger.debug(s"Loading $sourceType sources")
+    Seq("organisation", "activity").map { sourceType =>
       sources.get(sourceType, activeOnly = true).map { datasources =>
-        logger.debug(s"Retrieved ${datasources.size} data sources of $sourceType type")
         datasources.partition { source =>
           val ele = XML.load(source.url)
           val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.0")
 
-          logger.debug(s"Validating ${source.url} with schema version $version")
-
           val stream = new URL(source.url).openStream
-          val result = validator.validate(stream, version, sourceType)
+          validator.validate(stream, version, sourceType)
 
-          logger.debug(s"File was ${if (result) "valid" else "invalid" }")
-
-          result
         } match {
           case (valid, invalid) => {
             logger.debug(s"${valid.size} valid files found")
             logger.debug(s"${invalid.size} invalid files found")
+
+            // log the invalid files
+            if (!invalid.isEmpty) {
+              val invalidOutput = invalid.map(i => s"${i.title}: ${i.url}").mkString("\n")
+              logger.info("Invalid Files")
+              logger.info(invalidOutput)
+            }
+
             valid.foreach(s => load(s.url))
             invalid
           }
@@ -53,15 +54,12 @@ class Deployinator @Inject()(val mapper: SourceMapper[XmlNode, GraphNode], val s
   }
 
   private def load(uri: String) {
-    logger.debug(s"Loading file at $uri")
     val url = new URL(uri)
     val ele = XML.load(url)
     mapper.map(ele)
-    logger.debug(s"Loaded file at $uri")
   }
 
   private def clearDb {
-    logger.debug("Clearing Database")
     val tx = db.beginTx
     try {
       // kill the indexes
@@ -75,8 +73,6 @@ class Deployinator @Inject()(val mapper: SourceMapper[XmlNode, GraphNode], val s
 
       // complete the transaction
       tx.success
-
-      logger.debug("Database cleared")
     } catch {
       case e: Throwable => {
         tx.failure

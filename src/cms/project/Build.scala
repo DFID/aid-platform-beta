@@ -47,11 +47,18 @@ object ApplicationBuild extends Build {
       Defaults.defaultSettings ++ play.Project.intellijCommandSettings("SCALA")
     ).settings(
       scalaVersion := "2.10.0",
+      resolvers ++= Seq(
+        "neo4j releases" at "http://m2.neo4j.org/content/repositories/releases/"
+      ),
       libraryDependencies ++= Seq(
-        "org.specs2"    % "specs2_2.10"  % "1.13"    % "test",
-        "org.mockito"   % "mockito-all"  % "1.9.5"   % "test",
-        "org.neo4j"     % "neo4j-kernel" % "1.8.1",
-        "com.tzavellas" % "sse-guice"    % "0.7.0"
+        // Testing Dependencies
+        "org.specs2"    % "specs2_2.10"        % "1.13"    % "test",
+        "org.mockito"   % "mockito-all"        % "1.9.5"   % "test",
+
+        // Application Dependencies
+        "org.neo4j"     % "neo4j-kernel"       % "1.8.1",
+        "org.neo4j"     % "neo4j-lucene-index" % "1.8.1",
+        "com.tzavellas" % "sse-guice"          % "0.7.0"
       )
     )
   }
