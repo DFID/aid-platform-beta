@@ -49,10 +49,10 @@ title: Aid Information Platform
               </tr>
             </thead>
             <tbody>
-                <% countries_helper.each do |code, name, budget| %>
+                <% countries_helper.each do |code, country| %>
                     <tr>
-                        <td> <a href="/countries/<%= code %>" class="truncate" title="<%= name %>"> <%= name %> </a> </td>
-                        <td> <%= budget %> </td>
+                        <td> <a href="/countries/<%= code %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a> </td>
+                        <td> <%= country['budget'] %> </td>
                     </tr>
                 <% end %> 
             </tbody>
