@@ -46,15 +46,8 @@ require "json"
 # Methods defined in the helpers block are available in templates
 helpers do
    def countries_helper
-     top5countries = []
-     index = 0
      countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
-     parsedJSON.each do |country|
-      top5countries[index] = [country[0],country[1]['name'], country[1]['budget']]
-      index += 1
-    end
-    top5countries
    end
 
    def sectors_helper
