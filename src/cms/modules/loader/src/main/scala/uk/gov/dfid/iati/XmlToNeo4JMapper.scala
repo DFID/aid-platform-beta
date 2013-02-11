@@ -2,6 +2,7 @@ package uk.gov.dfid.iati
 
 import Implicits._
 import org.neo4j.graphdb
+import graphdb.index.Index
 import graphdb.{Node, GraphDatabaseService, DynamicRelationshipType}
 import com.google.inject.Inject
 
@@ -14,15 +15,22 @@ class XmlToNeo4JMapper @Inject()(val db: GraphDatabaseService) extends SourceMap
    */
   def map(el: xml.Node) = {
     db.withTransaction {
+      // get/create an index for getting entity types
+      implicit val index = db.index.forNodes("entities")
+
       performMap(el)
     }
   }
 
-  private def performMap(el: xml.Node): Node = {
+  private def performMap(el: xml.Node)(implicit index: Index[Node]) : Node = {
     val node = db.createNode
+
+    // add this entity/node to the index we use to get types of nodes
+    index.add(node, "type", el.label)
 
     // update this node with the label
     node + ("label" -> el.label)
+
     // iterate over each attribute and fill it with data
     // derived from the attributes
     fillProperties(node, el.attributes)
