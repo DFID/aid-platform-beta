@@ -1,3 +1,6 @@
+require "rubygems"
+require "json"
+
 ###
 # Compass
 ###
@@ -43,13 +46,8 @@
 # Methods defined in the helpers block are available in templates
 helpers do
    def countries_helper
-     countries = [
-        ["ET", "Ethiopia", "£238m"],
-        ["PK", "Pakistan", "£267m"],
-        ["IN", "India", "£264m"],
-        ["BD", "Bangladesh", "£210m"],
-        ["NG", "Nigeria", "£185m"]
-     ]
+     countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
+     parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
    end
 
    def sectors_helper
