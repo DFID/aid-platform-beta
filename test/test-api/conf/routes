@@ -1,3 +1,10 @@
 
 GET     /                           controllers.Application.index
-
+# Display all countries
+GET		/access/countries		    controllers.Countries.allCountries
+# Display a country
+GET 	/access/countries/:code		controllers.Countries.country(code: String)
+# Display all projects
+GET     /access/projects             controllers.Projects.allProjects
+# Display a project
+GET     /access/projects/:code       controllers.Projects.project(code: String)
