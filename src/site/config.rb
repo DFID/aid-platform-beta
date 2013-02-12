@@ -33,14 +33,16 @@ page "/projects/*", :layout => layout
 # end
 
 #This will use data from db, but for now will test a few different project codes
-projects = ["GB-1-203600", "GB-1-113939", "GB-1-112068"]
-projects.each do |projectCode|
-  page "/projects/#{projectCode}", :proxy => "/projects/index.html", :locals => {:project => projectCode}
+projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
+parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
+parsedJSON.each do |code, project|
+  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project}
 end
 
-countries = ["ET", "UK", "IR"]
-countries.each do |countryCode|
-  page "/countries/#{countryCode}", :proxy => "/countries/index.html", :locals => {:country => countryCode}
+countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
+parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
+parsedJSON.each do |code, country|
+  page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country}
 end
 
 # Proxy (fake) files
