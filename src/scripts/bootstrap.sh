@@ -10,7 +10,7 @@ git pull origin master
 
 # starting the api application
 cd src/api/
-../scripts/lib/sbt "project api" run
+play clean compile stage
 cd ../..
 
 # build and start the site application
