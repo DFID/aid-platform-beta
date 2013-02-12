@@ -9,7 +9,10 @@
     <meta charset="utf-8">
     <title>Aid Information Platform</title>
 
-  
+    <!--[if gt IE 8]><!--><%= stylesheet_link_tag "application" %><!--<![endif]-->
+    <!--[if IE 6]><%= stylesheet_link_tag "application-ie6" %><![endif]-->
+    <!--[if IE 7]><%= stylesheet_link_tag "application-ie7" %><![endif]-->
+    <!--[if IE 8]><%= stylesheet_link_tag "application-ie8" %><![endif]-->
     <!--[if IE 8]>
     <script type="text/javascript">
       (function(){if(window.opera){return;}
@@ -33,55 +36,51 @@
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <!--<%= stylesheet_link_tag "main" %>-->
-    <%= stylesheet_link_tag "foundation" %>
-    <%= stylesheet_link_tag "aip-styles" %>
+    <%= stylesheet_link_tag "main" %>
   </head>
-  <body>
+  <body class="citizen mainstream">
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-    <a href="#content" class="visually-hidden">Skip to main content</a>
-    <header role="banner" id="global-header">
-      <div class="row">
-        <div class="twelve columns">
-          <h2><a href="/" title="Go to the homepage">Department for International Development</a></h2>
-        </div>
+    <a href="#content" class="visuallyhidden">Skip to main content</a>
+    <header role="banner" class="group" id="global-header">
+      <div class="header-global group">
+        <h1><a href="/" title="Go to the homepage">Department for International Development</a></h1>
       </div>
     </header>
-    <div class="row">
-      <div class="twelve columns">
-        <div class="disclaimer">     
-          <p>This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a></p>
+    <div id="whitehall-wrapper">
+        <div id="content">
+
         </div>
-      </div>
-    </div>
-    
-    
+        <div id="page">
+            <div class="inner-block">
+                <div class="disclaimer">
+                    <div class="inner group">
+                        This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
+                    </div>
+                </div>
                 <%= yield %>
-            
-    
-    <div class="row">
-      <div class="twelve columns">
-        <div class="disclaimer">     
-          <p>This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a></p>
+            </div>
         </div>
+    </div><!--end wrapper-->
+
+    <div class="disclaimer" id="disclaimer">
+       <div class="inner group">
+          This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
       </div>
     </div>
-    <footer id="footer" role="contentinfo">
-      <div class="row">
-        <div class="eight columns">
-          <nav class="help row">
-            <ul class="twelve columns">
+    <footer class="group" id="footer" role="contentinfo">
+      <div class="inner group">
+        <div class="colophon-and-help">
+          <nav class="help">
+            <ul>
               <li><a href="/help">Help</a></li>
               <li><a href="/help/cookies">Cookies</a></li>
             </ul>
           </nav>
-          <div class="row">
-            <div class="twelve columns">
-              <p>Much of the information on this website is available for reuse under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/" rel="license">Open Government Licence</a></p>
-          </div>
+          <div class="colophon">
+            <p>Much of the information on this website is available for reuse under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/" rel="license">Open Government Licence</a></p>
           </div>
         </div>
-        <div class="four columns">
+        <div class="copyright">
           <p>&copy; Crown Copyright</p>
         </div>
       </div>
