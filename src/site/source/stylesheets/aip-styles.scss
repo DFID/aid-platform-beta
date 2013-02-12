@@ -1,0 +1,220 @@
+/* Styles for AIP Beta */
+
+/* Colour Palette
+-----------------------------------------------*/
+$dfid: #729ECD;
+$nearBlack: #303030;
+$darkGrey: #666;
+$midGrey: #C9D0D0;
+$lightGrey: #F5F5F5;
+$orange: #F17921;
+
+
+
+/* Main header/masthead styles 
+-----------------------------------------------*/
+#global-header {
+	background: $nearBlack;
+	min-height: 1.75em;
+	width: 100%;
+	z-index: 1000;
+}
+#global-header h2 {
+	margin: 0;
+}
+#global-header h2 a {
+	background-image: url(../images/dfid-banner.png);
+	background-position: 0 0px;
+	background-repeat: no-repeat;
+	display: block;
+	margin: 0.2em 0;
+	padding: 0 0 0 2em;
+	width: 532px;
+	height: 32px;
+	line-height: 2em;
+	text-indent: -99999px;
+}
+#global-header h2 a:hover {
+	background-position: 0 -42px;
+	text-decoration: underline;
+}
+#page-title {
+	/*margin: 0.5em 0;*/
+}
+#page-title h1{
+	font-weight: normal;
+}
+#page-title h1 span{
+	display: block;
+	font-size: 30%;
+	font-weight: normal;
+	text-transform: uppercase;
+}
+#page-title img {
+	float: right;
+	padding-top: 0.5em;
+}
+#page-title img+div {
+	padding-right: 90px;
+}
+/* global search styles
+-----------------------------------------------*/
+#search-bar {
+	background: $lightGrey;
+	padding: 20px;
+	text-align: center;
+}
+#search-bar label {
+	display: inline;
+}
+#search-bar label h3{
+	font-size: 1.3em;
+	display: inline-block;
+	margin: 0 1em;
+}
+#search-bar #query {
+	line-height: 1.2em;
+	border-radius: 2px;
+	width: 40%;
+	min-width: 300px;
+	border: 1px solid #CCC;
+	display: inline-block;
+	margin: 0;
+}
+#search-bar input.button {
+	display: inline-block;
+	width: 6em;
+	font-size: 1.2em;
+}
+#search-bar form {
+	margin: 0;
+}
+/* content grouping styles
+-----------------------------------------------*/
+.section-group-title {
+	border-bottom: 5px solid $dfid;
+	padding-top: 1em;
+	padding-bottom: 0.25em
+}
+
+/* site entry navigation styles
+-----------------------------------------------*/
+
+#nav-entry h2 a{
+	color: #000;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	margin-bottom: 0;
+}
+#nav-entry h2 a small{
+	font-size: 50%;
+	display: block;
+	font-weight: normal;
+	line-height: 1em;
+	padding-top: 1em;
+}
+.image-wrapper {
+	position: relative;
+	zoom: 1;
+	overflow: hidden;
+}
+.link-wrapper {
+	position: relative;
+	display: block;
+	width: 8em;
+	height: 2em;
+	margin-top: -2.25em ;
+	background-color: #FFF;
+}
+
+/* tab bar nav  styles
+-----------------------------------------------*/
+.tab-bar-container {
+	background: $darkGrey;
+}
+.tab-bar {
+	margin: 0.75em 0 0 0;
+	padding: 0;
+}
+.tab-bar li {
+	display: inline-block;
+	font-size: 1.1em;
+	list-style: none;
+	
+}
+.tab-bar li a{
+	color: #FFF;
+	display: inline-block;
+	padding: 0.5em 1em;
+}
+.tab-bar li a:hover{
+	text-decoration: underline;
+}
+.tab-bar li.active {
+	background: #FFF;
+}
+.tab-bar li.active a{
+	color: #000;
+	font-weight: bold;
+}
+.budget-total p{
+	color: $midGrey;
+	font-size: 1.2em;
+	line-height: 1.1em;
+	text-align: right;
+	margin: 0.5em 1em 0;
+}
+.budget-total p span{
+	display: block;
+	color: #fff;
+}
+/* button styles
+-----------------------------------------------*/
+.button {
+    background-color:#008270;
+    color:#fff;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    -webkit-box-shadow:0 3px 0 #000;
+    -moz-box-shadow:0 3px 0 #000;
+    box-shadow:0 3px 0 #000;
+    font-weight:300;
+    padding: 5px 0;
+}
+.button, .button:visited{
+    display:inline;
+    border:none;
+    text-decoration:none;
+    position:relative;
+    top:-2px;
+    line-height:1.25;
+    -webkit-box-shadow:0 2px 0 #000;
+    -moz-box-shadow:0 2px 0 #000;
+    box-shadow:0 2px 0 #000;
+}
+.button:hover{
+    background-color:#3ABAA8;
+    color:#fff
+}
+/* Disclaimer Styles 
+-----------------------------------------------*/
+.disclaimer{
+	background: $orange;
+}
+.disclaimer p{
+	margin: 0;
+	padding: 10px;
+}
+
+/* Footer styles
+-----------------------------------------------*/
+#footer {
+	background: $midGrey;
+}
+
+/* Miscellaneous Styles
+------------------------------------------------*/ 
+.visually-hidden{
+    left:-99999em !important;position:absolute
+}
