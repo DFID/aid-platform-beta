@@ -3,12 +3,17 @@ package controllers
 import play.api.mvc._
 import com.google.inject.Inject
 import traits.Secured
-import lib.{Deployer, Authenticator}
+import lib.{ConfigurationGenerator, Deployer, Authenticator}
+import concurrent.ExecutionContext.Implicits.global
 
-class Application @Inject()(val auth: Authenticator, val deployer: Deployer) extends Controller with Secured {
+class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val config: ConfigurationGenerator) extends Controller with Secured {
 
   def index = SecuredAction { user => implicit request =>
-    Ok(views.html.index())
+    Async {
+      config.generate.map { configString =>
+        Ok(views.html.index(configString))
+      }
+    }
   }
 
   def deploy = SecuredAction(parse.urlFormEncoded) { user => request =>

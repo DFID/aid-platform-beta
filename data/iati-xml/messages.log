@@ -1,0 +1,1632 @@
+2013-02-12 12:56:08,896 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 12:56:08,897 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 12:56:08,899 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 12:56:08,900 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 12:56:08,901 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 12:56:08,903 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 12:56:08,903 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 12:56:08,904 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 12:56:08,908 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 12:56:08,908 DEBUG [neo4j.diagnostics]: Free Physical memory: 84.23 MB
+2013-02-12 12:56:08,909 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.48 GB
+2013-02-12 12:56:08,909 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 12:56:08,909 DEBUG [neo4j.diagnostics]: Free swap space: 926.65 MB
+2013-02-12 12:56:08,909 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 12:56:08,910 DEBUG [neo4j.diagnostics]: Free  memory: 479.56 MB
+2013-02-12 12:56:08,910 DEBUG [neo4j.diagnostics]: Total memory: 684.50 MB
+2013-02-12 12:56:08,910 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 12:56:08,912 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 12:56:08,912 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 12:56:08,913 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=11.06 MB, used=9.58 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 12:56:08,914 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=268.00 MB, used=3.93 MB, max=314.88 MB, threshold=?
+2013-02-12 12:56:08,914 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=75.13 MB, used=75.10 MB, max=75.13 MB, threshold=?
+2013-02-12 12:56:08,915 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=125.91 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 12:56:08,915 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=103.25 MB, used=103.18 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 12:56:08,915 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 12:56:08,916 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 256
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: Process id: 44793@oxbowlakes.local
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 12:56:08,917 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 12:56:08,918 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 12:56:08,918 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 12:56:08,918 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 12:56:08,921 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 12:56:08,921 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 12:56:08,921 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 12:56:08,922 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 12:56:08,923 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 12:56:08,924 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 12:56:08,925 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 12:56:08,927 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 12:56:08,934 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 12:56:08,934 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 12:56:08,936 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 12:56:08,936 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 12:56:08,937 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 12:56:08,937 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 12:56:08,939 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=0 high=-1
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   PropertyStore: used=0 high=-1
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=0 high=-1
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 12:56:08,940 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 12:56:08,941 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 12:56:08,941 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 12:56:08,941 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 12:56:08,941 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52372946944 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 12:56:08,942 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 12:56:08,942 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 12:56:08,942 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T12:56:08+0000 - 40.00 B
+2013-02-12 12:56:08,942 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 12:56:08,942 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 12:56:08,943 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 12:56:08,943 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,943 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T12:56:08+0000 - 26.72 kB
+2013-02-12 12:56:08,943 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T12:56:08+0000 - 54.00 B
+2013-02-12 12:56:08,943 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,944 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,944 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,944 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,944 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 12:56:08,944 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,945 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,945 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,945 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,945 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 12:56:08,945 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,946 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 12:56:08,946 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,946 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,946 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,947 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,947 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,947 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 12:56:08,947 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 12:56:08,947 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 12:56:08,948 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 12:56:08,948 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 12:56:08,948 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---
+2013-02-12 13:01:55,856 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 13:01:55,857 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 13:01:55,858 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 13:01:55,859 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 13:01:55,860 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 13:01:55,861 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 13:01:55,862 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 13:01:55,862 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 13:01:55,862 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 13:01:55,862 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 13:01:55,862 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 13:01:55,864 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 13:01:55,865 DEBUG [neo4j.diagnostics]: Free Physical memory: 685.64 MB
+2013-02-12 13:01:55,865 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.43 GB
+2013-02-12 13:01:55,866 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 13:01:55,866 DEBUG [neo4j.diagnostics]: Free swap space: 926.65 MB
+2013-02-12 13:01:55,866 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 13:01:55,866 DEBUG [neo4j.diagnostics]: Free  memory: 348.20 MB
+2013-02-12 13:01:55,866 DEBUG [neo4j.diagnostics]: Total memory: 490.69 MB
+2013-02-12 13:01:55,867 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 13:01:55,868 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 13:01:55,868 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 13:01:55,869 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=2.44 MB, used=2.25 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 13:01:55,869 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=128.00 MB, used=119.83 MB, max=469.38 MB, threshold=?
+2013-02-12 13:01:55,870 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=21.31 MB, used=21.31 MB, max=21.31 MB, threshold=?
+2013-02-12 13:01:55,870 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=1.67 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 13:01:55,871 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=51.69 MB, used=51.67 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 13:01:55,871 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 233
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Process id: 44838@oxbowlakes.local
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 13:01:55,872 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 13:01:55,873 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 13:01:55,873 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:01:55,874 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 13:01:55,874 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 13:01:55,878 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 13:01:55,878 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 13:01:55,878 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 13:01:55,878 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 13:01:55,878 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 13:01:55,879 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 13:01:55,880 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 13:01:55,881 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 13:01:55,882 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 13:01:55,883 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 13:01:55,885 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 13:01:55,885 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 13:01:55,885 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 13:01:55,885 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 13:01:55,885 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 13:01:55,886 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 13:01:55,886 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 13:01:55,886 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 13:01:55,892 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 13:01:55,893 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 13:01:55,894 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:01:55,895 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 13:01:55,896 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:01:55,896 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 13:01:55,898 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:01:55,899 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=1 high=0
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   PropertyStore: used=1 high=0
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=1 high=0
+2013-02-12 13:01:55,900 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 13:01:55,901 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52332359680 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 13:01:55,902 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 13:01:55,902 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 13:01:55,902 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T13:01:55+0000 - 40.00 B
+2013-02-12 13:01:55,903 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:01:55,903 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:01:55,903 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 13:01:55,903 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:01:55,903 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T13:01:55+0000 - 56.30 kB
+2013-02-12 13:01:55,904 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T13:01:55+0000 - 54.00 B
+2013-02-12 13:01:55,904 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,904 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 13:01:55,904 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,905 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:01:55,905 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:01:55,905 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,905 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,905 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T13:01:55+0000 - 10.24 kB
+2013-02-12 13:01:55,906 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,906 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:01:55,906 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,906 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:01:55,906 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,907 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:01:55,907 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,907 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T13:01:55+0000 - 0.00 B
+2013-02-12 13:01:55,907 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,907 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:01:55,908 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T13:01:55+0000 - 9.00 B
+2013-02-12 13:01:55,908 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:01:55,908 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:01:55,909 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T13:01:55+0000 - 0.00 B
+2013-02-12 13:01:55,909 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---
+2013-02-12 13:04:10,240 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 13:04:10,241 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 13:04:10,242 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 13:04:10,242 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 13:04:10,242 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 13:04:10,242 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 13:04:10,243 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 13:04:10,244 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 13:04:10,245 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 13:04:10,246 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 13:04:10,248 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 13:04:10,249 DEBUG [neo4j.diagnostics]: Free Physical memory: 430.15 MB
+2013-02-12 13:04:10,249 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.45 GB
+2013-02-12 13:04:10,249 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 13:04:10,250 DEBUG [neo4j.diagnostics]: Free swap space: 926.65 MB
+2013-02-12 13:04:10,250 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 13:04:10,250 DEBUG [neo4j.diagnostics]: Free  memory: 449.57 MB
+2013-02-12 13:04:10,250 DEBUG [neo4j.diagnostics]: Total memory: 618.69 MB
+2013-02-12 13:04:10,250 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 13:04:10,252 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 13:04:10,252 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 13:04:10,254 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=4.38 MB, used=4.11 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 13:04:10,254 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=256.00 MB, used=77.20 MB, max=417.31 MB, threshold=?
+2013-02-12 13:04:10,254 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=21.31 MB, used=21.28 MB, max=21.31 MB, threshold=?
+2013-02-12 13:04:10,255 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=70.63 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 13:04:10,255 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=77.38 MB, used=77.24 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 13:04:10,255 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 13:04:10,256 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 13:04:10,257 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 13:04:10,257 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 256
+2013-02-12 13:04:10,257 DEBUG [neo4j.diagnostics]: Process id: 44893@oxbowlakes.local
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 13:04:10,258 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:04:10,259 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 13:04:10,259 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 13:04:10,262 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 13:04:10,263 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 13:04:10,264 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 13:04:10,265 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 13:04:10,266 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 13:04:10,268 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 13:04:10,269 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 13:04:10,278 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 13:04:10,278 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 13:04:10,280 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:04:10,280 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 13:04:10,281 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:04:10,281 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 13:04:10,283 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=1 high=0
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   PropertyStore: used=1 high=0
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=1 high=0
+2013-02-12 13:04:10,284 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 13:04:10,285 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 13:04:10,285 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 13:04:10,285 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 13:04:10,285 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 13:04:10,285 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 13:04:10,286 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52353634304 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 13:04:10,286 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 13:04:10,286 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 13:04:10,287 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T13:04:10+0000 - 40.00 B
+2013-02-12 13:04:10,287 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:04:10,287 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:04:10,288 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 13:04:10,288 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:04:10,288 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T13:04:10+0000 - 85.88 kB
+2013-02-12 13:04:10,289 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T13:04:10+0000 - 54.00 B
+2013-02-12 13:04:10,289 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,289 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 13:04:10,290 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,290 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:04:10,290 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:04:10,290 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,291 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,291 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T13:01:55+0000 - 10.24 kB
+2013-02-12 13:04:10,291 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,292 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:04:10,292 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,293 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:04:10,293 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,293 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:04:10,294 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,294 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T13:04:10+0000 - 0.00 B
+2013-02-12 13:04:10,294 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,294 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:04:10,295 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T13:04:10+0000 - 9.00 B
+2013-02-12 13:04:10,295 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:04:10,295 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:04:10,295 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T13:04:10+0000 - 0.00 B
+2013-02-12 13:04:10,295 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---
+2013-02-12 13:05:42,823 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 13:05:42,824 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 13:05:42,826 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 13:05:42,827 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 13:05:42,828 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 13:05:42,829 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 13:05:42,829 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 13:05:42,829 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 13:05:42,831 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 13:05:42,831 DEBUG [neo4j.diagnostics]: Free Physical memory: 494.93 MB
+2013-02-12 13:05:42,832 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.45 GB
+2013-02-12 13:05:42,832 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 13:05:42,832 DEBUG [neo4j.diagnostics]: Free swap space: 926.65 MB
+2013-02-12 13:05:42,833 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 13:05:42,833 DEBUG [neo4j.diagnostics]: Free  memory: 453.23 MB
+2013-02-12 13:05:42,833 DEBUG [neo4j.diagnostics]: Total memory: 626.94 MB
+2013-02-12 13:05:42,833 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 13:05:42,835 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 13:05:42,835 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 13:05:42,836 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=4.38 MB, used=3.67 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 13:05:42,836 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=238.44 MB, used=81.24 MB, max=400.19 MB, threshold=?
+2013-02-12 13:05:42,837 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=47.13 MB, used=47.11 MB, max=47.13 MB, threshold=?
+2013-02-12 13:05:42,837 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=45.35 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 13:05:42,838 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=77.38 MB, used=77.32 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 13:05:42,838 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 13:05:42,838 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 13:05:42,839 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 13:05:42,839 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 256
+2013-02-12 13:05:42,839 DEBUG [neo4j.diagnostics]: Process id: 44922@oxbowlakes.local
+2013-02-12 13:05:42,839 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 13:05:42,840 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:05:42,841 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 13:05:42,841 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 13:05:42,844 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 13:05:42,845 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 13:05:42,846 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 13:05:42,847 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 13:05:42,849 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 13:05:42,855 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 13:05:42,855 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 13:05:42,857 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:05:42,857 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 13:05:42,858 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:05:42,858 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 13:05:42,859 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 13:05:42,859 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:05:42,859 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=1 high=0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   PropertyStore: used=1 high=0
+2013-02-12 13:05:42,860 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=1 high=0
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 13:05:42,861 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52353286144 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 13:05:42,862 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 13:05:42,862 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 13:05:42,862 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T13:05:42+0000 - 40.00 B
+2013-02-12 13:05:42,863 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:05:42,863 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:05:42,863 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 13:05:42,864 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:05:42,864 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T13:05:42+0000 - 115.46 kB
+2013-02-12 13:05:42,864 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T13:05:42+0000 - 54.00 B
+2013-02-12 13:05:42,864 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,865 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 13:05:42,865 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,865 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:05:42,865 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:05:42,866 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,866 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,866 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T13:01:55+0000 - 10.24 kB
+2013-02-12 13:05:42,866 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,866 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:05:42,867 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,867 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:05:42,867 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,867 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:05:42,867 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,868 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T13:05:42+0000 - 0.00 B
+2013-02-12 13:05:42,868 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,868 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:05:42,868 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T13:05:42+0000 - 9.00 B
+2013-02-12 13:05:42,869 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:05:42,869 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:05:42,869 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T13:05:42+0000 - 0.00 B
+2013-02-12 13:05:42,869 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---
+2013-02-12 13:10:36,552 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 13:10:36,553 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 13:10:36,554 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 13:10:36,555 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 13:10:36,556 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 13:10:36,557 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 13:10:36,557 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 13:10:36,559 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 13:10:36,560 DEBUG [neo4j.diagnostics]: Free Physical memory: 419.11 MB
+2013-02-12 13:10:36,560 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.45 GB
+2013-02-12 13:10:36,560 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 13:10:36,561 DEBUG [neo4j.diagnostics]: Free swap space: 927.59 MB
+2013-02-12 13:10:36,561 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 13:10:36,561 DEBUG [neo4j.diagnostics]: Free  memory: 443.26 MB
+2013-02-12 13:10:36,561 DEBUG [neo4j.diagnostics]: Total memory: 618.69 MB
+2013-02-12 13:10:36,561 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 13:10:36,563 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 13:10:36,563 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 13:10:36,564 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=4.31 MB, used=3.61 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 13:10:36,565 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=256.00 MB, used=83.49 MB, max=417.38 MB, threshold=?
+2013-02-12 13:10:36,565 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=21.31 MB, used=21.29 MB, max=21.31 MB, threshold=?
+2013-02-12 13:10:36,566 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=70.65 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 13:10:36,566 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=77.38 MB, used=77.32 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 13:10:36,566 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 13:10:36,567 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 13:10:36,567 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 13:10:36,567 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 256
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: Process id: 44956@oxbowlakes.local
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 13:10:36,568 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:10:36,569 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 13:10:36,569 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 13:10:36,572 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 13:10:36,573 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 13:10:36,574 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 13:10:36,575 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 13:10:36,576 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 13:10:36,577 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:10:36,577 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:10:36,577 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 13:10:36,577 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 13:10:36,578 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 13:10:36,579 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 13:10:36,585 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 13:10:36,585 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 13:10:36,587 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:10:36,587 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 13:10:36,588 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:10:36,588 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 13:10:36,590 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=1 high=0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   PropertyStore: used=1 high=0
+2013-02-12 13:10:36,591 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=1 high=0
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 13:10:36,592 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 13:10:36,593 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52327837696 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 13:10:36,593 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 13:10:36,593 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 13:10:36,594 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T13:10:36+0000 - 40.00 B
+2013-02-12 13:10:36,594 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:10:36,594 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:10:36,595 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 13:10:36,595 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:10:36,595 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T13:10:36+0000 - 145.05 kB
+2013-02-12 13:10:36,595 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T13:10:36+0000 - 54.00 B
+2013-02-12 13:10:36,596 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,596 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 13:10:36,596 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,596 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:10:36,596 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:10:36,597 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,597 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,597 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T13:01:55+0000 - 10.24 kB
+2013-02-12 13:10:36,597 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,597 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:10:36,598 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,598 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:10:36,598 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,598 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:10:36,599 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,599 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T13:10:36+0000 - 0.00 B
+2013-02-12 13:10:36,599 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,599 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:10:36,599 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T13:10:36+0000 - 9.00 B
+2013-02-12 13:10:36,600 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:10:36,600 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:10:36,600 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T13:10:36+0000 - 0.00 B
+2013-02-12 13:10:36,600 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---
+2013-02-12 13:11:26,882 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics START ---
+2013-02-12 13:11:26,883 DEBUG [neo4j.diagnostics]: Neo4j Kernel properties:
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: forced_kernel_id=
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: read_only=false
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.host=udc.neo4j.org
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: logical_log=nioneo_logical.log
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: node_auto_indexing=false
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: intercept_committing_transactions=false
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: cache_type=soft
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: intercept_deserialized_transactions=false
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: lucene_searcher_cache_size=2147483647
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.interval=86400000
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: use_memory_mapped_buffers=true
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: rebuild_idgenerators_fast=true
+2013-02-12 13:11:26,884 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.keys.mapped_memory=1M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.arrays.mapped_memory=684M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.strings.mapped_memory=603M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_filename=mapped_memory_stats.log
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats_interval=1000000
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: gcr_cache_min_log_interval=60s
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: relationship_grab_size=100
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: relationship_auto_indexing=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: node_cache_array_fraction=1.0
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: allow_store_upgrade=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: execution_guard_enabled=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: relationship_cache_array_fraction=1.0
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: store_dir=/Users/james/Projects/dfid/aid-platform-beta/data/iati-xml
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: remote_logging_host=127.0.0.1
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: online_backup_enabled=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: remote_logging_port=4560
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: gc_monitor_threshold=200ms
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: array_block_size=120
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: load_kernel_extensions=true
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neostore.relationshipstore.db.mapped_memory=870M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: keep_logical_logs=true
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: dump_configuration=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: gc_monitor_wait_time=100ms
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neostore.nodestore.db.mapped_memory=197M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.first_delay=600000
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.reg=unreg
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: ephemeral=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: log_mapped_memory_stats=false
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neo_store=neostore
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: mapped_memory_page_size=1M
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: query_cache_size=100
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: logging.threshold_for_rotation=104857600
+2013-02-12 13:11:26,885 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.index.mapped_memory=1M
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: backup_slave=false
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: neostore.propertystore.db.mapped_memory=710M
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: string_block_size=120
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: grab_file_lock=true
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: remote_logging_enabled=false
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: neo4j.ext.udc.enabled=true
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: all_stores_total_mapped_memory_size=500M
+2013-02-12 13:11:26,886 DEBUG [neo4j.diagnostics]: online_backup_port=6362
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: Diagnostics providers:
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.configuration.Config
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: org.neo4j.kernel.info.DiagnosticsManager
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: SYSTEM_MEMORY
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: JAVA_MEMORY
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: OPERATING_SYSTEM
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: JAVA_VIRTUAL_MACHINE
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: CLASSPATH
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: LIBRARY_PATH
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: SYSTEM_PROPERTIES
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: NETWORK
+2013-02-12 13:11:26,887 DEBUG [neo4j.diagnostics]: System memory information:
+2013-02-12 13:11:26,890 DEBUG [neo4j.diagnostics]: Total Physical memory: 8.00 GB
+2013-02-12 13:11:26,890 DEBUG [neo4j.diagnostics]: Free Physical memory: 566.14 MB
+2013-02-12 13:11:26,891 DEBUG [neo4j.diagnostics]: Committed virtual memory: 4.43 GB
+2013-02-12 13:11:26,891 DEBUG [neo4j.diagnostics]: Total swap space: 3.00 GB
+2013-02-12 13:11:26,891 DEBUG [neo4j.diagnostics]: Free swap space: 927.59 MB
+2013-02-12 13:11:26,892 DEBUG [neo4j.diagnostics]: JVM memory information:
+2013-02-12 13:11:26,892 DEBUG [neo4j.diagnostics]: Free  memory: 435.88 MB
+2013-02-12 13:11:26,892 DEBUG [neo4j.diagnostics]: Total memory: 618.69 MB
+2013-02-12 13:11:26,892 DEBUG [neo4j.diagnostics]: Max   memory: 1.33 GB
+2013-02-12 13:11:26,894 DEBUG [neo4j.diagnostics]: Garbage Collector: PS Scavenge: [PS Eden Space, PS Survivor Space]
+2013-02-12 13:11:26,894 DEBUG [neo4j.diagnostics]: Garbage Collector: PS MarkSweep: [PS Eden Space, PS Survivor Space, PS Old Gen, PS Perm Gen]
+2013-02-12 13:11:26,895 DEBUG [neo4j.diagnostics]: Memory Pool: Code Cache (Non-heap memory): committed=2.44 MB, used=2.30 MB, max=48.00 MB, threshold=0.00 B
+2013-02-12 13:11:26,895 DEBUG [neo4j.diagnostics]: Memory Pool: PS Eden Space (Heap memory): committed=256.00 MB, used=159.48 MB, max=469.38 MB, threshold=?
+2013-02-12 13:11:26,896 DEBUG [neo4j.diagnostics]: Memory Pool: PS Survivor Space (Heap memory): committed=21.31 MB, used=21.31 MB, max=21.31 MB, threshold=?
+2013-02-12 13:11:26,896 DEBUG [neo4j.diagnostics]: Memory Pool: PS Old Gen (Heap memory): committed=341.38 MB, used=2.02 MB, max=1.00 GB, threshold=0.00 B
+2013-02-12 13:11:26,897 DEBUG [neo4j.diagnostics]: Memory Pool: PS Perm Gen (Non-heap memory): committed=51.69 MB, used=51.68 MB, max=384.00 MB, threshold=0.00 B
+2013-02-12 13:11:26,897 DEBUG [neo4j.diagnostics]: Operating system information:
+2013-02-12 13:11:26,897 DEBUG [neo4j.diagnostics]: Operating System: Mac OS X; version: 10.8.2; arch: x86_64; cpus: 4
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: Max number of file descriptors: 10240
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: Number of open file descriptors: 231
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: Process id: 44982@oxbowlakes.local
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: Byte order: LITTLE_ENDIAN
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: Local timezone: Europe/London
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: JVM information:
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: VM Name: Java HotSpot(TM) 64-Bit Server VM
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: VM Vendor: Oracle Corporation
+2013-02-12 13:11:26,898 DEBUG [neo4j.diagnostics]: VM Version: 24.0-b28
+2013-02-12 13:11:26,899 DEBUG [neo4j.diagnostics]: JIT compiler: HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:11:26,899 DEBUG [neo4j.diagnostics]: VM Arguments: [-Xms512M, -Xmx1536M, -Xss1M, -XX:+CMSClassUnloadingEnabled, -XX:MaxPermSize=384M, -Dfile.encoding=UTF-8, -Dplay.version=2.1.0, -Dsbt.ivy.home=/Users/james/utils/pvm/install/2.1.0/framework/../repository, -Dplay.home=/Users/james/utils/pvm/install/2.1.0/framework, -Dsbt.boot.properties=/Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties]
+2013-02-12 13:11:26,899 DEBUG [neo4j.diagnostics]: Java classpath:
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-kernel/jars/neo4j-kernel-1.8.1.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-actor_2.10/2.1.0/bundles/akka-actor_2.10.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/resources.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-lang/scala-reflect/2.10.0/jars/scala-reflect.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-file_2.10/0.4.2/jars/scala-io-file_2.10.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jsse.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/net.sf.ehcache/ehcache-core/2.6.0/jars/ehcache-core.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/jquery/jars/jquery-1.9.0.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-commonshttp4/1.2.1.2/jars/signpost-commonshttp4.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jcl-over-slf4j/1.6.6/jars/jcl-over-slf4j.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-core-asl/1.9.10/jars/jackson-core-asl.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.mindrot/jbcrypt/jars/jbcrypt-0.3m.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/rt.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.commons/commons-lang3/3.1/jars/commons-lang3.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.google.inject/guice/jars/guice-3.0.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-iteratees_2.10/2.1.0/jars/play-iteratees_2.10.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/slf4j-api/1.7.2/jars/slf4j-api.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe/config/1.0.0/bundles/config.jar
+2013-02-12 13:11:26,903 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/JObjC.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [classpath] /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.javassist/javassist/3.16.1-GA/jars/javassist.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.github.scala-incubator.io/scala-io-core_2.10/0.4.2/jars/scala-io-core_2.10.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/com.tzavellas/sse-guice/jars/sse-guice-0.7.0.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/javax.inject/javax.inject/jars/javax.inject-1.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/sunrsasign.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play-exceptions/2.1.0/jars/play-exceptions.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.geronimo.specs/geronimo-jta_1.1_spec/jars/geronimo-jta_1.1_spec-1.1.1.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.webjars/bootstrap/jars/bootstrap-2.2.2-1.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpcore/4.0.1/jars/httpcore.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.apache.httpcomponents/httpclient/4.0.1/jars/httpclient.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/sbt-link/2.1.0/jars/sbt-link.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.sonatype.sisu.inject/cglib/jars/cglib-2.2.1-v20090111.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/classes
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/sbt/boot/scala-2.10.0/lib/scala-library.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.slf4j/jul-to-slf4j/1.6.6/jars/jul-to-slf4j.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/asm/asm/jars/asm-3.1.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.joda/joda-convert/1.2/jars/joda-convert.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.reactivemongo/play2-reactivemongo_2.10/jars/play2-reactivemongo_2.10-0.8.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.jsuereth/scala-arm_2.10/1.3/jars/scala-arm_2.10.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jce.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/joda-time/joda-time/2.1/jars/joda-time.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/play_2.10/2.1.0/jars/play_2.10.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/charsets.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [bootstrap] /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib/jfr.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.ning/async-http-client/1.7.6/jars/async-http-client.jar
+2013-02-12 13:11:26,904 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.neo4j/neo4j-lucene-index/jars/neo4j-lucene-index-1.8.1.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/play/templates_2.10/2.1.0/jars/templates_2.10.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/aopalliance/aopalliance/jars/aopalliance-1.0.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-logging/commons-logging/1.1.1/jars/commons-logging.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/javax.transaction/jta/1.1/jars/jta.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/framework/../repository/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.scala-stm/scala-stm_2.10.0/0.6/jars/scala-stm_2.10.0.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/commons-codec/commons-codec/1.3/jars/commons-codec.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/org.codehaus.jackson/jackson-mapper-asl/1.9.10/jars/jackson-mapper-asl.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/com.typesafe.akka/akka-slf4j_2.10/2.1.0/bundles/akka-slf4j_2.10.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]:  [loader.0] file:/Users/james/utils/pvm/install/2.1.0/repository/local/oauth.signpost/signpost-core/1.2.1.2/jars/signpost-core.jar
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: Library path:
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /Users/james/Library/Java/Extensions
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /Library/Java/Extensions
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /Network/Library/Java/Extensions
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /System/Library/Java/Extensions
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /usr/lib/java
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:11:26,905 DEBUG [neo4j.diagnostics]: /Users/james/Projects/dfid/aid-platform-beta/src/cms/target/native_libraries/64bits
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: System.properties:
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sbt.ivy.home = /Users/james/utils/pvm/install/2.1.0/framework/../repository
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.boot.library.path = /Library/Java/JavaVirtualMachines/jdk1.7.0_12.jdk/Contents/Home/jre/lib
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: user.country.format = GB
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: gopherProxySet = false
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: path.separator = :
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: file.encoding.pkg = sun.io
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: user.country = US
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.java.launcher = SUN_STANDARD
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.os.patch.level = unknown
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: user.dir = /Users/james/Projects/dfid/aid-platform-beta/src/cms
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sbt.boot.properties = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt.boot.properties
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.jnu.encoding = UTF-8
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.nio.ch.bugLevel = 
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: play.home = /Users/james/utils/pvm/install/2.1.0/framework
+2013-02-12 13:11:26,906 DEBUG [neo4j.diagnostics]: sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: http.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: user.home = /Users/james
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: user.timezone = Europe/London
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: file.encoding = UTF-8
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: user.name = james
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: play.version = 2.1.0
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: sun.java.command = /Users/james/utils/pvm/install/2.1.0/framework/sbt/sbt-launch.jar run
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: sun.arch.data.model = 64
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: user.language = en
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: awt.toolkit = sun.lwawt.macosx.LWCToolkit
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: file.separator = /
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: sun.io.unicode.encoding = UnicodeBig
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: sun.cpu.endian = little
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: socksNonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: ftp.nonProxyHosts = local|*.local|169.254/16|*.169.254/16
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: sun.cpu.isalist = 
+2013-02-12 13:11:26,907 DEBUG [neo4j.diagnostics]: Network information:
+2013-02-12 13:11:26,909 DEBUG [neo4j.diagnostics]: Interface en0:
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:288:65ff:fe3f:4e90%4
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]:     address: 192.168.99.47
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]: Interface lo0:
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]:     address: 0:0:0:0:0:0:0:1
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]:     address: fe80:0:0:0:0:0:0:1%1
+2013-02-12 13:11:26,910 DEBUG [neo4j.diagnostics]:     address: 127.0.0.1
+2013-02-12 13:11:26,911 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics END ---
+2013-02-12 13:11:26,919 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions START ---
+2013-02-12 13:11:26,919 DEBUG [neo4j.diagnostics]: Graph Database: org.neo4j.kernel.EmbeddedGraphDatabase StoreId[time:1360673768397, id:7822772398198416138, store version: 13561656364791302]
+2013-02-12 13:11:26,921 DEBUG [neo4j.diagnostics]: Kernel version: Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:11:26,921 DEBUG [neo4j.diagnostics]: Neo4j component versions:
+2013-02-12 13:11:26,922 DEBUG [neo4j.diagnostics]:   Neo4j - Graph Database Kernel 1.8.1
+2013-02-12 13:11:26,922 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:Versions END ---
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS START ---
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]: Store versions:
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   NeoStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   NodeStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   RelationshipStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   PropertyStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   PropertyIndexStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   StringPropertyStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore v0.A.0
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_VERSIONS END ---
+2013-02-12 13:11:26,924 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE START ---
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]: Id usage:
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]:   NodeStore: used=1 high=0
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]:   RelationshipStore: used=1 high=0
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]:   RelationshipTypeStore: used=0 high=-1
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]:   PropertyStore: used=1 high=0
+2013-02-12 13:11:26,925 DEBUG [neo4j.diagnostics]:   PropertyIndexStore: used=1 high=0
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]:   StringPropertyStore: used=1 high=0
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]:   ArrayPropertyStore: used=1 high=0
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for NEO_STORE_ID_USAGE END ---
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS START ---
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for PERSISTENCE_WINDOW_POOL_STATS END ---
+2013-02-12 13:11:26,926 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles START ---
+2013-02-12 13:11:26,927 DEBUG [neo4j.diagnostics]: Disk space on partition (Total / Free / Free %): 120473067520 / 52327964672 / 56
+Storage files: (filename : modification date - size)
+2013-02-12 13:11:26,927 DEBUG [neo4j.diagnostics]:   active_tx_log: 2013-02-12T12:56:08+0000 - 11.00 B
+2013-02-12 13:11:26,927 DEBUG [neo4j.diagnostics]:   index:
+2013-02-12 13:11:26,927 DEBUG [neo4j.diagnostics]:     lucene-store.db: 2013-02-12T13:11:26+0000 - 40.00 B
+2013-02-12 13:11:26,928 DEBUG [neo4j.diagnostics]:     lucene.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:11:26,928 DEBUG [neo4j.diagnostics]:     lucene.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:11:26,928 DEBUG [neo4j.diagnostics]:   - Total: 2013-02-12T12:56:08+0000 - 60.00 B
+2013-02-12 13:11:26,928 DEBUG [neo4j.diagnostics]:   lock: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:11:26,929 DEBUG [neo4j.diagnostics]:   messages.log: 2013-02-12T13:11:26+0000 - 174.63 kB
+2013-02-12 13:11:26,929 DEBUG [neo4j.diagnostics]:   neostore: 2013-02-12T13:11:26+0000 - 54.00 B
+2013-02-12 13:11:26,929 DEBUG [neo4j.diagnostics]:   neostore.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,929 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db: 2013-02-12T12:56:08+0000 - 9.00 B
+2013-02-12 13:11:26,930 DEBUG [neo4j.diagnostics]:   neostore.nodestore.db.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,930 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:11:26,930 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:11:26,930 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.arrays.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,930 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,931 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index: 2013-02-12T13:01:55+0000 - 10.24 kB
+2013-02-12 13:11:26,931 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,931 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:11:26,931 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.index.keys.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,932 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings: 2013-02-12T12:56:08+0000 - 128.00 B
+2013-02-12 13:11:26,932 DEBUG [neo4j.diagnostics]:   neostore.propertystore.db.strings.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,932 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db: 2013-02-12T12:56:08+0000 - 0.00 B
+2013-02-12 13:11:26,932 DEBUG [neo4j.diagnostics]:   neostore.relationshipstore.db.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,932 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db: 2013-02-12T13:11:26+0000 - 0.00 B
+2013-02-12 13:11:26,933 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,933 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names: 2013-02-12T12:56:08+0000 - 38.00 B
+2013-02-12 13:11:26,933 DEBUG [neo4j.diagnostics]:   neostore.relationshiptypestore.db.names.id: 2013-02-12T13:11:26+0000 - 9.00 B
+2013-02-12 13:11:26,933 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.1: 2013-02-12T12:56:08+0000 - 16.00 B
+2013-02-12 13:11:26,934 DEBUG [neo4j.diagnostics]:   nioneo_logical.log.active: 2013-02-12T12:56:08+0000 - 4.00 B
+2013-02-12 13:11:26,934 DEBUG [neo4j.diagnostics]:   tm_tx_log.1: 2013-02-12T13:11:26+0000 - 0.00 B
+2013-02-12 13:11:26,934 DEBUG [neo4j.diagnostics]: --- STARTUP diagnostics for KernelDiagnostics:StoreFiles END ---

@@ -1,4 +1,4 @@
-@()(implicit flash: Flash)
+@(configString: String)(implicit flash: Flash)
 @main() {
 
     @flash.get("message").map { msg =>
@@ -21,4 +21,7 @@
             <a href="@routes.ActivitySources.index">Select Activity File Sources</a>
         </li>
     </ul>
+
+    <h2>application.conf</h2>
+    <pre><code>@configString</code></pre>
 }
