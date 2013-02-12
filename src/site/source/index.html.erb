@@ -1,99 +1,110 @@
 ---
 title: Aid Information Platform
 ---
-    
 
-<header class="page-title">
-  <img src="/images/ukaid_logo.gif" style="float:right;">
-  <div style="padding-right: 90px;">
-    <h1>DEPARTMENT FOR INTERNATIONAL DEVELOPMENT</h1>
-    <h2> Aid Information </h2>
-  </div>
-</header>
-    
 
-<div id="search-bar" class="">
-     
-
-<form action="/projects" method="GET">
-    
-        <label for="query">
-            Search Projects
-            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-        </label>
-        <input type="submit" value="Search" class="button big">
-    
-</form>
-
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <h1>
+                <span>Department for International Development</span>
+                Aid Information
+            </h1>
+        </div>
+    </div>
 </div>
-    <style>
-        #whitehall-wrapper div .side-by-side-by-side a:hover { border: 2px solid #FFBF47; }
-    </style>
-    <div class="side-by-side-by-side">
-        <a href="/location" class="by-location">
-          <h2>Aid by Location</h2>
-        </a>
-        <div class="by-sector">
-          <h2>Aid by Sector</h2>
-        </div>
-    </div>
-    <div class="side-by-side-by-side" id="columar-tables">
 
-        <div id="top-5-countries">
-          <h3 class="info-notice">Where we work</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Country</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% countries_helper.each do |code, country| %>
-                    <tr>
-                        <td> <a href="/countries/<%= code %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a> </td>
-                        <td> <%= country['budget'] %> </td>
-                    </tr>
-                <% end %> 
-            </tbody>
-          </table>
-        </div>
-        <div id="top-5-sectors">
-          <h3 class="info-notice">What we do</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Sector</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% sectors_helper.each do |name, budget| %>
-                    <tr>
-                        <td title="<%= name %>"><span class="truncate"><%= name %></span></td>
-                        <td> <%= budget %> </td>
-                    </tr>
-                <% end %>  
-            </tbody>
-          </table>
-        </div>
-        <div id="top-5-projects">
-          <h3 class="info-notice">What we achieve</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Project</th>
-                <th>Budget</th>
-              </tr>
-            </thead>
-            <tbody>
-                <% projects_helper.each do |name, budget| %>
-                    <tr>
-                        <td><span class="truncate"><%= name %></span></td>
-                        <td> <%= budget %> </td>
-                    </tr>
-                <% end %>  
-            </tbody>
-          </table>
+
+<div class="row">
+    <div class="twelve columns">
+        <div id="search-bar">
+            <form action="/projects" method="GET">
+                <label for="query">
+                    <h3>Search Projects</h3>
+                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+                </label>
+                <input type="submit" value="Search" class="button">
+            </form>
         </div>
     </div>
+</div>
+
+<nav>
+    <div class="row" id="nav-entry">
+        <div class="four columns">
+            <h2>
+                <a href="/location.html" class="by-location">
+                    <span class="image-wrapper">
+                        <img src="/images/by-location.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Location</span>
+                </a>
+            </h2>         
+        </div>
+        <div class="four columns">
+            <h2>
+                <a href="/location.html" class="by-sector">
+                    <span class="image-wrapper">
+                        <img src="/images/by-sector.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Sector</span>
+                </a>
+            </h2>
+            
+        </div>
+        <div class="four columns">
+            <h2>
+                <a href="/location.html" class="by-organisation">
+                    <span class="image-wrapper">
+                        <img src="/images/by-org.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Organisation</span>
+                </a>
+            </h2>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">UK AID TOP 5s</h3> 
+    </div>
+</div>
+<div class="row">
+    <div class="four columns" id="top-5-countries">
+        <h4>Where we work</h4>
+        <ol>
+        <% countries_helper.each do |code, country| %>
+          <li>
+              <a href="/countries/<%= code %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
+              <em><span class="visually-hidden">Budget</span><%= country['budget'] %></em>
+          </li>
+        <% end %> 
+        </ol>
+        
+    </div>
+
+    <div class="four columns" id="top-5-sectors">
+        <h4>What we do</h4>
+        <ol>
+          <% sectors_helper.each do |name, budget| %>
+          <li>
+            <a href="#" class="truncate" title="<%= name %>"><%= name %> </a>
+                <em><span class="visually-hidden">Budget</span><%= budget %></em>
+          </li>
+          <% end %>  
+        </ol>                
+    </div>
+    <div class="four columns" id="top-5-projects">
+        <h4>What we achieve</h4>
+        <ol>
+          <% projects_helper.each do |name, budget| %>
+            <li>
+              <span class="truncate" title="<%= name %>"><%= name %></span>
+              <em><%= budget %></em>
+            </li>
+          <% end %>  
+        </ol>  
+    </div>
+</div>
+

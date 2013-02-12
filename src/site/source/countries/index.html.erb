@@ -1,0 +1,18 @@
+---
+title: Aid Information Platform
+---
+
+<p> <%= if !defined?(country).nil?
+        country 
+        end  %> </p>
+<div id="search-bar" class="">
+     
+<form action="/projects" method="GET">
+    
+        <label for="query">
+            Search Projects
+            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+        </label>
+        <input type="submit" value="Search" class="button big">
+    
+</form>

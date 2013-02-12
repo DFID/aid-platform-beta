@@ -5269,15 +5269,10 @@ body.detailed-guidance #whitehall-wrapper #page .document_page .previous-next-na
 }
 
 
-#whitehall-wrapper div .side-by-side-by-side a.by-location
+#whitehall-wrapper div .side-by-side-by-side a.by-location,
+#whitehall-wrapper div .side-by-side-by-side div.by-sector,
+#whitehall-wrapper div .side-by-side-by-side div.by-org
 {
-    height: 405px;
-    margin-top:0.5em;
-    margin-left:15%;
-    position: relative;
-    width: 32%;
-}
-#whitehall-wrapper div .side-by-side-by-side div.by-sector {
     height: 405px;
     margin-top:0.5em;
     position: relative;
@@ -5299,7 +5294,7 @@ body.detailed-guidance #whitehall-wrapper #page .document_page .previous-next-na
 #whitehall-wrapper div .side-by-side-by-side div.by-sector
 {
     background: url(../images/by-sector.png) no-repeat 0 0;
-    
+    margin-right: 0.5%;
     opacity: 0.4;
 }
 #whitehall-wrapper div .side-by-side-by-side div.by-org
