@@ -31,6 +31,17 @@ require "json"
 #   page "/admin/*"
 # end
 
+#This will use data from db, but for now will test a few different project codes
+projects = ["GB-1-203600", "GB-1-113939", "GB-1-112068"]
+projects.each do |projectCode|
+  page "/projects/#{projectCode}", :proxy => "/projects/index.html", :locals => {:project => projectCode}
+end
+
+countries = ["ET", "UK", "IR"]
+countries.each do |countryCode|
+  page "/countries/#{countryCode}", :proxy => "/countries/index.html", :locals => {:country => countryCode}
+end
+
 # Proxy (fake) files
 # page "/this-page-has-no-template.html", :proxy => "/template-file.html" do
 #   @which_fake_page = "Rendering a fake page with a variable"
