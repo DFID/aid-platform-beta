@@ -2,7 +2,9 @@
 title: Aid Information Platform
 ---
 
-<p> <%= country %> </p>
+<p> <%= if !defined?(country).nil?
+        country 
+        end  %> </p>
 <div id="search-bar" class="">
      
 <form action="/projects" method="GET">
