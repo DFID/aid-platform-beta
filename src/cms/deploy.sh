@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd src/loader
+cd ../loader
 sbt run
