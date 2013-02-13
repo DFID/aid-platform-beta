@@ -151,6 +151,13 @@ The technologies suggested are only theoretical and I expect them to change as a
 - __API__ - IATI Data API built against the working draft of the IATI API Standards.  Unlike the beta this wont be tailored specifically to DFIDs assumptions of the data shape.  Extra work will need to be carried out by the aid platform itself
 - __Site__ - The aid platform will consume the API and generate a static site that can be hosted on any provider.
 
+The following diagram is the current site map
+
+
+<img src="http://yuml.me/bbad75cc" style="width:100%" />
+
+[Edit This](http://yuml.me/edit/bbad75cc)
+
 ## <a name="development-guidelines"></a> Development Guidelines
 
 ### <a id="make-commits-meaningful"></a> Make commits meaningful
