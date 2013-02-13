@@ -2,17 +2,65 @@
 title: Aid Information Platform
 ---
 
-<p> <%= if !defined?(country).nil?
-        country 
-        end  %> </p>
-<div id="search-bar" class="">
-     
-<form action="/projects" method="GET">
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <h1>
+                <span>Aid platform</span>
+                <%= country['name'] %>
+                <span><a href="/index.html">Home </a></span>
+            </h1>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="twelve columns">
+        <div id="search-bar">
+            <form action="/projects" method="GET">
+                <label for="query">
+                    <h3>Search Projects</h3>
+                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+                </label>
+                <input type="submit" value="Search" class="button">
+            </form>
+        </div>
+    </div>
+</div>
+<div id="country-description">
+    <p><%= country['summary'] %></p>
+</div>
+
+<div id="key-info">
+    <h3>Key info</h3>
+    <ul>
+        <li>
+            Country budget for 2012/13
+            <p><%= country['budget'] %></p>
+        </li>
+        <li>
+            Active Projects
+            <p><%= country['active-projects'] %></p>
+        </li>
+        <li>
+            Population (<a href="http://data.worldbank.org/country">source</a>)
+            <p><%= country['population'] %></p>
+        </li>
+        <li>
+            Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>)
+            <p><%= country['life expectancy'] %></p>
+        </li>
+        <li>
+            Income level (<a href="http://data.worldbank.org/country">source</a>)
+            <p><%= country['income-level'] %></p>
+        </li>
+    </ul>
+</div>
+
+<div id="sector-groups">
+    <h3>Sector groups</h3>
     
-        <label for="query">
-            Search Projects
-            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-        </label>
-        <input type="submit" value="Search" class="button big">
-    
-</form>
+</div>
+
