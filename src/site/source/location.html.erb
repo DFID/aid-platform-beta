@@ -1,16 +1,15 @@
 ---
 title: Aid Information Platform
 ---
-    
 
-<div id="search-bar" class="">
-<form action="/projects" method="GET">
-    
-        <label for="query">
-            Search Projects
-            <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-        </label>
-        <input type="submit" value="Search" class="button big">
-    
-</form>
+<map name="locationmap">
+	<area shape="rect" coords="2,200,160,255" alt="Global Projects" href="/location.html">
+	<area shape="rect" coords="161,200,335,255" alt="Regional Projects" href="/location-regional.html">
+	<area shape="rect" coords="336,200,490,255" alt="Regional Projects" href="/location-country.html">
+</map>
+
+<div class="row">
+	<div class="twelve columns" style="text-align: center;">
+		<img src="/images/global-projects.png" usemap="#locationmap"/>
+	</div>
 </div>
