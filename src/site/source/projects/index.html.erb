@@ -7,8 +7,8 @@ title: Aid Information Platform
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
             <h1>
-                <span>Department for International Development</span>
-                Aid Information
+                <span>AID PLATFORM</span>
+                <%= project['name'] %>
             </h1>
         </div>
     </div>
@@ -29,7 +29,26 @@ title: Aid Information Platform
     </div>
 </div>
 
-<p> <%= if !defined?(project).nil?
-        project 
-        end %> 
-</p>
+<div id="project-description">
+    <%= project['summary'] %>
+</div>
+
+<div id="funding-info">
+    <h3>Funding - Unconditional</h3>
+    <p>Project Budget: <%= project['budget-set'] %></p>
+    <p>Budget spent to date: <%= project['budget-spent'] %></p>
+</div>
+
+<div id="status">
+    <h3>Status - Implementation</h3>
+    <p>Start: <%= project['start-date'] %></p>
+    <p>End: <%= project['end-date'] %></p>
+</div>
+
+<div id="sector-groups">
+    <h3>Sectors</h3>
+    <ul>
+    <% project['sector-groups'].each do |sector| %>
+        <li><%= sector['name'] %> (<%= sector['percentage'] %>)</li>
+    <% end %>
+</div>
