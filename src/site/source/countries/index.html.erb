@@ -29,38 +29,60 @@ title: Aid Information Platform
         </div>
     </div>
 </div>
-<div id="country-description">
-    <p><%= country['summary'] %></p>
+
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">Summary</h3> 
+        <p><%= country['summary'] %></p>
+    </div>
 </div>
 
-<div id="key-info">
-    <h3>Key info</h3>
-    <ul>
-        <li>
-            Country budget for 2012/13
-            <p><%= country['budget'] %></p>
-        </li>
-        <li>
-            Active Projects
-            <p><%= country['active-projects'] %></p>
-        </li>
-        <li>
-            Population (<a href="http://data.worldbank.org/country">source</a>)
-            <p><%= country['population'] %></p>
-        </li>
-        <li>
-            Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>)
-            <p><%= country['life expectancy'] %></p>
-        </li>
-        <li>
-            Income level (<a href="http://data.worldbank.org/country">source</a>)
-            <p><%= country['income-level'] %></p>
-        </li>
-    </ul>
+<div class="row">
+    <div class="six columns">
+        <h3 class="section-group-title">Key info</h3>
+        <ul class="info-list vertical">
+            <li>
+                Country budget for 2012/13:
+                <%= country['budget'] %>
+            </li>
+            <li>
+                Active Projects:<%= country['active-projects'] %>
+            </li>
+            <li>
+                Population (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['population'] %>
+            </li>
+            <li>
+                Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['life expectancy'] %>
+            </li>
+            <li>
+                Income level (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['income-level'] %>
+            </li>
+        </ul>
+    </div>
 </div>
 
-<div id="sector-groups">
-    <h3>Sector groups</h3>
-    
+<div class="row">
+    <div class="six columns">
+         <h3 class="section-group-title">Sector groups</h3>
+    </div>
+    <div class="six columns">
+         <h3 class="section-group-title">Project budget total by year</h3>
+    </div>
 </div>
+
+<div class="row">
+    <div class="six columns">
+         <h3 class="section-group-title">Partner budget split</h3>
+    </div>
+    <div class="six columns">
+         <h3 class="section-group-title">What we achieved in 2011/2012</h3>
+    </div>
+</div>
+
+
+
+
 

@@ -15,6 +15,8 @@ object Projects extends Controller {
                                                    "budget-spent" : 120000000,
                                                    "start-date" : "1 Dec 2011",
                                                    "end-date" : "31 Mar 2015",
+                                                   "funding" : "Conditional",
+                                                   "status" : "Implementation",
                                                    "sector-groups" : [{
                                                                      "name" : "Research",
                                                                      "percentage" : "100%"
@@ -28,6 +30,8 @@ object Projects extends Controller {
                                                     "budget-spent" : 660000000,
                                                     "start-date" : "4 Feb 2008",
                                                     "end-date" : "31 Mar 2013",
+                                                    "funding" : "Unconditional",
+                                                    "status" : "Completed",
                                                     "sector-groups" : [{
                                                                       "name" : "Livestock",
                                                                       "percentage" : "90%"
@@ -44,6 +48,8 @@ object Projects extends Controller {
                                                    "budget-spent" : 791534,
                                                    "start-date" : "17 July 2008",
                                                    "end-date" : "17 Aug 2018",
+                                                   "funding" : "Conditional",
+                                                   "status" : "Implementation",
                                                    "sector-groups" : [{
                                                                           "name" : "Livestock",
                                                                           "percentage" : "90%"
