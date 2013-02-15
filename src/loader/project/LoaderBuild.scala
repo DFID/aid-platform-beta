@@ -17,8 +17,8 @@ object LoaderBuild extends Build {
     // Dependencies
     libraryDependencies ++= Seq(
       // Testing Dependencies
-      "org.scalatest"     %% "scalatest"         % "1.9.1" % "test",
-      "org.mockito"       %  "mockito-all"       % "1.9.5" % "test",
+      "org.specs2"        %% "specs2"             % "1.13"  % "test",
+      "org.mockito"       %  "mockito-all"        % "1.9.5" % "test",
 
       // Application Dependencies
       "org.neo4j"         %  "neo4j-kernel"       % "1.8.1",
