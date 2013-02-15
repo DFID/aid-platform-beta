@@ -218,3 +218,45 @@ $orange: #F17921;
 .visually-hidden{
     left:-99999em !important;position:absolute
 }
+
+/* Aid by location navigation bar
+------------------------------------------------*/ 
+#whitehall-wrapper #filter-bar {
+    background: #2F2F2F;
+}
+
+#whitehall-wrapper #filter-bar #filter {
+    list-style-type: none; margin: 0; margin-top:10px;  color: #fff; font-weight: normal; display: inline-block; font-size: 0;
+}
+
+.ie7 #whitehall-wrapper #filter-bar #filter {
+    zoom: 1;
+    display: inline-block;
+    font-size: 0;
+}
+
+#whitehall-wrapper #filter-bar #filter li {
+    display: inline-block; padding: 5px; width: 150px; text-align:center; border-left:1px solid #fff; font-size: 14px; line-height: 1.8;
+}
+
+.ie7 #whitehall-wrapper #filter-bar #filter li {
+    zoom: 1;
+    display: inline;
+}
+
+#whitehall-wrapper #filter-bar #filter li.active {
+    background-color: #fff; color: #2F2F2F;
+}
+
+#whitehall-wrapper #filter-bar #filter-stats {
+    float:right; text-align:right;
+}
+
+#whitehall-wrapper #filter-bar #filter-stats h4 {
+    color: #fff; font-size:3.2em; margin-top:-5px;
+}
+
+#whitehall-wrapper .chart-disclaimer {
+	background: #e0e0e0;
+	margin: 0 0 1em 0;
+}
