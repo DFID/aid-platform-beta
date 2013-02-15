@@ -8,13 +8,10 @@ import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import xml.XML
 import java.net.URL
-import org.neo4j.graphdb.factory.GraphDatabaseFactory
 import concurrent.ExecutionContext.Implicits.global
-import concurrent.Await
+import concurrent.{ExecutionContext, Await}
 import concurrent.duration._
-import akka.actor.{ActorSystem, Kill, PoisonPill}
 import org.neo4j.kernel.EmbeddedGraphDatabase
-import akka.pattern.gracefulStop
 
 object Loader extends App {
 
@@ -25,14 +22,14 @@ object Loader extends App {
   val mongo     = MongoConnection(config.getStringList("mongodb.servers").toList)
   val sources   = mongo.db(config.getString("mongodb.db")).collection("iati-datasources")
   val validator = new Validator
-  val neo4j     = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
-  val mapper    = new Mapper(neo4j)
+  //val neo4j     = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
+  //val mapper    = new Mapper(neo4j)
 
   // first we clear the entire graph db
-  neo4j.clearDb
+  //neo4j.clearDb
 
   // iterate over each potential data source type
-  ("organisation" :: "activity" :: Nil).map { sourceType =>
+  ("organisation" :: Nil).map { sourceType =>
 
     // find all data sources of a particular type.  they must be active
     // to be of relevance to us
@@ -49,16 +46,19 @@ object Loader extends App {
         val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.0")
         val stream  = new URL(url).openStream
 
+        println(s"Validating: $url")
         validator.validate(stream, version, sourceType)
 
       } match {
         case (valid, invalid) => {
+          invalid.foreach(println)
           // load the valid source
           valid.foreach { validSource  =>
             val uri = validSource.getAs[BSONString]("url").map(_.value).get
             val url = new URL(uri)
             val ele = XML.load(url)
 
+            println(s"Mapping: $uri")
             mapper.map(ele)
           }
         }
@@ -69,10 +69,10 @@ object Loader extends App {
     Await.ready(response, 2 minutes)
   }
 
-  println("Shutting Down")
+  println(s"Shutting down neo4j")
   neo4j.shutdown()
-  gracefulStop(mongo.mongosystem, 10 seconds)(ActorSystem("mongodb"))
-  println("Shutdown")
-
-  sys.exit
+  println(s"Shutting down mongo")
+  Await.ready(mongo.askClose()(10 seconds), 10 seconds)
+  println(s"Shutting down app")
+  sys.exit(0)
 }
