@@ -1,9 +1,10 @@
 import sbt._
 import sbt.Keys._
+import com.github.retronym.SbtOneJar._
 
 object LoaderBuild extends Build {
 
-  lazy val loader = Project("loader", file(".")).settings(
+  lazy val loader = Project("loader", file("."), settings = Defaults.defaultSettings ++ oneJarSettings ++ Seq(
     // basic project settings
     name         := "Loader",
     version      := "0.1-SNAPSHOT",
@@ -25,6 +26,8 @@ object LoaderBuild extends Build {
       "org.neo4j"         %  "neo4j-lucene-index" % "1.8.1",
       "com.typesafe"      %  "config"             % "1.0.0",
       "org.reactivemongo" %% "reactivemongo"      % "0.8"
-    )
-  )
+    ),
+
+    artifact in oneJar <<= moduleName(Artifact(_, "dist"))
+  ))
 }

@@ -22,14 +22,14 @@ object Loader extends App {
   val mongo     = MongoConnection(config.getStringList("mongodb.servers").toList)
   val sources   = mongo.db(config.getString("mongodb.db")).collection("iati-datasources")
   val validator = new Validator
-  //val neo4j     = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
-  //val mapper    = new Mapper(neo4j)
+  val neo4j     = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
+  val mapper    = new Mapper(neo4j)
 
   // first we clear the entire graph db
-  //neo4j.clearDb
+  neo4j.clearDb
 
   // iterate over each potential data source type
-  ("organisation" :: Nil).map { sourceType =>
+  ("organisation" :: "activities" :: Nil).map { sourceType =>
 
     // find all data sources of a particular type.  they must be active
     // to be of relevance to us
