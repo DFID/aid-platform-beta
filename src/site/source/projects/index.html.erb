@@ -29,26 +29,45 @@ title: Aid Information Platform
     </div>
 </div>
 
-<div id="project-description">
-    <%= project['summary'] %>
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">Summary</h3>
+        <%= project['summary'] %>
+    </div>
 </div>
 
-<div id="funding-info">
-    <h3>Funding - Unconditional</h3>
-    <p>Project Budget: <%= project['budget-set'] %></p>
-    <p>Budget spent to date: <%= project['budget-spent'] %></p>
+<div class="row">
+    <div class="six columns">
+        <div class="row">
+            <h3 class="section-group-title">Funding - <%= project['funding'] %></h3>
+                <p>Project Budget: <%= project['budget-set'] %></p>
+                <p>Budget spent to date: <%= project['budget-spent'] %></p>
+        </div>
+        <div class="row">
+            <h3 class="section-group-title">Status - <%= project['status'] %></h3>
+            <p>Start: <%= project['start-date'] %></p>
+            <p>End: <%= project['end-date'] %></p>
+        </div>
+    </div>
+
 </div>
 
-<div id="status">
-    <h3>Status - Implementation</h3>
-    <p>Start: <%= project['start-date'] %></p>
-    <p>End: <%= project['end-date'] %></p>
+<div class="row">
+    <div class="six columns">
+        <h3 class="section-group-title">Sector groups</h3>
+         <ul>
+            <% project['sector-groups'].each do |sector| %>
+                <li><%= sector['name'] %> (<%= sector['percentage'] %>)</li>
+            <% end %>
+        </ul>
+    </div>
+    <div class="six columns">
+        <h3 class="section-group-title">Project budget vs actual spend</h3>
+    </div>
 </div>
 
-<div id="sector-groups">
-    <h3>Sectors</h3>
-    <ul>
-    <% project['sector-groups'].each do |sector| %>
-        <li><%= sector['name'] %> (<%= sector['percentage'] %>)</li>
-    <% end %>
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">Partner budget split</h3>
+    </div>
 </div>
