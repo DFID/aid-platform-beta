@@ -40,13 +40,13 @@ title: Aid Information Platform
     <div class="six columns">
         <div class="row">
             <h3 class="section-group-title">Funding - <%= project['funding'] %></h3>
-                <p>Project Budget: <%= project['budget-set'] %></p>
-                <p>Budget spent to date: <%= project['budget-spent'] %></p>
+            <div id="funding-progress" style="height: 150px;" class="progress">
+            </div>
         </div>
         <div class="row">
             <h3 class="section-group-title">Status - <%= project['status'] %></h3>
-            <p>Start: <%= project['start-date'] %></p>
-            <p>End: <%= project['end-date'] %></p>
+            <div id="time-progress" style="height: 150px;" class="progress">
+            </div>
         </div>
     </div>
 
@@ -55,11 +55,21 @@ title: Aid Information Platform
 <div class="row">
     <div class="six columns">
         <h3 class="section-group-title">Sector groups</h3>
-         <ul>
-            <% project['sector-groups'].each do |sector| %>
-                <li><%= sector['name'] %> (<%= sector['percentage'] %>)</li>
-            <% end %>
-        </ul>
+        <div id="sectorChart" style="float:left;"></div>
+        <div id="sectorLegend" style="float:left;">
+            <table>
+                <% project["sector-groups"].each do |sector| %>
+                    <tr class="legend-item">
+                        <td>
+                            <span class="legend-color"></span>
+                            <span class="truncate" style="width: 155px;" title="<%= sector['name'] %>"> <%= sector['name'] %> </span>
+                        </td>
+                        <td><%= sector['percentage'] %>%</td>
+                    </tr>
+                <% end %>
+            </table>
+
+        </div>
     </div>
     <div class="six columns">
         <h3 class="section-group-title">Project budget vs actual spend</h3>
@@ -71,3 +81,40 @@ title: Aid Information Platform
         <h3 class="section-group-title">Partner budget split</h3>
     </div>
 </div>
+
+<script src="/javascripts/donut.js"></script>
+<script src="/javascripts/progress.js"></script>
+<script src="/javascripts/bar.js"></script>
+<script>
+
+    (function(){
+    var sectors = <%= project["sector-groups"].to_json %>
+    charts.donut("#sectorChart", sectors, function(d) { 
+      return d.percentage; 
+    }, function(d){ 
+      return d.name 
+    }, function(d) { 
+      return d.percentage + " projects"; 
+    });
+
+    charts.donutLegend("#sectorLegend", ".legend-color", 14, sectors, function(d){ return d.name });
+
+    var funding = [ {label: "", text: "", value: 0},
+                    {label: "Budget spend to date", text: "£<%= project["budget-spent"] %>", value: <%= project["budget-spent"] %>},
+                    {label: "Project budget", text: "£<%= project["budget-set"] %>", value: <%= project["budget-set"] %>}]
+
+    charts.progressBar("#funding-progress", funding, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
+
+
+
+    var time = [{ label: "Start", text: "<%= project["start-date"] %>", value: <%= (DateTime.parse(project["start-date"]).to_f * 1000.0).to_i %>},
+                         {label: "Progress by time", text: "", value: <%= (DateTime.now.to_f * 1000.0).to_i %>},
+                         {label: "End", text: "<%= project["end-date"] %>", value: <%= (DateTime.parse(project["end-date"]).to_f * 1000.0).to_i %> }];
+
+    charts.progressBar("#time-progress", time, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
+
+
+
+    })()
+
+</script>
