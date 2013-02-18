@@ -1,4 +1,4 @@
-package lib
+package lib.traits
 
 import org.mindrot.jbcrypt.BCrypt
 import play.api.Play

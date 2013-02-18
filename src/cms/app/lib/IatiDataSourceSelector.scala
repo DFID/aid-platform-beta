@@ -1,4 +1,4 @@
-package lib.impl
+package lib
 
 import models.IatiDataSource
 import reactivemongo.bson._
@@ -11,8 +11,8 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import play.api.libs.json.JsArray
 import reactivemongo.bson.BSONBoolean
 import reactivemongo.bson.BSONString
-import lib.{MongoAccess, SourceSelector}
 import play.api.Logger
+import traits.{SourceSelector, MongoAccess}
 
 class IatiDataSourceSelector extends SourceSelector with MongoAccess {
 

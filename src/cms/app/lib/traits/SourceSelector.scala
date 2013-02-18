@@ -1,4 +1,4 @@
-package lib
+package lib.traits
 
 import reactivemongo.bson.BSONObjectID
 import concurrent.Future

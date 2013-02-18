@@ -2,7 +2,8 @@ package modules
 
 import com.tzavellas.sse.guice.ScalaModule
 import lib._
-import impl.{MongoBackedConfigurationGenerator, Deployinator, SimpleAuthenticator, IatiDataSourceSelector}
+import traits.{Api, SourceSelector, Deployer, Authenticator}
+import models.Country
 
 
 class Dependencies extends ScalaModule {
@@ -10,7 +11,7 @@ class Dependencies extends ScalaModule {
     bind[Authenticator].to[SimpleAuthenticator]
     bind[SourceSelector].to[IatiDataSourceSelector]
     bind[Deployer].to[Deployinator]
-    bind[ConfigurationGenerator].to[MongoBackedConfigurationGenerator]
+    bind[Api[Country]].to[CountriesApi]
   }
 }
 

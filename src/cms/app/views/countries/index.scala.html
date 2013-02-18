@@ -1,0 +1,24 @@
+@(countries: List[models.Country])
+
+@main() {
+    <h1>Countries</h1>
+
+    <a href="@routes.Countries.create" class="btn">New Country</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        @countries.map { country =>
+            <tr>
+                <td>@country.code</td>
+                <td>@country.name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
