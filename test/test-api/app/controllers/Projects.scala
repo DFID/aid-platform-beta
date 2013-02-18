@@ -19,7 +19,15 @@ object Projects extends Controller {
                                                    "status" : "Implementation",
                                                    "sector-groups" : [{
                                                                      "name" : "Research",
-                                                                     "percentage" : "100%"
+                                                                     "percentage" : 100
+                                                                     }],
+                                                  "partner-split" : [{
+                                                                          "name" : "National NGO",
+                                                                         "percentage" : 50
+                                                                     },
+                                                                     {
+                                                                         "name" : "Multilateral",
+                                                                         "percentage" : 50
                                                                      }]
                                                 },
                                         "GB-1-113492" : {
@@ -34,11 +42,23 @@ object Projects extends Controller {
                                                     "status" : "Completed",
                                                     "sector-groups" : [{
                                                                       "name" : "Livestock",
-                                                                      "percentage" : "90%"
+                                                                      "percentage" : 90
                                                                       },
                                                                       {
                                                                       "name" : "Social Welfare",
-                                                                      "percentage" : "10%"
+                                                                      "percentage" : 10
+                                                                      }],
+                                                    "partner-split" : [{
+                                                                         "name" : "National NGO",
+                                                                        "percentage" : 33
+                                                                      },
+                                                                      {
+                                                                          "name" : "Multilateral",
+                                                                          "percentage" : 33
+                                                                      },
+                                                                      {
+                                                                          "name" : "Government",
+                                                                          "percentage" : 33
                                                                       }]
                                                     },
                                         "GB-1-200094" : {
@@ -52,12 +72,28 @@ object Projects extends Controller {
                                                    "status" : "Implementation",
                                                    "sector-groups" : [{
                                                                           "name" : "Livestock",
-                                                                          "percentage" : "90%"
+                                                                          "percentage" : 90
                                                                        },
                                                                        {
                                                                           "name" : "Social Welfare",
-                                                                          "percentage" : "10%"
-                                                                       }]
+                                                                          "percentage" : 10
+                                                                       }],
+                                                   "partner-split" : [{
+                                                                          "name" : "National NGO",
+                                                                          "percentage" : 25
+                                                                        },
+                                                                        {
+                                                                           "name" : "Multilateral",
+                                                                           "percentage" : 25
+                                                                        },
+                                                                        {
+                                                                           "name" : "Government",
+                                                                           "percentage" : 25
+                                                                        },
+                                                                        {
+                                                                           "name" : "Foundation",
+                                                                           "percentage" : 25
+                                                                        }]
                                                }
                                       }
 
