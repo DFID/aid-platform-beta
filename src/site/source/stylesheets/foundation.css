@@ -9,9 +9,9 @@ body { background: white; font-family: "NTA", "Helvetica Neue", "Helvetica", Hel
 /* Links ---------------------- */
 a img { border: none; }
 
-a { color: #2ba6cb; text-decoration: none; line-height: inherit; }
+a { color: #2e3191; text-decoration: none; line-height: inherit; }
 
-a:hover { color: #2795b6; }
+a:hover { color: #2e3191; text-decoration: underline; }
 
 a:focus { color: #2795b6; }
 
