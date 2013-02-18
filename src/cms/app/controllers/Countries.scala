@@ -20,22 +20,22 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
 
   // GET /countries/new
   def create = Action {
-    Ok(views.html.countries.create(Country.form))
+    Ok(views.html.countries.view(None, Country.form))
   }
 
   // POST /countries
   def save = Action { implicit request =>
     Country.form.bindFromRequest.fold(
-      errors => BadRequest(views.html.countries.create(errors)),
+      errors => BadRequest(views.html.countries.view(None, errors)),
       country => Async {
         api.query(BSONDocument("code" -> BSONString(country.code))).map {
           case Nil => {
             api.insert(country)
-            Redirect(routes.Application.index)
+            Redirect(routes.Countries.index)
           }
           case _ => {
             val errors = Country.form.fill(country).withError("code", "Country code must be unique")
-            BadRequest(views.html.countries.create(errors))
+            BadRequest(views.html.countries.view(None, errors))
           }
         }
       }
@@ -43,12 +43,34 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
   }
 
   // GET /countries/:id/edit
-  def edit(id: String) = TODO
+  def edit(id: String) = Action {
+    Async {
+      api.get(id).map { maybeCountry =>
+        maybeCountry.map { country =>
+          val form = Country.form.fill(country)
+          Ok(views.html.countries.view(Some(id), form))
+        } getOrElse {
+          Redirect(routes.Countries.index)
+        }
+      }
+    }
+  }
 
   // POST /countries/:id
-  def update(id: String) = TODO
+  def update(id: String) = Action { implicit request =>
+    Country.form.bindFromRequest.fold(
+      errors => BadRequest(views.html.countries.view(Some(id), errors)),
+      country => {
+        api.update(id, country)
+        Redirect(routes.Countries.index)
+      }
+    )
+  }
 
   // POST /countries/:id/delete
-  def delete(id: String) = TODO
+  def delete(id: String) = Action {
+    api.delete(id)
+    Redirect(routes.Countries.index)
+  }
 
 }

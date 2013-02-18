@@ -20,7 +20,7 @@ POST    /activities/refresh         @controllers.ActivitySources.refresh
 GET     /countries                  @controllers.Countries.index
 GET     /countries/new              @controllers.Countries.create
 POST    /countries                  @controllers.Countries.save
-GET     /countries/:id/edit         @controllers.Countries.edit(id: String)
+GET     /countries/:id              @controllers.Countries.edit(id: String)
 POST    /countries/:id              @controllers.Countries.update(id: String)
 POST    /countries/:id/delete       @controllers.Countries.delete(id: String)
 

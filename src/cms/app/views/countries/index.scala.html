@@ -10,6 +10,7 @@
         <tr>
             <th>Code</th>
             <th>Name</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -17,6 +18,12 @@
             <tr>
                 <td>@country.code</td>
                 <td>@country.name</td>
+                <td>
+                    @helper.form(action = routes.Countries.delete(country.code)) {
+                        <a href="@routes.Countries.edit(country.code)" class="btn">Edit</a>
+                        <input type="submit" value="Delete" class="btn btn-warning" />
+                    }
+                </td>
             </tr>
         }
         </tbody>

@@ -7,10 +7,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
+import reactivemongo.api.indexes.{IndexType, Index}
 
 class CountriesApi extends Api[Country] with MongoAccess {
 
   lazy val countries = database("countries")
+
+  countries.indexesManager.create(
+    Index("code" -> IndexType.Ascending :: Nil, unique = true)
+  )
 
   def insert(model: Country): Future[BSONObjectID] = {
     val id = BSONObjectID.generate
@@ -18,17 +23,20 @@ class CountriesApi extends Api[Country] with MongoAccess {
   }
 
   def update(id: String, model: Country) {
-    val _id = BSONObjectID(id)
-    countries.update(
-      BSONDocument("_id" -> _id),
-      model.copy(id = Some(_id)),
-      multi = false,
-      upsert = false
-    )
+    get(id).map { maybeCountry =>
+      maybeCountry.map { country =>
+        countries.update(
+          BSONDocument("code" -> BSONString(id)),
+          model.copy(id = country.id),
+          multi = false,
+          upsert = false
+        )
+      }
+    }
   }
 
   def delete(id: String) {
-    countries.remove(BSONDocument("_id" -> BSONObjectID(id)))
+    countries.remove(BSONDocument("code" -> BSONString(id)))
   }
 
   def all: Future[List[Country]] = {
@@ -38,7 +46,7 @@ class CountriesApi extends Api[Country] with MongoAccess {
 
   def get(id: String): Future[Option[Country]] = {
     implicit val reader = Country.CountryReader
-    countries.find(BSONDocument("_id" -> BSONObjectID(id))).headOption
+    countries.find(BSONDocument("code" -> BSONString(id))).headOption
   }
 
   def query(criteria: BSONDocument): Future[List[Country]] = {
