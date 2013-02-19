@@ -31,12 +31,34 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="twelve columns">
-        <h3 class="section-group-title">Summary</h3>
-        <p class="description"><%= project['summary'] %></p>
+        <div class="tab-bar-container">
+            <div class="row">
+                <div class="projects-nav">
+                    <nav>
+                        <ul class="tab-bar">
+                            <li class="active"><a href="#">Summary</a></li>
+                            <li><a href="#">Documents</a></li>
+                            <li><a href="#">Transactions</a></li>
+                            <li><a href="#">Partners</a></li>
+                            <li><a href="#">Results</a></li>
+                        </ul>
+                    </nav>
+                </div>          
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="row">
+
+    <div class="twelve columns">
+        <p class="description"><%= project['summary'] %></p>
+    </div>
+
+</div>
+
+<div class="row">
+
     <div class="six columns">
 
             <h3 class="section-group-title">Funding - <%= project['funding'] %></h3>
