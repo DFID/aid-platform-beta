@@ -7,8 +7,14 @@
         <title>Aid Platform</title>
 
         <link rel='stylesheet' href='@routes.WebJars.at("bootstrap/2.2.2/css/bootstrap.min.css")'>
+        <link rel='stylesheet' href='@routes.Assets.at("stylesheets/markdown.editor.css")'>
         <link rel='stylesheet' href='@routes.Assets.at("stylesheets/main.css")'>
 
+        <script type='text/javascript' src='@routes.WebJars.at("jquery/1.9.0/jquery.min.js")'></script>
+        <script type='text/javascript' src='@routes.WebJars.at("bootstrap/2.2.2/js/bootstrap.min.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.at("javascripts/Markdown.Converter.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.at("javascripts/Markdown.Sanitizer.js")'></script>
+        <script type="text/javascript" src='@routes.Assets.at("javascripts/Markdown.Editor.js")'></script>
     </head>
     <body>
         @if(showHeader){
@@ -36,7 +42,6 @@
             @content
         </div>
 
-        <script type='text/javascript' src='@routes.WebJars.at("jquery/1.9.0/jquery.min.js")'></script>
-        <script type='text/javascript' src='@routes.WebJars.at("bootstrap/2.2.2/js/bootstrap.min.js")'></script>
+
     </body>
 </html>

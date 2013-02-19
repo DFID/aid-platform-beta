@@ -2,7 +2,13 @@ package modules
 
 import com.tzavellas.sse.guice.ScalaModule
 import lib._
-import impl.{MongoBackedConfigurationGenerator, Deployinator, SimpleAuthenticator, IatiDataSourceSelector}
+import traits.{SourceSelector, Deployer, Authenticator}
+import uk.gov.dfid.common.traits.Api
+import uk.gov.dfid.common.models.Country
+import uk.gov.dfid.common.api.CountriesApi
+import play.modules.reactivemongo.ReactiveMongoPlugin
+import reactivemongo.api.DefaultDB
+import play.api.Play.current
 
 
 class Dependencies extends ScalaModule {
@@ -10,7 +16,8 @@ class Dependencies extends ScalaModule {
     bind[Authenticator].to[SimpleAuthenticator]
     bind[SourceSelector].to[IatiDataSourceSelector]
     bind[Deployer].to[Deployinator]
-    bind[ConfigurationGenerator].to[MongoBackedConfigurationGenerator]
+    bind[DefaultDB].toInstance(ReactiveMongoPlugin.db)
+    bind[Api[Country]].to[CountriesApi]
   }
 }
 

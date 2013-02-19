@@ -23,7 +23,7 @@ object ApplicationBuild extends Build {
     "org.webjars"       %  "jquery"        % "1.9.0"
   )
 
-  val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here
-  )
+  lazy val main = play.Project(appName, appVersion, appDependencies).dependsOn(common)
+
+  lazy val common = ProjectRef(uri("../common"), "common")
 }

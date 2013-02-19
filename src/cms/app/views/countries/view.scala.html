@@ -1,0 +1,19 @@
+@(maybeId: Option[String], country: Form[uk.gov.dfid.common.models.Country])
+
+@main() {
+
+    @maybeId.map { id =>
+        <h1>Edit Country</h1>
+    }.getOrElse {
+        <h1>Create Country</h1>
+    }
+
+    @helper.form(action = maybeId.map(id => routes.Countries.update(id)).getOrElse(routes.Countries.save)){
+
+        @form.textfield(country("code"), "ISO Country Code")
+        @form.textfield(country("name"), "Country Name")
+        @form.pagedown(country("description"), "Description")
+
+        <input type="submit" class="btn" value="Save" />
+    }
+}

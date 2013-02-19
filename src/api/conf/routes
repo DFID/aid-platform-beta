@@ -8,3 +8,6 @@ GET     /aggregate                  @controllers.Aggregate.index
 GET     /access/organisations       @controllers.Organisations.index
 
 GET     /access/activities          @controllers.Activities.index
+
+GET     /access/countries           @controllers.Countries.index
+GET     /access/countries/:code     @controllers.Countries.view(code: String)
