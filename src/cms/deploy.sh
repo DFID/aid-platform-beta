@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd ../loader
-sbt run
+cd ../../build/
+./scripts/runloader.sh

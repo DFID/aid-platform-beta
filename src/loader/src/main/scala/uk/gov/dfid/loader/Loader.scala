@@ -9,7 +9,7 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import xml.XML
 import java.net.URL
 import concurrent.ExecutionContext.Implicits.global
-import concurrent.{ExecutionContext, Await}
+import concurrent.Await
 import concurrent.duration._
 import org.neo4j.kernel.EmbeddedGraphDatabase
 
@@ -40,6 +40,7 @@ object Loader extends App {
 
       // partition by valid status
       datasources.partition { source =>
+
         // validate the data source
         val url     = source.getAs[BSONString]("url").map(_.value).get
         val ele     = XML.load(url)
@@ -47,11 +48,21 @@ object Loader extends App {
         val stream  = new URL(url).openStream
 
         println(s"Validating: $url")
-        validator.validate(stream, version, sourceType)
+
+        // validation throws uncontrollable errors
+        try{
+          validator.validate(stream, version, sourceType)
+        } catch {
+          case e: Throwable => {
+            println(s"Error validating $url - ${e.getMessage}")
+            false
+          }
+        }
 
       } match {
         case (valid, invalid) => {
           invalid.foreach(println)
+
           // load the valid source
           valid.foreach { validSource  =>
             val uri = validSource.getAs[BSONString]("url").map(_.value).get

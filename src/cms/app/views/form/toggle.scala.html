@@ -1,0 +1,24 @@
+@(field: Field, label: String)
+
+  <div class="control-group @if(field.hasErrors) {error}">
+    <label class="control-label" for="@field.id">@label</label>
+    <div class="controls">
+
+        <div class="toggle-button">
+
+            <input id="@field.id" name="@field.id" type="checkbox" value="true" @("checked".when(field.value.map(_.toBoolean).getOrElse(false)))>
+        </div>
+        <script>
+            $('#@field.id').parent().toggleButtons({
+                animated: false,
+                style: {
+                    enabled: "success"
+                },
+                label: {
+                    enabled: "Yes",
+                    disabled: "No"
+                }
+            });
+        </script>
+    </div>
+  </div>
