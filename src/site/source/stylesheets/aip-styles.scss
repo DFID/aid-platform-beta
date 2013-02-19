@@ -5,11 +5,17 @@
 $dfid: #729ECD;
 $nearBlack: #303030;
 $darkGrey: #666;
-$midGrey: #C9D0D0;
+$midGrey: #dee0e2;
 $lightGrey: #F5F5F5;
 $orange: #F17921;
 
-
+/*  
+-----------------------------------------------*/
+@media screen{
+	body{ 
+		background: $midGrey;
+	}
+}
 
 /* Main header/masthead styles 
 -----------------------------------------------*/
@@ -52,7 +58,7 @@ $orange: #F17921;
 }
 #page-title img {
 	float: right;
-	padding-top: 0.5em;
+	padding: 0.75em 0;
 }
 #page-title img+div {
 	padding-right: 90px;
@@ -79,18 +85,39 @@ $orange: #F17921;
 	min-width: 300px;
 	border: 1px solid #CCC;
 	display: inline-block;
-	margin: 0;
+	margin: 0 ;
 }
 #search-bar input.button {
 	display: inline-block;
 	width: 6em;
 	font-size: 1.2em;
 }
+@media screen and (max-width: 648px) {
+	#search-bar label h3 {
+		display: block!important;
+		margin: 0 0 10px;
+	}
+}
+@media screen and (max-width: 600px) {
+	#search-bar input.button {
+		display: block;
+		width: 100%;
+	}
+	#search-bar #query {
+		display: block!important;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}
 #search-bar form {
 	margin: 0;
 }
 /* content grouping styles
 -----------------------------------------------*/
+.page-wrapper {
+	background: #FFF;
+	padding-bottom: 60px; 
+}
 .section-group-title {
 	border-bottom: 5px solid $dfid;
 	padding-top: 1em;
@@ -127,10 +154,51 @@ $orange: #F17921;
 	background-color: #FFF;
 }
 
+@media screen and (min-width: 421px) and (max-width: 767px) {
+	#nav-entry .col	{
+		width: 49%!important;
+		float: left!important;
+	}
+	#nav-entry .col+.col	{
+		float: right!important;
+	}
+}
+@media screen and (max-width: 600px) {
+	#nav-entry .col	{
+		width: 100%!important;
+	}
+	.image-wrapper img{
+		display: none;
+	}
+	.link-wrapper {
+		margin: 0;
+		width: 100%;
+		background: none;
+	}
+	#nav-entry h2 {
+		margin: 0;
+	}
+	#nav-entry .col a{
+		display: block;
+		padding-bottom: 10px;
+		border-bottom: 1px solid $midGrey;
+		background: url(../images/nav-next-arrow.png) no-repeat 100% 50%;
+	}
+}
+
+
+
 /* tab bar nav  styles
 -----------------------------------------------*/
+.projects-nav {
+	float: left; min-height: 1px; padding: 0 0 0 15px; position: relative;
+}
+.projects-nav p{
+	display: none;
+}
 .tab-bar-container {
 	background: $darkGrey;
+	border-bottom: 1px solid #fff;
 }
 .tab-bar {
 	margin: 0.75em 0 0 0;
@@ -140,12 +208,13 @@ $orange: #F17921;
 	display: inline-block;
 	font-size: 1.1em;
 	list-style: none;
-	
+	padding: 0;
+	margin: 0;
 }
 .tab-bar li a{
 	color: #FFF;
 	display: inline-block;
-	padding: 0.5em 1em;
+	padding: 0.5em 0.75em;
 }
 .tab-bar li a:hover{
 	text-decoration: underline;
@@ -157,6 +226,35 @@ $orange: #F17921;
 	color: #000;
 	font-weight: bold;
 }
+@media screen and (max-width: 447px) {
+	.projects-nav {
+		float: none; padding: 0 15px;
+		display: block;
+	}
+	.projects-nav p{
+		display: block;
+		text-align: center;
+		font-size: 1.2em;
+		margin: 10px 0;
+		color: #fff;
+	}
+	.tab-bar li {
+		color: #FFF;
+		float:left;
+		width: 34%;
+		text-align: center;
+	}
+	.tab-bar li:first-child,
+	.tab-bar li:last-child {
+		width: 33%;
+	}
+	.tab-bar li a span{
+		display: none;
+	}
+}
+.budget-total {
+	float: right; min-height: 1px; padding: 0 15px 0 0; position: relative;
+}
 .budget-total p{
 	color: $midGrey;
 	font-size: 1.2em;
@@ -167,6 +265,43 @@ $orange: #F17921;
 .budget-total p span{
 	display: block;
 	color: #fff;
+}
+@media screen and (max-width: 700px) {
+	.budget-total {
+		float: none; min-height: 1px; padding: 0 15px; position: relative;
+		display: block;
+	}
+	.budget-total p{
+		text-align: center;
+	}
+	.budget-total p span{
+		display: inline;
+	}
+}
+
+/* Top 5 lists
+-----------------------------------------------*/
+.top-5s h4 {
+	font-weight: normal;
+}
+.top-5s ol {
+	list-style: none;
+	margin-left: 0;
+}
+.top-5s ol li {
+	font-size: 1.2em;
+	border-top: 1px solid $midGrey;
+	line-height: 1.2em;
+	padding: 0.3em 0
+}
+.top-5s em {
+	display: block;
+	font-style: normal;
+	color: $darkGrey;
+	padding-top: 0;
+}
+.top-5s a  {
+	display: block;
 }
 /* button styles
 -----------------------------------------------*/
@@ -202,15 +337,37 @@ $orange: #F17921;
 .disclaimer{
 	background: $orange;
 }
+.disclaimer.grey{
+	background: $lightGrey;
+}
+
 .disclaimer p{
 	margin: 0;
 	padding: 10px;
+}
+.disclaimer em{
+	font-style: normal;
+	font-weight: bold;
 }
 
 /* Footer styles
 -----------------------------------------------*/
 #footer {
 	background: $midGrey;
+	border-top: 1px solid #a1acb2;
+	padding: 30px 0;
+}
+#footer a {
+	color: $darkGrey;
+	text-decoration: underline;
+}
+#footer .copyright a{
+	display: block;
+	padding: 115px 0 0 0;
+	padding: 11.5rem 0 0 0;
+	background: transparent url(https://assets.digital.cabinet-office.gov.uk/static/govuk-crest-795cd6afb205d81a4267e100e11debe1.png) no-repeat 50% 0;
+	text-align: center;
+	text-decoration: none;
 }
 
 /* Miscellaneous Styles
