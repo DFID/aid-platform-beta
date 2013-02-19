@@ -32,9 +32,9 @@ title: Aid Information Platform
 
 <nav>
     <div class="row" id="nav-entry">
-        <div class="four columns">
+        <div class="six columns col">
             <h2>
-                <a href="/location.html" class="by-location">
+                <a href="/location" class="by-location">
                     <span class="image-wrapper">
                         <img src="/images/by-location.gif" alt="">
                     </span>
@@ -42,9 +42,9 @@ title: Aid Information Platform
                 </a>
             </h2>         
         </div>
-        <div class="four columns">
+        <div class="six columns col">
             <h2>
-                <a href="/location.html" class="by-sector">
+                <a href="/location" class="by-sector">
                     <span class="image-wrapper">
                         <img src="/images/by-sector.gif" alt="">
                     </span>
@@ -53,25 +53,17 @@ title: Aid Information Platform
             </h2>
             
         </div>
-        <div class="four columns">
-            <h2>
-                <a href="/location.html" class="by-organisation">
-                    <span class="image-wrapper">
-                        <img src="/images/by-org.gif" alt="">
-                    </span>
-                    <span class="link-wrapper"><small>Aid by</small> Organisation</span>
-                </a>
-            </h2>
-        </div>
     </div>
 </nav>
+
+
 <div class="row">
     <div class="twelve columns">
         <h3 class="section-group-title">UK AID TOP 5s</h3> 
     </div>
 </div>
-<div class="row">
-    <div class="four columns" id="top-5-countries">
+<div class="row top-5s">
+    <div class="six columns" id="top-5-countries">
         <h4>Where we work</h4>
         <ol>
         <% countries_helper.each do |code, country| %>
@@ -81,10 +73,10 @@ title: Aid Information Platform
           </li>
         <% end %> 
         </ol>
-        
+        <a href="#">See all...<span class="visually-hidden">top countries</span></a>
     </div>
 
-    <div class="four columns" id="top-5-sectors">
+    <div class="six columns" id="top-5-sectors">
         <h4>What we do</h4>
         <ol>
           <% sectors_helper.each do |name, budget| %>
@@ -93,18 +85,9 @@ title: Aid Information Platform
                 <em><span class="visually-hidden">Budget</span><%= budget %></em>
           </li>
           <% end %>  
-        </ol>                
-    </div>
-    <div class="four columns" id="top-5-projects">
-        <h4>What we achieve</h4>
-        <ol>
-          <% projects_helper.each do |name, budget| %>
-            <li>
-              <span class="truncate" title="<%= name %>"><%= name %></span>
-              <em><%= budget %></em>
-            </li>
-          <% end %>  
         </ol>  
+         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>                
     </div>
+
 </div>
 
