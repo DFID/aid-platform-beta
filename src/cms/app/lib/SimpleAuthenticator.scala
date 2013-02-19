@@ -1,8 +1,8 @@
-package lib.impl
+package lib
 
-import lib.Authenticator
 import play.api.Play
 import org.mindrot.jbcrypt.BCrypt
+import traits.Authenticator
 
 class SimpleAuthenticator extends Authenticator{
 

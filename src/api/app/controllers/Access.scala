@@ -14,6 +14,10 @@ class Access extends Controller {
         "organisations" -> Json.obj(
           "description" -> "for returning a list of organisations based on organisational files",
           "url" -> routes.Organisations.index.absoluteURL()
+        ),
+        "countries" -> Json.obj(
+          "description" -> "for returning a list of countries based on DFID data and Codelists",
+          "url" -> routes.Countries.index.absoluteURL()
         )
       )
     ))

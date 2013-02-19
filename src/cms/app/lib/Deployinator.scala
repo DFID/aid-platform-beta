@@ -1,8 +1,8 @@
-package lib.impl
+package lib
 
-import lib.Deployer
 import play.api.Logger
 import sys.process._
+import traits.Deployer
 
 class Deployinator extends Deployer {
 

@@ -5,7 +5,7 @@ import play.api.data.Forms._
 import play.api.mvc._
 import views.html
 import com.google.inject.Inject
-import lib.Authenticator
+import lib.traits.Authenticator
 
 class Authentication @Inject()(val auth: Authenticator) extends Controller {
 

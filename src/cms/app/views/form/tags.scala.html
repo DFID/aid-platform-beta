@@ -1,0 +1,20 @@
+@(field: Field, label: String, allTags: Seq[String])
+
+  <div class="control-group @if(field.hasErrors) {error}">
+    <!-- @field.value -->
+    <!-- @Html(field.toString) -->
+    <label class="control-label" for="@field.id">@label</label>
+    <div class="controls">
+      <input type="hidden" name="@field.id" id="@field.id" class="input-xlarge" value="@field.value"/>
+      <p class="help-block">
+        @if(field.hasErrors){ @Messages(field.error.head.message) }
+      </p>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $("#@field.id").select2({
+        tags: @Html(allTags.mkString("['", "','", "']")),
+        tokenSeparators: [","]
+    });
+  </script>

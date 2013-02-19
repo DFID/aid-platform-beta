@@ -9,7 +9,7 @@ import org.specs2.mock._
 import org.scalatest.FunSpec
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.matchers.ShouldMatchers
-import lib.Authenticator
+import lib.traits.Authenticator
 
 
 class AuthenticationSpec extends Specification with Mockito  {

@@ -55,6 +55,8 @@ title: Aid Information Platform
         </div>
     </div>
 </nav>
+
+
 <div class="row">
     <div class="twelve columns">
         <h3 class="section-group-title">UK AID TOP 5s</h3> 
@@ -64,26 +66,12 @@ title: Aid Information Platform
     <div class="six columns" id="top-5-countries">
         <h4>Where we work</h4>
         <ol>
-            <li>
-                <a href="/countries/ET" class="truncate" title="Ethiopia">Ethiopia</a>
-                <em><span class="visually-hidden">Budget</span>£283m</em>
-            </li>
-            <li>
-                <a href="/countries/PK" class="truncate" title="Pakistan">Pakistan</a>
-                <em><span class="visually-hidden">Budget</span>£267m</em>
-            </li>
-            <li>
-                <a href="/countries/IN" class="truncate" title="India">India</a>
-                <em><span class="visually-hidden">Budget</span>£264m</em>
-            </li>
-            <li>
-                <a href="/countries/BD" class="truncate" title="Bangladesh">Bangladesh</a>
-                <em><span class="visually-hidden">Budget</span>£210m</em>
-            </li>
-            <li>
-                <a href="/countries/NG" class="truncate" title="Nigeria">Nigeria</a>
-                <em><span class="visually-hidden">Budget</span>£185m</em>
-            </li>
+        <% countries_helper.each do |code, country| %>
+          <li>
+              <a href="/countries/<%= code %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
+              <em><span class="visually-hidden">Budget</span><%= country['budget'] %></em>
+          </li>
+        <% end %> 
         </ol>
         <a href="#">See all...<span class="visually-hidden">top countries</span></a>
     </div>
@@ -91,55 +79,14 @@ title: Aid Information Platform
     <div class="six columns" id="top-5-sectors">
         <h4>What we do</h4>
         <ol>
-            <li>
-                <a href="#" class="truncate" title="Economic and development policy/planning">Economic and development policy/planning</a>
-                <em><span class="visually-hidden">Budget</span>£1917m</em>
-            </li>
-            <li>
-                <a href="#" class="truncate" title="Education policy and administrative management">Education policy and administrative management</a>
-                <em><span class="visually-hidden">Budget</span>£1687m</em>
-            </li>
-            <li>
-                <a href="#" class="truncate" title="Primary education">Primary education</a>
-                <em><span class="visually-hidden">Budget</span>£1628m</em>
-            </li>
-            <li>
-                <a href="#" class="truncate" title="Social/welfare services">Social/welfare services</a>
-                <em><span class="visually-hidden">Budget</span>£1402m</em>
-            </li>
-            <li>
-                <a href="#" class="truncate" title="Bio-diversity">Bio-diversity</a>
-                <em><span class="visually-hidden">Budget</span>£1391m</em>
-            </li>
-        </ol> 
-         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>              
-    </div>
-    <!--
-    <div class="four columns" id="top-5-projects">
-        <h4>What we achieve</h4>
-        <ol>
-            <li>
-                <span class="truncate" title="Malaria bed nets distributed">Malaria bed nets distributed</span>
-                <em>£12.2m</em>
-            </li>
-            <li>
-                <span class="truncate" title="Children vaccinated">Children vaccinated</span>
-                <em>£12m</em>
-            </li>
-            <li>
-                <span class="truncate" title="Access to financial services for ">Access to financial services for </span>
-                <em>£11.9m</em>
-            </li>
-            <li>
-                <span class="truncate" title="Hygiene conditions improved for">Hygiene conditions improved for</span>
-                <em>£7.4m</em>
-            </li>
-            <li>
-                <span class="truncate" title="Emergency food assistance for">Emergency food assistance for</span>
-                <em>£6m</em>
-            </li>
+          <% sectors_helper.each do |name, budget| %>
+          <li>
+            <a href="#" class="truncate" title="<%= name %>"><%= name %> </a>
+                <em><span class="visually-hidden">Budget</span><%= budget %></em>
+          </li>
+          <% end %>  
         </ol>  
+         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>                
     </div>
-    -->
-</div>
 
+</div>

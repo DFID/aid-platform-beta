@@ -5,7 +5,7 @@ import models.IatiDataSource
 import play.api.templates.Html
 import concurrent.ExecutionContext.Implicits.global
 import controllers.routes
-import lib.SourceSelector
+import lib.traits.SourceSelector
 
 /**
  * Common actions relating to the IatiDataSources controllers
