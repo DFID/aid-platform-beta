@@ -2,12 +2,25 @@ package controllers
 
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
-import lib.traits.Api
-import models.Country
 import concurrent.ExecutionContext.Implicits.global
-import reactivemongo.bson.{BSONString, BSONDocument}
+import reactivemongo.bson.{BSONObjectID, BSONString, BSONDocument}
+import uk.gov.dfid.common.traits.Api
+import play.api.data.Form
+import play.api.data.Forms._
+import scala.Some
+import uk.gov.dfid.common.models.Country
 
 class Countries @Inject()(val api: Api[Country]) extends Controller {
+
+  val form = Form(
+    mapping(
+      "id"          -> ignored[Option[BSONObjectID]](None),
+      "code"        -> nonEmptyText,
+      "name"        -> nonEmptyText,
+      "description" -> optional(text)
+    )(Country.apply)
+     (Country.unapply)
+  )
 
   // GET /countries
   def index = Action {
@@ -20,12 +33,12 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
 
   // GET /countries/new
   def create = Action {
-    Ok(views.html.countries.view(None, Country.form))
+    Ok(views.html.countries.view(None, form))
   }
 
   // POST /countries
   def save = Action { implicit request =>
-    Country.form.bindFromRequest.fold(
+    form.bindFromRequest.fold(
       errors => BadRequest(views.html.countries.view(None, errors)),
       country => Async {
         api.query(BSONDocument("code" -> BSONString(country.code))).map {
@@ -34,7 +47,7 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
             Redirect(routes.Countries.index)
           }
           case _ => {
-            val errors = Country.form.fill(country).withError("code", "Country code must be unique")
+            val errors = form.fill(country).withError("code", "Country code must be unique")
             BadRequest(views.html.countries.view(None, errors))
           }
         }
@@ -47,8 +60,7 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
     Async {
       api.get(id).map { maybeCountry =>
         maybeCountry.map { country =>
-          val form = Country.form.fill(country)
-          Ok(views.html.countries.view(Some(id), form))
+          Ok(views.html.countries.view(Some(id), form.fill(country)))
         } getOrElse {
           Redirect(routes.Countries.index)
         }
@@ -58,7 +70,7 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
 
   // POST /countries/:id
   def update(id: String) = Action { implicit request =>
-    Country.form.bindFromRequest.fold(
+    form.bindFromRequest.fold(
       errors => BadRequest(views.html.countries.view(Some(id), errors)),
       country => {
         api.update(id, country)

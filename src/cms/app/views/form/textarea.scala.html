@@ -1,0 +1,13 @@
+@(field: Field, label: String)
+
+  <div class="control-group @if(field.hasErrors) {error}">
+    <label class="control-label" for="@field.id">@label</label>
+    <div class="controls">
+      <div class="textarea">
+        <textarea name="@field.id">@field.value</textarea>
+      </div>
+      <p class="help-block">
+        @if(field.hasErrors){ @Messages(field.error.head.message) }
+      </p>
+    </div>
+  </div>

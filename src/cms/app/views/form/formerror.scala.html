@@ -1,0 +1,5 @@
+@(error: Option[FormError])
+
+@error.map { e =>
+    <div class="alert alert-error">@e.message</div>
+}

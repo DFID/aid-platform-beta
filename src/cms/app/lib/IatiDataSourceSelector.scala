@@ -12,9 +12,11 @@ import play.api.libs.json.JsArray
 import reactivemongo.bson.BSONBoolean
 import reactivemongo.bson.BSONString
 import play.api.Logger
-import traits.{SourceSelector, MongoAccess}
+import traits.SourceSelector
+import reactivemongo.api.DefaultDB
+import com.google.inject.Inject
 
-class IatiDataSourceSelector extends SourceSelector with MongoAccess {
+class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelector {
 
   private val datasources = database.collection("iati-datasources")
   private val logger = Logger.logger

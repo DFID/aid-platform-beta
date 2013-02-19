@@ -1,4 +1,4 @@
-@(maybeId: Option[String], country: Form[models.Country])
+@(maybeId: Option[String], country: Form[uk.gov.dfid.common.models.Country])
 
 @main() {
 
@@ -10,8 +10,9 @@
 
     @helper.form(action = maybeId.map(id => routes.Countries.update(id)).getOrElse(routes.Countries.save)){
 
-        @helper.inputText(country("code"))
-        @helper.inputText(country("name"))
+        @form.textfield(country("code"), "ISO Country Code")
+        @form.textfield(country("name"), "Country Name")
+        @form.pagedown(country("description"), "Description")
 
         <input type="submit" class="btn" value="Save" />
     }
