@@ -32,21 +32,19 @@ require "json"
 # end
 
 #This will use data from db, but for now will test a few different project codes
+ignore "/projects/index.html"
 projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
 parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
 parsedJSON.each do |code, project|
-  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project, :code => code}
+  proxy "/projects/#{code}/index.html", "/projects/index.html", :locals => {:project => project, :code => code}
 end
 
+ignore "/countries/index.html"
 countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
 parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
 parsedJSON.each do |code, country|
-  page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country, :code => code}
+  proxy "/countries/#{code}/index.html", "/countries/index.html", :locals => {:country => country, :code => code}
 end
-
-#proxy
-
-page "/location", :proxy => "/location.html"
 
 # Proxy (fake) files
 # page "/this-page-has-no-template.html", :proxy => "/template-file.html" do
