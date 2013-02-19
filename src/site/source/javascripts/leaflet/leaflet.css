@@ -1,319 +1,427 @@
 /* required styles */
 
-#whitehall-wrapper .leaflet-map-pane,
-#whitehall-wrapper .leaflet-tile,
-#whitehall-wrapper .leaflet-marker-icon,
-#whitehall-wrapper .leaflet-marker-shadow,
-#whitehall-wrapper .leaflet-tile-pane,
-#whitehall-wrapper .leaflet-overlay-pane,
-#whitehall-wrapper .leaflet-shadow-pane,
-#whitehall-wrapper .leaflet-marker-pane,
-#whitehall-wrapper .leaflet-popup-pane,
-#whitehall-wrapper .leaflet-overlay-pane svg,
-#whitehall-wrapper .leaflet-zoom-box,
-#whitehall-wrapper .leaflet-image-layer,
-#whitehall-wrapper .leaflet-layer { /* TODO optimize classes */
+.leaflet-map-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-pane,
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-popup-pane,
+.leaflet-overlay-pane svg,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
 	position: absolute;
+	left: 0;
+	top: 0;
 	}
-#whitehall-wrapper .leaflet-container {
+.leaflet-container {
 	overflow: hidden;
-	outline: 0;
+	-ms-touch-action: none;
 	}
-#whitehall-wrapper .leaflet-tile,
-#whitehall-wrapper .leaflet-marker-icon,
-#whitehall-wrapper .leaflet-marker-shadow {
-	-moz-user-select: none;
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
 	-webkit-user-select: none;
-	user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
 	}
-#whitehall-wrapper .leaflet-marker-icon,
-#whitehall-wrapper .leaflet-marker-shadow {
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
 	display: block;
 	}
-#whitehall-wrapper .leaflet-clickable {
-	cursor: pointer;
-	}
-#whitehall-wrapper .leaflet-dragging, .leaflet-dragging .leaflet-clickable {
-	cursor: move;
-	}
-#whitehall-wrapper .leaflet-container img {
-    /* map is broken in FF if you have max-width: 100% on tiles */
+/* map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container img {
 	max-width: none !important;
 	}
-#whitehall-wrapper .leaflet-container img.leaflet-image-layer {
-    /* stupid Android 2 doesn't understand "max-width: none" properly */
-    max-width: 15000px !important;
-    }
-
-#whitehall-wrapper .leaflet-tile-pane { z-index: 2; }
-#whitehall-wrapper .leaflet-objects-pane { z-index: 3; }
-#whitehall-wrapper .leaflet-overlay-pane { z-index: 4; }
-#whitehall-wrapper .leaflet-shadow-pane { z-index: 5; }
-#whitehall-wrapper .leaflet-marker-pane { z-index: 6; }
-#whitehall-wrapper .leaflet-popup-pane { z-index: 7; }
-
-#whitehall-wrapper .leaflet-tile {
-    filter: inherit;
-    visibility: hidden;
+/* stupid Android 2 doesn't understand "max-width: none" properly */
+.leaflet-container img.leaflet-image-layer {
+	max-width: 15000px !important;
 	}
-#whitehall-wrapper .leaflet-tile-loaded {
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
 	visibility: inherit;
 	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	}
 
-#whitehall-wrapper .leaflet-zoom-box {
-    width: 0;
-    height: 0;
-    }
+.leaflet-tile-pane    { z-index: 2; }
+.leaflet-objects-pane { z-index: 3; }
+.leaflet-overlay-pane { z-index: 4; }
+.leaflet-shadow-pane  { z-index: 5; }
+.leaflet-marker-pane  { z-index: 6; }
+.leaflet-popup-pane   { z-index: 7; }
 
-/* Leaflet controls */
 
-#whitehall-wrapper .leaflet-control {
+/* control positioning */
+
+.leaflet-control {
 	position: relative;
 	z-index: 7;
 	pointer-events: auto;
 	}
-#whitehall-wrapper .leaflet-top,
-#whitehall-wrapper .leaflet-bottom {
+.leaflet-top,
+.leaflet-bottom {
 	position: absolute;
 	z-index: 1000;
 	pointer-events: none;
 	}
-#whitehall-wrapper .leaflet-top {
+.leaflet-top {
 	top: 0;
 	}
-#whitehall-wrapper .leaflet-right {
+.leaflet-right {
 	right: 0;
 	}
-#whitehall-wrapper .leaflet-bottom {
+.leaflet-bottom {
 	bottom: 0;
 	}
-#whitehall-wrapper .leaflet-left {
+.leaflet-left {
 	left: 0;
 	}
-#whitehall-wrapper .leaflet-control {
+.leaflet-control {
 	float: left;
 	clear: both;
 	}
-#whitehall-wrapper .leaflet-right .leaflet-control {
+.leaflet-right .leaflet-control {
 	float: right;
 	}
-#whitehall-wrapper .leaflet-top .leaflet-control {
+.leaflet-top .leaflet-control {
 	margin-top: 10px;
 	}
-#whitehall-wrapper .leaflet-bottom .leaflet-control {
+.leaflet-bottom .leaflet-control {
 	margin-bottom: 10px;
 	}
-#whitehall-wrapper .leaflet-left .leaflet-control {
+.leaflet-left .leaflet-control {
 	margin-left: 10px;
 	}
-#whitehall-wrapper .leaflet-right .leaflet-control {
+.leaflet-right .leaflet-control {
 	margin-right: 10px;
 	}
 
-#whitehall-wrapper .leaflet-control-zoom {
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	border-radius: 7px;
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-tile,
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	     -o-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
 	}
-#whitehall-wrapper .leaflet-control-zoom {
-	padding: 5px;
-	background: rgba(0, 0, 0, 0.25);
+.leaflet-fade-anim .leaflet-tile-loaded,
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
 	}
-#whitehall-wrapper .leaflet-control-zoom a {
-	background-color: rgba(255, 255, 255, 0.75);
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	     -o-transition:      -o-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
 	}
-#whitehall-wrapper .leaflet-control-zoom a, .leaflet-control-layers a {
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile,
+.leaflet-touching .leaflet-zoom-animated {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	     -o-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-clickable {
+	cursor: pointer;
+	}
+.leaflet-container {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging,
+.leaflet-dragging .leaflet-clickable,
+.leaflet-dragging .leaflet-container {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	}
+
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline: 0;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-container a.leaflet-active {
+	outline: 2px solid orange;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #05f;
+	background: white;
+	opacity: 0.5;
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 0 8px rgba(0,0,0,0.4);
+	border: 1px solid #888;
+	-webkit-border-radius: 5px;
+	        border-radius: 5px;
+	}
+.leaflet-bar-part {
+	background-color: rgba(255, 255, 255, 0.8);
+	border-bottom: 1px solid #aaa;
+	}
+.leaflet-bar-part-top {
+	-webkit-border-radius: 4px 4px 0 0;
+	        border-radius: 4px 4px 0 0;
+	}
+.leaflet-bar-part-bottom {
+	-webkit-border-radius: 0 0 4px 4px;
+	        border-radius: 0 0 4px 4px;
+	border-bottom: none;
+	}
+
+.leaflet-touch .leaflet-bar {
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+	}
+.leaflet-touch .leaflet-bar-part {
+	border-bottom: 4px solid rgba(0,0,0,0.3);
+	}
+.leaflet-touch .leaflet-bar-part-top {
+	-webkit-border-radius: 7px 7px 0 0;
+	        border-radius: 7px 7px 0 0;
+	}
+.leaflet-touch .leaflet-bar-part-bottom {
+	-webkit-border-radius: 0 0 7px 7px;
+	        border-radius: 0 0 7px 7px;
+	border-bottom: none;
+	}
+
+
+/* zoom control */
+
+.leaflet-container .leaflet-control-zoom {
+	margin-left: 13px;
+	margin-top: 12px;
+	}
+.leaflet-control-zoom a {
+	width: 22px;
+	height: 22px;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-control-zoom a,
+.leaflet-control-layers-toggle {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
 	}
-#whitehall-wrapper .leaflet-control-zoom a {
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	width: 19px;
-	height: 19px;
-	}
-#whitehall-wrapper .leaflet-control-zoom a:hover {
+.leaflet-control-zoom a:hover {
 	background-color: #fff;
+	color: #777;
 	}
-#whitehall-wrapper .leaflet-touch .leaflet-control-zoom a {
-	width: 27px;
-	height: 27px;
+.leaflet-control-zoom-in {
+	font: bold 18px/24px Arial, Helvetica, sans-serif;
 	}
-#whitehall-wrapper .leaflet-control-zoom-in {
-	background-image: url(images/zoom-in.png);
-	margin-bottom: 5px;
+.leaflet-control-zoom-out {
+	font: bold 23px/20px Tahoma, Verdana, sans-serif;
 	}
-#whitehall-wrapper .leaflet-control-zoom-out {
-	background-image: url(images/zoom-out.png);
+.leaflet-control-zoom a.leaflet-control-zoom-disabled {
+	cursor: default;
+	background-color: rgba(255, 255, 255, 0.8);
+	color: #bbb;
 	}
 
-#whitehall-wrapper .leaflet-control-layers {
-	box-shadow: 0 1px 7px #999;
-	background: #f8f8f9;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
+.leaflet-touch .leaflet-control-zoom a {
+	width: 30px;
+	height: 30px;
 	}
-#whitehall-wrapper .leaflet-control-layers a {
+.leaflet-touch .leaflet-control-zoom-in {
+	font-size: 24px;
+	line-height: 29px;
+	}
+.leaflet-touch .leaflet-control-zoom-out {
+	font-size: 28px;
+	line-height: 24px;
+	}
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+	background: #f8f8f9;
+	-webkit-border-radius: 8px;
+	        border-radius: 8px;
+	}
+.leaflet-control-layers-toggle {
 	background-image: url(images/layers.png);
 	width: 36px;
 	height: 36px;
 	}
-#whitehall-wrapper .leaflet-touch .leaflet-control-layers a {
+.leaflet-touch .leaflet-control-layers-toggle {
 	width: 44px;
 	height: 44px;
 	}
-#whitehall-wrapper .leaflet-control-layers .leaflet-control-layers-list,
-#whitehall-wrapper .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
 	display: none;
 	}
-#whitehall-wrapper .leaflet-control-layers-expanded .leaflet-control-layers-list {
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
 	display: block;
 	position: relative;
 	}
-#whitehall-wrapper .leaflet-control-layers-expanded {
+.leaflet-control-layers-expanded {
 	padding: 6px 10px 6px 6px;
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	color: #333;
 	background: #fff;
 	}
-#whitehall-wrapper .leaflet-control-layers input {
+.leaflet-control-layers-selector {
 	margin-top: 2px;
 	position: relative;
 	top: 1px;
 	}
-#whitehall-wrapper .leaflet-control-layers label {
+.leaflet-control-layers label {
 	display: block;
 	}
-#whitehall-wrapper .leaflet-control-layers-separator {
+.leaflet-control-layers-separator {
 	height: 0;
 	border-top: 1px solid #ddd;
 	margin: 5px -10px 5px -6px;
 	}
 
-#whitehall-wrapper .leaflet-container .leaflet-control-attribution {
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
 	background-color: rgba(255, 255, 255, 0.7);
 	box-shadow: 0 0 5px #bbb;
 	margin: 0;
-    }
-
-#whitehall-wrapper .leaflet-control-attribution,
-#whitehall-wrapper .leaflet-control-scale-line {
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
 	padding: 0 5px;
 	color: #333;
 	}
-
-#whitehall-wrapper .leaflet-container .leaflet-control-attribution,
-#whitehall-wrapper .leaflet-container .leaflet-control-scale {
-	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-scale {
+	font-size: 11px;
 	}
-
-#whitehall-wrapper .leaflet-left .leaflet-control-scale {
+.leaflet-left .leaflet-control-scale {
 	margin-left: 5px;
 	}
-#whitehall-wrapper .leaflet-bottom .leaflet-control-scale {
+.leaflet-bottom .leaflet-control-scale {
 	margin-bottom: 5px;
 	}
-
-#whitehall-wrapper .leaflet-control-scale-line {
+.leaflet-control-scale-line {
 	border: 2px solid #777;
 	border-top: none;
 	color: black;
-	line-height: 1;
-	font-size: 10px;
-	padding-bottom: 2px;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	font-size: 11px;
 	text-shadow: 1px 1px 1px #fff;
 	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+	overflow: hidden;
 	}
-#whitehall-wrapper .leaflet-control-scale-line:not(:first-child) {
+.leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
-	padding-top: 1px;
 	border-bottom: none;
 	margin-top: -2px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
-#whitehall-wrapper .leaflet-control-scale-line:not(:first-child):not(:last-child) {
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
 	border-bottom: 2px solid #777;
 	}
 
-#whitehall-wrapper .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers {
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-control-zoom {
 	box-shadow: none;
 	}
-#whitehall-wrapper .leaflet-touch .leaflet-control-layers {
-	border: 5px solid #bbb;
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-control-zoom {
+	border: 4px solid rgba(0,0,0,0.3);
 	}
 
 
-/* Zoom and fade animations */
+/* popup */
 
-#whitehall-wrapper .leaflet-fade-anim .leaflet-tile, .leaflet-fade-anim .leaflet-popup {
-	opacity: 0;
-
-	-webkit-transition: opacity 0.2s linear;
-	-moz-transition: opacity 0.2s linear;
-	-o-transition: opacity 0.2s linear;
-	transition: opacity 0.2s linear;
-	}
-#whitehall-wrapper .leaflet-fade-anim .leaflet-tile-loaded, .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
-	opacity: 1;
-	}
-
-#whitehall-wrapper .leaflet-zoom-anim .leaflet-zoom-animated {
-	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	}
-
-#whitehall-wrapper .leaflet-zoom-anim .leaflet-tile,
-#whitehall-wrapper .leaflet-pan-anim .leaflet-tile,
-#whitehall-wrapper .leaflet-touching .leaflet-zoom-animated {
-    -webkit-transition: none;
-    -moz-transition: none;
-    -o-transition: none;
-    transition: none;
-    }
-
-#whitehall-wrapper .leaflet-zoom-anim .leaflet-zoom-hide {
-	visibility: hidden;
-	}
-
-
-/* Popup layout */
-
-#whitehall-wrapper .leaflet-popup {
+.leaflet-popup {
 	position: absolute;
 	text-align: center;
 	}
-#whitehall-wrapper .leaflet-popup-content-wrapper {
+.leaflet-popup-content-wrapper {
 	padding: 1px;
 	text-align: left;
+	-webkit-border-radius: 20px;
+	        border-radius: 20px;
 	}
-#whitehall-wrapper .leaflet-popup-content {
+.leaflet-popup-content {
 	margin: 14px 20px;
+	line-height: 1.4;
 	}
-#whitehall-wrapper .leaflet-popup-tip-container {
+.leaflet-popup-content p {
+	margin: 18px 0;
+	}
+.leaflet-popup-tip-container {
 	margin: 0 auto;
 	width: 40px;
 	height: 20px;
 	position: relative;
 	overflow: hidden;
 	}
-#whitehall-wrapper .leaflet-popup-tip {
+.leaflet-popup-tip {
 	width: 15px;
 	height: 15px;
 	padding: 1px;
 
 	margin: -8px auto 0;
 
-	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	     -o-transform: rotate(45deg);
+	        transform: rotate(45deg);
 	}
-#whitehall-wrapper .leaflet-container a.leaflet-popup-close-button {
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	background: white;
+
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -325,56 +433,25 @@
 	color: #c3c3c3;
 	text-decoration: none;
 	font-weight: bold;
+	background: transparent;
 	}
-#whitehall-wrapper .leaflet-container a.leaflet-popup-close-button:hover {
+.leaflet-container a.leaflet-popup-close-button:hover {
 	color: #999;
 	}
-#whitehall-wrapper .leaflet-popup-content p {
-	margin: 18px 0;
-	}
-#whitehall-wrapper .leaflet-popup-scrolled {
+.leaflet-popup-scrolled {
 	overflow: auto;
 	border-bottom: 1px solid #ddd;
 	border-top: 1px solid #ddd;
 	}
 
 
-/* Visual appearance */
+/* div icon */
 
-#whitehall-wrapper .leaflet-container {
-	background: #ddd;
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
 	}
-#whitehall-wrapper .leaflet-container a {
-	color: #0078A8;
+.leaflet-editing-icon {
+	-webkit-border-radius: 2px;
+	        border-radius: 2px;
 	}
-#whitehall-wrapper .leaflet-container a.leaflet-active {
-    outline: 2px solid orange;
-    }
-#whitehall-wrapper .leaflet-zoom-box {
-	border: 2px dotted #05f;
-	background: white;
-	opacity: 0.5;
-	}
-#whitehall-wrapper .leaflet-div-icon {
-    background: #fff;
-    border: 1px solid #666;
-    }
-#whitehall-wrapper .leaflet-editing-icon {
-    border-radius: 2px;
-    }
-
-#whitehall-wrapper .leaflet-popup-content-wrapper {
-    border: 1px solid #000;
-    background: rgba(255, 255, 255, 0.95);
-    -webkit-box-shadow:  0px 0px 5px 0px #CBCBCB;
-    box-shadow:  0px 0px 5px 0px #CBCBCB;
-    padding-right: 50px;
-}
-
-#whitehall-wrapper .leaflet-popup-content-wrapper img.flag { float: left; }
-#whitehall-wrapper .leaflet-popup-content-wrapper .stat { padding:0px;margin:0px; }
-#whitehall-wrapper .leaflet-popup-content-wrapper .stat h3 { font-size:0.8em; font-weight:bold; margin-top:15px}
-#whitehall-wrapper .leaflet-popup-content-wrapper .stat p { font-weight:bold; font-size:1.2em; margin:0px; }
-#whitehall-wrapper .leaflet-popup-content-wrapper h1 { font-size: 1.3em; line-height:33px; text-indent:10px; font-weight:bold; text-transform:capitalize; padding-right: 20px; }
-
-.leaflet-control-attribution { display: none; }
