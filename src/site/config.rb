@@ -25,7 +25,6 @@ require "json"
 #
 # With alternative layout
 # page "/path/to/file.html", :layout => :otherlayout
-page "/projects/*", :layout => layout
 #
 # A path which all have the same layout
 # with_layout :admin do
@@ -44,6 +43,10 @@ parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
 parsedJSON.each do |code, country|
   page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country, :code => code}
 end
+
+#proxy
+
+page "/location", :proxy => "/location.html"
 
 # Proxy (fake) files
 # page "/this-page-has-no-template.html", :proxy => "/template-file.html" do
