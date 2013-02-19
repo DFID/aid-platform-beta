@@ -36,13 +36,13 @@ page "/projects/*", :layout => layout
 projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
 parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
 parsedJSON.each do |code, project|
-  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project}
+  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project, :code => code}
 end
 
 countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
 parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
 parsedJSON.each do |code, country|
-  page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country}
+  page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country, :code => code}
 end
 
 # Proxy (fake) files
