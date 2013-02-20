@@ -32,7 +32,24 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="twelve columns">
-        <h3 class="section-group-title">Summary</h3> 
+        <div class="tab-bar-container">
+            <div class="row">
+                <div class="projects-nav">
+                    <nav>
+                        <ul class="tab-bar">
+                            <li class="active"><a href="#">Summary</a></li>
+                            <li><a href="#">All Projects</a></li>
+                            <li><a href="http://projects.dfid.gov.uk/iati/Country/<%= code %>">IATI Data Set</a></li>
+                        </ul>
+                    </nav>
+                </div>       
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="twelve columns">
         <p class="description"><%= country['summary'] %></p>
     </div>
 </div>
@@ -41,22 +58,22 @@ title: Aid Information Platform
     <div class="six columns">
         <h3 class="section-group-title">Key info</h3>
         <ul class="info-list vertical">
-            <li>
+            <li class="fact-item">
                 Country budget for 2012/13:
                 <%= country['budget'] %>
             </li>
-            <li>
+            <li class="fact-item">
                 Active Projects:<%= country['active-projects'] %>
             </li>
-            <li>
+            <li class="fact-item">
                 Population (<a href="http://data.worldbank.org/country">source</a>):
                 <%= country['population'] %>
             </li>
-            <li>
+            <li class="fact-item">
                 Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
                 <%= country['life expectancy'] %>
             </li>
-            <li>
+            <li class="fact-item">
                 Income level (<a href="http://data.worldbank.org/country">source</a>):
                 <%= country['income-level'] %>
             </li>

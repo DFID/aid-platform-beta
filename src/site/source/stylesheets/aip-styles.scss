@@ -381,3 +381,48 @@ $orange: #F17921;
 .description { 
 	font-size: 1.2em; margin-bottom: 20px; 
 }
+
+.fact-item{
+    font-size:14px;
+    border-bottom: solid 1px #D8DCBF;
+}
+
+.fact-item p{
+    font-size:16px;
+    font-weight:bold;
+}
+
+.inverted .fact-item{
+    border-bottom: solid 1px #D8DCBF;
+    padding-bottom: 6px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.inverted .fact-item p{
+    font-size:14px;
+    font-weight: normal;
+}
+
+.info-list.vertical li { width: 100%!important; list-style: none; }
+
+.info-list li{
+    border-bottom: 1px solid #ccc;
+    padding: 0.5em 0;
+    float: left;
+    width: 48%;
+    margin-right: 2%;
+    min-width: 320px;
+}
+
+.info-list li:nth-child(even){
+    width: 49%;
+    margin-right: 0;
+}
+
+.info-list li span{
+    display: block;
+    font-size: 1.25em;
+    color: #000;
+    margin-top: -0.25em;
+}
