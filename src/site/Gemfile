@@ -1,4 +1,6 @@
 source :rubygems
 
 gem "middleman", "~>3.0.7"
-gem "httparty"
+gem "httparty", "~> 0.10.2"
+gem "redcarpet", "~> 2.2.2"
+gem "kramdown", "~> 0.14.1"

@@ -10,7 +10,7 @@ case $1 in
   ssh ubuntu@ec2-46-137-43-29.eu-west-1.compute.amazonaws.com -i $2
   ;;
 "api"|"site")
-  ssh ubuntu@2-46-137-129-165.eu-west-1.compute.amazonaws.com -i $2
+  ssh ubuntu@ec2-46-137-43-29.eu-west-1.compute.amazonaws.com -i $2
   ;;
 *)
   echo "==================================="

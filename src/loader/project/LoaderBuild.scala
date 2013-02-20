@@ -24,10 +24,15 @@ object LoaderBuild extends Build {
       // Application Dependencies
       "org.neo4j"         %  "neo4j-kernel"       % "1.8.1",
       "org.neo4j"         %  "neo4j-lucene-index" % "1.8.1",
+      "org.neo4j"         %  "neo4j-cypher"       % "1.8.1",
       "com.typesafe"      %  "config"             % "1.0.0",
-      "org.reactivemongo" %% "reactivemongo"      % "0.8"
+      "org.reactivemongo" %% "reactivemongo"      % "0.8",
+      "joda-time"         %  "joda-time"          % "2.1",
+      "org.joda"          %  "joda-convert"       % "1.3"
     ),
 
     artifact in oneJar <<= moduleName(Artifact(_, "dist"))
-  ))
+  )).dependsOn(common)
+
+  lazy val common = ProjectRef(uri("../common"), "common")
 }

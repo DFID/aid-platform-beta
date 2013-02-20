@@ -29,6 +29,11 @@ class Mapper(val db: GraphDatabaseService) {
     // update this node with the label
     node + ("label" -> el.label)
 
+    // if we only have a text body we set this as a property
+    if (el.nonEmptyChildren.size == 1 && el.nonEmptyChildren.head.isAtom) {
+      node + (el.label -> el.text.mungeToType)
+    }
+
     // iterate over each attribute and fill it with data
     // derived from the attributes
     fillProperties(node, el.attributes)
@@ -39,7 +44,8 @@ class Mapper(val db: GraphDatabaseService) {
       val children = child.nonEmptyChildren
 
       // if it has a single child that is an atom then its a property
-      val shouldBeProperty = children.size == 1 && children.head.isAtom && child.attributes.isEmpty
+      val hasTextProperty = children.size == 1 && children.head.isAtom
+      val shouldBeProperty = hasTextProperty && child.attributes.isEmpty
 
       // if this child has no descendants then it should be treated as a new entity.
       // if it has a child that is not an atom is an entity

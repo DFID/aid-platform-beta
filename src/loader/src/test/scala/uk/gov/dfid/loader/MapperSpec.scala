@@ -72,6 +72,23 @@ class MapperSpec extends Specification with Mockito {
       there was one(root).setProperty(anyString, anyString)
       there was one(child).setProperty("name", "arnold")
     }
+
+    "add text as a value as well as attributes as properties" in {
+
+      // arragne
+      val db = mockDb
+      val node = mock[Node]
+
+      db.createNode returns node
+
+      // act
+      new Mapper(db).map(<value value-date="2010-10-20">8100000000</value>)
+
+      // assert
+      there was one(node).setProperty("label", "value")
+      there was one(node).setProperty("value", 8100000000L)
+      there was one(node).setProperty("value-date", "2010-10-20")
+    }
   }
 
   def mockDb = {

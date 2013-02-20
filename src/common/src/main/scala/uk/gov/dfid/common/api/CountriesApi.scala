@@ -6,7 +6,6 @@ import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.api.indexes.{IndexType, Index}
-import uk.gov.dfid.common.traits.{Api, ReadOnlyApi}
 import uk.gov.dfid.common.models.Country
 import reactivemongo.api.DefaultDB
 import com.google.inject.Inject
@@ -47,7 +46,10 @@ class CountriesApi @Inject()(database: DefaultDB)  extends ReadOnlyCountriesApi(
       maybeCountry.map { country =>
         countries.update(
           BSONDocument("code" -> BSONString(id)),
-          model.copy(id = country.id),
+          // these apis are only
+          model.copy(
+            id = country.id
+          ),
           multi = false,
           upsert = false
         )

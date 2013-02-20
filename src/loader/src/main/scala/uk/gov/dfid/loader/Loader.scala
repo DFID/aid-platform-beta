@@ -12,6 +12,8 @@ import concurrent.ExecutionContext.Implicits.global
 import concurrent.Await
 import concurrent.duration._
 import org.neo4j.kernel.EmbeddedGraphDatabase
+import uk.gov.dfid.common.neo4j.Neo4JQueryEngine
+import uk.gov.dfid.common.api.CountriesApi
 
 object Loader extends App {
 
@@ -19,17 +21,21 @@ object Loader extends App {
   val config = ConfigFactory.load
 
   // create all the necessary connections to data sources etc.
-  val mongo     = MongoConnection(config.getStringList("mongodb.servers").toList)
-  val sources   = mongo.db(config.getString("mongodb.db")).collection("iati-datasources")
-  val validator = new Validator
-  val neo4j     = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
-  val mapper    = new Mapper(neo4j)
+  val mongo      = MongoConnection(config.getStringList("mongodb.servers").toList)
+  val database   = mongo.db(config.getString("mongodb.db"))
+  val sources    = database.collection("iati-datasources")
+  val validator  = new Validator
+  val neo4j      = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
+  val mapper     = new Mapper(neo4j)
+
+  val engine     = new Neo4JQueryEngine(neo4j)
+  val aggregator = new Aggregator(engine, new CountriesApi(database), database)
 
   // first we clear the entire graph db
   neo4j.clearDb
 
   // iterate over each potential data source type
-  ("organisation" :: "activities" :: Nil).map { sourceType =>
+  ("organisation" :: "activity" :: Nil).map { sourceType =>
 
     // find all data sources of a particular type.  they must be active
     // to be of relevance to us
@@ -80,10 +86,13 @@ object Loader extends App {
     Await.ready(response, 2 minutes)
   }
 
+  // calculate the country budgets for DFID projects
+  // Await.ready(aggregator.rollupCountryBudgets, 2 minutes)
+
   println(s"Shutting down neo4j")
   neo4j.shutdown()
   println(s"Shutting down mongo")
-  Await.ready(mongo.askClose()(10 seconds), 10 seconds)
+  reactivemongo.api.MongoConnection.system.shutdown()
   println(s"Shutting down app")
   sys.exit(0)
 }
