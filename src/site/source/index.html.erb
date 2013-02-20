@@ -66,10 +66,10 @@ title: Aid Information Platform
     <div class="six columns" id="top-5-countries">
         <h4>Where we work</h4>
         <ol>
-        <% countries_helper.each do |code, country| %>
+        <% countries_helper.each do |country| %>
           <li>
-              <a href="/countries/<%= code %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
-              <em><span class="visually-hidden">Budget</span><%= country['budget'] %></em>
+              <a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
+              <em><span class="visually-hidden">Budget</span><%= country['budget'] || "asdas" %></em>
           </li>
         <% end %> 
         </ol>

@@ -1,48 +1,36 @@
 require "rubygems"
 require "json"
+require "kramdown"
 
-###
-# Compass
-###
 
-# Susy grids in Compass
-# First: gem install susy --pre
-# require 'susy'
+# configuration variables
+api_access_url = 'http://0.0.0.0:9000/access'
 
-# Change Compass configuration
-# compass_config do |config|
-#   config.output_style = :compact
-# end
 
-###
-# Page options, layouts, aliases and proxies
-###
 
-# Per-page layout changes:
-#
-# With no layout
-# page "/path/to/file.html", :layout => false
-#
-# With alternative layout
-# page "/path/to/file.html", :layout => :otherlayout
-page "/projects/*", :layout => layout
-#
-# A path which all have the same layout
-# with_layout :admin do
-#   page "/admin/*"
-# end
+
+
+
+
+
+
+
+
+
+
+
 
 #This will use data from db, but for now will test a few different project codes
-projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
-parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
-parsedJSON.each do |code, project|
-  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project, :code => code}
-end
+#projectsJSON = HTTParty.get("#{api_access_url}/projects") #make sure test-api is running
+#parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
+#parsedJSON.each do |code, project|
+#  page "/projects/#{code}", :proxy => "/projects/index.html", :locals => {:project => project, :code => code}
+#end
 
-countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
+countriesJSON = HTTParty.get("#{api_access_url}/countries") #make sure test-api is running
 parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
-parsedJSON.each do |code, country|
-  page "/countries/#{code}", :proxy => "/countries/index.html", :locals => {:country => country, :code => code}
+parsedJSON.each do |country|
+  page "/countries/#{country['code']}", :proxy => "/countries/index.html", :locals => {:country => country, :code => country['code']}
 end
 
 # Proxy (fake) files
@@ -59,6 +47,11 @@ end
 
 # Methods defined in the helpers block are available in templates
 helpers do
+
+  def markdown_to_html(md)
+    Kramdown::Document.new(md).to_html
+  end
+  
    def countries_helper
      countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries

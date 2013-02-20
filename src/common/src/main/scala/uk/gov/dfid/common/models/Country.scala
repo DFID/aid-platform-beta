@@ -1,6 +1,6 @@
 package uk.gov.dfid.common.models
 
-import reactivemongo.bson.{BSONString, BSONDocument, BSONObjectID}
+import reactivemongo.bson.{BSONLong, BSONString, BSONDocument, BSONObjectID}
 import reactivemongo.bson.handlers.{BSONWriter, BSONReader}
 
 case class Country(
@@ -9,6 +9,8 @@ case class Country(
   name:        String,
   description: Option[String]
 )
+
+
 
 object Country {
 
@@ -28,9 +30,9 @@ object Country {
   implicit object CountryWriter extends BSONWriter[Country]{
     def toBSON(country: Country): BSONDocument = {
       BSONDocument(
-        "_id" -> country.id.getOrElse(BSONObjectID.generate),
-        "code" -> BSONString(country.code),
-        "name" -> BSONString(country.name)
+        "_id"         -> country.id.getOrElse(BSONObjectID.generate),
+        "code"        -> BSONString(country.code),
+        "name"        -> BSONString(country.name)
       ).append(Seq(
         country.description.map("description" -> BSONString(_))
       ).flatten: _*)
