@@ -31,6 +31,9 @@ require "json"
 #   page "/admin/*"
 # end
 
+# Alternative layout for location/* pages
+page "/location/*", :layout => 'layout-location'
+
 #This will use data from db, but for now will test a few different project codes
 ignore "/projects/index.html"
 projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
