@@ -1,4 +1,4 @@
-package uk.gov.dfid.common.traits
+package uk.gov.dfid.common.api
 
 import concurrent.Future
 import reactivemongo.bson.{BSONDocument, BSONObjectID}

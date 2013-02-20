@@ -1,22 +1,22 @@
 require "rubygems"
 require "json"
+require "kramdown"
 
-###
-# Compass
-###
 
-# Susy grids in Compass
-# First: gem install susy --pre
-# require 'susy'
+# configuration variables
+api_access_url = 'http://0.0.0.0:9000/access'
 
-# Change Compass configuration
-# compass_config do |config|
-#   config.output_style = :compact
-# end
 
-###
-# Page options, layouts, aliases and proxies
-###
+
+
+
+
+
+
+
+
+
+
 
 # Per-page layout changes:
 #
@@ -60,6 +60,11 @@ end
 
 # Methods defined in the helpers block are available in templates
 helpers do
+
+  def markdown_to_html(md)
+    Kramdown::Document.new(md).to_html
+  end
+  
    def countries_helper
      countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries

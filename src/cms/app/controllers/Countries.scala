@@ -4,11 +4,11 @@ import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.bson.{BSONObjectID, BSONString, BSONDocument}
-import uk.gov.dfid.common.traits.Api
 import play.api.data.Form
 import play.api.data.Forms._
 import scala.Some
 import uk.gov.dfid.common.models.Country
+import uk.gov.dfid.common.api.Api
 
 class Countries @Inject()(val api: Api[Country]) extends Controller {
 
