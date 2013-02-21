@@ -1,5 +1,0 @@
-Bosnia and Herzegovina has come a long way. There has been economic growth, public services have improved and poverty levels have gone down. What has been achieved is significant and, with our bilateral programme ending in February 2011, we are proud to have played a part.
-
-Much has changed during the 17 years since DFID first provided support. The country's progress from a post-conflict situation to a potential EU candidate country has been impressive, particularly in the light of its complex political structure.
-
-Although DFID activities are ending, this is by no means the end of the UK's support. The British Embassy remains and UK funding will continue to reach Bosnia and Herzegovina through the EU and other multilateral agencies – some 15% of the money the EU spends in Bosnia and Herzegovina is from the UK. Through our Embassy, the UK will work closely with those organisations to ensure support remains focused on helping Bosnia and Herzegovina on the road to EU membership.

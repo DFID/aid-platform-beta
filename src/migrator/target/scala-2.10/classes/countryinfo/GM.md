@@ -1,5 +1,0 @@
-In 2008 DFID announced that its bilateral aid programme in the Gambia would wind down to final closure in 2011. With the advent of a new Government in the UK, a thorough review was undertaken of all DFID's bilateral aid programmes, with the aim of focusing UK assistance where it can have the greatest possible impact. This review has endorsed the closure of the Gambia programme as announced in 2008.
-
-The decision to close our programme in the Gambia was agreed with the Government of Gambia in 2008 and our office closed then. We have since been winding down the programme which is due to close in 2011. The decision was taken to wind down the programme gradually as part of a responsible exit to help sustainability of project outputs and ensure partners build on successful DFID programmes.
-
-The UK will also continue to support the Gambia through the UK's increasing share of World Bank, African Development Bank, European Commission and other multilateral programming.
