@@ -22,9 +22,9 @@ object LoaderBuild extends Build {
       "org.mockito"       %  "mockito-all"        % "1.9.5" % "test",
 
       // Application Dependencies
-      "org.neo4j"         %  "neo4j-kernel"       % "1.8.1",
-      "org.neo4j"         %  "neo4j-lucene-index" % "1.8.1",
-      "org.neo4j"         %  "neo4j-cypher"       % "1.8.1",
+      "org.neo4j"         %  "neo4j-kernel"       % "1.9.M04",
+      "org.neo4j"         %  "neo4j-lucene-index" % "1.9.M04",
+      "org.neo4j"         %  "neo4j-cypher"       % "1.9.M04",
       "com.typesafe"      %  "config"             % "1.0.0",
       "org.reactivemongo" %% "reactivemongo"      % "0.8",
       "joda-time"         %  "joda-time"          % "2.1",
