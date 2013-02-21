@@ -23,6 +23,20 @@ object Implicits {
     def +(property: (String, Any)) {
       n.setProperty(property._1, property._2)
     }
+
+    /**
+     * Gets a node property using an Option[T] rather
+     * than returning null - also performs type coercion
+     * @param name
+     * @tparam T
+     * @return
+     */
+    def getPropertySafe[T](name: String): Option[T] = {
+      n.getProperty(name) match {
+        case null => None
+        case prop => Some(prop.asInstanceOf[T])
+      }
+    }
   }
 
   /**
@@ -38,6 +52,7 @@ object Implicits {
      */
     def mungeToType =
       Try(stringValue.toInt) orElse
+        Try(stringValue.toLong) orElse
         Try(stringValue.toDouble) orElse
         Try(stringValue.toBoolean) getOrElse
         stringValue

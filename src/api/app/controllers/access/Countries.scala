@@ -2,10 +2,10 @@ package controllers
 
 import com.google.inject.Inject
 import play.api.mvc.{Action, Controller}
-import uk.gov.dfid.common.traits.ReadOnlyApi
 import uk.gov.dfid.common.models.Country
 import play.api.libs.json.{JsValue, Json, Writes}
 import play.modules.reactivemongo.MongoController
+import uk.gov.dfid.common.api.ReadOnlyApi
 
 class Countries @Inject()(countries: ReadOnlyApi[Country]) extends Controller with MongoController {
 
