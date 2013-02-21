@@ -27,7 +27,7 @@ object Main extends App  {
   )
 
   println("Dropping Collection of Countries")
-  val action = countries.drop andThen { case _ =>
+  val action = countries.drop map { case _ =>
 
     println("Seeding DB")
 
@@ -61,7 +61,6 @@ object Main extends App  {
       Await.ready(countries.insert(document), 5 seconds)
 
       println(s"Inserted ${code}:${name}")
-
     }
 
     Await.ready(action, 2 minutes)
