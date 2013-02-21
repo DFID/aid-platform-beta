@@ -62,10 +62,10 @@ object Main extends App  {
 
       println(s"Inserted ${code}:${name}")
     }
-
-    Await.ready(action, 2 minutes)
-    println("Shutting down Mongo")
-    MongoConnection.system.shutdown()
-    println("Exiting")
   }
+
+  Await.ready(action, 2 minutes)
+  println("Shutting down Mongo")
+  MongoConnection.system.shutdown()
+  println("Exiting")
 }
