@@ -32,7 +32,5 @@ object LoaderBuild extends Build {
     ),
 
     artifact in oneJar <<= moduleName(Artifact(_, "dist"))
-  )).dependsOn(common)
-
-  lazy val common = ProjectRef(uri("../common"), "common")
+  ))
 }

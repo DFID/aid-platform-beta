@@ -12,8 +12,8 @@ import concurrent.ExecutionContext.Implicits.global
 import concurrent.Await
 import concurrent.duration._
 import org.neo4j.kernel.EmbeddedGraphDatabase
-import uk.gov.dfid.common.neo4j.Neo4JQueryEngine
-import uk.gov.dfid.common.api.CountriesApi
+import org.neo4j.cypher.ExecutionEngine
+import org.neo4j.kernel.impl.util.StringLogger
 
 object Loader extends App {
 
@@ -28,8 +28,8 @@ object Loader extends App {
   val neo4j      = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
   val mapper     = new Mapper(neo4j)
 
-  val engine     = new Neo4JQueryEngine(neo4j)
-  val aggregator = new Aggregator(engine, new CountriesApi(database), database)
+  val engine     = new ExecutionEngine(neo4j, StringLogger.DEV_NULL)
+  val aggregator = new Aggregator(engine, database)
 
   // first we clear the entire graph db
   neo4j.clearDb
