@@ -17,6 +17,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
   def rollupCountryBudgets = {
 
     db.collection("countries").find(BSONDocument()).toList.map { countries =>
+
       val now = DateTime.now
       val (start, end) = if (now.getMonthOfYear < 4) {
         s"${now.getYear-1}-04-01" -> s"${now.getYear}-03-31"
@@ -27,6 +28,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
       countries.foreach { country =>
 
         val code = country.getAs[BSONString]("code").get.value
+
         val query = s"""
           | START  n=node:entities(type="iati-activity")
           | MATCH  n-[:`recipient-country`]-c,
@@ -40,6 +42,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
         """.stripMargin
 
         val result = engine.execute(query).columnAs[Long]("value")
+
         val totalBudget = result.foldLeft(0L)(_ + _)
 
         // update the country stats collection

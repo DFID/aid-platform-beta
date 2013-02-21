@@ -88,6 +88,7 @@ object Loader extends App {
   }
 
   // calculate the country budgets for DFID projects
+  println(s"Rolling up country Budgets")
   Await.ready(aggregator.rollupCountryBudgets, 2 minutes)
 
   println(s"Shutting down neo4j")
