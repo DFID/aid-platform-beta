@@ -4,9 +4,10 @@ require "kramdown"
 
 
 # configuration variables
-api_access_url = 'http://0.0.0.0:9000/access'
+@api_access_url = 'http://0.0.0.0:9000/access'
 
-
+@cms_client     = Mongo::MongoClient.new('localhost', 27017)
+@cms_db         = @cms_client['dfid']
 
 
 
@@ -32,18 +33,18 @@ api_access_url = 'http://0.0.0.0:9000/access'
 # end
 
 #This will use data from db, but for now will test a few different project codes
-ignore "/projects/index.html"
-projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
-parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
-parsedJSON.each do |code, project|
-  proxy "/projects/#{code}/index.html", "/projects/index.html", :locals => {:project => project, :code => code}
-end
+#ignore "/projects/index.html"
+#projectsJSON = HTTParty.get("http://0.0.0.0:9000/access/projects") #make sure test-api is running
+#parsedJSON = JSON.parse(projectsJSON.body) #gets the json for all countries
+#parsedJSON.each do |code, project|
+#  proxy "/projects/#{code}/index.html", "/projects/index.html", :locals => {:project => project, :code => code}
+#end
 
 ignore "/countries/index.html"
 countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
 parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
-parsedJSON.each do |code, country|
-  proxy "/countries/#{code}/index.html", "/countries/index.html", :locals => {:country => country, :code => code}
+parsedJSON.each do |country|
+  proxy "/countries/#{country['code']}/index.html", "/countries/index.html", :locals => {:country => country, :code => country['code']}
 end
 
 # Proxy (fake) files
@@ -61,10 +62,25 @@ end
 # Methods defined in the helpers block are available in templates
 helpers do
 
+  def format_million_stg(v)
+    "£#{v/1000000}M"
+  end
+
   def markdown_to_html(md)
     Kramdown::Document.new(md).to_html
   end
   
+  def top_5_countries
+    response = HTTParty.get("http://0.0.0.0:9000/access/countries")
+    body     = JSON.parse(response.body)
+
+    body.sort_by! { |c| c['totalBudget'] }.take 5
+  end
+
+  def what_we_do
+    @cms_db['whatwedo'].find({})
+  end
+
    def countries_helper
      countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries

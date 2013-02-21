@@ -4,6 +4,10 @@ GEM
     activesupport (3.2.11)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    bson (1.8.0)
+      activesupport
+    bson_ext (1.8.0)
+      bson (~> 1.8.0)
     chunky_png (1.2.7)
     coffee-script (2.2.0)
       coffee-script-source
@@ -60,6 +64,8 @@ GEM
       middleman-more (>= 3.0.1)
       sprockets (~> 2.1, < 2.5)
       sprockets-sass (~> 0.9.0)
+    mongo (1.8.0)
+      bson (~> 1.8.0)
     multi_json (1.5.0)
     multi_xml (0.5.3)
     padrino-core (0.10.7)
@@ -106,7 +112,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson_ext (~> 1.8.0)
   httparty (~> 0.10.2)
   kramdown (~> 0.14.1)
   middleman (~> 3.0.7)
+  mongo (~> 1.8.0)
   redcarpet (~> 2.2.2)

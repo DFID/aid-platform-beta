@@ -8,6 +8,7 @@ import uk.gov.dfid.common.api.{Api, CountriesApi}
 import play.modules.reactivemongo.ReactiveMongoPlugin
 import reactivemongo.api.DefaultDB
 import play.api.Play.current
+import models.WhatWeDoEntry
 
 
 class Dependencies extends ScalaModule {
@@ -17,6 +18,7 @@ class Dependencies extends ScalaModule {
     bind[Deployer].to[Deployinator]
     bind[DefaultDB].toInstance(ReactiveMongoPlugin.db)
     bind[Api[Country]].to[CountriesApi]
+    bind[Api[WhatWeDoEntry]].to[WhatWeDoApi]
   }
 }
 

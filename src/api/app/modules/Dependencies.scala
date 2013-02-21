@@ -4,8 +4,8 @@ import com.tzavellas.sse.guice.ScalaModule
 import org.neo4j.graphdb.GraphDatabaseService
 import play.api.Play
 import play.api.Play.current
-import uk.gov.dfid.common.models.Country
-import uk.gov.dfid.common.api.{ReadOnlyApi, ReadOnlyCountriesApi}
+import uk.gov.dfid.common.models.{CountryStats, Country}
+import uk.gov.dfid.common.api.{ReadonlyCountryStatsApi, ReadOnlyApi, ReadOnlyCountriesApi}
 import reactivemongo.api.DefaultDB
 import play.modules.reactivemongo.ReactiveMongoPlugin
 import org.neo4j.kernel.EmbeddedReadOnlyGraphDatabase
@@ -21,5 +21,6 @@ class Dependencies extends ScalaModule {
     bind[DefaultDB].toInstance(ReactiveMongoPlugin.db)
 
     bind[ReadOnlyApi[Country]].to[ReadOnlyCountriesApi]
+    bind[ReadOnlyApi[CountryStats]].to[ReadonlyCountryStatsApi]
   }
 }
