@@ -6,9 +6,32 @@ import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.api.indexes.{IndexType, Index}
-import uk.gov.dfid.common.models.Country
+import uk.gov.dfid.common.models.{CountryStats, Country}
 import reactivemongo.api.DefaultDB
 import com.google.inject.Inject
+
+
+
+class ReadonlyCountryStatsApi @Inject()(database: DefaultDB) extends ReadOnlyApi[CountryStats] {
+
+  lazy val stats = database.collection("country-stats")
+
+  def all = {
+    implicit val reader = CountryStats.CountryStatsReader
+    stats.find(BSONDocument()).toList
+  }
+
+  def get(id: String)  = {
+    implicit val reader = CountryStats.CountryStatsReader
+    stats.find(BSONDocument("code" -> BSONString(id))).headOption
+  }
+
+  def query(criteria: BSONDocument) = {
+    implicit val reader = CountryStats.CountryStatsReader
+    stats.find(criteria).toList
+  }
+}
+
 
 class ReadOnlyCountriesApi @Inject()(database: DefaultDB) extends ReadOnlyApi[Country] {
   lazy val countries = database.collection("countries")
