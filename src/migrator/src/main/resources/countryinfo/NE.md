@@ -1,0 +1,5 @@
+In 2008 DFID announced that its bilateral aid programme in Niger would wind down to final closure in 2011. With the advent of a new Government in the UK, a thorough review was undertaken of all DFID's bilateral aid programmes, with the aim of focusing UK assistance where it can have the greatest possible impact. This review has endorsed the closure of the Niger programme as announced in 2008.
+
+DFID has no office or staff based in Niger. The closure of the programme in 2011 marks the end of our existing bilateral commitments. The sole UK funded development project in Niger has been in partnership with the French Development Agency with the aim of accelerating progress towards Education and Gender MDGs in line with the Government of Niger's (GoN) 10 year plan.
+
+The UK will continue to respond to humanitarian emergencies, such as current ongoing work in Niger through the West African Humanitarian Response Fund. The UK will also continue to support poverty reduction in Niger through our contributions to multilateral agencies and Civil Society Organisations. These funds are managed centrally.

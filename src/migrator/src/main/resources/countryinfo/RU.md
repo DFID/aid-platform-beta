@@ -1,0 +1,3 @@
+Russia is a member of the G8, and not considered a poor country. It does not need UK aid. We will continue to work alongside Russia as a partner in eradicating world poverty across the developing world.  DFID closed its bilateral development Programme in Russia in March 2007 (with a small number of projects coming to an end in April 2011).
+
+Given Russia's rising wealth and its upper-middle income country status, a traditional development programme is no longer appropriate. Russia is also an emerging donor itself, and has been increasing contributions to the multilateral aid system. Russia has enormous potential to contribute to the reduction of global poverty, and the UK's development relationship with Russia has shifted to reflect this.

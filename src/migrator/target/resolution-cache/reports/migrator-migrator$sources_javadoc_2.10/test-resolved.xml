@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="migrator"
+		module="migrator$sources_javadoc_2.10"
+		revision="0.1-SNAPSHOT"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom"
+		date="20130221112214"/>
+	<dependencies>
+		<module organisation="org.mockito" name="mockito-all">
+			<revision name="1.9.5" status="release" pubdate="20121014111023" resolver="public" artresolver="public" homepage="http://www.mockito.org" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="19">
+				<license name="The MIT License" url="http://code.google.com/p/mockito/wiki/License"/>
+				<metadata-artifact status="no" details="" size="2352" time="0" location="/Users/james/.ivy2/cache/org.mockito/mockito-all/ivy-1.9.5.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.9.5" rev-constraint-default="1.9.5" rev-constraint-dynamic="1.9.5" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="mockito-all" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="759072" time="0" location="/Users/james/.ivy2/cache/org.mockito/mockito-all/srcs/mockito-all-1.9.5-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5-sources.jar"/>
+					</artifact>
+					<artifact name="mockito-all" type="jar" ext="jar" status="no" details="" size="1581066" time="0" location="/Users/james/.ivy2/cache/org.mockito/mockito-all/jars/mockito-all-1.9.5.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5.jar"/>
+					</artifact>
+					<artifact name="mockito-all" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="2285314" time="0" location="/Users/james/.ivy2/cache/org.mockito/mockito-all/docs/mockito-all-1.9.5-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/mockito/mockito-all/1.9.5/mockito-all-1.9.5-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.joda" name="joda-convert">
+			<revision name="1.3" status="release" pubdate="20130125140811" resolver="public" artresolver="public" homepage="http://joda-convert.sourceforge.net" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="14">
+				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3211" time="0" location="/Users/james/.ivy2/cache/org.joda/joda-convert/ivy-1.3.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/joda/joda-convert/1.3/joda-convert-1.3.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.3" rev-constraint-default="1.3" rev-constraint-dynamic="1.3" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="joda-convert" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="60136" time="0" location="/Users/james/.ivy2/cache/org.joda/joda-convert/docs/joda-convert-1.3-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/joda/joda-convert/1.3/joda-convert-1.3-javadoc.jar"/>
+					</artifact>
+					<artifact name="joda-convert" type="jar" ext="jar" status="no" details="" size="40522" time="0" location="/Users/james/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.3.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/joda/joda-convert/1.3/joda-convert-1.3.jar"/>
+					</artifact>
+					<artifact name="joda-convert" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="19611" time="0" location="/Users/james/.ivy2/cache/org.joda/joda-convert/srcs/joda-convert-1.3-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/joda/joda-convert/1.3/joda-convert-1.3-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="joda-time" name="joda-time">
+			<revision name="2.1" status="release" pubdate="20120222162242" resolver="public" artresolver="public" homepage="http://joda-time.sourceforge.net" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="13">
+				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="3297" time="0" location="/Users/james/.ivy2/cache/joda-time/joda-time/ivy-2.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/joda-time/joda-time/2.1/joda-time-2.1.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="2.1" rev-constraint-default="2.1" rev-constraint-dynamic="2.1" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="joda-time" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="1312149" time="0" location="/Users/james/.ivy2/cache/joda-time/joda-time/docs/joda-time-2.1-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/joda-time/joda-time/2.1/joda-time-2.1-javadoc.jar"/>
+					</artifact>
+					<artifact name="joda-time" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="700266" time="0" location="/Users/james/.ivy2/cache/joda-time/joda-time/srcs/joda-time-2.1-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/joda-time/joda-time/2.1/joda-time-2.1-sources.jar"/>
+					</artifact>
+					<artifact name="joda-time" type="jar" ext="jar" status="no" details="" size="570478" time="0" location="/Users/james/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/joda-time/joda-time/2.1/joda-time-2.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.reactivemongo" name="reactivemongo_2.10">
+			<revision name="0.8" status="release" pubdate="20130116132514" resolver="public" artresolver="public" homepage="http://reactivemongo.org" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="2">
+				<license name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="3426" time="0" location="/Users/james/.ivy2/cache/org.reactivemongo/reactivemongo_2.10/ivy-0.8.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.10/0.8/reactivemongo_2.10-0.8.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="0.8" rev-constraint-default="0.8" rev-constraint-dynamic="0.8" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="reactivemongo_2.10" type="jar" ext="jar" status="no" details="" size="1108954" time="0" location="/Users/james/.ivy2/cache/org.reactivemongo/reactivemongo_2.10/jars/reactivemongo_2.10-0.8.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.10/0.8/reactivemongo_2.10-0.8.jar"/>
+					</artifact>
+					<artifact name="reactivemongo_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="53209" time="0" location="/Users/james/.ivy2/cache/org.reactivemongo/reactivemongo_2.10/srcs/reactivemongo_2.10-0.8-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.10/0.8/reactivemongo_2.10-0.8-sources.jar"/>
+					</artifact>
+					<artifact name="reactivemongo_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="1272667" time="0" location="/Users/james/.ivy2/cache/org.reactivemongo/reactivemongo_2.10/docs/reactivemongo_2.10-0.8-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/reactivemongo/reactivemongo_2.10/0.8/reactivemongo_2.10-0.8-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="ch.qos.logback" name="logback-classic">
+			<revision name="1.0.9" status="release" pubdate="20121204231516" resolver="public" artresolver="public" homepage="http://logback.qos.ch" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="11">
+				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
+				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
+				<metadata-artifact status="no" details="" size="10211" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-classic/ivy-1.0.9.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.0.9/logback-classic-1.0.9.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.0.9" rev-constraint-default="1.0.9" rev-constraint-dynamic="1.0.9" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="logback-classic" type="jar" ext="jar" status="no" details="" size="252684" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.9.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.0.9/logback-classic-1.0.9.jar"/>
+					</artifact>
+					<artifact name="logback-classic" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="202954" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-classic/srcs/logback-classic-1.0.9-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.0.9/logback-classic-1.0.9-sources.jar"/>
+					</artifact>
+					<artifact name="logback-classic" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="968252" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-classic/docs/logback-classic-1.0.9-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.0.9/logback-classic-1.0.9-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.slf4j" name="slf4j-api">
+			<revision name="1.7.2" status="release" pubdate="20130205153219" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.slf4j.org" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="12">
+				<metadata-artifact status="no" details="" size="4469" time="0" location="/Users/james/.ivy2/cache/org.slf4j/slf4j-api/ivy-1.7.2.xml" searched="false" origin-is-local="false" origin-location="http://repo.typesafe.com/typesafe/releases/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.7.2" rev-constraint-default="1.7.2" rev-constraint-dynamic="1.7.2" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="slf4j-api" type="jar" ext="jar" status="no" details="" size="26083" time="0" location="/Users/james/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.2.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/releases/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar"/>
+					</artifact>
+					<artifact name="slf4j-api" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="183169" time="0" location="/Users/james/.ivy2/cache/org.slf4j/slf4j-api/docs/slf4j-api-1.7.2-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2-javadoc.jar"/>
+					</artifact>
+					<artifact name="slf4j-api" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="47186" time="0" location="/Users/james/.ivy2/cache/org.slf4j/slf4j-api/srcs/slf4j-api-1.7.2-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="ch.qos.logback" name="logback-core">
+			<revision name="1.0.9" status="release" pubdate="20121204231430" resolver="public" artresolver="public" homepage="http://logback.qos.ch" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="10">
+				<license name="Eclipse Public License - v 1.0" url="http://www.eclipse.org/legal/epl-v10.html"/>
+				<license name="GNU Lesser General Public License" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"/>
+				<metadata-artifact status="no" details="" size="9718" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-core/ivy-1.0.9.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.0.9/logback-core-1.0.9.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.0.9" rev-constraint-default="1.0.9" rev-constraint-dynamic="1.0.9" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="logback-core" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="307577" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-core/srcs/logback-core-1.0.9-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.0.9/logback-core-1.0.9-sources.jar"/>
+					</artifact>
+					<artifact name="logback-core" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="1628158" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-core/docs/logback-core-1.0.9-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.0.9/logback-core-1.0.9-javadoc.jar"/>
+					</artifact>
+					<artifact name="logback-core" type="jar" ext="jar" status="no" details="" size="366462" time="0" location="/Users/james/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.9.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.0.9/logback-core-1.0.9.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="specs2_2.10">
+			<revision name="1.13" status="release" pubdate="20121220124856" resolver="public" artresolver="public" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="15">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="3576" time="0" location="/Users/james/.ivy2/cache/org.specs2/specs2_2.10/ivy-1.13.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/specs2/specs2_2.10/1.13/specs2_2.10-1.13.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.13" rev-constraint-default="1.13" rev-constraint-dynamic="1.13" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="specs2_2.10" type="jar" ext="jar" status="no" details="" size="6656378" time="0" location="/Users/james/.ivy2/cache/org.specs2/specs2_2.10/jars/specs2_2.10-1.13.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/specs2_2.10/1.13/specs2_2.10-1.13.jar"/>
+					</artifact>
+					<artifact name="specs2_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="4373547" time="0" location="/Users/james/.ivy2/cache/org.specs2/specs2_2.10/docs/specs2_2.10-1.13-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/specs2_2.10/1.13/specs2_2.10-1.13-javadoc.jar"/>
+					</artifact>
+					<artifact name="specs2_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="539537" time="0" location="/Users/james/.ivy2/cache/org.specs2/specs2_2.10/srcs/specs2_2.10-1.13-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/specs2_2.10/1.13/specs2_2.10-1.13-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="scalaz-concurrent_2.10">
+			<revision name="7.0.0" status="release" pubdate="20121220110510" resolver="public" artresolver="public" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="17">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2810" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-concurrent_2.10/ivy-7.0.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/specs2/scalaz-concurrent_2.10/7.0.0/scalaz-concurrent_2.10-7.0.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="7.0.0" rev-constraint-default="7.0.0" rev-constraint-dynamic="7.0.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scalaz-concurrent_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="482681" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-concurrent_2.10/docs/scalaz-concurrent_2.10-7.0.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-concurrent_2.10/7.0.0/scalaz-concurrent_2.10-7.0.0-javadoc.jar"/>
+					</artifact>
+					<artifact name="scalaz-concurrent_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="8827" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-concurrent_2.10/srcs/scalaz-concurrent_2.10-7.0.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-concurrent_2.10/7.0.0/scalaz-concurrent_2.10-7.0.0-sources.jar"/>
+					</artifact>
+					<artifact name="scalaz-concurrent_2.10" type="jar" ext="jar" status="no" details="" size="189253" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-concurrent_2.10/jars/scalaz-concurrent_2.10-7.0.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-concurrent_2.10/7.0.0/scalaz-concurrent_2.10-7.0.0.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="scalaz-effect_2.10">
+			<revision name="7.0.0" status="release" pubdate="20121220110525" resolver="public" artresolver="public" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="18">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2657" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-effect_2.10/ivy-7.0.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/specs2/scalaz-effect_2.10/7.0.0/scalaz-effect_2.10-7.0.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="7.0.0" rev-constraint-default="7.0.0" rev-constraint-dynamic="7.0.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scalaz-effect_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="19736" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-effect_2.10/srcs/scalaz-effect_2.10-7.0.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-effect_2.10/7.0.0/scalaz-effect_2.10-7.0.0-sources.jar"/>
+					</artifact>
+					<artifact name="scalaz-effect_2.10" type="jar" ext="jar" status="no" details="" size="391773" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-effect_2.10/jars/scalaz-effect_2.10-7.0.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-effect_2.10/7.0.0/scalaz-effect_2.10-7.0.0.jar"/>
+					</artifact>
+					<artifact name="scalaz-effect_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="748246" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-effect_2.10/docs/scalaz-effect_2.10-7.0.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-effect_2.10/7.0.0/scalaz-effect_2.10-7.0.0-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.specs2" name="scalaz-core_2.10">
+			<revision name="7.0.0" status="release" pubdate="20121220110704" resolver="public" artresolver="public" homepage="http://specs2.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="16">
+				<license name="MIT-style" url="http://www.opensource.org/licenses/mit-license.php"/>
+				<metadata-artifact status="no" details="" size="2512" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-core_2.10/ivy-7.0.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/specs2/scalaz-core_2.10/7.0.0/scalaz-core_2.10-7.0.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="7.0.0" rev-constraint-default="7.0.0" rev-constraint-dynamic="7.0.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scalaz-core_2.10" type="jar" ext="jar" status="no" details="" size="8897195" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-core_2.10/jars/scalaz-core_2.10-7.0.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-core_2.10/7.0.0/scalaz-core_2.10-7.0.0.jar"/>
+					</artifact>
+					<artifact name="scalaz-core_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="5184214" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-core_2.10/docs/scalaz-core_2.10-7.0.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-core_2.10/7.0.0/scalaz-core_2.10-7.0.0-javadoc.jar"/>
+					</artifact>
+					<artifact name="scalaz-core_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="243547" time="0" location="/Users/james/.ivy2/cache/org.specs2/scalaz-core_2.10/srcs/scalaz-core_2.10-7.0.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/specs2/scalaz-core_2.10/7.0.0/scalaz-core_2.10-7.0.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="play" name="play-iteratees_2.10">
+			<revision name="2.1-RC2" status="release" pubdate="20130110121012" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="5">
+				<metadata-artifact status="no" details="" size="2935" time="0" location="/Users/james/.ivy2/cache/play/play-iteratees_2.10/ivy-2.1-RC2.xml" searched="false" origin-is-local="false" origin-location="http://repo.typesafe.com/typesafe/releases/play/play-iteratees_2.10/2.1-RC2/play-iteratees_2.10-2.1-RC2.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="2.1-RC2" rev-constraint-default="2.1-RC2" rev-constraint-dynamic="2.1-RC2" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="play-iteratees_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="22856" time="0" location="/Users/james/.ivy2/cache/play/play-iteratees_2.10/srcs/play-iteratees_2.10-2.1-RC2-sources.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/releases/play/play-iteratees_2.10/2.1-RC2/play-iteratees_2.10-2.1-RC2-sources.jar"/>
+					</artifact>
+					<artifact name="play-iteratees_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="failed" details="" size="0" time="0"/>
+					<artifact name="play-iteratees_2.10" type="jar" ext="jar" status="no" details="" size="640332" time="0" location="/Users/james/.ivy2/cache/play/play-iteratees_2.10/jars/play-iteratees_2.10-2.1-RC2.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/releases/play/play-iteratees_2.10/2.1-RC2/play-iteratees_2.10-2.1-RC2.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.github.scala-incubator.io" name="scala-io-file_2.10.0-RC1">
+			<revision name="0.4.1" status="release" pubdate="20121017200558" resolver="public" artresolver="public" homepage="http://jesseeichar.github.com/scala-io-doc/index.html" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="7">
+				<license name="Scala License" url="http://www.scala-lang.org/node/146"/>
+				<metadata-artifact status="no" details="" size="2979" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10.0-RC1/ivy-0.4.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-file_2.10.0-RC1/0.4.1/scala-io-file_2.10.0-RC1-0.4.1.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="0.4.1" rev-constraint-default="0.4.1" rev-constraint-dynamic="0.4.1" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scala-io-file_2.10.0-RC1" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="634623" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10.0-RC1/docs/scala-io-file_2.10.0-RC1-0.4.1-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-file_2.10.0-RC1/0.4.1/scala-io-file_2.10.0-RC1-0.4.1-javadoc.jar"/>
+					</artifact>
+					<artifact name="scala-io-file_2.10.0-RC1" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="45543" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10.0-RC1/srcs/scala-io-file_2.10.0-RC1-0.4.1-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-file_2.10.0-RC1/0.4.1/scala-io-file_2.10.0-RC1-0.4.1-sources.jar"/>
+					</artifact>
+					<artifact name="scala-io-file_2.10.0-RC1" type="jar" ext="jar" status="no" details="" size="388257" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10.0-RC1/jars/scala-io-file_2.10.0-RC1-0.4.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-file_2.10.0-RC1/0.4.1/scala-io-file_2.10.0-RC1-0.4.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.github.scala-incubator.io" name="scala-io-core_2.10.0-RC1">
+			<revision name="0.4.1" status="release" pubdate="20121017200613" resolver="public" artresolver="public" homepage="http://jesseeichar.github.com/scala-io-doc/index.html" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="8">
+				<license name="Scala License" url="http://www.scala-lang.org/node/146"/>
+				<metadata-artifact status="no" details="" size="3090" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10.0-RC1/ivy-0.4.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-core_2.10.0-RC1/0.4.1/scala-io-core_2.10.0-RC1-0.4.1.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="0.4.1" rev-constraint-default="0.4.1" rev-constraint-dynamic="0.4.1" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scala-io-core_2.10.0-RC1" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="1258131" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10.0-RC1/docs/scala-io-core_2.10.0-RC1-0.4.1-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-core_2.10.0-RC1/0.4.1/scala-io-core_2.10.0-RC1-0.4.1-javadoc.jar"/>
+					</artifact>
+					<artifact name="scala-io-core_2.10.0-RC1" type="jar" ext="jar" status="no" details="" size="1276658" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10.0-RC1/jars/scala-io-core_2.10.0-RC1-0.4.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-core_2.10.0-RC1/0.4.1/scala-io-core_2.10.0-RC1-0.4.1.jar"/>
+					</artifact>
+					<artifact name="scala-io-core_2.10.0-RC1" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="101358" time="0" location="/Users/james/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10.0-RC1/srcs/scala-io-core_2.10.0-RC1-0.4.1-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/github/scala-incubator/io/scala-io-core_2.10.0-RC1/0.4.1/scala-io-core_2.10.0-RC1-0.4.1-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.jsuereth" name="scala-arm_2.10.0-RC1">
+			<revision name="1.2" status="release" pubdate="20121012134254" resolver="public" artresolver="public" homepage="http://jsuereth.com/scala-arm" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="9">
+				<license name="BSD-style" url="http://www.opensource.org/licenses/bsd-license.php"/>
+				<metadata-artifact status="no" details="" size="3000" time="0" location="/Users/james/.ivy2/cache/com.jsuereth/scala-arm_2.10.0-RC1/ivy-1.2.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/jsuereth/scala-arm_2.10.0-RC1/1.2/scala-arm_2.10.0-RC1-1.2.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.2" rev-constraint-default="1.2" rev-constraint-dynamic="1.2" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scala-arm_2.10.0-RC1" type="jar" ext="jar" status="no" details="" size="72364" time="0" location="/Users/james/.ivy2/cache/com.jsuereth/scala-arm_2.10.0-RC1/jars/scala-arm_2.10.0-RC1-1.2.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/jsuereth/scala-arm_2.10.0-RC1/1.2/scala-arm_2.10.0-RC1-1.2.jar"/>
+					</artifact>
+					<artifact name="scala-arm_2.10.0-RC1" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="360195" time="0" location="/Users/james/.ivy2/cache/com.jsuereth/scala-arm_2.10.0-RC1/docs/scala-arm_2.10.0-RC1-1.2-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/jsuereth/scala-arm_2.10.0-RC1/1.2/scala-arm_2.10.0-RC1-1.2-javadoc.jar"/>
+					</artifact>
+					<artifact name="scala-arm_2.10.0-RC1" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="10463" time="0" location="/Users/james/.ivy2/cache/com.jsuereth/scala-arm_2.10.0-RC1/srcs/scala-arm_2.10.0-RC1-1.2-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/jsuereth/scala-arm_2.10.0-RC1/1.2/scala-arm_2.10.0-RC1-1.2-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-stm" name="scala-stm_2.10.0">
+			<revision name="0.6" status="release" pubdate="20121220165611" resolver="public" artresolver="public" homepage="http://nbronson.github.com/scala-stm/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="6">
+				<license name="BSD" url="https://github.com/nbronson/scala-stm/blob/master/LICENSE.txt"/>
+				<metadata-artifact status="no" details="" size="2535" time="0" location="/Users/james/.ivy2/cache/org.scala-stm/scala-stm_2.10.0/ivy-0.6.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-stm/scala-stm_2.10.0/0.6/scala-stm_2.10.0-0.6.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="0.6" rev-constraint-default="0.6" rev-constraint-dynamic="0.6" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scala-stm_2.10.0" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="915138" time="0" location="/Users/james/.ivy2/cache/org.scala-stm/scala-stm_2.10.0/docs/scala-stm_2.10.0-0.6-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-stm/scala-stm_2.10.0/0.6/scala-stm_2.10.0-0.6-javadoc.jar"/>
+					</artifact>
+					<artifact name="scala-stm_2.10.0" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="111870" time="0" location="/Users/james/.ivy2/cache/org.scala-stm/scala-stm_2.10.0/srcs/scala-stm_2.10.0-0.6-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-stm/scala-stm_2.10.0/0.6/scala-stm_2.10.0-0.6-sources.jar"/>
+					</artifact>
+					<artifact name="scala-stm_2.10.0" type="jar" ext="jar" status="no" details="" size="609513" time="0" location="/Users/james/.ivy2/cache/org.scala-stm/scala-stm_2.10.0/jars/scala-stm_2.10.0-0.6.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-stm/scala-stm_2.10.0/0.6/scala-stm_2.10.0-0.6.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.akka" name="akka-actor_2.10">
+			<revision name="2.1.0" status="release" pubdate="20121222122239" resolver="public" artresolver="public" homepage="http://akka.io" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="4">
+				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
+				<metadata-artifact status="no" details="" size="2641" time="0" location="/Users/james/.ivy2/cache/com.typesafe.akka/akka-actor_2.10/ivy-2.1.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.10/2.1.0/akka-actor_2.10-2.1.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="2.1.0" rev-constraint-default="2.1.0" rev-constraint-dynamic="2.1.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="akka-actor_2.10" type="jar" ext="jar" status="no" details="" size="1892369" time="0" location="/Users/james/.ivy2/cache/com.typesafe.akka/akka-actor_2.10/jars/akka-actor_2.10-2.1.0.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.10/2.1.0/akka-actor_2.10-2.1.0.jar"/>
+					</artifact>
+					<artifact name="akka-actor_2.10" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="240996" time="0" location="/Users/james/.ivy2/cache/com.typesafe.akka/akka-actor_2.10/srcs/akka-actor_2.10-2.1.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.10/2.1.0/akka-actor_2.10-2.1.0-sources.jar"/>
+					</artifact>
+					<artifact name="akka-actor_2.10" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="1931959" time="0" location="/Users/james/.ivy2/cache/com.typesafe.akka/akka-actor_2.10/docs/akka-actor_2.10-2.1.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.10/2.1.0/akka-actor_2.10-2.1.0-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="io.netty" name="netty">
+			<revision name="3.3.1.Final" status="release" pubdate="20120204152535" resolver="public" artresolver="public" homepage="http://netty.io/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="3">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="5981" time="0" location="/Users/james/.ivy2/cache/io.netty/netty/ivy-3.3.1.Final.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/io/netty/netty/3.3.1.Final/netty-3.3.1.Final.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="3.3.1.Final" rev-constraint-default="3.3.1.Final" rev-constraint-dynamic="3.3.1.Final" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="netty" type="jar" ext="jar" status="no" details="" size="920379" time="0" location="/Users/james/.ivy2/cache/io.netty/netty/jars/netty-3.3.1.Final.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/io/netty/netty/3.3.1.Final/netty-3.3.1.Final.jar"/>
+					</artifact>
+					<artifact name="netty" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="861700" time="0" location="/Users/james/.ivy2/cache/io.netty/netty/srcs/netty-3.3.1.Final-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/io/netty/netty/3.3.1.Final/netty-3.3.1.Final-sources.jar"/>
+					</artifact>
+					<artifact name="netty" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="2319174" time="0" location="/Users/james/.ivy2/cache/io.netty/netty/docs/netty-3.3.1.Final-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/io/netty/netty/3.3.1.Final/netty-3.3.1.Final-javadoc.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe" name="config">
+			<revision name="1.0.0" status="release" pubdate="20130205154411" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/typesafehub/config" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="1">
+				<license name="Apache License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+				<metadata-artifact status="no" details="" size="2725" time="0" location="/Users/james/.ivy2/cache/com.typesafe/config/ivy-1.0.0.xml" searched="false" origin-is-local="false" origin-location="http://repo.typesafe.com/typesafe/releases/com/typesafe/config/1.0.0/config-1.0.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="1.0.0" rev-constraint-default="1.0.0" rev-constraint-dynamic="1.0.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="config" type="jar" ext="jar" status="no" details="" size="185676" time="0" location="/Users/james/.ivy2/cache/com.typesafe/config/jars/config-1.0.0.jar">
+						<origin-location is-local="false" location="http://repo.typesafe.com/typesafe/releases/com/typesafe/config/1.0.0/config-1.0.0.jar"/>
+					</artifact>
+					<artifact name="config" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="149295" time="0" location="/Users/james/.ivy2/cache/com.typesafe/config/docs/config-1.0.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/config/1.0.0/config-1.0.0-javadoc.jar"/>
+					</artifact>
+					<artifact name="config" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="124199" time="0" location="/Users/james/.ivy2/cache/com.typesafe/config/srcs/config-1.0.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/config/1.0.0/config-1.0.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.10.0" status="release" pubdate="20121220072916" resolver="public" artresolver="public" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default(compile), default, compile, runtime, master" position="0">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2392" time="0" location="/Users/james/.ivy2/cache/org.scala-lang/scala-library/ivy-2.10.0.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0.pom"/>
+				<caller organisation="migrator" name="migrator$sources_javadoc_2.10" conf="test, compile, runtime" rev="2.10.0" rev-constraint-default="2.10.0" rev-constraint-dynamic="2.10.0" callerrev="0.1-SNAPSHOT"/>
+				<artifacts>
+					<artifact name="scala-library" type="doc" ext="jar" extra-classifier="javadoc" status="no" details="" size="33515231" time="0" location="/Users/james/.ivy2/cache/org.scala-lang/scala-library/docs/scala-library-2.10.0-javadoc.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0-javadoc.jar"/>
+					</artifact>
+					<artifact name="scala-library" type="src" ext="jar" extra-classifier="sources" status="no" details="" size="1054538" time="0" location="/Users/james/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.10.0-sources.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.0/scala-library-2.10.0-sources.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

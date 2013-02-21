@@ -1,0 +1,3 @@
+Most DFID supported projects under the Lesotho bilateral programme ended in 2010. One project – the ALAFA initiative which provides HIV services to 40,000 factory workers in the garment industry – runs until August 2011. To help ensure that ALAFA's work continues into the long term, we will be providing an additional £1m to the project.
+
+At the same time, the UK will continue to support Lesotho through multilateral agencies such as the EU and World Bank (around £7m each year), debt relief (around £1m last year) and DFID's regional programme which is run from Pretoria. In addition, civil society organisations working in Lesotho will continue to receive UK support through centrally managed funds.

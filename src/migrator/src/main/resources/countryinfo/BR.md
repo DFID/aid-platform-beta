@@ -1,0 +1,15 @@
+Brazil is the eighth largest economy in the world and is expected to rise to fourth largest by 2050.  It has an increasingly assertive foreign policy, is a key member of the World Trade Organisation, the G20, the G77, the Non Aligned Movement, BRICS (Brazil, Russia, India and China) and IBSA (India, Brazil and South Africa) groups and is a leading candidate for permanent membership of a reformed UN Security Council.
+
+Brazil and UK share many common views on trade liberalisation, poverty and inclusive growth, climate change and multilateralism. Brazil has taken a wider role on global security and already plays a strong stabilisation role in the Latin American region.
+
+Brazil is on course for achieving the MDGs. It has lifted nearly 20 million Brazilians out of poverty in the last decade and its famed Condition Cash Transfer programme Bolsa Familia benefits a quarter of Brazil’s population making it one of the most effective social programmes of its kind.
+
+DFID is working in partnership with Brazil to promote development and poverty reduction globally. DFID has no programme inside Brazil itself.  Together we aim to have a positive impact on global issues such as growth and trade, conflict and security, climate change and sustainable development.  We focus on areas where Brazil has strong domestic experience and expertise which is well matched to in-country demand.  We are also working to strengthen our partnership with Brazil to shape and deliver the development agenda in international processes - in the G20, Doha and the UN.  Working in partnership with Brazil on its distinctive south-south approach to development cooperation has real potential to open up different routes to address development challenges and opportunities for impact.
+
+Its domestic success in poverty reduction, food security, maternal and child health, social protection, low carbon development and climate change mitigation, as well as its methods to achieve results make Brazil a highly credible development partner.  As a result, its skills are in demand from other developing countries which face similar problems.
+
+In addition, Brazil’s natural resources and the ecosystem services they provide (tropical forest, arable land, freshwater, agricultural products) are globally significant.
+
+Brazil has the potential to promote a much cleaner, more sustainable model of development to low income countries (LICs) than that offered by traditional donors, providing real experience on ways that LICs can minimise the environmental impact of their growth.
+
+So what is Brazil doing to meet demands for its experience? It is keen to help and sees development cooperation as an important element of its growing global profile.  But it does not want simply to be part of a traditional donor "club". It prides itself on promoting a distinctive model of "horizontal" partnership through solidarity, based on equal south-south partnerships.
