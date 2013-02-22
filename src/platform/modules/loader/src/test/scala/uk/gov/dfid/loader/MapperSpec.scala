@@ -21,7 +21,7 @@ class MapperSpec extends Specification with Mockito {
 
       // assert
       there was one(db).createNode
-      there was one(node).setProperty("label", "my-sausage")
+      there was one(node).setProperty("label", "my-node")
     }
 
     "add attribtues as properties with munged types" in {
