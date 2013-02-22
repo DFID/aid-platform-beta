@@ -24,6 +24,14 @@ GET     /countries/:id              @controllers.Countries.edit(id: String)
 POST    /countries/:id              @controllers.Countries.update(id: String)
 POST    /countries/:id/delete       @controllers.Countries.delete(id: String)
 
+# What We Do
+GET     /whatwedo                   @controllers.WhatWeDo.index
+GET     /whatwedo/new               @controllers.WhatWeDo.create
+POST    /whatwedo                   @controllers.WhatWeDo.save
+GET     /whatwedo/:id               @controllers.WhatWeDo.edit(id: String)
+POST    /whatwedo/:id               @controllers.WhatWeDo.update(id: String)
+POST    /whatwedo/:id/delete        @controllers.WhatWeDo.delete(id: String)
+
 # Auth
 GET     /login                      @controllers.Authentication.login
 POST    /login                      @controllers.Authentication.authenticate

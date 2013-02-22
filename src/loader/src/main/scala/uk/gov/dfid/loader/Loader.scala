@@ -12,8 +12,10 @@ import concurrent.ExecutionContext.Implicits.global
 import concurrent.Await
 import concurrent.duration._
 import org.neo4j.kernel.EmbeddedGraphDatabase
-import uk.gov.dfid.common.neo4j.Neo4JQueryEngine
-import uk.gov.dfid.common.api.CountriesApi
+import org.neo4j.cypher.ExecutionEngine
+import org.neo4j.kernel.impl.util.StringLogger
+import org.neo4j.helpers.collection.Visitor
+import org.neo4j.kernel.impl.util.StringLogger.LineLogger
 
 object Loader extends App {
 
@@ -27,9 +29,8 @@ object Loader extends App {
   val validator  = new Validator
   val neo4j      = new EmbeddedGraphDatabase(config.getString("neo4j.path"))
   val mapper     = new Mapper(neo4j)
-
-  val engine     = new Neo4JQueryEngine(neo4j)
-  val aggregator = new Aggregator(engine, new CountriesApi(database), database)
+  val engine     = new ExecutionEngine(neo4j)
+  val aggregator = new Aggregator(engine, database)
 
   // first we clear the entire graph db
   neo4j.clearDb
@@ -87,7 +88,8 @@ object Loader extends App {
   }
 
   // calculate the country budgets for DFID projects
-  // Await.ready(aggregator.rollupCountryBudgets, 2 minutes)
+  println(s"Rolling up country Budgets")
+  Await.ready(aggregator.rollupCountryBudgets, 2 minutes)
 
   println(s"Shutting down neo4j")
   neo4j.shutdown()
