@@ -2,11 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /                           controllers.Application.index
+GET     /                           @controllers.Application.index
+GET     /access                     @controllers.Access.index
+GET     /aggregate                  @controllers.Aggregate.index
+GET     /access/organisations       @controllers.Organisations.index
+GET     /access/activities          @controllers.Activities.index
+GET     /access/countries           @controllers.Countries.index
+GET     /access/countries/:code     @controllers.Countries.view(code: String)
 
 ->      /admin                      admin.Routes
-
-->      /api                        api.Routes
-
-GET     /assets/*file               controllers.Assets.at(path="/public", file)

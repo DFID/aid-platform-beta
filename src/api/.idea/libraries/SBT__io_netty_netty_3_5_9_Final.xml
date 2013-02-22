@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SBT: io.netty:netty:3.5.9.Final">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/utils/pvm/install/2.1.0/repository/local/io.netty/netty/3.5.9.Final/bundles/netty.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

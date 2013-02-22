@@ -17,6 +17,8 @@ class Mapper(val db: GraphDatabaseService) {
       implicit val index = db.index.forNodes("entities")
 
       performMap(el)
+
+      println("Done Mapping")
     }
   }
 
