@@ -63,7 +63,7 @@ title: Aid Information Platform
     </div>
 </div>
 <div class="row top-5s">
-    <div class="six columns" id="top-5-countries">
+    <div class="four columns" id="top-5-countries">
         <h4>Where we work</h4>
         <ol>
         <% top_5_countries.each do |country| %>
@@ -76,13 +76,26 @@ title: Aid Information Platform
         <a href="#">See all...<span class="visually-hidden">top countries</span></a>
     </div>
 
-    <div class="six columns" id="top-5-sectors">
+    <div class="four columns" id="top-5-sectors">
         <h4>What we do</h4>
         <ol>
           <% what_we_do.each do |entry| %>
           <li>
             <a href="#" class="truncate" title="<%= entry['title'] %>"><%= entry['title'] %> </a>
                 <em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em>
+          </li>
+          <% end %>  
+        </ol>  
+         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>                
+    </div>
+
+    <div class="four columns" id="top-5-sectors">
+        <h4>What we achieve</h4>
+        <ol>
+          <% projects_helper.each do |project, budget| %>
+          <li>
+            <a href="#" class="truncate" title="<%= project %>"><%= project %> </a>
+                <em><span class="visually-hidden">Budget</span><%= budget %></em>
           </li>
           <% end %>  
         </ol>  

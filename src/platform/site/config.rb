@@ -5,7 +5,6 @@ require "kramdown"
 
 # configuration variables
 @api_access_url = 'http://localhost:9008/access'
-
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
 
@@ -74,16 +73,6 @@ helpers do
    def countries_helper
      countriesJSON = HTTParty.get("#{@api_access_url}/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
-   end
-
-   def sectors_helper
-      sectors = [
-        ["Economic and development policy/planning", "£1917m"],
-        ["Education policy and administrative management", "£1687m"],
-        ["Primary education", "£1687m"],
-        ["Social/ welfare services", "£1402m"],
-        ["Bio-diversity", "£1391m"]
-      ]
    end
 
    def projects_helper
