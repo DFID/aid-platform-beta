@@ -8,8 +8,10 @@ import concurrent.ExecutionContext.Implicits.global
 
 class Deployinator @Inject()(loader: Loader) extends Deployer {
   def deploy {
-    loader.load.onSuccess { case _ =>
+    loader.load.onComplete { case _ =>
+      println("Building Site")
       "./build-site.sh".!
+      println("Built Site")
     }
   }
 }
