@@ -4,7 +4,7 @@ require "kramdown"
 
 
 # configuration variables
-@api_access_url = 'http://0.0.0.0:9000/access'
+@api_access_url = 'http://0.0.0.0:9001/access'
 
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
@@ -41,7 +41,7 @@ require "kramdown"
 #end
 
 ignore "/countries/index.html"
-countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
+countriesJSON = HTTParty.get("http://0.0.0.0:9001/access/countries") #make sure test-api is running
 parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
 parsedJSON.each do |country|
   proxy "/countries/#{country['code']}/index.html", "/countries/index.html", :locals => {:country => country, :code => country['code']}
@@ -71,7 +71,7 @@ helpers do
   end
   
   def top_5_countries
-    response = HTTParty.get("http://0.0.0.0:9000/access/countries")
+    response = HTTParty.get("http://0.0.0.0:9001/access/countries")
     body     = JSON.parse(response.body)
 
     body.sort_by! { |c| c['totalBudget'] }.take 5
@@ -82,7 +82,7 @@ helpers do
   end
 
    def countries_helper
-     countriesJSON = HTTParty.get("http://0.0.0.0:9000/access/countries") #make sure test-api is running
+     countriesJSON = HTTParty.get("http://0.0.0.0:9001/access/countries") #make sure test-api is running
      parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
    end
 
