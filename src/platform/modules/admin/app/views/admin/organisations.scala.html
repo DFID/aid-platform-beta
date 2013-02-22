@@ -1,0 +1,33 @@
+@(organisations: List[models.IatiDataSource])
+
+@views.html.admin.main() {
+    <h1>Organisation Files</h1>
+
+    @helper.form(action = controllers.admin.routes.OrganisationSources.refresh){
+        <input type="submit" class="btn" value="Refresh Sources" />
+    }
+
+    @helper.form(action = controllers.admin.routes.OrganisationSources.save){
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @organisations.map { organisation =>
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="active" value="@organisation.id.get.stringify" @("checked".when(organisation.active)) />
+                        </td>
+                        <td>@organisation.title</td>
+                        <td><a href="@organisation.url">Link</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="submit" class="btn" value="Save" />
+    }
+}

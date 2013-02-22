@@ -1,0 +1,13 @@
+
+GET     /                           @controllers.api.Application.index
+
+GET     /access                     @controllers.api.Access.index
+
+GET     /aggregate                  @controllers.api.Aggregate.index
+
+GET     /access/organisations       @controllers.api.Organisations.index
+
+GET     /access/activities          @controllers.api.Activities.index
+
+GET     /access/countries           @controllers.api.Countries.index
+GET     /access/countries/:code     @controllers.api.Countries.view(code: String)

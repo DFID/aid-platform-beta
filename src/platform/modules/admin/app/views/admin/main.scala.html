@@ -1,0 +1,45 @@
+@(showHeader: Boolean = true)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Aid Platform</title>
+
+        <link rel='stylesheet' href='@controllers.admin.routes.Assets.at("admin/stylesheets/bootstrap.min.css")'>
+        <link rel='stylesheet' href='@controllers.admin.routes.Assets.at("admin/stylesheets/markdown.editor.css")'>
+        <link rel='stylesheet' href='@controllers.admin.routes.Assets.at("admin/stylesheets/admin.css")'>
+
+        <script type='text/javascript' src='@controllers.admin.routes.Assets.at("admin/javascripts/jquery-1.9.0.min.js")'></script>
+        <script type='text/javascript' src='@controllers.admin.routes.Assets.at("admin/javascripts/bootstrap.min.js")'></script>
+        <script type="text/javascript" src='@controllers.admin.routes.Assets.at("admin/javascripts/Markdown.Converter.js")'></script>
+        <script type="text/javascript" src='@controllers.admin.routes.Assets.at("admin/javascripts/Markdown.Sanitizer.js")'></script>
+        <script type="text/javascript" src='@controllers.admin.routes.Assets.at("admin/javascripts/Markdown.Editor.js")'></script>
+    </head>
+    <body>
+        @if(showHeader){
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a class="brand" href="@controllers.admin.routes.Application.index">DFID Aid Platform Back Office</a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li class="active"><a href="@controllers.admin.routes.Application.index">Home</a></li>
+                                <li><a href="@controllers.admin.routes.Authentication.logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="container">
+            @content
+        </div>
+    </body>
+</html>

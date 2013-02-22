@@ -1,0 +1,44 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           @controllers.admin.Application.index
+POST    /deploy                     @controllers.admin.Application.deploy
+
+# Organisations
+GET     /organisations              @controllers.admin.OrganisationSources.index
+POST    /organisations              @controllers.admin.OrganisationSources.save
+POST    /organisations/refresh      @controllers.admin.OrganisationSources.refresh
+
+# Activities
+GET     /activities                 @controllers.admin.ActivitySources.index
+POST    /activities                 @controllers.admin.ActivitySources.save
+POST    /activities/refresh         @controllers.admin.ActivitySources.refresh
+
+# Countries
+GET     /countries                  @controllers.admin.Countries.index
+GET     /countries/new              @controllers.admin.Countries.create
+POST    /countries                  @controllers.admin.Countries.save
+GET     /countries/:id              @controllers.admin.Countries.edit(id: String)
+POST    /countries/:id              @controllers.admin.Countries.update(id: String)
+POST    /countries/:id/delete       @controllers.admin.Countries.delete(id: String)
+
+# What We Do
+GET     /whatwedo                   @controllers.admin.WhatWeDo.index
+GET     /whatwedo/new               @controllers.admin.WhatWeDo.create
+POST    /whatwedo                   @controllers.admin.WhatWeDo.save
+GET     /whatwedo/:id               @controllers.admin.WhatWeDo.edit(id: String)
+POST    /whatwedo/:id               @controllers.admin.WhatWeDo.update(id: String)
+POST    /whatwedo/:id/delete        @controllers.admin.WhatWeDo.delete(id: String)
+
+# Auth
+GET     /login                      @controllers.admin.Authentication.login
+POST    /login                      @controllers.admin.Authentication.authenticate
+GET     /logout                     @controllers.admin.Authentication.logout
+
+GET     /assets/*file               controllers.admin.Assets.at(path="/public", file)
