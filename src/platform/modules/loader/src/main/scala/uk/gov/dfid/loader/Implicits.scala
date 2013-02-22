@@ -80,6 +80,7 @@ object Implicits {
         result
       } catch {
         case e: Throwable =>
+          println(e.getMessage)
           tx.failure()
           throw e
       } finally {

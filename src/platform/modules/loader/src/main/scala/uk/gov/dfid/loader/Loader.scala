@@ -10,8 +10,9 @@ import concurrent.ExecutionContext.Implicits.global
 import org.neo4j.kernel.EmbeddedGraphDatabase
 import org.neo4j.cypher.ExecutionEngine
 import com.google.inject.Inject
-import concurrent.Future
+import concurrent.{Await, Future}
 import org.neo4j.graphdb.GraphDatabaseService
+import concurrent.duration._
 
 trait DataLoader {
   def load: Future[Unit]
@@ -35,7 +36,7 @@ class Loader @Inject()(database: DefaultDB, neo4j: GraphDatabaseService) extends
 
       // find all data sources of a particular type.  they must be active
       // to be of relevance to us
-      sources.find(BSONDocument(
+      val mapTask = sources.find(BSONDocument(
         "sourceType" -> BSONString(sourceType),
         "active" -> BSONBoolean(true)
       )).toList.map { datasources =>
@@ -77,8 +78,15 @@ class Loader @Inject()(database: DefaultDB, neo4j: GraphDatabaseService) extends
           }
         }
       }
+
+      // we need to block here util each is done
+      Await.ready(mapTask, 2 minutes)
     }
 
-    aggregator.rollupCountryBudgets
+    println("Aggregating Budgets")
+    aggregator.rollupCountryBudgets andThen { case _ =>
+      println("Aggregated Budgets")
+    }
+
   }
 }
