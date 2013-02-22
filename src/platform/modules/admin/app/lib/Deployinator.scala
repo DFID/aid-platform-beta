@@ -12,11 +12,7 @@ class Deployinator @Inject()(loader: Loader) extends Deployer {
   def deploy {
     loader.load.onComplete { case _ =>
       println("Building Site")
-
-      Future {
-        println(Process.apply("./build-site.sh").!)
-        println("Built Site")
-      }
+      Process.apply("./build-site.sh").run
     }
   }
 }
