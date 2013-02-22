@@ -4,7 +4,7 @@ require "kramdown"
 
 
 # configuration variables
-@api_access_url = 'http://0.0.0.0:9000/access'
+@api_access_url = 'http://0.0.0.0:9008/access'
 
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
