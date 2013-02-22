@@ -1,0 +1,31 @@
+@()(implicit flash: Flash)
+
+@views.html.admin.main() {
+
+    @flash.get("message").map { msg =>
+        <div class='alert @flash.get("type").map("alert-" + _).getOrElse("")'>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @msg
+        </div>
+    }
+
+    <div class="hero-unit" style="text-align:center">
+        <a class="btn btn-danger btn-large" href="#deploy" data-toggle="modal" role="button">Deploy!</a>
+        @modal.deploy()
+    </div>
+
+    <ul>
+        <li>
+            <a href="@controllers.admin.routes.OrganisationSources.index">Select Organisation File Sources</a>
+        </li>
+        <li>
+            <a href="@controllers.admin.routes.ActivitySources.index">Select Activity File Sources</a>
+        </li>
+        <li>
+            <a href="@controllers.admin.routes.Countries.index">Edit Country Info</a>
+        </li>
+        <li>
+            <a href="@controllers.admin.routes.WhatWeDo.index">Edit What We Do</a>
+        </li>
+    </ul>
+}

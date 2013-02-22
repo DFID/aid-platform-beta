@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SBT: org.neo4j:neo4j-graph-matching:1.8.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/utils/pvm/install/2.1.0/repository/cache/org.neo4j/neo4j-graph-matching/jars/neo4j-graph-matching-1.8.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

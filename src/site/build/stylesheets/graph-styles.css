@@ -1,0 +1,20 @@
+.progress .max { fill: #D8DCBF; }
+.progress .bar { fill: #2B6367; }
+
+.progress .label {
+    font-size:14px;
+}
+
+.progress .text {
+    font-size:16px;
+    font-weight:bold; }
+
+#time-progress .percent {
+    font-size:16px;
+    font-weight:bold;
+    fill: #000; }
+
+.progress .percent {
+    font-size:16px;
+    font-weight:bold;
+    fill: #666666; }

@@ -1,0 +1,14 @@
+[0m[[0minfo[0m] [0mUpdating {file:/Users/kyledavidson/aid-platform-beta/src/cms/}cms...[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/mindrot/jbcrypt/0.3m/jbcrypt-0.3m.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.mindrot#jbcrypt;0.3m!jbcrypt.jar (143ms)[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/reactivemongo/play2-reactivemongo_2.10/0.8/play2-reactivemongo_2.10-0.8.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.reactivemongo#play2-reactivemongo_2.10;0.8!play2-reactivemongo_2.10.jar (285ms)[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/webjars/bootstrap/2.2.2-1/bootstrap-2.2.2-1.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.webjars#bootstrap;2.2.2-1!bootstrap.jar (289ms)[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/webjars/jquery/1.9.0/jquery-1.9.0.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.webjars#jquery;1.9.0!jquery.jar (128ms)[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/scalatest/scalatest_2.10/1.9.1/scalatest_2.10-1.9.1.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.scalatest#scalatest_2.10;1.9.1!scalatest_2.10.jar (594ms)[0m
+[0m[[0minfo[0m] [0mdownloading http://repo1.maven.org/maven2/org/scala-lang/scala-actors/2.10.0/scala-actors-2.10.0.jar ...[0m
+[0m[[0minfo[0m] [0m	[SUCCESSFUL ] org.scala-lang#scala-actors;2.10.0!scala-actors.jar (244ms)[0m
+[0m[[0minfo[0m] [0mDone updating.[0m
