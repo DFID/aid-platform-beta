@@ -4,7 +4,7 @@ require "kramdown"
 
 
 # configuration variables
-@api_access_url = 'http://ec2-46-137-43-29.eu-west-1.compute.amazonaws.com:9008/access'
+@api_access_url = 'http://localhost:9008/access'
 
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
