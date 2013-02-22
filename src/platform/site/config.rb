@@ -4,7 +4,7 @@ require "kramdown"
 
 
 # configuration variables
-@api_access_url = 'http://0.0.0.0:9002/api/access'
+@api_access_url = 'http://0.0.0.0:9006/api/access'
 
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
@@ -69,6 +69,10 @@ helpers do
 
   def what_we_do
     @cms_db['whatwedo'].find({})
+  end
+
+  def what_we_achieve
+    @cms_db['whatweachieve'].find({})
   end
 
    def countries_helper

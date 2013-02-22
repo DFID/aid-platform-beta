@@ -7,6 +7,7 @@ import uk.gov.dfid.common.models.{CountryStats, Country}
 import uk.gov.dfid.common.api._
 import reactivemongo.api.{MongoConnection, DefaultDB}
 import models.WhatWeDoEntry
+import models.WhatWeAchieveEntry
 import play.api.Play
 import collection.JavaConversions._
 import concurrent.ExecutionContext.Implicits.global
@@ -27,6 +28,7 @@ class Dependencies extends ScalaModule {
      })
      bind[Api[Country]].to[CountriesApi]
      bind[Api[WhatWeDoEntry]].to[WhatWeDoApi]
+     bind[Api[WhatWeAchieveEntry]].to[WhatWeAchieveApi]
      bind[GraphDatabaseService].toInstance(SingletonEmbeddedNeo4JDatabaseHasALongName.db)
      bind[ReadOnlyApi[Country]].to[ReadOnlyCountriesApi]
      bind[ReadOnlyApi[CountryStats]].to[ReadonlyCountryStatsApi]

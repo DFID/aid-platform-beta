@@ -92,10 +92,10 @@ title: Aid Information Platform
     <div class="four columns" id="top-5-sectors">
         <h4>What we achieve</h4>
         <ol>
-          <% projects_helper.each do |project, budget| %>
+          <% what_we_achieve.each do |entry| %>
           <li>
-            <a href="#" class="truncate" title="<%= project %>"><%= project %> </a>
-                <em><span class="visually-hidden">Budget</span><%= budget %></em>
+             <a href="#" class="truncate" title="<%= entry['title'] %>"><%= entry['title'] %> </a>
+                <em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em>
           </li>
           <% end %>  
         </ol>  
