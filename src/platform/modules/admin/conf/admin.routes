@@ -36,6 +36,14 @@ GET     /whatwedo/:id               @controllers.admin.WhatWeDo.edit(id: String)
 POST    /whatwedo/:id               @controllers.admin.WhatWeDo.update(id: String)
 POST    /whatwedo/:id/delete        @controllers.admin.WhatWeDo.delete(id: String)
 
+# What We Achieve
+GET     /whatweachieve                   @controllers.admin.WhatWeAchieve.index
+GET     /whatweachieve/new               @controllers.admin.WhatWeAchieve.create
+POST    /whatweachieve                   @controllers.admin.WhatWeAchieve.save
+GET     /whatweachieve/:id               @controllers.admin.WhatWeAchieve.edit(id: String)
+POST    /whatweachieve/:id               @controllers.admin.WhatWeAchieve.update(id: String)
+POST    /whatweachieve/:id/delete        @controllers.admin.WhatWeAchieve.delete(id: String)
+
 # Auth
 GET     /login                      @controllers.admin.Authentication.login
 POST    /login                      @controllers.admin.Authentication.authenticate

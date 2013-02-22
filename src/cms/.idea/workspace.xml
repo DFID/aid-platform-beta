@@ -5,6 +5,8 @@
     <ignored path="cms.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/index.scala.html" changelist="1118b3e4-48b3-4082-85b3-52e83244c2e0" time="1361444976139" ignored="false" />
+    <file path="$PROJECT_DIR$/../api/target/scala-2.10/src_managed/main/routes_reverseRouting.scala" changelist="1118b3e4-48b3-4082-85b3-52e83244c2e0" time="1361541028675" ignored="false" />
+    <file path="$PROJECT_DIR$/../api/target/scala-2.10/src_managed/main/routes_routing.scala" changelist="1118b3e4-48b3-4082-85b3-52e83244c2e0" time="1361541057041" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,17 +64,7 @@
     <favorites_list name="cms" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="routes.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/target/scala-2.10/src_managed/main/controllers/routes.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="13" selection-start="193" selection-end="193" vertical-scroll-proportion="0.028735632">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -120,7 +112,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -168,6 +159,10 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="html" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -194,10 +189,6 @@
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="html" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -211,6 +202,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -355,7 +347,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="22" width="1260" height="708" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
