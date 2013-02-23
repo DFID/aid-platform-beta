@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="twelve columns">
+        <div class="tab-bar-container">
+            <div class="row">
+                <!--<div class="five columns budget-total push-seven">-->
+                <div class="budget-total">
+                    <p>Total DFID Budget <%= current_financial_year %>
+                    <span><%= format_billion_stg dfid_total_budget %></span></p>
+                </div>
+
+                <!--<div class="seven columns projects-nav pull-five">-->
+                <div class="projects-nav">
+                    <p>Project Level</p>
+                    <nav>
+                        <ul class="tab-bar">
+                            <li <%= active=="global" ? "class='active'" : ""%>><a href="/location/global">Global <span>Projects</span></a></li>
+                            <li <%= active=="regional" ? "class='active'" : ""%>><a href="/location/regional">Regional <span>Projects</span></a></li>
+                            <li <%= active=="country" ? "class='active'" : ""%>><a href="/location/country">Country <span>Projects</span></a></li>
+                        </ul>
+                    </nav>
+                </div>          
+            </div>
+        </div>
+    </div>
+</div>
