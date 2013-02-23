@@ -1,0 +1,44 @@
+@(frontpage: Form[(List[(String, String)], List[(String, String)])])
+
+@views.html.admin.main() {
+
+    <style>
+        label { display: none; }
+        input { margin: 0px!important; }
+    </style>
+    @helper.form(action = controllers.admin.routes.FrontPage.save) {
+        <div class="row">
+            <div class="span6">
+                <h1>What We Do</h1>
+                @helper.repeat(frontpage("whatwedo"), min = 5) { field =>
+                    <div class="row">
+                        <div class="span4">
+                            @helper.inputText(field("text"), 'class -> "span4")
+                        </div>
+                        <div class="span2">
+                            @helper.inputText(field("value"), 'class -> "span2")
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="span6">
+                <h1>What we Achieve</h1>
+                @helper.repeat(frontpage("whatweachieve"), min = 5) { field =>
+                    <div class="row">
+                        <div class="span4">
+                            @helper.inputText(field("text"), 'class -> "span4")
+                        </div>
+                        <div class="span2">
+                            @helper.inputText(field("value"), 'class -> "span2")
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+
+        <input type="submit" class="btn btn-large" value="Update" />
+    }
+}
