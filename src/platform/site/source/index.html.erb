@@ -34,13 +34,13 @@ title: Aid Information Platform
     <div class="row" id="nav-entry">
         <div class="six columns col">
             <h2>
-                <a href="/location" class="by-location">
+                <a href="/location/global" class="by-location">
                     <span class="image-wrapper">
                         <img src="/images/by-location.gif" alt="">
                     </span>
                     <span class="link-wrapper"><small>Aid by</small> Location</span>
                 </a>
-            </h2>         
+            </h2>
         </div>
         <div class="six columns col">
             <h2>
@@ -51,7 +51,7 @@ title: Aid Information Platform
                     <span class="link-wrapper"><small>Aid by</small> Sector</span>
                 </a>
             </h2>
-            
+
         </div>
     </div>
 </nav>
@@ -59,7 +59,7 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="twelve columns">
-        <h3 class="section-group-title">UK AID TOP 5s</h3> 
+        <h3 class="section-group-title">UK AID TOP 5s</h3>
     </div>
 </div>
 <div class="row top-5s">
@@ -71,9 +71,8 @@ title: Aid Information Platform
               <a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
               <em><span class="visually-hidden">Budget</span><%= format_million_stg country['totalBudget'] %></em>
           </li>
-        <% end %> 
+        <% end %>
         </ol>
-        <a href="#">See all...<span class="visually-hidden">top countries</span></a>
     </div>
 
     <div class="four columns" id="top-5-sectors">
@@ -81,25 +80,23 @@ title: Aid Information Platform
         <ol>
           <% what_we_do.each do |entry| %>
           <li>
-            <a href="#" class="truncate" title="<%= entry['title'] %>"><%= entry['title'] %> </a>
-                <em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em>
+            <%= entry['title'] %> </a>
+            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
           </li>
-          <% end %>  
-        </ol>  
-         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>                
+          <% end %>
+        </ol>
     </div>
 
     <div class="four columns" id="top-5-sectors">
         <h4>What we achieve</h4>
         <ol>
-          <% projects_helper.each do |project, budget| %>
+          <% what_we_achieve.each do |entry| %>
           <li>
-            <a href="#" class="truncate" title="<%= project %>"><%= project %> </a>
-                <em><span class="visually-hidden">Budget</span><%= budget %></em>
+            <%= entry['title'] %>
+            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
           </li>
-          <% end %>  
-        </ol>  
-         <a href="#">See all...<span class="visually-hidden">top sectors</span></a>                
+          <% end %>
+        </ol>
     </div>
 
 </div>
