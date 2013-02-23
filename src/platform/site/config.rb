@@ -26,6 +26,21 @@ parsedJSON.each do |country|
 end
 
 #------------------------------------------------------------------------------
+# GENERATE PROJECTS
+#------------------------------------------------------------------------------
+ignore "/projects/index.html"
+
+projects_response = HTTParty.get("#{@api_access_url}/activities?hierarchy=1")
+projects_json     = JSON.parse(projects_response.body)
+
+projects_json.each do |project|
+  proxy "/projects/#{project['iati-identifier']}/index.html", '/projects/summary.html', :locals => { :project => project }
+  proxy "/projects/#{project['iati-identifier']}/documents/index.html", '/projects/documents.html', :locals => { :project => project }
+  proxy "/projects/#{project['iati-identifier']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project }
+  proxy "/projects/#{project['iati-identifier']}/partners/index.html", '/projects/partners.html', :locals => { :project => project }
+end
+
+#------------------------------------------------------------------------------
 # DEFINE HELPERS - Import from modules to avoid bloat
 #------------------------------------------------------------------------------
 helpers do
