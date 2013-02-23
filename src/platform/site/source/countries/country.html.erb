@@ -15,26 +15,19 @@ title: Aid Information Platform
     </div>
 </div>
 
-
-<div class="row">
-    <div class="twelve columns">
-        <div id="search-bar">
-            <form action="/projects" method="GET">
-                <label for="query">
-                    <h3>Search Projects</h3>
-                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-                </label>
-                <input type="submit" value="Search" class="button">
-            </form>
-        </div>
-    </div>
-</div>
-
+<%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'] } %>
 
 <div class="row">
     <div class="twelve columns">
-        <p class="description"><%= markdown_to_html country['description'] %></p>
+        <div class="description"><%= markdown_to_html country['description'] %></div>
+        <script type="text/javascript">
+            $('div.description').expander({
+                slicePoint    : 300,
+                expandSpeed   : 0,
+                collapseSpeed : 0
+            });
+        </script>
     </div>
 </div>
 

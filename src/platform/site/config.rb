@@ -32,6 +32,23 @@ helpers do
 
   include Formatters
 
+  def current_financial_year 
+    now = Time.new
+
+    if(now.month < 4)
+      "#{now.year-1}/#{now.year}"
+    else
+      "#{now.year}/#{now.year +1}"
+    end
+  end
+
+  def dfid_total_budget
+    response = HTTParty.get("#{@api_access_url}/countries")
+    body     = JSON.parse(response.body)    
+
+    body.inject(0) {|sum, c| sum + c['totalBudget'] }  
+  end
+
   def top_5_countries
     response = HTTParty.get("#{@api_access_url}/countries")
     body     = JSON.parse(response.body)
