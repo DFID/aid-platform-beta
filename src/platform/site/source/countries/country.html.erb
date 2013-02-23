@@ -30,23 +30,7 @@ title: Aid Information Platform
     </div>
 </div>
 
-<div class="row">
-    <div class="twelve columns">
-        <div class="tab-bar-container">
-            <div class="row">
-                <div class="projects-nav">
-                    <nav>
-                        <ul class="tab-bar">
-                            <li class="active"><a href="#">Summary</a></li>
-                            <li><a href="#">All Projects</a></li>
-                            <li><a href="http://projects.dfid.gov.uk/iati/Country/<%= code %>">IATI Data Set</a></li>
-                        </ul>
-                    </nav>
-                </div>       
-            </div>
-        </div>
-    </div>
-</div>
+<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'] } %>
 
 <div class="row">
     <div class="twelve columns">

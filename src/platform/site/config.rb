@@ -13,14 +13,16 @@ require "middleman-smusher"
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
 #------------------------------------------------------------------------------
-ignore "/countries/index.html"
+ignore "/countries/country.html"
 countriesJSON = HTTParty.get("#{@api_access_url}/countries")
 parsedJSON = JSON.parse(countriesJSON.body)
 parsedJSON.each do |country|
-  proxy "/countries/#{country['code']}/index.html", "/countries/index.html", :locals => {
+  proxy "/countries/#{country['code']}/index.html", "/countries/country.html", :locals => {
     :country => country, 
-    :code => country['code']
+    :code    => country['code']
   }
+
+  proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country }
 end
 
 #------------------------------------------------------------------------------
