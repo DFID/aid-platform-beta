@@ -31,62 +31,58 @@ class Loader @Inject()(database: DefaultDB, neo4j: GraphDatabaseService) extends
     // first we clear the entire graph db
     neo4j.clearDb
 
-    // iterate over each potential data source type
-    ("organisation" :: "activity" :: Nil).map { sourceType =>
 
-      // find all data sources of a particular type.  they must be active
-      // to be of relevance to us
-      val mapTask = sources.find(BSONDocument(
-        "sourceType" -> BSONString(sourceType),
-        "active" -> BSONBoolean(true)
-      )).toList.map { datasources =>
+    // find all data sources of a particular type.  they must be active
+    // to be of relevance to us
+    val mapTask = sources.find(BSONDocument(
+      "active" -> BSONBoolean(true)
+    )).toList.map { datasources =>
 
-        // partition by valid status
-        datasources.partition { source =>
+      // partition by valid status
+      datasources.partition { sourceDocument =>
 
-          // validate the data source
-          val url     = source.getAs[BSONString]("url").map(_.value).get
-          val ele     = XML.load(url)
-          val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.0")
-          val stream  = new URL(url).openStream
+        val source = sourceDocument.toTraversable
 
-          println(s"Validating: $url")
+        // validate the data source
+        val url     = source.getAs[BSONString]("url").map(_.value).get
+        val ele     = XML.load(url)
+        val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.0")
+        val stream  = new URL(url).openStream
 
-          // validation throws uncontrollable errors
-          try{
-            validator.validate(stream, version, sourceType)
-          } catch {
-            case e: Throwable => {
-              println(s"Error validating $url - ${e.getMessage}")
-              false
-            }
+        println(s"Validating: $url")
+
+        // validation throws uncontrollable errors
+        try{
+          validator.validate(stream, version, source.getAs[BSONString]("sourceType").map(_.value).get)
+        } catch {
+          case e: Throwable => {
+            println(s"Error validating $url - ${e.getMessage}")
+            false
           }
+        }
 
-        } match {
-          case (valid, invalid) => {
-            invalid.foreach(println)
+      } match {
+        case (valid, invalid) => {
+          invalid.foreach(println)
 
-            // load the valid source
-            valid.foreach { validSource  =>
-              val uri = validSource.getAs[BSONString]("url").map(_.value).get
-              val url = new URL(uri)
-              val ele = XML.load(url)
+          // load the valid source
+          valid.foreach { validSource  =>
+            val uri = validSource.getAs[BSONString]("url").map(_.value).get
+            val url = new URL(uri)
+            val ele = XML.load(url)
 
-              println(s"Mapping: $uri")
-              mapper.map(ele)
-            }
+            println(s"Mapping: $uri")
+            mapper.map(ele)
           }
         }
       }
-
-      // we need to block here util each is done
-      Await.ready(mapTask, 2 minutes)
     }
 
-    println("Aggregating Budgets")
-    aggregator.rollupCountryBudgets andThen { case _ =>
+    for (
+      mappings <- mapTask;
+      rollups  <- aggregator.rollupCountryBudgets
+    ) yield {
       println("Aggregated Budgets")
     }
-
   }
 }

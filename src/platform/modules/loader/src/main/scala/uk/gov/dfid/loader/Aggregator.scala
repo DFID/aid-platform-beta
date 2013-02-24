@@ -17,6 +17,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
 
   def rollupCountryBudgets = {
 
+    println("Rolling up Country Budgets")
+
     db.collection("countries").find(BSONDocument()).toList.map { countries =>
 
       val now = DateTime.now
@@ -29,33 +31,46 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
       countries.foreach { countryDocument =>
 
         val country = countryDocument.toTraversable
-        val code = country.getAs[BSONString]("code").get.value
 
-        val query = s"""
-          | START  n=node:entities(type="iati-activity")
-          | MATCH  n-[:`recipient-country`]-c,
-          |        n-[:`reporting-org`]-org,
-          |        n-[:budget]-b-[:value]-v
-          | WHERE  org.ref="GB-1"
-          | AND    c.code = "$code"
-          | AND    v.`value-date` >= "$start"
-          | AND    v.`value-date` <= "$end"
-          | RETURN v.value as value
-        """.stripMargin
+        try {
+          val code = country.getAs[BSONString]("code").get.value
 
-        val result = engine.execute(query).columnAs[Long]("value")
-        val totalBudget = result.toSeq.foldLeft(0L) { _ + _ }
+          val query = s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  n-[:`recipient-country`]-c,
+            |        n-[:`reporting-org`]-org,
+            |        n-[:budget]-b-[:value]-v
+            | WHERE  org.ref="GB-1"
+            | AND    c.code = "$code"
+            | AND    v.`value-date` >= "$start"
+            | AND    v.`value-date` <= "$end"
+            | RETURN SUM(v.value) as value
+          """.stripMargin
 
-        // update the country stats collection
-        db.collection("country-stats").update(
-          BSONDocument("code" -> BSONString(code)),
-          BSONDocument("$set" -> BSONDocument(
-            "code"        -> BSONString(code),
-            "totalBudget" -> BSONLong(totalBudget)
-          )),
-          multi = false,
-          upsert = true
-        )
+          val result = engine.execute(query).columnAs[Object]("value")
+
+          val totalBudget = result.toSeq.head match {
+            case v: java.lang.Integer => v.toLong
+            case v: java.lang.Long    => v.toLong
+          }
+
+          // update the country stats collection
+          db.collection("country-stats").update(
+            BSONDocument("code" -> BSONString(code)),
+            BSONDocument("$set" -> BSONDocument(
+              "code"        -> BSONString(code),
+              "totalBudget" -> BSONLong(totalBudget)
+            )),
+            multi = false,
+            upsert = true
+          )
+        }
+        catch {
+          case e: Throwable => {
+            println(e.getMessage)
+            println(e.getStackTrace.mkString("\n\t"))
+          }
+        }
       }
     }
   }
