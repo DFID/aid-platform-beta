@@ -6,7 +6,8 @@ require "middleman-smusher"
 #------------------------------------------------------------------------------
 # CONFIGURATION VARIABLES
 #------------------------------------------------------------------------------
-@api_access_url = ENV['DFID_API_URL'] || 'http://localhost:9000/access'
+@api_root_url   = ENV['DFID_API_URL'] || "http://localhost:9000"
+@api_access_url = "#{@api_root_url}/access"
 @cms_client     = Mongo::MongoClient.new('localhost', 27017)
 @cms_db         = @cms_client['dfid']
 
