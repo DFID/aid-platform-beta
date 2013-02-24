@@ -12,9 +12,19 @@ require "middleman-smusher"
 @cms_db         = @cms_client['dfid']
 
 #------------------------------------------------------------------------------
-# GENERATE COUNTRIES
+# IGNORE TEMPLATES AND PARTIALS
 #------------------------------------------------------------------------------
 ignore "/countries/country.html"
+ignore "/countries/projects.html"
+
+ignore "/projects/summary.html"
+ignore "/projects/documents.html"
+ignore "/projects/transactions.html"
+ignore "/projects/partners.html"
+
+#------------------------------------------------------------------------------
+# GENERATE COUNTRIES
+#------------------------------------------------------------------------------
 countriesJSON = HTTParty.get("#{@api_access_url}/countries")
 parsedJSON = JSON.parse(countriesJSON.body)
 parsedJSON.each do |country|
@@ -29,8 +39,6 @@ end
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
-ignore "/projects/index.html"
-
 projects_response = HTTParty.get("#{@api_access_url}/activities?hierarchy=1")
 projects_json     = JSON.parse(projects_response.body)
 
@@ -99,8 +107,8 @@ activate :livereload
 # BUILD SPECIFIC CONFIGURATION
 #------------------------------------------------------------------------------
 configure :build do
-  #activate :minify_css
-  #activate :minify_javascript
-  #activate :cache_buster
-  #activate :smusher
+  activate :minify_css
+  activate :minify_javascript
+  activate :cache_buster
+  activate :smusher
 end
