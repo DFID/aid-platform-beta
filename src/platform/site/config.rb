@@ -68,7 +68,7 @@ helpers do
     response = HTTParty.get("#{@api_access_url}/countries")
     body     = JSON.parse(response.body)
 
-    body.sort_by! { |c| c['totalBudget'] }.take 5
+    body.sort_by! { |c| -c['totalBudget'] }.take 5
   end
 
   def what_we_do

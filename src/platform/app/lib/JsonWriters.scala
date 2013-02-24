@@ -17,6 +17,7 @@ object JsonWriters {
         (key, node.getProperty(key) match {
           case v: java.lang.String  => JsString(v)
           case v: java.lang.Integer => JsNumber(BigDecimal(v))
+          case v: java.lang.Long    => JsNumber(BigDecimal(v))
           case v: java.lang.Double  => JsNumber(BigDecimal(v))
           case v: java.lang.Boolean => JsBoolean(v)
         })

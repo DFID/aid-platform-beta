@@ -8,6 +8,7 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentReader
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import org.neo4j.cypher.ExecutionEngine
+import org.neo4j.graphdb.Node
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -25,8 +26,9 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
         s"${now.getYear}-04-01" -> s"${now.getYear + 1}-03-31"
       }
 
-      countries.foreach { country =>
+      countries.foreach { countryDocument =>
 
+        val country = countryDocument.toTraversable
         val code = country.getAs[BSONString]("code").get.value
 
         val query = s"""
@@ -42,8 +44,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB) {
         """.stripMargin
 
         val result = engine.execute(query).columnAs[Long]("value")
-
-        val totalBudget = result.foldLeft(0L)(_ + _)
+        val totalBudget = result.toSeq.foldLeft(0L) { _ + _ }
 
         // update the country stats collection
         db.collection("country-stats").update(

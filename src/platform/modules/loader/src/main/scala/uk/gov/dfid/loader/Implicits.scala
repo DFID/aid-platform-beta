@@ -51,8 +51,7 @@ object Implicits {
      * @return Something, anything, magic
      */
     def mungeToType =
-      Try(stringValue.toInt) orElse
-        Try(stringValue.toLong) orElse
+      Try(stringValue.toLong) orElse
         Try(stringValue.toDouble) orElse
         Try(stringValue.toBoolean) getOrElse
         stringValue
