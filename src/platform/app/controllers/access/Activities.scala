@@ -25,5 +25,18 @@ class Activities @Inject()(db: GraphDatabaseService )extends Controller {
     Ok(Json.toJson(results.toSeq))
   }
 
+  def viewActivityFunding (iatiId: String) = Action  {
+
+    val result = new ExecutionEngine(db).execute(s"""
+       | START n=node:entities(type="provider-org")
+       | MATCH n-[`provider-org`]-t-[`transaction`]-activity
+       | WHERE activity.label = "iati-activity"
+       | AND has(n.`provider-activity-id`)
+       | AND n.`provider-activity-id` = "$iatiId"
+       | RETURN activity
+     """.stripMargin).columnAs[Node]("activity")
+    Ok(Json.toJson(result.toSeq))
+  }
+
 }
 
