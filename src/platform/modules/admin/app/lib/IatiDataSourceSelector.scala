@@ -74,7 +74,7 @@ class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelect
       BSONDocument("sourceType" -> BSONString(sourceType))
     ).toList.map(_.filter(_.active).map(_.url)).flatMap { list =>
 
-      val url = s"http://www.iatiregistry.org/admin/search/dataset?filetype=$sourceType&all_fields=1&limit=4000"
+      val url = s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType&all_fields=1&limit=4000"
 
       WS.url(url).get.flatMap { response =>
         val orgs = (response.json \ "results").as[JsArray].value.map { json =>
