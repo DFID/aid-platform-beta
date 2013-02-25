@@ -9,6 +9,7 @@
 # Home page
 GET     /                           @controllers.admin.Application.index
 POST    /deploy                     @controllers.admin.Application.deploy
+POST    /load                       @controllers.admin.Application.load
 
 # Organisations
 GET     /organisations              @controllers.admin.OrganisationSources.index

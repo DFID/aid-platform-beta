@@ -1,0 +1,17 @@
+<div id="load" class="modal hide" role="dialog" >
+    @helper.form(action = controllers.admin.routes.Application.load, 'class -> "modal-form"){
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Load IATI Data</h3>
+        </div>
+        <div class="modal-body">
+            <fieldset>
+                <input type="password" style="width:97%;" name="password" placeholder="Load Data Password">
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+            <input type="submit" class="btn btn-primary" value="Load Data"/>
+        </div>
+    }
+</div>

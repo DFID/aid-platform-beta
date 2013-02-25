@@ -13,24 +13,23 @@ import com.google.inject.Inject
 import concurrent.{Await, Future}
 import org.neo4j.graphdb.GraphDatabaseService
 import concurrent.duration._
+import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
+import sys.process._
 
 trait DataLoader {
   def load: Future[Unit]
 }
 
-class Loader @Inject()(database: DefaultDB, neo4j: GraphDatabaseService) extends DataLoader {
+class Loader @Inject()(database: DefaultDB) extends DataLoader {
 
   def load = {
 
+    val neo4j      = SingletonEmbeddedNeo4JDatabaseHasALongName.restart(true)
     val sources    = database.collection("iati-datasources")
     val validator  = new Validator
     val mapper     = new Mapper(neo4j)
     val engine     = new ExecutionEngine(neo4j)
     val aggregator = new Aggregator(engine, database)
-
-    // first we clear the entire graph db
-    neo4j.clearDb
-
 
     // find all data sources of a particular type.  they must be active
     // to be of relevance to us
