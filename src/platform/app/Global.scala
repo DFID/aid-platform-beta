@@ -1,6 +1,7 @@
 import com.google.inject.Guice
-import play.api.GlobalSettings
+import play.api.{Play, Application, GlobalSettings}
 import modules.Dependencies
+import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
 
 object Global  extends GlobalSettings {
 

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<org.jvnet.hudson.plugins.SbtPluginBuilder_-DescriptorImpl>
-  <jars>
-    <org.jvnet.hudson.plugins.SbtPluginBuilder_-Jar>
-      <name>sbt-launch</name>
-      <path>/usr/share/sbt-launch.jar</path>
-    </org.jvnet.hudson.plugins.SbtPluginBuilder_-Jar>
-  </jars>
-</org.jvnet.hudson.plugins.SbtPluginBuilder_-DescriptorImpl>

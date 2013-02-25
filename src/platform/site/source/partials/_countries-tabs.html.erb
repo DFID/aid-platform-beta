@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="twelve columns">
+        <div class="tab-bar-container">
+            <div class="row">
+                <div class="projects-nav">
+                    <nav>
+                        <ul class="tab-bar">
+                            <li <%= active=="summary" ? "class='active'" : ""%>><a href="/countries/<%= code %>">Summary</a></li>
+                            <li <%= active=="projects" ? "class='active'" : ""%>><a href="/countries/<%= code %>/projects">All Projects</a></li>
+                            <li><a href="http://projects.dfid.gov.uk/iati/Country/<%= code %>">IATI Data Set</a></li>
+                        </ul>
+                    </nav>
+                </div>       
+            </div>
+        </div>
+    </div>
+</div>

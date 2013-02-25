@@ -38,7 +38,7 @@ class MapperSpec extends Specification with Mockito {
 
       // assert
       there was one(node).setProperty("name", "arnold")
-      there was one(node).setProperty("age", 45)
+      there was one(node).setProperty("age", 45L)
       there was one(node).setProperty("is-human", true)
     }
 
