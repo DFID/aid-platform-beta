@@ -40,39 +40,51 @@ title: Aid Information Platform
 </div>
 <div class="row top-5s">
     <div class="four columns" id="top-5-countries">
-        <h4>Where we work</h4>
-        <ol>
-        <% top_5_countries.each do |country| %>
-          <li>
-              <a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
-              <em><span class="visually-hidden">Budget</span><%= format_million_stg country['totalBudget'] %></em>
-          </li>
-        <% end %>
-        </ol>
+        <table class="top5table">
+            <thead>
+                <tr><th colspan="2"><h4>Where we work</h4></tr></th>
+            </thead>
+            <tbody>
+                <% top_5_countries.each do |country| %>
+                  <tr>
+                      <td><span class="truncate"><a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a></span></td>
+                      <td><em><span class="visually-hidden">Budget</span><%= format_million_stg country['totalBudget'] %></em></td>
+                  </tr>
+                <% end %>
+             </tbody>
+        </table>
     </div>
 
     <div class="four columns" id="top-5-sectors">
-        <h4>What we do</h4>
-        <ol>
-          <% what_we_do.each do |entry| %>
-          <li>
-            <%= entry['title'] %> </a>
-            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
-          </li>
-          <% end %>
-        </ol>
+        <table class="top5table">
+            <thead>
+                <tr><th colspan="2"><h4>What we do</h4></th></tr>
+            </thead>
+            <tbody>
+              <% what_we_do.each do |entry| %>
+              <tr>
+                 <td><span class="truncate"><%= entry['title'] %></span></td>
+                 <td><em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em></td>
+              </tr>
+              <% end %>
+            </tbody>
+        </table>
     </div>
 
     <div class="four columns" id="top-5-sectors">
-        <h4>What we achieve</h4>
-        <ol>
-          <% what_we_achieve.each do |entry| %>
-          <li>
-            <%= entry['title'] %>
-            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
-          </li>
-          <% end %>
-        </ol>
+        <table class="top5table">
+            <thead>
+                <tr><th colspan="2"><h4>What we achieve</h4></th></tr>
+            </thead>
+            <tbody>
+              <% what_we_achieve.each do |entry| %>
+              <tr>
+                 <td><span class="truncate"><%= entry['title'] %></span></td>
+                <td><em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em></td>
+              </tr>
+              <% end %>
+            </tbody>
+        </table>
     </div>
 
 </div>
