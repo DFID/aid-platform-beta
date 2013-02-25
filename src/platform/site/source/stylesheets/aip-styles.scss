@@ -370,6 +370,33 @@ $orange: #F17921;
 	text-decoration: none;
 }
 
+/* Table styles
+-----------------------------------------------*/
+.top5table {
+    width:100%;
+    font-family:"Helvetica Neue", "HelveticaNeue", Arial, Helvetica, sans-serif;
+    padding-top:6px;
+    padding-top:0.6rem;
+    padding-bottom:10px; 
+    border-collapse:collapse;
+    border:none;
+}
+
+.top5table td {
+	font-weight: normal; font-size: 16px;
+	background-color:white;
+}
+
+.top5table tr {
+	border-bottom: solid 1px #D8DCBF;
+}
+
+.top5table th {
+	background-color:white;
+	width:100%;
+	border-bottom: solid 1px #D8DCBF;
+}
+
 /* Miscellaneous Styles
 ------------------------------------------------*/ 
 .visually-hidden{
