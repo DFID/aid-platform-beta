@@ -33,26 +33,27 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="six columns">
-        <h3 class="section-group-title">Key info</h3>
+        <h3 class="info-notice">Key info</h3>
         <ul class="info-list vertical">
             <li class="fact-item">
-                Country budget for 2012/13:
-                <%= country['budget'] %>
+                Country budget for <strong>2012/13</strong>
+                <p><strong>£<%= country['totalBudget'] %></strong></p>
             </li>
             <li class="fact-item">
-                Active Projects:<%= country['active-projects'] %>
+                Active Projects
+                <strong><%= country['active-projects'] %></strong>
             </li>
             <li class="fact-item">
                 Population (<a href="http://data.worldbank.org/country">source</a>):
-                <%= country['population'] %>
+                <strong><%= country['population'] %></strong>
             </li>
             <li class="fact-item">
                 Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
-                <%= country['life expectancy'] %>
+                <strong><%= country['life expectancy'] %></strong>
             </li>
             <li class="fact-item">
                 Income level (<a href="http://data.worldbank.org/country">source</a>):
-                <%= country['income-level'] %>
+                <strong><%= country['income-level'] %></strong>
             </li>
         </ul>
     </div>
@@ -61,10 +62,10 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="six columns">
-         <h3 class="section-group-title">Sector groups</h3>
+         <h3 class="info-notice">Sector groups</h3>
     </div>
     <div class="six columns">
-         <h3 class="section-group-title">Project budget total by year</h3>
+         <h3 class="info-notice">Project budget total by year</h3>
     </div>
 </div>
 

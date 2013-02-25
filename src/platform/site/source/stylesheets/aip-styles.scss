@@ -378,7 +378,15 @@ $orange: #F17921;
 /* Content Styles
 ------------------------------------------------*/ 
 .description { 
-	font-size: 1.2em; margin-bottom: 20px; 
+	font-size: 18px; margin-top: 10px; 
+}
+
+.info-notice{
+    background:url(https://djb1962t8apu5.cloudfront.net/static/icon-information.png) no-repeat 0 50%;
+    font-size:1.4em;
+    line-height:2em;
+    height:2em;
+    padding-left: 35px;
 }
 
 .fact-item{
