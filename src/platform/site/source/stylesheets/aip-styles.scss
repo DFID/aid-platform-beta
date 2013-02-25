@@ -56,13 +56,12 @@ $orange: #F17921;
 	font-weight: normal;
 	text-transform: uppercase;
 }
-#page-title img {
+
+#page-title-logo{
 	float: right;
-	padding: 0.75em 0;
+	padding: 20px 0;
 }
-#page-title img+div {
-	padding-right: 90px;
-}
+
 /* global search styles
 -----------------------------------------------*/
 #search-bar {
