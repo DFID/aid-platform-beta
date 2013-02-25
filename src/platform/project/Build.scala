@@ -62,7 +62,7 @@ object ApplicationBuild extends Build {
       "joda-time"    %  "joda-time"          % "2.1",
       "org.joda"     %  "joda-convert"       % "1.3"
     )
-  )
+  ).dependsOn(common).aggregate(common)
 
   lazy val admin = play.Project(
     appName + "-admin", appVersion, base, path = file("modules/admin")
