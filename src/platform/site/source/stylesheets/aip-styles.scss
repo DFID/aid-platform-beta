@@ -425,3 +425,37 @@ $orange: #F17921;
     color: #000;
     margin-top: -0.25em;
 }
+
+#tab-links { 
+	float:right; 
+	padding: 0.5em 0;
+	margin: 0 20px 0 0; 
+	font-size: 1.25em;
+}
+
+#tab-links input { 
+	background-color:#990000; 
+	color:#fff;
+	margin:0 0 0 10px;
+	padding: 0.5em 0;
+}
+
+#tab-links input:hover { 
+	background-color:#AA0000; 
+	color:#fff; 
+}
+
+#tab-links a { 
+	color:#fff; 
+	margin-right: 10px; 
+	font-size:0.9em; 
+	text-decoration: underline; 
+	margin:0; 
+	padding:0;
+}
+
+#tab-links form {
+    display:inline;
+    margin:0;
+    padding:0;
+}
