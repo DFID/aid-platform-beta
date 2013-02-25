@@ -25,7 +25,7 @@ class Activities @Inject()(db: GraphDatabaseService )extends Controller {
     Ok(Json.toJson(results.toSeq))
   }
 
-  def viewActivityFunding (iatiId: String) = Action  {
+  def getFundedProjectsForActivity (iatiId: String) = Action  {
 
     val result = new ExecutionEngine(db).execute(s"""
        | START n=node:entities(type="provider-org")

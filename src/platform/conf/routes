@@ -10,5 +10,5 @@ GET     /access/activities          @controllers.Activities.index
 GET     /access/countries           @controllers.Countries.index
 GET     /access/countries/:code     @controllers.Countries.view(code: String)
 
-GET     /access/activity/:iatiId/funding   @controllers.Activities.viewActivityFunding(iatiId : String)
+GET     /access/activity/:iatiId/funded   @controllers.Activities.getFundedProjectsForActivity(iatiId : String)
 ->      /admin                      admin.Routes
