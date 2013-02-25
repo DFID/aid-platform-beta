@@ -47,7 +47,7 @@ title: Aid Information Platform
             <tbody>
                 <% top_5_countries.each do |country| %>
                   <tr>
-                      <td><a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a></td>
+                      <td><span class="truncate"><a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a></span></td>
                       <td><em><span class="visually-hidden">Budget</span><%= format_million_stg country['totalBudget'] %></em></td>
                   </tr>
                 <% end %>
@@ -63,7 +63,7 @@ title: Aid Information Platform
             <tbody>
               <% what_we_do.each do |entry| %>
               <tr>
-                 <td><%= entry['title'] %></td>
+                 <td><span class="truncate"><%= entry['title'] %></span></td>
                  <td><em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em></td>
               </tr>
               <% end %>
@@ -79,7 +79,7 @@ title: Aid Information Platform
             <tbody>
               <% what_we_achieve.each do |entry| %>
               <tr>
-                 <td><%= entry['title'] %></td>
+                 <td><span class="truncate"><%= entry['title'] %></span></td>
                 <td><em><span class="visually-hidden">Budget</span><%= format_million_stg entry['value'] %></em></td>
               </tr>
               <% end %>

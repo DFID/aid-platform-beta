@@ -397,6 +397,14 @@ $orange: #F17921;
 	border-bottom: solid 1px #D8DCBF;
 }
 
+.truncate {
+    width: 200px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Miscellaneous Styles
 ------------------------------------------------*/ 
 .visually-hidden{
