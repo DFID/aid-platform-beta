@@ -62,7 +62,7 @@ object ApplicationBuild extends Build {
       "joda-time"    %  "joda-time"          % "2.1",
       "org.joda"     %  "joda-convert"       % "1.3"
     )
-  )
+  ).dependsOn(common).aggregate(common)
 
   lazy val admin = play.Project(
     appName + "-admin", appVersion, base, path = file("modules/admin")
@@ -72,21 +72,15 @@ object ApplicationBuild extends Build {
     common, loader
   )
 
-  lazy val api = play.Project(
-    appName + "-api", appVersion, base, path = file("modules/api")
-  ).settings(
+  val api = play.Project(appName, appVersion, base).settings(
     libraryDependencies ++= Seq(
       "org.neo4j"         %  "neo4j-kernel"        % "1.8.1",
       "org.neo4j"         %  "neo4j-cypher"        % "1.8.1"
     )
-  ).aggregate(common).dependsOn(common)
-
-  val main = play.Project(appName, appVersion, base).settings(
-    // Add your own project settings here
   ).dependsOn(
-    api, admin
+    common, admin
   ).aggregate(
-    api, admin
+    common, admin
   )
 
 }
