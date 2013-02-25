@@ -29,7 +29,7 @@ countriesJSON = HTTParty.get("#{@api_access_url}/countries")
 parsedJSON = JSON.parse(countriesJSON.body)
 parsedJSON.each do |country|
   proxy "/countries/#{country['code']}/index.html", "/countries/country.html", :locals => {
-    :country => country, 
+    :country => country,
     :code    => country['code']
   }
 
@@ -56,7 +56,7 @@ helpers do
 
   include Formatters
 
-  def current_financial_year 
+  def current_financial_year
     now = Time.new
 
     if(now.month < 4)
@@ -68,9 +68,9 @@ helpers do
 
   def dfid_total_budget
     response = HTTParty.get("#{@api_access_url}/countries")
-    body     = JSON.parse(response.body)    
+    body     = JSON.parse(response.body)
 
-    body.inject(0) {|sum, c| sum + c['totalBudget'] }  
+    body.inject(0) {|sum, c| sum + c['totalBudget'] }
   end
 
   def top_5_countries
@@ -110,5 +110,6 @@ configure :build do
   activate :minify_css
   activate :minify_javascript
   activate :cache_buster
-  activate :smusher
+  # this takes time, be careful
+  # activate :smusher
 end
