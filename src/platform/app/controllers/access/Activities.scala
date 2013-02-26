@@ -2,13 +2,11 @@ package controllers
 
 import play.api.mvc.{Action, Controller}
 import play.api.libs.json._
-import collection.JavaConversions._
 import com.google.inject.Inject
-import org.neo4j.graphdb.{Node, GraphDatabaseService}
 import lib.JsonWriters._
-import org.neo4j.cypher.ExecutionEngine
+import uk.gov.dfid.common.lib.ProjectService
 
-class Activities @Inject()(db: GraphDatabaseService )extends Controller {
+class Activities @Inject()(projectService: ProjectService )extends Controller {
 
   def index = Action { request =>
 
@@ -16,25 +14,14 @@ class Activities @Inject()(db: GraphDatabaseService )extends Controller {
       s"n.$key=${values.head}"
     }.mkString("WHERE ", " AND ", "")
 
-    val results = new ExecutionEngine(db).execute(
-      s"""
-        | START n=node:entities(type="iati-activity")
-        | ${ if(request.queryString.isEmpty) "" else whereClause }
-        | RETURN n
-      """.stripMargin).columnAs[Node]("n")
-    Ok(Json.toJson(results.toSeq))
+    val result = projectService.getIatiActivityNodes(request.queryString.isEmpty, whereClause)
+
+    Ok(Json.toJson(result.toSeq))
   }
 
   def getFundedProjectsForActivity (iatiId: String) = Action  {
 
-    val result = new ExecutionEngine(db).execute(s"""
-       | START n=node:entities(type="provider-org")
-       | MATCH n-[`provider-org`]-t-[`transaction`]-activity
-       | WHERE activity.label = "iati-activity"
-       | AND has(n.`provider-activity-id`)
-       | AND n.`provider-activity-id` = "$iatiId"
-       | RETURN activity
-     """.stripMargin).columnAs[Node]("activity")
+    val result = projectService.getFundedProjectsForActivity(iatiId)
     Ok(Json.toJson(result.toSeq))
   }
 
