@@ -40,21 +40,27 @@ title: Aid Information Platform
                 <p><strong>£<%= country['totalBudget'] %></strong></p>
             </li>
             <li class="fact-item">
+                % of DFID budget
+                <p><strong><%= (country['totalBudget']/dfid_total_budget * 100) %>%</strong></p>
+            </li>
+            <li class="fact-item">
                 Active Projects
                 <strong><%= country['active-projects'] %></strong>
             </li>
-            <li class="fact-item">
-                Population (<a href="http://data.worldbank.org/country">source</a>):
-                <strong><%= country['population'] %></strong>
-            </li>
-            <li class="fact-item">
-                Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
-                <strong><%= country['life expectancy'] %></strong>
-            </li>
-            <li class="fact-item">
-                Income level (<a href="http://data.worldbank.org/country">source</a>):
-                <strong><%= country['income-level'] %></strong>
-            </li>
+
+                <li class="fact-item">
+                    Population (<a href="http://data.worldbank.org/country">source</a>):
+                    <p><strong><%= countryCMS['population'] %></strong></p>
+                </li>
+                <li class="fact-item">
+                    Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
+                    <p><strong><%= countryCMS['lifeExpectancy'] %></strong></p>
+                </li>
+                <li class="fact-item">
+                    Income level (<a href="http://data.worldbank.org/country">source</a>):
+                    <p><strong><%= countryCMS['incomeLevel'] %></strong></p>
+                </li>
+
         </ul>
     </div>
 
