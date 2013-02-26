@@ -1,20 +1,17 @@
 package uk.gov.dfid.loader
 
-import Implicits._
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import xml.XML
 import java.net.URL
 import concurrent.ExecutionContext.Implicits.global
-import org.neo4j.kernel.EmbeddedGraphDatabase
 import org.neo4j.cypher.ExecutionEngine
 import com.google.inject.Inject
-import concurrent.{Await, Future}
-import org.neo4j.graphdb.GraphDatabaseService
-import concurrent.duration._
+import concurrent.Future
 import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
-import sys.process._
+import uk.gov.dfid.common.api.ProjectsApi
+import concurrent.future
 
 trait DataLoader {
   def load: Future[Unit]
@@ -29,13 +26,13 @@ class Loader @Inject()(database: DefaultDB) extends DataLoader {
     val validator  = new Validator
     val mapper     = new Mapper(neo4j)
     val engine     = new ExecutionEngine(neo4j)
-    val aggregator = new Aggregator(engine, database)
+    val aggregator = new Aggregator(engine, database, new ProjectsApi(database))
 
     // find all data sources of a particular type.  they must be active
     // to be of relevance to us
-    val mapTask = sources.find(BSONDocument(
-      "active" -> BSONBoolean(true)
-    )).toList.map { datasources =>
+    val mapTask = sources.find(
+      BSONDocument("active" -> BSONBoolean(true))
+    ).toList.map { datasources =>
 
       // partition by valid status
       datasources.partition { sourceDocument =>
@@ -79,9 +76,10 @@ class Loader @Inject()(database: DefaultDB) extends DataLoader {
 
     for (
       mappings <- mapTask;
-      rollups  <- aggregator.rollupCountryBudgets
+      rollups  <- aggregator.rollupCountryBudgets;
+      projects <- future { aggregator.loadProjects }
     ) yield {
-      println("Aggregated Budgets")
+      println("Aggregated Budgets and Loaded Projects")
     }
   }
 }
