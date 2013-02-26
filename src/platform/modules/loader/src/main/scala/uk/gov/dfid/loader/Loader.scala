@@ -1,6 +1,6 @@
 package uk.gov.dfid.loader
 
-import reactivemongo.api.DefaultDB
+import reactivemongo.api.{DefaultCollection, DefaultDB}
 import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import xml.XML
@@ -12,6 +12,7 @@ import concurrent.Future
 import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
 import uk.gov.dfid.common.api.ProjectsApi
 import concurrent.future
+import org.neo4j.graphdb.GraphDatabaseService
 
 trait DataLoader {
   def load: Future[Unit]
@@ -23,18 +24,31 @@ class Loader @Inject()(database: DefaultDB) extends DataLoader {
 
     val neo4j      = SingletonEmbeddedNeo4JDatabaseHasALongName.restart(true)
     val sources    = database.collection("iati-datasources")
-    val validator  = new Validator
-    val mapper     = new Mapper(neo4j)
     val engine     = new ExecutionEngine(neo4j)
     val aggregator = new Aggregator(engine, database, new ProjectsApi(database))
 
-    // find all data sources of a particular type.  they must be active
-    // to be of relevance to us
-    val mapTask = sources.find(
+    for (
+      _ <- validateAndMap(sources, neo4j);
+      _ <- aggregator.rollupCountryBudgets;
+      _ <- future {
+        aggregator.loadProjects
+        aggregator.rollupProjectBudgets
+      }
+    ) yield {
+      println("Aggregated Budgets and Loaded Projects")
+    }
+  }
+
+  private def validateAndMap(sources: DefaultCollection, neo4j: GraphDatabaseService) = {
+
+    val validator = new Validator
+    val mapper    = new Mapper(neo4j)
+
+    sources.find(
       BSONDocument("active" -> BSONBoolean(true))
     ).toList.map { datasources =>
 
-      // partition by valid status
+    // partition by valid status
       datasources.partition { sourceDocument =>
 
         val source = sourceDocument.toTraversable
@@ -72,14 +86,6 @@ class Loader @Inject()(database: DefaultDB) extends DataLoader {
           }
         }
       }
-    }
-
-    for (
-      mappings <- mapTask;
-      rollups  <- aggregator.rollupCountryBudgets;
-      projects <- future { aggregator.loadProjects }
-    ) yield {
-      println("Aggregated Budgets and Loaded Projects")
     }
   }
 }

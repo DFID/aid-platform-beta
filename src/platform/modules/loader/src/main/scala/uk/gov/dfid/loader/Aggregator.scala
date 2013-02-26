@@ -3,16 +3,17 @@ package uk.gov.dfid.loader
 import org.joda.time.DateTime
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api.DefaultDB
-import reactivemongo.bson.{BSONObjectID, BSONLong, BSONString, BSONDocument}
+import reactivemongo.bson.{BSONLong, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentReader
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
 import Implicits._
-import uk.gov.dfid.common.api.{Api, ProjectsApi}
+import uk.gov.dfid.common.api.Api
 import uk.gov.dfid.common.models.Project
-import play.api.libs.iteratee.Enumerator
+import concurrent.Await
+import concurrent.duration._
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -24,38 +25,68 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
     println("Loading Projects")
 
     // drop the collection and start up
-    db.collection("projects").drop.onComplete { case _ =>
+    Await.ready(db.collection("projects").drop, 10 seconds)
 
-      // find all projects in neo4j database
-      val projectNodes = engine.execute(
-        """
-          | START  n=node:entities(type="iati-activity")
-          | MATCH  n-[:`reporting-org`]-o
-          | WHERE  n.hierarchy = 1
-          | AND    o.ref = "GB-1"
-          | RETURN n
-        """.stripMargin).columnAs[Node]("n")
+    engine.execute(
+      """
+        | START  n=node:entities(type="iati-activity")
+        | MATCH  n-[:`reporting-org`]-o,
+        |        n-[:`activity-status`]-a
+        | WHERE  n.hierarchy = 1
+        | AND    o.ref = "GB-1"
+        | RETURN n, a.code as status
+      """.stripMargin).foreach { row =>
 
-      // loop over each project and insert some stuff in mongo
-      projectNodes.foreach { projectNode =>
-
-        val title       = projectNode.getPropertySafe[String]("title").get
-        val description = projectNode.getPropertySafe[String]("description").getOrElse("")
-        val id          = projectNode.getPropertySafe[String]("iati-identifier").get
-        val projectType = id match {
-          case i if (countryProjectIds  contains i) => "country"
-          case i if (regionalProjectIds contains i) => "regional"
-          case i if (globalProjectIds   contains i) => "global"
-          case _ => "undefined"
-        }
-
-        val project = Project(None, id, title, description, projectType)
-        projects.insert(project)
+      val projectNode = row("n").asInstanceOf[Node]
+      val status      = row("status").asInstanceOf[Long].toInt
+      val title       = projectNode.getPropertySafe[String]("title").get
+      val description = projectNode.getPropertySafe[String]("description").getOrElse("")
+      val id          = projectNode.getPropertySafe[String]("iati-identifier").get
+      val projectType = id match {
+        case i if (countryProjectIds  contains i) => "country"
+        case i if (regionalProjectIds contains i) => "regional"
+        case i if (globalProjectIds   contains i) => "global"
+        case _ => "undefined"
       }
 
+      val project = Project(None, id, title, description, projectType, status, None)
+      Await.ready(projects.insert(project), 10 seconds)
     }
 
     println("Loaded Projects")
+  }
+
+  def rollupProjectBudgets = {
+    println("Rolling up Project Budgets")
+
+    val projects = db.collection("projects")
+    val (start, end) = currentFinancialYear
+
+    engine.execute(
+      s"""
+        | START  n=node:entities(type="iati-activity")
+        | MATCH  n-[:`related-activity`]-a,
+        |        n-[:budget]-b-[:value]-v
+        | WHERE  a.type = 1
+        | AND    v.`value-date` >= "$start"
+        | AND    v.`value-date` <= "$end"
+        | AND    n.hierarchy = 2
+        | RETURN a.ref as id, SUM(v.value) as value
+      """.stripMargin).foreach { row =>
+      val id = row("id").asInstanceOf[String]
+      val budget = row("value") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
+
+      projects.update(
+        BSONDocument("iatiId" -> BSONString(id)),
+        BSONDocument("$set" -> BSONDocument(
+          "budget" -> BSONLong(budget)
+        )),
+        upsert = false, multi = false
+      )
+    }
   }
 
   def rollupCountryBudgets = {
@@ -64,12 +95,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
 
     db.collection("countries").find(BSONDocument()).toList.map { countries =>
 
-      val now = DateTime.now
-      val (start, end) = if (now.getMonthOfYear < 4) {
-        s"${now.getYear-1}-04-01" -> s"${now.getYear}-03-31"
-      } else {
-        s"${now.getYear}-04-01" -> s"${now.getYear + 1}-03-31"
-      }
+      val (start, end) = currentFinancialYear
 
       countries.foreach { countryDocument =>
 
@@ -116,6 +142,26 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
         }
       }
     }
+
+  }
+
+  private def currentFinancialYear = {
+    val now = DateTime.now
+    if (now.getMonthOfYear < 4) {
+      s"${now.getYear-1}-04-01" -> s"${now.getYear}-03-31"
+    } else {
+      s"${now.getYear}-04-01" -> s"${now.getYear + 1}-03-31"
+    }
+  }
+  private lazy val allProjectIds = {
+    engine.execute(
+      """
+        | START  n=node:entities(type="iati-activity")
+        | MATCH  n-[:`reporting-org`]-o
+        | WHERE  n.hierarchy = 1
+        | AND    o.ref = "GB-1"
+        | RETURN n.`iati-identifier` as id
+      """.stripMargin).columnAs[String]("id").toSeq
   }
 
   private lazy val countryProjectIds = {

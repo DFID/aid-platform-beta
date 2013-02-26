@@ -1,14 +1,18 @@
 package uk.gov.dfid.common.models
 
-import reactivemongo.bson.{BSONString, BSONDocument, BSONObjectID}
+import reactivemongo.bson._
 import reactivemongo.bson.handlers.{BSONWriter, BSONReader}
+import reactivemongo.bson.BSONLong
+import reactivemongo.bson.BSONString
 
 case class Project(
-  id: Option[BSONObjectID],
-  iatiId: String,
-  title: String,
+  id:          Option[BSONObjectID],
+  iatiId:      String,
+  title:       String,
   description: String,
-  projectType: String)
+  projectType: String,
+  status:      Int,
+  budget:      Option[Long])
 
 object Project {
 
@@ -21,7 +25,9 @@ object Project {
         document.getAs[BSONString]("iatiId").map(_.value).get,
         document.getAs[BSONString]("title").map(_.value).get,
         document.getAs[BSONString]("description").map(_.value).get,
-        document.getAs[BSONString]("projectType").map(_.value).get
+        document.getAs[BSONString]("projectType").map(_.value).get,
+        document.getAs[BSONInteger]("status").map(_.value).get,
+        document.getAs[BSONLong]("budget").map(_.value)
       )
     }
   }
@@ -33,8 +39,11 @@ object Project {
         "iatiId"      -> BSONString(project.iatiId),
         "title"       -> BSONString(project.title),
         "description" -> BSONString(project.description),
-        "projectType" -> BSONString(project.projectType)
-      )
+        "projectType" -> BSONString(project.projectType),
+        "status"      -> BSONInteger(project.status)
+      ).append(Seq(
+        project.budget.map(b => "budget" -> BSONLong(b))
+      ).flatten:_*)
     }
   }
 }
