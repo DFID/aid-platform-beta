@@ -1,0 +1,41 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           @controllers.admin.Application.index
+POST    /deploy                     @controllers.admin.Application.deploy
+POST    /load                       @controllers.admin.Application.load
+
+# Organisations
+GET     /organisations              @controllers.admin.OrganisationSources.index
+POST    /organisations              @controllers.admin.OrganisationSources.save
+POST    /organisations/refresh      @controllers.admin.OrganisationSources.refresh
+
+# Activities
+GET     /activities                 @controllers.admin.ActivitySources.index
+POST    /activities                 @controllers.admin.ActivitySources.save
+POST    /activities/refresh         @controllers.admin.ActivitySources.refresh
+
+# Countries
+GET     /countries                  @controllers.admin.Countries.index
+GET     /countries/new              @controllers.admin.Countries.create
+POST    /countries                  @controllers.admin.Countries.save
+GET     /countries/:id              @controllers.admin.Countries.edit(id: String)
+POST    /countries/:id              @controllers.admin.Countries.update(id: String)
+POST    /countries/:id/delete       @controllers.admin.Countries.delete(id: String)
+
+# FrontPage
+GET     /frontpage                  @controllers.admin.FrontPage.index
+POST    /frontpage                  @controllers.admin.FrontPage.save
+
+# Auth
+GET     /login                      @controllers.admin.Authentication.login
+POST    /login                      @controllers.admin.Authentication.authenticate
+GET     /logout                     @controllers.admin.Authentication.logout
+
+GET     /assets/*file               controllers.admin.Assets.at(path="/public", file)

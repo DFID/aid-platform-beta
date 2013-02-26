@@ -1,0 +1,21 @@
+@(form: Form[(String, String)])
+
+@views.html.admin.main(false) {
+    <div class="container">
+        <div class="row">
+            <div class="span4 offset4 well">
+                <legend>Log In</legend>
+                @if(form.hasErrors){
+                    <div class="alert alert-error">
+                        Incorrect Username or Password!
+                    </div>
+                }
+                <form method="POST" action="" accept-charset="UTF-8">
+                    <input type="text" id="username" class="span4" name="username" placeholder="Username">
+                    <input type="password" id="password" class="span4" name="password" placeholder="Password">
+                    <button type="submit" name="submit" class="btn btn-inverse btn-block">Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+}

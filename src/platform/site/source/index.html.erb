@@ -1,0 +1,79 @@
+---
+title: Aid Information Platform
+---
+
+
+<%= partial "partials/title-bar" %>
+<%= partial "partials/search-bar" %>
+
+<nav>
+    <div class="row" id="nav-entry">
+        <div class="six columns col">
+            <h2>
+                <a href="/location/global" class="by-location">
+                    <span class="image-wrapper">
+                        <img src="/images/by-location.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Location</span>
+                </a>
+            </h2>
+        </div>
+        <div class="six columns col">
+            <h2>
+                <a href="/sector" class="by-sector">
+                    <span class="image-wrapper">
+                        <img src="/images/by-sector.gif" alt="">
+                    </span>
+                    <span class="link-wrapper"><small>Aid by</small> Sector</span>
+                </a>
+            </h2>
+
+        </div>
+    </div>
+</nav>
+
+
+<div class="row">
+    <div class="twelve columns">
+        <h3 class="section-group-title">UK AID TOP 5s</h3>
+    </div>
+</div>
+<div class="row top-5s">
+    <div class="four columns" id="top-5-countries">
+        <h4>Where we work</h4>
+        <ol>
+        <% top_5_countries.each do |country| %>
+          <li>
+              <a href="/countries/<%= country['code'] %>" class="truncate" title="<%= country['name'] %>"> <%= country['name'] %> </a>
+              <em><span class="visually-hidden">Budget</span><%= format_million_stg country['totalBudget'] %></em>
+          </li>
+        <% end %>
+        </ol>
+    </div>
+
+    <div class="four columns" id="top-5-sectors">
+        <h4>What we do</h4>
+        <ol>
+          <% what_we_do.each do |entry| %>
+          <li>
+            <%= entry['title'] %> </a>
+            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
+          </li>
+          <% end %>
+        </ol>
+    </div>
+
+    <div class="four columns" id="top-5-sectors">
+        <h4>What we achieve</h4>
+        <ol>
+          <% what_we_achieve.each do |entry| %>
+          <li>
+            <%= entry['title'] %>
+            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
+          </li>
+          <% end %>
+        </ol>
+    </div>
+
+</div>
+

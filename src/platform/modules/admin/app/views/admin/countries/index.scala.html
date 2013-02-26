@@ -1,0 +1,48 @@
+@(countries: List[uk.gov.dfid.common.models.Country])
+
+@views.html.admin.main() {
+
+    <div class="row">
+        <div class="span12">
+            <a href="@controllers.admin.routes.Countries.create" class="btn">New Country</a>
+        </div>
+    </div>
+
+    <div class="row">
+    <div class="span12">
+        <div class="widget widget-table action-table">
+            <div class="widget-header">
+                <i class="icon-th-list"></i>
+                <h3>Countries</h3>
+            </div>
+            <div class="widget-content">
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ISO Code</th>
+                        <th>Country Name</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @countries.map { country =>
+                    <tr>
+                        <td>@country.code</td>
+                        <td>@country.name</td>
+                        <td>
+                            @helper.form(action = controllers.admin.routes.Countries.delete(country.code), 'style -> "width:150px; margin: 0px;") {
+                            <a href="@controllers.admin.routes.Countries.edit(country.code)" class="btn">Edit</a>
+                            <input type="submit" value="Delete" class="btn btn-warning" />
+                            }
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+}

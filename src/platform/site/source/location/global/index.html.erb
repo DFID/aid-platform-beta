@@ -1,0 +1,27 @@
+---
+title: Aid Information Platform
+---
+
+<%= partial "partials/title-bar" %>
+<%= partial "partials/search-bar" %>
+<%= partial "partials/location-tabs" , :locals => { :active => "global" }  %>
+
+<div class="row">
+    <div class="twelve columns map">
+        <div id="map" style="width:990px; height: 500px; background-image: url(/images/map_transparent.gif); background-repeat:no-repeat;"></div>
+
+	    <div class="disclaimer grey">    
+	        <p><em>Disclaimer: </em>Country borders do not necessarily reflect the UK Government's official position.</p>
+	    </div>
+
+	    <script src="/javascripts/circlegraph.js" type="text/javascript"></script>
+	    <script type="text/javascript">
+	        var labels = {
+	            header : 'Total global spend ' + '<%= current_financial_year %>',
+	            amount : '\u00A3' + '<%= format_billion_stg dfid_total_budget %>'.replace('&pound;', '')
+	        }
+
+	        circleGraph.drawGlobalProjectsGraph('#map', 140, labels);
+	    </script>    
+    </div>
+</div>

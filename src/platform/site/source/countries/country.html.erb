@@ -1,0 +1,75 @@
+---
+title: Aid Information Platform
+---
+
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <h1>
+                <span>Aid platform</span>
+                <%= country['name'] %>
+                <span><a href="/index.html">Home </a></span>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<%= partial "partials/search-bar" %>
+<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'] } %>
+
+<div class="row">
+    <div class="twelve columns">
+        <div class="description"><%= markdown_to_html country['description'] %></div>
+        <script type="text/javascript">
+            $('div.description').expander({
+                slicePoint    : 300,
+                expandSpeed   : 0,
+                collapseSpeed : 0
+            });
+        </script>
+    </div>
+</div>
+
+<div class="row">
+    <div class="six columns">
+        <h3 class="section-group-title">Key info</h3>
+        <ul class="info-list vertical">
+            <li class="fact-item">
+                Country budget for 2012/13:
+                <%= country['budget'] %>
+            </li>
+            <li class="fact-item">
+                Active Projects:<%= country['active-projects'] %>
+            </li>
+            <li class="fact-item">
+                Population (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['population'] %>
+            </li>
+            <li class="fact-item">
+                Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['life expectancy'] %>
+            </li>
+            <li class="fact-item">
+                Income level (<a href="http://data.worldbank.org/country">source</a>):
+                <%= country['income-level'] %>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="six columns">
+         <h3 class="section-group-title">Sector groups</h3>
+    </div>
+    <div class="six columns">
+         <h3 class="section-group-title">Project budget total by year</h3>
+    </div>
+</div>
+
+
+
+
+
+
