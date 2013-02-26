@@ -13,6 +13,7 @@ import org.neo4j.graphdb.GraphDatabaseService
 import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
 import uk.gov.dfid.loader.{DataLoader, Loader}
 import reactivemongo.api.DefaultDB
+import uk.gov.dfid.common.lib.{CommonProjectService, ProjectService}
 
 class Dependencies extends ScalaModule {
    def configure() {
@@ -35,6 +36,7 @@ class Dependencies extends ScalaModule {
      bind[GraphDatabaseService].toProvider(SingletonEmbeddedNeo4JDatabaseHasALongName)
      bind[DataLoader].to[Loader]
      bind[FrontPageManagedContentApi].to[MongoBackedFrontPageManagedContentApi]
+     bind[ProjectService].to[CommonProjectService]
    }
  }
 
