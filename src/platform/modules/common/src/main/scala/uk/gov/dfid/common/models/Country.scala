@@ -10,8 +10,6 @@ case class Country(
   description: Option[String]
 )
 
-
-
 object Country {
 
   implicit object CountryReader extends BSONReader[Country]{
