@@ -8,7 +8,7 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="twelve columns map">
-        <div id="map" style="width:990px; height: 500px; background-image: url(/images/map_transparent.gif); background-repeat:no-repeat;"></div>
+        <div id="map" class="static-background"></div>
 
 	    <div class="disclaimer grey">    
 	        <p><em>Disclaimer: </em>Country borders do not necessarily reflect the UK Government's official position.</p>
@@ -21,7 +21,15 @@ title: Aid Information Platform
 	            amount : '\u00A3' + '<%= format_billion_stg dfid_total_budget %>'.replace('&pound;', '')
 	        }
 
-	        circleGraph.drawGlobalProjectsGraph('#map', 140, labels);
-	    </script>    
+	       	var container = $('#map');
+	        var graph = new CircleGraph(container);
+	        graph.drawGlobalProjectsGraph(labels);
+
+	        $(window).resize(function() {
+	        	if (container.width != graph.width) {
+	        		graph.drawGlobalProjectsGraph(labels);
+	        	}	        	
+	        });
+	    </script>
     </div>
 </div>
