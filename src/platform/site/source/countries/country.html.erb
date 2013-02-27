@@ -37,31 +37,38 @@ title: Aid Information Platform
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
-                <p><strong>£<%= country['totalBudget'] %></strong></p>
+                <span><strong>£<%= country['totalBudget'] %></strong></span>
             </li>
             <li class="fact-item">
                 % of DFID budget
-                <p><strong><%= (country['totalBudget']/dfid_total_budget * 100) %>%</strong></p>
+                <span><strong><%= (country['totalBudget']/dfid_total_budget * 100) %>%</strong></span>
             </li>
             <li class="fact-item">
                 Active Projects
-                <strong><%= country['active-projects'] %></strong>
+                <span><strong><%= country['active-projects'] %></strong></span>
             </li>
 
                 <li class="fact-item">
                     Population (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryStats['population'] %></strong></p>
+                    <span><strong><%= countryStats['population'] %></strong></span>
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryStats['lifeExpectancy'] %></strong></p>
+                    <span><strong><%= countryStats['lifeExpectancy'] %></strong></span>
                 </li>
                 <li class="fact-item">
                     Income level (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryStats['incomeLevel'] %></strong></p>
+                    <span><strong><%= countryStats['incomeLevel'] %></strong></span>
                 </li>
 
         </ul>
+    </div>
+
+    <div class="six columns">
+        <img src="/images/generic-map.gif">
+        <div class="chart-disclaimer" style="margin-top:-11%;">
+            <p><strong>Disclaimer</strong>: Country borders do not necessarily reflect the UK Government's official position.</p>
+        </div>
     </div>
 
 </div>
