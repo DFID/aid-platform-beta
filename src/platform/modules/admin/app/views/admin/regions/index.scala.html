@@ -1,0 +1,48 @@
+@(regions: List[uk.gov.dfid.common.models.Region])
+
+@views.html.admin.main() {
+
+    <div class="row">
+        <div class="span12">
+            <a href="@controllers.admin.routes.Regions.create" class="btn">New Region</a>
+        </div>
+    </div>
+
+    <div class="row">
+    <div class="span12">
+        <div class="widget widget-table action-table">
+            <div class="widget-header">
+                <i class="icon-th-list"></i>
+                <h3>Regions</h3>
+            </div>
+            <div class="widget-content">
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Region Code</th>
+                        <th>Region Name</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @regions.map { region =>
+                    <tr>
+                        <td>@region.code</td>
+                        <td>@region.name</td>
+                        <td>
+                            @helper.form(action = controllers.admin.routes.Regions.delete(region.code), 'style -> "width:150px; margin: 0px;") {
+                            <a href="@controllers.admin.routes.Regions.edit(region.code)" class="btn">Edit</a>
+                            <input type="submit" value="Delete" class="btn btn-warning" />
+                            }
+                        </td>
+                    </tr>
+                    }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+}

@@ -1,0 +1,18 @@
+@(maybeId: Option[String], country: Form[uk.gov.dfid.common.models.Region])
+
+@views.html.admin.main() {
+
+    @maybeId.map { id =>
+        <h1>Edit Region</h1>
+    }.getOrElse {
+        <h1>Create Region</h1>
+    }
+
+    @helper.form(action = maybeId.map(id => controllers.admin.routes.Regions.update(id)).getOrElse(controllers.admin.routes.Regions.save)){
+
+        @form.textfield(country("code"), "Region Code")
+        @form.textfield(country("name"), "Region Name")
+
+        <input type="submit" class="btn" value="Save" />
+    }
+}

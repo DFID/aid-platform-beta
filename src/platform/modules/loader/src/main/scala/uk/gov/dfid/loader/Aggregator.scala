@@ -27,30 +27,40 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
     // drop the collection and start up
     Await.ready(db.collection("projects").drop, 10 seconds)
 
-    engine.execute(
-      """
-        | START  n=node:entities(type="iati-activity")
-        | MATCH  n-[:`reporting-org`]-o,
-        |        n-[:`activity-status`]-a
-        | WHERE  n.hierarchy = 1
-        | AND    o.ref = "GB-1"
-        | RETURN n, a.code as status
-      """.stripMargin).foreach { row =>
+    try {
+      engine.execute(
+        """
+          | START  n=node:entities(type="iati-activity")
+          | MATCH  n-[:`reporting-org`]-o,
+          |        n-[:`activity-status`]-a
+          | WHERE  n.hierarchy = 1
+          | AND    o.ref = "GB-1"
+          | RETURN n, a.code as status
+        """.stripMargin).foreach { row =>
 
-      val projectNode = row("n").asInstanceOf[Node]
-      val status      = row("status").asInstanceOf[Long].toInt
-      val title       = projectNode.getPropertySafe[String]("title").get
-      val description = projectNode.getPropertySafe[String]("description").getOrElse("")
-      val id          = projectNode.getPropertySafe[String]("iati-identifier").get
-      val projectType = id match {
-        case i if (countryProjectIds  contains i) => "country"
-        case i if (regionalProjectIds contains i) => "regional"
-        case i if (globalProjectIds   contains i) => "global"
-        case _ => "undefined"
+        val projectNode = row("n").asInstanceOf[Node]
+        val status      = row("status").asInstanceOf[Long].toInt
+        val title       = projectNode.getPropertySafe[String]("title").get
+        val description = projectNode.getPropertySafe[String]("description").getOrElse("")
+        val id          = projectNode.getPropertySafe[String]("iati-identifier").get
+
+        val projectType = id match {
+          case i if (countryProjects.exists(_._1.equals(i)))  => "country"
+          case i if (regionalProjects.exists(_._1.equals(i))) => "regional"
+          case i if (globalProjects.exists(_.equals(i)))      => "global"
+          case _ => "undefined"
+        }
+        val recipient = projectType match {
+          case "country"  => countryProjects.find(_._1 == id).map(_._2)
+          case "regional" => regionalProjects.find(_._1 == id).map(_._2)
+          case _          => None
+        }
+
+        val project = Project(None, id, title, description, projectType, recipient, status, None)
+        Await.ready(projects.insert(project), 10 seconds)
       }
-
-      val project = Project(None, id, title, description, projectType, status, None)
-      Await.ready(projects.insert(project), 10 seconds)
+    }catch{
+      case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
     }
 
     println("Loaded Projects")
@@ -164,7 +174,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
       """.stripMargin).columnAs[String]("id").toSeq
   }
 
-  private lazy val countryProjectIds = {
+  private lazy val countryProjects = {
     engine.execute(
       """
         | START  n=node:entities(type="iati-activity")
@@ -174,11 +184,13 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
         | WHERE  n.hierarchy=2
         | AND    p.type=1
         | AND    o.ref = "GB-1"
-        | RETURN DISTINCT(p.ref) as id
-      """.stripMargin).columnAs[String]("id").toSeq
+        | RETURN DISTINCT(p.ref) as id, a.code as recipient
+      """.stripMargin).toSeq.map { row =>
+      row("id").asInstanceOf[String] -> row("recipient").asInstanceOf[String]
+    }
   }
 
-  private lazy val  regionalProjectIds = {
+  private lazy val regionalProjects = {
     engine.execute(
       """
         | START n=node:entities(type="iati-activity")
@@ -206,11 +218,19 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
         |     )
         |   )
         | )
-        | RETURN DISTINCT(p.ref) as id
-      """.stripMargin).columnAs[String]("id").toSeq
+        | RETURN DISTINCT(p.ref) as id, a.code as code, n.`recipient-region`? as region
+      """.stripMargin).toSeq.map { row =>
+      val id   = row("id").asInstanceOf[String]
+      val code = row("code") match {
+        case null => "\\((\\w{2})\\)$".r.findFirstIn(row("region").asInstanceOf[String]).get
+        case code => code.toString
+      }
+
+      id -> code
+    }
   }
 
-  private lazy val  globalProjectIds = {
+  private lazy val  globalProjects = {
     engine.execute(
       """
         | START n=node:entities(type="iati-activity")

@@ -32,7 +32,6 @@ class AggregatorSpec extends Specification with Mockito  {
 
       // arrange
       val engine = mock[ExecutionEngine]
-      val result = mock[ExecutionResult]
       val db     = mock[DefaultDB]
       val coll   = mock[DefaultCollection]
       val api    = mock[Api[Project]]

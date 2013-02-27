@@ -3,7 +3,7 @@ package modules
 import com.tzavellas.sse.guice.ScalaModule
 import lib._
 import traits._
-import uk.gov.dfid.common.models.{Project, CountryStats, Country}
+import uk.gov.dfid.common.models.{Region, Project, CountryStats, Country}
 import uk.gov.dfid.common.api._
 import reactivemongo.api.MongoConnection
 import play.api.Play
@@ -29,6 +29,9 @@ class Dependencies extends ScalaModule {
      bind[Api[Country]].to[CountriesApi]
      bind[ReadOnlyApi[Country]].to[ReadOnlyCountriesApi]
      bind[ReadOnlyApi[CountryStats]].to[ReadonlyCountryStatsApi]
+
+     bind[Api[Region]].to[RegionsApi]
+     bind[ReadOnlyApi[Region]].to[ReadOnlyRegionsApi]
 
      bind[Api[Project]].to[ProjectsApi]
      bind[ReadOnlyApi[Project]].to[ReadOnlyProjectsApi]

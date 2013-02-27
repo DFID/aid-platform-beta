@@ -11,6 +11,7 @@ case class Project(
   title:       String,
   description: String,
   projectType: String,
+  recipient:   Option[String],
   status:      Int,
   budget:      Option[Long])
 
@@ -26,6 +27,7 @@ object Project {
         document.getAs[BSONString]("title").map(_.value).get,
         document.getAs[BSONString]("description").map(_.value).get,
         document.getAs[BSONString]("projectType").map(_.value).get,
+        document.getAs[BSONString]("recipient").map(_.value),
         document.getAs[BSONInteger]("status").map(_.value).get,
         document.getAs[BSONLong]("budget").map(_.value)
       )
@@ -42,7 +44,8 @@ object Project {
         "projectType" -> BSONString(project.projectType),
         "status"      -> BSONInteger(project.status)
       ).append(Seq(
-        project.budget.map(b => "budget" -> BSONLong(b))
+        project.budget.map(b => "budget" -> BSONLong(b)),
+        project.recipient.map(r => "recipient" -> BSONString(r))
       ).flatten:_*)
     }
   }
