@@ -15,7 +15,7 @@ class Validator {
 
     val plural = sourceType match {
       case "organisation" => "organisations"
-      case "activity" => "activities"
+      case "activity"     => "activities"
     }
 
     val xsd = s"http://iatistandard.org/downloads/$version/iati-$plural-schema.xsd"

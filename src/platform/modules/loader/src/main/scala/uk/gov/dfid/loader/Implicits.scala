@@ -2,7 +2,7 @@ package uk.gov.dfid.loader
 
 import util.Try
 import org.neo4j.tooling.GlobalGraphOperations
-import org.neo4j.graphdb.GraphDatabaseService
+import org.neo4j.graphdb.{NotFoundException, GraphDatabaseService}
 import collection.JavaConversions._
 
 /**
@@ -32,9 +32,14 @@ object Implicits {
      * @return
      */
     def getPropertySafe[T](name: String): Option[T] = {
+      try{
       n.getProperty(name) match {
         case null => None
         case prop => Some(prop.asInstanceOf[T])
+      }
+      } catch{
+        // if the property isn't found we can just return a none
+        case e: NotFoundException => None
       }
     }
   }
