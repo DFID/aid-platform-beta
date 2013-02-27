@@ -28,94 +28,93 @@ object Main extends App  {
   )
 
   println("Loading Collection of Countries")
-  Await.ready(loadCountries, Duration.Inf)
+  loadCountries
   println("Loading Collection of Regions")
-  Await.ready(loadRegions, Duration.Inf)
+  loadRegions
   println("Shutting down Mongo")
   MongoConnection.system.shutdown()
   println("Exiting")
 
   private def loadRegions = {
-    regions.drop map { case _ =>
-      println("Seeding Regions")
+    Await.ready(regions.drop(), Duration.Inf)
 
-      val xml = XML.load(new URL("http://datadev.aidinfolabs.org/data/codelist/Region.xml"))
+    println("Seeding Regions")
 
-      (xml \\ "Region") map { node =>
-        val code = (node \ "code").text
-        val name = (node \ "name").text.replace(", regional", "")
+    val xml = XML.load(new URL("http://datadev.aidinfolabs.org/data/codelist/Region.xml"))
 
-        val document = BSONDocument(
-          "code" -> BSONString(code),
-          "name" -> BSONString(name)
-        )
+    (xml \\ "Region") map { node =>
+      val code = (node \ "code").text
+      val name = (node \ "name").text.replace(", regional", "")
 
-        Await.ready(regions.insert(document), Duration.Inf)
+      val document = BSONDocument(
+        "code" -> BSONString(code),
+        "name" -> BSONString(name)
+      )
 
-        println(s"Inserted ${code}:${name}")
-      }
+      Await.ready(regions.insert(document), Duration.Inf)
 
-      Seq(
-        "BL" -> "Balkan Regional",
-        "EA" -> "East Africa",
-        "IB" -> "Indian Ocean Asia Regional",
-        "LE" -> "Latin America Regional",
-        "EB" -> "East African Community",
-        "EF" -> "EECAD Regional",
-        "ED" -> "East Europe Regional",
-        "FA" -> "Francophone Africa",
-        "CP" -> "Central Africa Regional",
-        "OT" -> "Overseas Territories",
-        "SQ" -> "South East Asia"
-      ).foreach { case (code, name) =>
-        val document = BSONDocument(
-          "code" -> BSONString(code),
-          "name" -> BSONString(name)
-        )
-
-        Await.ready(regions.insert(document), Duration.Inf)
-
-        println(s"Inserted ${code}:${name}")
-      }
-
+      println(s"Inserted ${code}:${name}")
     }
+
+    Seq(
+      "BL" -> "Balkan Regional",
+      "EA" -> "East Africa",
+      "IB" -> "Indian Ocean Asia Regional",
+      "LE" -> "Latin America Regional",
+      "EB" -> "East African Community",
+      "EF" -> "EECAD Regional",
+      "ED" -> "East Europe Regional",
+      "FA" -> "Francophone Africa",
+      "CP" -> "Central Africa Regional",
+      "OT" -> "Overseas Territories",
+      "SQ" -> "South East Asia"
+    ).foreach { case (code, name) =>
+      val document = BSONDocument(
+        "code" -> BSONString(code),
+        "name" -> BSONString(name)
+      )
+
+      Await.ready(regions.insert(document), Duration.Inf)
+
+      println(s"Inserted ${code}:${name}")
+    }
+
   }
   private def loadCountries = {
-    countries.drop map { case _ =>
+    Await.ready(countries.drop(), Duration.Inf)
 
-      println("Seeding Countries")
+    println("Seeding Countries")
 
-      val xml = XML.load(new URL("http://datadev.aidinfolabs.org/data/codelist/Country.xml"))
+    val xml = XML.load(new URL("http://datadev.aidinfolabs.org/data/codelist/Country.xml"))
 
-      (xml \\ "Country") map { node =>
-      // derive the ISO Country code
-        val code = (node \ "code").text
+    (xml \\ "Country") map { node =>
+    // derive the ISO Country code
+      val code = (node \ "code").text
 
-        // derive the name either from IATI or the DFID standard
-        val name = if (names.hasPath(code))  {
-          names.getString(code)
-        } else {
-          (node \ "name").text.toLowerCase.capitalize
-        }
-
-        // load any potential markdown
-        val resource = getClass.getResource("/countryinfo/%s.md".format(code))
-        val description = resource match {
-          case null => None
-          case res => Some("description" -> BSONString(Source.fromURL(res).mkString))
-        }
-
-        val document = BSONDocument(
-          "code" -> BSONString(code),
-          "name" -> BSONString(name)
-        ).append(
-          Seq(description).flatten: _*
-        )
-
-        Await.ready(countries.insert(document), Duration.Inf)
-
-        println(s"Inserted ${code}:${name}")
+      // derive the name either from IATI or the DFID standard
+      val name = if (names.hasPath(code))  {
+        names.getString(code)
+      } else {
+        (node \ "name").text.toLowerCase.capitalize
       }
+
+      // load any potential markdown
+      val resource = getClass.getResource("/countryinfo/%s.md".format(code))
+      val description = resource match {
+        case null => None
+        case res => Some("description" -> BSONString(Source.fromURL(res).mkString))
+      }
+
+      val document = BSONDocument(
+        "code" -> BSONString(code),
+        "name" -> BSONString(name)
+      ).append(
+        Seq(description).flatten: _*
+      )
+
+      Await.ready(countries.insert(document), Duration.Inf)
+
+      println(s"Inserted ${code}:${name}")
     }
   }
 }
