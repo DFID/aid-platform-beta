@@ -7,7 +7,7 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.api.indexes.{IndexType, Index}
 import uk.gov.dfid.common.models.{CountryStats, Country}
-import reactivemongo.api.DefaultDB
+import reactivemongo.api.{SortOrder, QueryBuilder, DefaultDB}
 import com.google.inject.Inject
 
 
@@ -18,7 +18,7 @@ class ReadonlyCountryStatsApi @Inject()(database: DefaultDB) extends ReadOnlyApi
 
   def all = {
     implicit val reader = CountryStats.CountryStatsReader
-    stats.find(BSONDocument()).toList
+    stats.find(QueryBuilder().sort("code" -> SortOrder.Ascending)).toList
   }
 
   def get(id: String)  = {
@@ -38,7 +38,7 @@ class ReadOnlyCountriesApi @Inject()(database: DefaultDB) extends ReadOnlyApi[Co
 
   def all: Future[List[Country]] = {
     implicit val reader = Country.CountryReader
-    countries.find(BSONDocument()).toList
+    countries.find(QueryBuilder().sort("code" -> SortOrder.Ascending)).toList
   }
 
   def get(id: String): Future[Option[Country]] = {
