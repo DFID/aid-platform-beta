@@ -7,8 +7,8 @@ title: Aid Information Platform
         <img id="page-title-logo" src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <p style="margin-top:20px;">AID PLATFORM</p>
         <h1>
-            <a href="/countries/ET"><img src="/images/flags/et.png" /></a>
-            Ethiopia
+            <a href="/countries/<%= code %>"><img src="/images/flags/et.png" /></a>
+            <%= country['name'] %>
         </h1>
         <span id="sectionFooter"><a href="/index.html">Home </a> > <a href="#"> <%= country['name'] %> </a></span>
   </div>
@@ -36,7 +36,7 @@ title: Aid Information Platform
         <h3 class="info-notice">Key info</h3>
         <ul class="info-list vertical">
             <li class="fact-item">
-                Country budget for <strong>2012/13</strong>
+                Country budget for <strong><%= current_financial_year %></strong>
                 <p><strong>£<%= country['totalBudget'] %></strong></p>
             </li>
             <li class="fact-item">
@@ -50,15 +50,15 @@ title: Aid Information Platform
 
                 <li class="fact-item">
                     Population (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryCMS['population'] %></strong></p>
+                    <p><strong><%= countryStats['population'] %></strong></p>
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryCMS['lifeExpectancy'] %></strong></p>
+                    <p><strong><%= countryStats['lifeExpectancy'] %></strong></p>
                 </li>
                 <li class="fact-item">
                     Income level (<a href="http://data.worldbank.org/country">source</a>):
-                    <p><strong><%= countryCMS['incomeLevel'] %></strong></p>
+                    <p><strong><%= countryStats['incomeLevel'] %></strong></p>
                 </li>
 
         </ul>
