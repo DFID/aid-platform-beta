@@ -25,9 +25,10 @@ ignore "/projects/partners.html"
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
 #------------------------------------------------------------------------------
-countriesJSON = HTTParty.get("#{@api_access_url}/countries")
-parsedJSON = JSON.parse(countriesJSON.body)
-parsedJSON.each do |country|
+countries_response = HTTParty.get("#{@api_access_url}/countries")
+countries_json     = JSON.parse(countries_response.body)
+
+countries_json.each do |country|
   proxy "/countries/#{country['code']}/index.html", "/countries/country.html", :locals => {
     :country => country,
     :code    => country['code']
@@ -88,10 +89,6 @@ helpers do
     @cms_db['whatweachieve'].find({})
   end
 
-  def countries_helper
-    countriesJSON = HTTParty.get("#{@api_access_url}/countries") #make sure test-api is running
-    parsedJSON = JSON.parse(countriesJSON.body) #gets the json for all countries
-  end
 end
 
 #------------------------------------------------------------------------------
@@ -110,6 +107,7 @@ configure :build do
   activate :minify_css
   activate :minify_javascript
   activate :cache_buster
+  
   # this takes time, be careful
   # activate :smusher
 end
