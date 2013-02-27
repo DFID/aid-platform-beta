@@ -15,6 +15,7 @@ title: Aid Information Platform
 	    </div>
 
 	    <script src="/javascripts/circlegraph.js" type="text/javascript"></script>
+	    <script src="/javascripts/regions/graphdata.js" type="text/javascript"></script>
 	    <script type="text/javascript">
 	        var labels = {
 	            header : 'Total regional spend ' + '<%= current_financial_year %>',
@@ -23,11 +24,11 @@ title: Aid Information Platform
 
 	       	var container = $('#map');
 	        var graph = new CircleGraph(container);
-	        graph.drawRegionalProjectsGraph(labels);
+	        graph.drawRegionalProjectsGraph(labels, regionsData);
 
 	        $(window).resize(function() {
 	        	if (container.width != graph.width) {
-	        		graph.drawRegionalProjectsGraph(labels);
+	        		graph.drawRegionalProjectsGraph(labels, regionsData);
 	        	}	        	
 	        });
 	    </script>    

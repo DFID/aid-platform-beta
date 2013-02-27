@@ -11,27 +11,26 @@ CircleGraph = function (container) {
     this.drawCentralCircle(circleRadius, verticalShift, labels);
   }
 
-  this.drawRegionalProjectsGraph = function(labels) {
+  this.drawRegionalProjectsGraph = function(labels, regionsData) {
     this.clearContainer();
 
     // calculate central circle's dimensions
     var innerCircleRadius = 0.13 * this.width;
-    var outerCircleRadius = 0.20 * this.width;
+    var outerCircleRadius = 0.22 * this.width;
 
-    this.drawCentralCircle(innerCircleRadius, 0, labels);
+    this.drawCentralCircle(innerCircleRadius, 0.25*innerCircleRadius, labels);
     //this.drawOuterCentralCircle(outerCircleRadius);
-    
 
-    plots = 26;
+    plots = regionsData.regionalProjects.length;
     increase = Math.PI * 2 / plots,
     angle = 0,
     x = 0,
     y = 0;
 
     for(var i = 0; i < plots; i++) {
-      var p = new Plot(container, 'element_' + i);
+      var p = new SateliteCircle(container, 'element_' + i, regionsData.regionalProjects[i]);
       x = outerCircleRadius * Math.cos(angle) + this.width / 2 + 0.015 * this.width;
-      y = outerCircleRadius * Math.sin(angle) + this.height / 2;
+      y = outerCircleRadius * Math.sin(angle) + this.height / 2 -0.25*innerCircleRadius;
       p.position(x, y);
       angle += increase;
     }
@@ -101,10 +100,10 @@ CircleGraph = function (container) {
   }
 };
 
-Plot = function (container, selector) {
+SateliteCircle = function (container, selector, data) {
 
-  var w = 0.045 * container.width();
-  var h = w;
+  var w = 0.075 * container.width();
+  var h = 0.045 * container.width();;
 
   this.position = function( x, y ) {
     var xoffset = arguments[2] ? 0 : this.width / 2;
@@ -121,11 +120,12 @@ Plot = function (container, selector) {
   this.elm.style.width = w + 'px';
   this.elm.style.height = h + 'px';
   //this.elm.style.border = '1px solid black';
+  this.elm.style.overflow = 'visible';
   this.width = w;
   this.height = h;
   container.append(this.elm);
 
-  var r = 0.33 * w;
+  var r = 0.33 * h;
 
   var g = d3.select('#' + this.elm.id)
               .append("svg")
@@ -137,5 +137,13 @@ Plot = function (container, selector) {
       .attr("r", r)
       .attr("cx", w / 2)
       .attr("cy", r);
-  
+  g.append("text")
+      .attr("text-anchor", "middle")
+      .attr("transform", "translate(" + w / 2 + ", " + 0.85 * h + ")")
+      .style("font-size", 9 + "px")      
+      .style("line-height", "1.2em")
+      .append("tspan")
+         .text(data.region)         
+         .attr("x", "0")
+         .attr("dy", "0");
 };
