@@ -56,13 +56,12 @@ $orange: #F17921;
 	font-weight: normal;
 	text-transform: uppercase;
 }
-#page-title img {
+
+#page-title-logo{
 	float: right;
-	padding: 0.75em 0;
+	padding: 20px 0;
 }
-#page-title img+div {
-	padding-right: 90px;
-}
+
 /* global search styles
 -----------------------------------------------*/
 #search-bar {
@@ -379,7 +378,15 @@ $orange: #F17921;
 /* Content Styles
 ------------------------------------------------*/ 
 .description { 
-	font-size: 1.2em; margin-bottom: 20px; 
+	font-size: 18px; margin-top: 10px; 
+}
+
+.info-notice{
+    background:url(https://djb1962t8apu5.cloudfront.net/static/icon-information.png) no-repeat 0 50%;
+    font-size:1.4em;
+    line-height:2em;
+    height:2em;
+    padding-left: 35px;
 }
 
 .fact-item{
@@ -425,4 +432,38 @@ $orange: #F17921;
     font-size: 1.25em;
     color: #000;
     margin-top: -0.25em;
+}
+
+#tab-links { 
+	float:right; 
+	padding: 0.5em 0;
+	margin: 0 20px 0 0; 
+	font-size: 1.25em;
+}
+
+#tab-links input { 
+	background-color:#990000; 
+	color:#fff;
+	margin:0 0 0 10px;
+	padding: 0.5em 0;
+}
+
+#tab-links input:hover { 
+	background-color:#AA0000; 
+	color:#fff; 
+}
+
+#tab-links a { 
+	color:#fff; 
+	margin-right: 10px; 
+	font-size:0.9em; 
+	text-decoration: underline; 
+	margin:0; 
+	padding:0;
+}
+
+#tab-links form {
+    display:inline;
+    margin:0;
+    padding:0;
 }

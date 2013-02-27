@@ -25,13 +25,17 @@ ignore "/projects/partners.html"
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
 #------------------------------------------------------------------------------
-countries_response = HTTParty.get("#{@api_access_url}/countries")
-countries_json     = JSON.parse(countries_response.body)
 
-countries_json.each do |country|
+countriesResult = HTTParty.get("#{@api_access_url}/countries")
+countriesJSON = JSON.parse(countriesResult.body)
+countriesJSON.each do |country|
+
+countryStats = @cms_db['countries'].find_one({"code" => country['code']})
+
   proxy "/countries/#{country['code']}/index.html", "/countries/country.html", :locals => {
     :country => country,
-    :code    => country['code']
+    :code    => country['code'],
+    :countryStats => countryStats
   }
 
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country }
