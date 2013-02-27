@@ -17,7 +17,10 @@ class Countries @Inject()(val api: Api[Country]) extends Controller {
       "id"          -> ignored[Option[BSONObjectID]](None),
       "code"        -> nonEmptyText,
       "name"        -> nonEmptyText,
-      "description" -> optional(text)
+      "description" -> optional(text),
+      "population" -> optional(text),
+      "lifeExpectancy" -> optional(text),
+      "incomeLevel" -> optional(text)
     )(Country.apply)
      (Country.unapply)
   )
