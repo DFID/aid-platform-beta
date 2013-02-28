@@ -28,6 +28,7 @@
 			{ region: "Africa", budget : 143000000 },
 			{ region: "Middle East", budget : 2000000 },
 			{ region: "Europe", budget : 2000000 },
+			{ region: "Oceana", budget : 127000000 },
 			{ region: "Oceana", budget : 127000000 }
 		]
 	}

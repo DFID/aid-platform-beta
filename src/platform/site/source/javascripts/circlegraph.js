@@ -18,19 +18,34 @@ CircleGraph = function (container) {
     var innerCircleRadius = 0.13 * this.width;
     var outerCircleRadius = 0.22 * this.width;
 
-    this.drawCentralCircle(innerCircleRadius, 0.25*innerCircleRadius, labels);
-    //this.drawOuterCentralCircle(outerCircleRadius);
+    this.drawCentralCircle(innerCircleRadius, 0.2*innerCircleRadius, labels);
+
+    var maxBudget = d3.max(regionsData.regionalProjects.map(function(project) { return project.budget; }));
+    var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
+
+      
+    var sateliteContainerW = 0.15 * container.width();
+    var sateliteContainerH = 0.045 * container.width();
+
+    var minSateliteCircleR = 0.10 * sateliteContainerH;
+    var maxSateliteCircleR = 0.33 * sateliteContainerH;
+
+    var scale = d3.scale.linear();
+    scale.domain([minBudget, maxBudget]);
+    scale.range([minSateliteCircleR, maxSateliteCircleR]);
+
 
     plots = regionsData.regionalProjects.length;
     increase = Math.PI * 2 / plots,
-    angle = 0,
+    angle = 15,
     x = 0,
     y = 0;
-
     for(var i = 0; i < plots; i++) {
-      var p = new SateliteCircle(container, 'element_' + i, regionsData.regionalProjects[i]);
-      x = outerCircleRadius * Math.cos(angle) + this.width / 2 + 0.015 * this.width;
-      y = outerCircleRadius * Math.sin(angle) + this.height / 2 -0.25*innerCircleRadius;
+      var sateliteCircleR = scale(regionsData.regionalProjects[i].budget)
+      var p = new SateliteCircle(container, 'element_' + i, regionsData.regionalProjects[i],
+                                 sateliteContainerW, sateliteContainerH, sateliteCircleR);
+      x = outerCircleRadius * Math.cos(angle) + this.width / 2 + 0.13*innerCircleRadius;
+      y = outerCircleRadius * Math.sin(angle) + this.height / 2 - 0.2*innerCircleRadius;
       p.position(x, y);
       angle += increase;
     }
@@ -47,21 +62,7 @@ CircleGraph = function (container) {
     this.height = 0.55 * this.width; // original width to height ratio
   }
 
-  this.drawOuterCentralCircle = function(radius) {
-    var circleShiftX = this.width / 2 - radius;
-    var circleShiftY = this.height / 2 - radius;
-
-    var g = d3.select(container.selector + ' svg')
-                .append("g")
-                .attr("transform", "translate(" + circleShiftX + ", " + circleShiftY + ")");
-
-    g.append("circle")
-        .style("stroke", "gray")
-        .style("fill", "transparent")
-        .attr("r", radius)
-        .attr("cx", radius - 0.5 * 0.33 * 0.045 * this.width)
-        .attr("cy", radius - 0.5 * 0.33 * 0.045 * this.width);
-  }
+  
 
   this.drawCentralCircle = function(r, shiftY, labels) {
 
@@ -98,18 +99,30 @@ CircleGraph = function (container) {
            .attr("dy", "1em")
            .style("font-size", amountTextSize + "px");
   }
+
+  this.drawOuterCentralCircle = function(radius) {
+    var circleShiftX = this.width / 2 - radius;
+    var circleShiftY = this.height / 2 - radius;
+
+    var g = d3.select(container.selector + ' svg')
+                .append("g")
+                .attr("transform", "translate(" + circleShiftX + ", " + circleShiftY + ")");
+
+    g.append("circle")
+        .style("stroke", "gray")
+        .style("fill", "transparent")
+        .style("z-index", "-1")
+        .attr("r", radius)
+        .attr("cx", radius)
+        .attr("cy", radius);
+  }
 };
 
-SateliteCircle = function (container, selector, data) {
-
-  var w = 0.075 * container.width();
-  var h = 0.045 * container.width();;
+SateliteCircle = function (container, selector, data, w, h, r) {
 
   this.position = function( x, y ) {
-    var xoffset = arguments[2] ? 0 : this.width / 2;
-    var yoffset = arguments[2] ? 0 : this.height / 2;
-    this.elm.style.left = (x - xoffset) + 'px';
-    this.elm.style.top = (y - yoffset) + 'px';
+    this.elm.style.left = (x - w / 2) + 'px';
+    this.elm.style.top = (y - h / 2) + 'px';
     this.x = x;
     this.y = y;
   };
@@ -119,13 +132,10 @@ SateliteCircle = function (container, selector, data) {
   this.elm.id = selector;
   this.elm.style.width = w + 'px';
   this.elm.style.height = h + 'px';
-  //this.elm.style.border = '1px solid black';
   this.elm.style.overflow = 'visible';
   this.width = w;
   this.height = h;
   container.append(this.elm);
-
-  var r = 0.33 * h;
 
   var g = d3.select('#' + this.elm.id)
               .append("svg")
@@ -139,8 +149,8 @@ SateliteCircle = function (container, selector, data) {
       .attr("cy", r);
   g.append("text")
       .attr("text-anchor", "middle")
-      .attr("transform", "translate(" + w / 2 + ", " + 0.85 * h + ")")
-      .style("font-size", 9 + "px")      
+      .attr("transform", "translate(" + w / 2 + ", " + (2 * r + 0.2 * h) + ")")
+      .style("font-size", 10 + "px")      
       .style("line-height", "1.2em")
       .append("tspan")
          .text(data.region)         
