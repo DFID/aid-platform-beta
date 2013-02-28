@@ -45,14 +45,11 @@ AND  (n.`recipient-region`! = "Administrative/Capital (AC)"
 AND   p.type=1
 RETURN DISTINCT(p.ref) as id
 
-]
-
-START  n=node:entities(type="iati-activity")
-MATCH  n-[:`reporting-org`]-o
-WHERE  n.hierarchy = 1
-AND    o.ref = "GB-1"
-RETURN n
-
-
-
+START n=node:entities(type="iati-activity")
+MATCH n-[:`recipient-country`]-c,
+      n-[:sector]-s
+WHERE n.hierarchy=2
+AND   c.code="ET"
+RETURN s.code as sector, s.sector as name, COUNT(s) as total
+ORDER BY total DESC
 

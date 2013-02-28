@@ -12,4 +12,13 @@ module Formatters
   def markdown_to_html(md)
     Kramdown::Document.new(md).to_html
   end
+
+  def current_financial_year
+    now = Time.new
+    if(now.month < 4)
+      "#{now.year-1}/#{now.year}"
+    else
+      "#{now.year}/#{now.year +1}"
+    end
+  end
 end

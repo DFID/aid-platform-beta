@@ -4,9 +4,7 @@ import org.joda.time.DateTime
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.{BSONLong, BSONString, BSONDocument}
-import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
-import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentReader
-import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
+import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
 import Implicits._
@@ -50,6 +48,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
           case i if (globalProjects.exists(_.equals(i)))      => "global"
           case _ => "undefined"
         }
+
         val recipient = projectType match {
           case "country"  => countryProjects.find(_._1 == id).map(_._2)
           case "regional" => regionalProjects.find(_._1 == id).map(_._2)
@@ -162,16 +161,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
     } else {
       s"${now.getYear}-04-01" -> s"${now.getYear + 1}-03-31"
     }
-  }
-  private lazy val allProjectIds = {
-    engine.execute(
-      """
-        | START  n=node:entities(type="iati-activity")
-        | MATCH  n-[:`reporting-org`]-o
-        | WHERE  n.hierarchy = 1
-        | AND    o.ref = "GB-1"
-        | RETURN n.`iati-identifier` as id
-      """.stripMargin).columnAs[String]("id").toSeq
   }
 
   private lazy val countryProjects = {
