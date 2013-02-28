@@ -22,10 +22,9 @@ CircleGraph = function (container) {
 
     var maxBudget = d3.max(regionsData.regionalProjects.map(function(project) { return project.budget; }));
     var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
-
       
-    var sateliteContainerW = 0.17 * container.width();
-    var sateliteContainerH = 0.10 * container.width();
+    var sateliteContainerW = 0.17 * this.width;
+    var sateliteContainerH = 0.10 * this.width;
 
     var minSateliteCircleR = 0.10 * sateliteContainerH;
     var maxSateliteCircleR = 0.20 * sateliteContainerH;
@@ -33,7 +32,6 @@ CircleGraph = function (container) {
     var scale = d3.scale.linear();
     scale.domain([minBudget, maxBudget]);
     scale.range([minSateliteCircleR, maxSateliteCircleR]);
-
 
     plots = regionsData.regionalProjects.length;
     increase = Math.PI * 2 / plots,
