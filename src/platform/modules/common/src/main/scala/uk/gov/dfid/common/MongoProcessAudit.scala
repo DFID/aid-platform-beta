@@ -6,6 +6,7 @@ import reactivemongo.bson.{BSONDateTime, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import java.util.Date
 import concurrent.ExecutionContext.Implicits.global
+import reactivemongo.core.commands.GetLastError
 
 
 trait Auditor {
@@ -36,7 +37,8 @@ class DataLoadAuditor @Inject()(db: DefaultDB) extends Auditor {
         "type"    -> BSONString(msgType),
         "message" -> BSONString(msg),
         "date"    -> BSONDateTime(new Date().getTime)
-      )
+      ),
+      GetLastError(false, None, false)
     )
   }
 }
