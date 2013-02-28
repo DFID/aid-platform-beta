@@ -7,7 +7,7 @@ title: Aid Information Platform
         <img id="page-title-logo" src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <p style="margin-top:20px;">AID PLATFORM</p>
         <h1>
-            <a href="/countries/<%= code %>"><img src="/images/flags/et.png" /></a>
+            <a href="/countries/<%= country['code'] %>"><img src="/images/flags/et.png" /></a>
             <%= country['name'] %>
         </h1>
         <span id="sectionFooter"><a href="/index.html">Home </a> > <a href="#"> <%= country['name'] %> </a></span>
@@ -41,24 +41,24 @@ title: Aid Information Platform
             </li>
             <li class="fact-item">
                 % of DFID budget
-                <span><strong><%= (country['totalBudget']/dfid_total_budget * 100) %>%</strong></span>
+                <span><strong><%= (stats['totalBudget']/dfid_total_budget * 100) %>%</strong></span>
             </li>
             <li class="fact-item">
                 Active Projects
-                <span><strong><%= country['active-projects'] %></strong></span>
+                <span><strong><%= stats['active-projects'] || "&nbsp;" %></strong></span>
             </li>
 
                 <li class="fact-item">
                     Population (<a href="http://data.worldbank.org/country">source</a>):
-                    <span><strong><%= countryStats['population'] %></strong></span>
+                    <span><strong><%= stats['population'] || "&nbsp;" %></strong></span>
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (<a href="http://data.worldbank.org/country">source</a>):
-                    <span><strong><%= countryStats['lifeExpectancy'] %></strong></span>
+                    <span><strong><%= stats['lifeExpectancy'] || "&nbsp;"%></strong></span>
                 </li>
                 <li class="fact-item">
                     Income level (<a href="http://data.worldbank.org/country">source</a>):
-                    <span><strong><%= countryStats['incomeLevel'] %></strong></span>
+                    <span><strong><%= stats['incomeLevel'] || "&nbsp;" %></strong></span>
                 </li>
 
         </ul>
