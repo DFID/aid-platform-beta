@@ -13,6 +13,9 @@
         @form.textfield(country("code"), "ISO Country Code")
         @form.textfield(country("name"), "Country Name")
         @form.pagedown(country("description"), "Description")
+        @form.textfield(country("population"), "Population")
+        @form.textfield(country("lifeExpectancy"), "Life expectancy at birth")
+        @form.textfield(country("incomeLevel"), "Income Level")
 
         <input type="submit" class="btn" value="Save" />
     }

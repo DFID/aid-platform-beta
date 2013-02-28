@@ -24,11 +24,11 @@ CircleGraph = function (container) {
     var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
 
       
-    var sateliteContainerW = 0.15 * container.width();
-    var sateliteContainerH = 0.045 * container.width();
+    var sateliteContainerW = 0.17 * container.width();
+    var sateliteContainerH = 0.10 * container.width();
 
     var minSateliteCircleR = 0.10 * sateliteContainerH;
-    var maxSateliteCircleR = 0.33 * sateliteContainerH;
+    var maxSateliteCircleR = 0.20 * sateliteContainerH;
 
     var scale = d3.scale.linear();
     scale.domain([minBudget, maxBudget]);
@@ -45,7 +45,7 @@ CircleGraph = function (container) {
       var p = new SateliteCircle(container, 'element_' + i, regionsData.regionalProjects[i],
                                  sateliteContainerW, sateliteContainerH, sateliteCircleR);
       x = outerCircleRadius * Math.cos(angle) + this.width / 2 + 0.13*innerCircleRadius;
-      y = outerCircleRadius * Math.sin(angle) + this.height / 2 - 0.2*innerCircleRadius;
+      y = outerCircleRadius * Math.sin(angle) + this.height / 2 ;//- 0.2*innerCircleRadius;
       p.position(x, y);
       angle += increase;
     }
@@ -147,9 +147,22 @@ SateliteCircle = function (container, selector, data, w, h, r) {
       .attr("r", r)
       .attr("cx", w / 2)
       .attr("cy", r);
+
+  var textSize = 0.6 * r;
+  if (textSize > 7) {    
+    g.append("text")
+      .attr("text-anchor", "middle")
+      .attr("fill", "#FFF")            
+      .attr("transform", "translate(" +  (w / 2) + ", " + 1.2 * r + ")")
+      .style("font-size", textSize + "px")
+      .style("line-height", "1.1em")
+      .append("tspan")
+         .text(format_million_stg(data.budget));
+  }
+  
   g.append("text")
       .attr("text-anchor", "middle")
-      .attr("transform", "translate(" + w / 2 + ", " + (2 * r + 0.2 * h) + ")")
+      .attr("transform", "translate(" + w / 2 + ", " + (2.6 * r) + ")")
       .style("font-size", 10 + "px")      
       .style("line-height", "1.2em")
       .append("tspan")
@@ -157,3 +170,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
          .attr("x", "0")
          .attr("dy", "0");
 };
+
+format_million_stg = function(amt) {
+  return '\u00A3' + (amt / 1000000) + 'm';
+}

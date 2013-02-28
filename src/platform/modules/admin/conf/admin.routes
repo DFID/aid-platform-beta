@@ -29,6 +29,14 @@ GET     /countries/:id              @controllers.admin.Countries.edit(id: String
 POST    /countries/:id              @controllers.admin.Countries.update(id: String)
 POST    /countries/:id/delete       @controllers.admin.Countries.delete(id: String)
 
+# Regions
+GET     /regions                    @controllers.admin.Regions.index
+GET     /regions/new                @controllers.admin.Regions.create
+POST    /regions                    @controllers.admin.Regions.save
+GET     /regions/:id                @controllers.admin.Regions.edit(id: String)
+POST    /regions/:id                @controllers.admin.Regions.update(id: String)
+POST    /regions/:id/delete         @controllers.admin.Regions.delete(id: String)
+
 # FrontPage
 GET     /frontpage                  @controllers.admin.FrontPage.index
 POST    /frontpage                  @controllers.admin.FrontPage.save
