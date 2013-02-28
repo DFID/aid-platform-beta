@@ -11,6 +11,13 @@ module CountryHelpers
     }]).first['total']
   end
 
+  def active_projects(countryCode)
+    @cms_db['projects'].find({  'projectType' => "country",
+                                'recipient' => countryCode,
+                                'status' => { '$lt'=> 3 }
+                              }).count()
+  end
+
   def top_5_countries
     @cms_db['country-stats'].aggregate([{
       "$sort" => {

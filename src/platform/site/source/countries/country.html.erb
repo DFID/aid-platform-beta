@@ -37,7 +37,7 @@ title: Aid Information Platform
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
-                <span><strong>£<%= country['totalBudget'] %></strong></span>
+                <span><strong>£<%= stats['totalBudget'] %></strong></span>
             </li>
             <li class="fact-item">
                 % of DFID budget
@@ -45,7 +45,7 @@ title: Aid Information Platform
             </li>
             <li class="fact-item">
                 Active Projects
-                <span><strong><%= stats['active-projects'] || "&nbsp;" %></strong></span>
+                <span><strong><%= active_projects country['code'] || "&nbsp;" %></strong></span>
             </li>
 
                 <li class="fact-item">
