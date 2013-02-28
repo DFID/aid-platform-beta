@@ -12,20 +12,27 @@ import uk.gov.dfid.common.api.Api
 import uk.gov.dfid.common.models.Project
 import concurrent.Await
 import concurrent.duration._
+import uk.gov.dfid.common.DataLoadAuditor
 
 /**
  * Aggregates a bunch of data related to certain elements
  */
-class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project]) {
+class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project], auditor: DataLoadAuditor) {
 
   def loadProjects = {
 
-    println("Loading Projects")
+    auditor.info("Loading Projects")
+    auditor.info("Dropping current projects collection")
 
     // drop the collection and start up
-    Await.ready(db.collection("projects").drop, 10 seconds)
+    Await.ready(db.collection("projects").drop, Duration.Inf)
+
+    auditor.success("Current projects collection dropped")
 
     try {
+
+      auditor.info("Getting all H1 DFID Projects")
+
       engine.execute(
         """
           | START  n=node:entities(type="iati-activity")
@@ -58,19 +65,20 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
         val project = Project(None, id, title, description, projectType, recipient, status, None)
         Await.ready(projects.insert(project), 10 seconds)
       }
-    }catch{
-      case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
-    }
 
-    println("Loaded Projects")
+      auditor.success("All projects loaded")
+    }catch{
+      case e: Throwable => auditor.error(s"Error loading projects: ${e.getMessage}")
+    }
   }
 
   def rollupProjectBudgets = {
-    println("Rolling up Project Budgets")
+    auditor.info("Rolling up Project Budgets")
 
     val projects = db.collection("projects")
     val (start, end) = currentFinancialYear
 
+    auditor.info("Summing up all budgets for all projects")
     engine.execute(
       s"""
         | START  n=node:entities(type="iati-activity")
@@ -96,62 +104,67 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
         upsert = false, multi = false
       )
     }
+
+    auditor.success("Project budgets rolled up")
   }
 
   def rollupCountryBudgets = {
 
-    println("Rolling up Country Budgets")
+    auditor.info("Rolling up Country Budgets")
 
-    db.collection("countries").find(BSONDocument()).toList.map { countries =>
+    val (start, end) = currentFinancialYear
 
-      val (start, end) = currentFinancialYear
+    auditor.info("Fetching current countries from CMS")
 
-      countries.foreach { countryDocument =>
+    val countries = Await.result(db.collection("countries").find(BSONDocument()).toList, Duration.Inf)
 
-        val country = countryDocument.toTraversable
+    auditor.info("Summing all budgets for project (from current FY)")
+    
+    countries.foreach { countryDocument =>
 
-        try {
-          val code = country.getAs[BSONString]("code").get.value
+      val country = countryDocument.toTraversable
+      val code = country.getAs[BSONString]("code").get.value
 
-          val query = s"""
-            | START  n=node:entities(type="iati-activity")
-            | MATCH  n-[:`recipient-country`]-c,
-            |        n-[:`reporting-org`]-org,
-            |        n-[:budget]-b-[:value]-v
-            | WHERE  org.ref="GB-1"
-            | AND    c.code = "$code"
-            | AND    v.`value-date` >= "$start"
-            | AND    v.`value-date` <= "$end"
-            | RETURN SUM(v.value) as value
-          """.stripMargin
+      try {
 
-          val result = engine.execute(query).columnAs[Object]("value")
 
-          val totalBudget = result.toSeq.head match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-          }
 
-          // update the country stats collection
-          db.collection("country-stats").update(
-            BSONDocument("code" -> BSONString(code)),
-            BSONDocument("$set" -> BSONDocument(
-              "code"        -> BSONString(code),
-              "totalBudget" -> BSONLong(totalBudget)
-            )),
-            multi = false,
-            upsert = true
-          )
+        val query = s"""
+          | START  n=node:entities(type="iati-activity")
+          | MATCH  n-[:`recipient-country`]-c,
+          |        n-[:`reporting-org`]-org,
+          |        n-[:budget]-b-[:value]-v
+          | WHERE  org.ref="GB-1"
+          | AND    c.code = "$code"
+          | AND    v.`value-date` >= "$start"
+          | AND    v.`value-date` <= "$end"
+          | RETURN SUM(v.value) as value
+        """.stripMargin
+
+        val result = engine.execute(query).columnAs[Object]("value")
+
+        val totalBudget = result.toSeq.head match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
         }
-        catch {
-          case e: Throwable => {
-            println(e.getMessage)
-            println(e.getStackTrace.mkString("\n\t"))
-          }
+
+        // update the country stats collection
+        db.collection("country-stats").update(
+          BSONDocument("code" -> BSONString(code)),
+          BSONDocument("$set" -> BSONDocument(
+            "code"        -> BSONString(code),
+            "totalBudget" -> BSONLong(totalBudget)
+          )),
+          multi = false,
+          upsert = true
+        )
+      }
+      catch {
+        case e: Throwable => {
+          auditor.error(s"Error rolling up budgets for country $code : ${e.getMessage}")
         }
       }
     }
-
   }
 
   private def currentFinancialYear = {
