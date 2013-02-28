@@ -5,11 +5,18 @@ import lib.traits.{Deployer, Authenticator}
 import controllers.traits.admin.Secured
 import com.google.inject.Inject
 import uk.gov.dfid.loader.DataLoader
+import uk.gov.dfid.common.api.ReadOnlyApi
+import uk.gov.dfid.common.models.AuditLog
+import concurrent.ExecutionContext.Implicits.global
 
-class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val loader: DataLoader) extends Controller with Secured {
+class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val loader: DataLoader, val audits: ReadOnlyApi[AuditLog]) extends Controller with Secured {
 
   def index = SecuredAction { user => implicit request =>
-    Ok(views.html.admin.index())
+    Async {
+      audits.all.map { logs =>
+        Ok(views.html.admin.index(logs))
+      }
+    }
   }
 
   def deploy = secured(() => deployer.deploy)
