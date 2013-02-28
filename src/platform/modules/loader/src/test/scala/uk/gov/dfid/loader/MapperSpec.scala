@@ -4,10 +4,14 @@ import org.neo4j.graphdb.{Transaction, Node, GraphDatabaseService}
 import org.specs2.mutable.Specification
 import org.specs2.mock.Mockito
 import org.neo4j.graphdb.index.{Index, IndexManager}
+import uk.gov.dfid.common.DataLoadAuditor
 
 class MapperSpec extends Specification with Mockito {
 
   "The parsers parse(elem) method" should {
+
+
+    val auditor = mock[DataLoadAuditor]
 
     "create a new node for the root element" in {
       // arrange
@@ -17,7 +21,7 @@ class MapperSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new Mapper(db).map(<my-node></my-node>)
+      new Mapper(db, auditor).map(<my-node></my-node>)
 
       // assert
       there was one(db).createNode
@@ -32,7 +36,7 @@ class MapperSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new Mapper(db).map(
+      new Mapper(db,auditor).map(
         <my-node name="arnold" age="45" is-human="true">
         </my-node>)
 
@@ -50,7 +54,7 @@ class MapperSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new Mapper(db).map(<my-node><my-title>Super Title</my-title></my-node>)
+      new Mapper(db, auditor).map(<my-node><my-title>Super Title</my-title></my-node>)
 
       there was one(db).createNode
       there was one(node).setProperty("my-title", "Super Title")
@@ -65,7 +69,7 @@ class MapperSpec extends Specification with Mockito {
       db.createNode returns root thenReturn child
 
       // act
-      new Mapper(db).map(<my-node><my-title name="arnold" /></my-node>)
+      new Mapper(db, auditor).map(<my-node><my-title name="arnold" /></my-node>)
 
       // assert
       there was two(db).createNode
@@ -82,7 +86,7 @@ class MapperSpec extends Specification with Mockito {
       db.createNode returns node
 
       // act
-      new Mapper(db).map(<value value-date="2010-10-20">8100000000</value>)
+      new Mapper(db, auditor).map(<value value-date="2010-10-20">8100000000</value>)
 
       // assert
       there was one(node).setProperty("label", "value")

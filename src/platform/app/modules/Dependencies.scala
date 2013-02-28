@@ -3,17 +3,19 @@ package modules
 import com.tzavellas.sse.guice.ScalaModule
 import lib._
 import traits._
-import uk.gov.dfid.common.models.{Region, Project, CountryStats, Country}
+import uk.gov.dfid.common.models._
 import uk.gov.dfid.common.api._
 import reactivemongo.api.MongoConnection
 import play.api.Play
 import collection.JavaConversions._
 import concurrent.ExecutionContext.Implicits.global
 import org.neo4j.graphdb.GraphDatabaseService
-import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
+import uk.gov.dfid.common.neo4j.{GraphDatabaseManager, SingletonEmbeddedNeo4JDatabaseHasALongName}
 import uk.gov.dfid.loader.{DataLoader, Loader}
 import reactivemongo.api.DefaultDB
 import uk.gov.dfid.common.lib.{CommonProjectService, ProjectService}
+import uk.gov.dfid.common.{DataLoadAuditor, Auditor}
+import reactivemongo.api.DefaultDB
 
 class Dependencies extends ScalaModule {
    def configure() {
@@ -37,9 +39,13 @@ class Dependencies extends ScalaModule {
      bind[ReadOnlyApi[Project]].to[ReadOnlyProjectsApi]
 
      bind[GraphDatabaseService].toProvider(SingletonEmbeddedNeo4JDatabaseHasALongName)
+     bind[GraphDatabaseManager].toInstance(SingletonEmbeddedNeo4JDatabaseHasALongName)
      bind[DataLoader].to[Loader]
      bind[FrontPageManagedContentApi].to[MongoBackedFrontPageManagedContentApi]
      bind[ProjectService].to[CommonProjectService]
+
+     bind[Auditor].to[DataLoadAuditor]
+     bind[ReadOnlyApi[AuditLog]].to[ReadOnlyDataLoaderAuditLogsApi]
    }
  }
 
