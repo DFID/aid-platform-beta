@@ -1,9 +1,12 @@
 import com.google.inject.Guice
-import play.api.{Play, Application, GlobalSettings}
+import play.api.{Application, GlobalSettings}
 import modules.Dependencies
-import uk.gov.dfid.common.neo4j.SingletonEmbeddedNeo4JDatabaseHasALongName
 
 object Global  extends GlobalSettings {
+
+  override def beforeStart(app: Application) {
+    System.setProperty("actors.corePoolSize","20")
+  }
 
   lazy private val injector = Guice.createInjector(new Dependencies)
 
