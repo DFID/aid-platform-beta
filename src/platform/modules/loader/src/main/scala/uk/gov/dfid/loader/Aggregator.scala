@@ -119,7 +119,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     val countries = Await.result(db.collection("countries").find(BSONDocument()).toList, Duration.Inf)
 
     auditor.info("Summing all budgets for project (from current FY)")
-    
+
     countries.foreach { countryDocument =>
 
       val country = countryDocument.toTraversable
