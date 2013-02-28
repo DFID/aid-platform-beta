@@ -34,6 +34,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       aggregator.rollupCountryBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
+      aggregator.rollupCountrySectorBreakdown
 
       auditor.success("Loading process completed")
     }

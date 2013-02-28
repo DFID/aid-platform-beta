@@ -73,7 +73,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
   }
 
   def rollupCountrySectorBreakdown = {
-    println("Rolling up country sector breakdown")
+    auditor.info("Rolling up country sector breakdown")
     val sectorBreakdowns = db.collection("sector-breakdowns")
     engine.execute(
     s"""
@@ -98,6 +98,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         upsert = false, multi = false
         )
     }
+
+    auditor.success("Country sectors rolled up")
   }
 
   def rollupProjectBudgets = {
