@@ -3,8 +3,9 @@ package uk.gov.dfid.loader
 import Implicits._
 import org.neo4j.graphdb.{DynamicRelationshipType, Node, GraphDatabaseService}
 import org.neo4j.graphdb.index.Index
+import uk.gov.dfid.common.DataLoadAuditor
 
-class Mapper(val db: GraphDatabaseService) {
+class Mapper(val db: GraphDatabaseService, auditor: DataLoadAuditor) {
 
   /**
    * Parses XML elements into Graph structures
@@ -18,7 +19,7 @@ class Mapper(val db: GraphDatabaseService) {
 
       performMap(el)
 
-      println("Done Mapping")
+      auditor.info("Mapping of source complete")
     }
   }
 

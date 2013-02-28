@@ -16,7 +16,9 @@ object ApplicationBuild extends Build {
     // Application Dependencies
     "com.tzavellas"     %  "sse-guice"     % "0.7.0",
     "org.reactivemongo" %% "reactivemongo" % "0.8",
-    "org.mindrot"       %  "jbcrypt"       % "0.3m"
+    "org.mindrot"       %  "jbcrypt"       % "0.3m",
+    "joda-time"         %  "joda-time"     % "2.1",
+    "org.joda"          %  "joda-convert"  % "1.3"
   )
 
   lazy val common = Project(
@@ -58,9 +60,7 @@ object ApplicationBuild extends Build {
       "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04",
       "org.neo4j"    %  "neo4j-lucene-index" % "1.9.M04",
       "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
-      "com.typesafe" %  "config"             % "1.0.0",
-      "joda-time"    %  "joda-time"          % "2.1",
-      "org.joda"     %  "joda-convert"       % "1.3"
+      "com.typesafe" %  "config"             % "1.0.0"
     )
   ).dependsOn(common).aggregate(common)
 
