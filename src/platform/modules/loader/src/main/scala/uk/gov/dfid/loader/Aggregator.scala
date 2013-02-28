@@ -3,7 +3,7 @@ package uk.gov.dfid.loader
 import org.joda.time.DateTime
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api.DefaultDB
-import reactivemongo.bson.{BSONLong, BSONString, BSONDocument}
+import reactivemongo.bson.{BSONInteger, BSONLong, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
@@ -63,6 +63,34 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project])
     }
 
     println("Loaded Projects")
+  }
+
+  def rollupCountrySectorBreakdown = {
+    println("Rolling up country sector breakdown")
+    val sectorBreakdowns = db.collection("sector-breakdowns")
+    engine.execute(
+    s"""
+      | START n=node:entities(type="iati-activity")
+      | MATCH n-[:`recipient-country`]-c,
+      | n-[:sector]-s
+      | WHERE n.hierarchy=2
+      | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
+      | ORDER BY total DESC
+     """.stripMargin).foreach { row =>
+        val country = row("country").asInstanceOf[String]
+        val sector = row("sector").asInstanceOf[String]
+        val name = row("name").asInstanceOf[String]
+        val total = row("total").asInstanceOf[Long].toInt
+
+      sectorBreakdowns.update(
+        BSONDocument("c.code" -> BSONString(country), "sector" -> BSONString(sector)),
+        BSONDocument("$set" -> BSONDocument(
+          "name" -> BSONString(name),
+          "total" -> BSONInteger(total)
+        )),
+        upsert = false, multi = false
+        )
+    }
   }
 
   def rollupProjectBudgets = {
