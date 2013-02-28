@@ -467,3 +467,14 @@ $orange: #F17921;
     margin:0;
     padding:0;
 }
+
+#map {
+	width: 100%; 
+	height: 500px;
+}
+
+.static-background {
+	background-image: url(/images/map_transparent.gif);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
