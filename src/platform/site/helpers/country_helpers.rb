@@ -19,7 +19,19 @@ module CountryHelpers
   end
 
   def sector_groups(countryCode) 
-    @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1})
+    firstSeven = @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1}).limit(7).to_a
+    others = @cms_db['sector-breakdowns'].aggregate([{ "$match" => {"country" => countryCode} },
+                                                     { "$skip" => 7 },
+                                                     {
+                                                       "$group" => {
+                                                          "_id" => nil,
+                                                          "total" => {
+                                                           "$sum" => "$total"
+                                                          } 
+                                                        } 
+                                                      }])
+
+    firstSeven + others
   end
 
   def top_5_countries
