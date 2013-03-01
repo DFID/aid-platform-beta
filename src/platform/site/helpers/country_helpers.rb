@@ -18,6 +18,10 @@ module CountryHelpers
                               }).count()
   end
 
+  def sector_groups(countryCode) 
+    @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1})
+  end
+
   def top_5_countries
     @cms_db['country-stats'].aggregate([{
       "$sort" => {

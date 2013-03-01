@@ -73,33 +73,43 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
   }
 
   def rollupCountrySectorBreakdown = {
+
+    auditor.info("Dropping sector breakdowns collection")
+    // drop the collection and start up
+    Await.ready(db.collection("sector-breakdowns").drop, Duration.Inf)
+    auditor.info("Sector breakdowns collection dropped")
+
     auditor.info("Rolling up country sector breakdown")
+
     val sectorBreakdowns = db.collection("sector-breakdowns")
     engine.execute(
-    s"""
-      | START n=node:entities(type="iati-activity")
-      | MATCH n-[:`recipient-country`]-c,
-      | n-[:sector]-s
-      | WHERE n.hierarchy=2
-      | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
-      | ORDER BY total DESC
-     """.stripMargin).foreach { row =>
-        val country = row("country").asInstanceOf[String]
-        val sector = row("sector").asInstanceOf[String]
-        val name = row("name").asInstanceOf[String]
-        val total = row("total").asInstanceOf[Long].toInt
+      s"""
+        | START n=node:entities(type="iati-activity")
+        | MATCH n-[:`recipient-country`]-c,
+        | n-[:sector]-s
+        | WHERE n.hierarchy=2
+        | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
+        | ORDER BY total DESC
+       """.stripMargin).toSeq.foreach { row =>
+          try {
+            auditor.info("Adding...")
+            val country = row("country").asInstanceOf[String]
+            val sector = row("sector").asInstanceOf[Long].toString
+            val name = row("name").asInstanceOf[String]
+            val total = row("total").asInstanceOf[Long].toInt
 
-      sectorBreakdowns.update(
-        BSONDocument("c.code" -> BSONString(country), "sector" -> BSONString(sector)),
-        BSONDocument("$set" -> BSONDocument(
-          "name" -> BSONString(name),
-          "total" -> BSONInteger(total)
-        )),
-        upsert = false, multi = false
-        )
-    }
 
-    auditor.success("Country sectors rolled up")
+            sectorBreakdowns.insert(
+              BSONDocument("country" -> BSONString(country),
+                           "sector" -> BSONString(sector),
+                           "name" -> BSONString(name),
+                           "total" -> BSONInteger(total))
+            )
+          } catch {
+              case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
+            }
+        }
+      auditor.success("Country sectors rolled up")
   }
 
   def rollupProjectBudgets = {

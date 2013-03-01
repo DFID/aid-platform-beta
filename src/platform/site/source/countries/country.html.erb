@@ -76,6 +76,21 @@ title: Aid Information Platform
 <div class="row">
     <div class="six columns">
          <h3 class="info-notice">Sector groups</h3>
+         <div id="sectorChart" style="float:left;"></div>
+            <div id="sectorLegend" style="float:left;">
+            <table>
+                <% (sector_groups country['code']).each do |sector| %>
+                    <tr class="legend-item">
+                        <td>
+                            <span class="legend-color"></span>
+                            <span class="truncate" style="width: 155px;" title="<%= sector['name'] %>"> <%= sector['name'] %> </span>
+                        </td>
+                        <td><%= sector['total'] %>%</td>
+                    </tr>
+                <% end %>
+            </table>
+
+        </div>
     </div>
     <div class="six columns">
          <h3 class="info-notice">Project budget total by year</h3>
