@@ -10,7 +10,7 @@ module Formatters
   end
 
   def markdown_to_html(md)
-    Kramdown::Document.new(md).to_html
+    Kramdown::Document.new(md || '').to_html
   end
 
   def current_financial_year
