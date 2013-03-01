@@ -126,9 +126,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       val code = country.getAs[BSONString]("code").get.value
 
       try {
-
-
-
         val query = s"""
           | START  n=node:entities(type="iati-activity")
           | MATCH  n-[:`recipient-country`]-c,
