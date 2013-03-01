@@ -478,3 +478,11 @@ $orange: #F17921;
 	background-repeat: no-repeat;
 	background-size: contain;
 }
+
+.truncate {
+    width: 200px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
