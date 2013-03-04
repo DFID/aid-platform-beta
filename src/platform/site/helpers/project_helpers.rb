@@ -59,8 +59,10 @@ module ProjectHelpers
                 :projects => @cms_db['projects'].find({ "recipient" => country['_id'], "projectType" => "country"}).count(),
                 :budget => country['total'],
                 :flag => '/images/flags/' + country['_id'].downcase + '.png'
-            }.to_json
-        }}
+            }
+        }}.inject({}) { |obj, entry| 
+            obj.merge! entry
+        }.to_json
     end
 
     def dfid_regional_projects_data
