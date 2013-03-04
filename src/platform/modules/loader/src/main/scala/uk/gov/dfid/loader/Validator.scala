@@ -13,8 +13,6 @@ class Validator {
 
   def validate(source: InputStream, version: String, sourceType: String): Boolean = {
 
-    if(version == "1.0") return true
-
     val plural = sourceType match {
       case "organisation" => "organisations"
       case "activity"     => "activities"

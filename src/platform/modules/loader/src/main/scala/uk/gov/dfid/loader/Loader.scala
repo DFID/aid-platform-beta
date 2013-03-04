@@ -61,7 +61,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       // validate the data source
       val url     = source.getAs[BSONString]("url").map(_.value).get
       val ele     = XML.load(url)
-      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.0")
+      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.01")
       val stream  = new URL(url).openStream
 
       // validation throws uncontrollable errors
