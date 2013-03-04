@@ -11,7 +11,7 @@ git clone git@github.com:DFID/aid-platform-site.git build/
 
 # generate site with middleman
 bundle install
-bundle exec middleman build --clean
+bundle exec middleman build --clean --verbose
 
 # commit generated site
 cd build

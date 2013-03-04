@@ -16,24 +16,28 @@ title: Aid Information Platform
 
     <div class="six columns">
 
-            <h3 class="section-group-title">Funding - <%= project['funding'] %></h3>
+            <h3 class="section-group-title">Funding - Unconditional</h3>
             <div id="funding-progress" style="height: 150px;" class="progress">
             </div>
 
        
-            <h3 class="section-group-title">Status - <%= project['status'] %></h3>
+            <h3 class="section-group-title">Status - <%= activty_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress">
             </div>
     </div>
 
     <div class="six columns">
-
-        <script src="/javascripts/leaflet/leaflet.js" type="text/javascript"></script>
-        <script src="/javascripts/leaflet/world.js" type="text/javascript"></script>
-        <link rel="stylesheet" href="@routes.Assets.at("javascripts/leaflet/leaflet.css")" />
-
-        <img src="/images/generic-map.gif">
-
+    <div id="countryMap" class="countryMap" >
+    </div>
+        <input type="hidden" id="countryCode" value="<%= country['code'] %>">
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+        <link rel="stylesheet" href="/stylesheets/maps.css" />
+        <script type="text/javascript"  src="/javascripts/leaflet/countryBounds.js">
+        </script>
+        <script type="text/javascript"  src="/javascripts/leaflet/leaflet.js">
+        </script>
+        <script type="text/javascript" src="/javascripts/leaflet/countrymap.js">
+        </script>
         <link rel="stylesheet" href="/stylesheets/MarkerCluster.css" />
         <link rel="stylesheet" href="/stylesheets/MarkerCluster.Default.css" />
 
@@ -65,26 +69,5 @@ title: Aid Information Platform
     </div>
     <div class="six columns">
         <h3 class="section-group-title">Project budget vs actual spend</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="twelve columns">
-        <h3 class="section-group-title">Partner budget split</h3>
-        <div id="partnerChart" style="float:left;"></div>
-        <div id="partnerLegend" style="float:left;">
-            <table>
-                <% (project["partner-split"] || []).each do |partner| %>
-                    <tr class="legend-item">
-                        <td>
-                            <span class="legend-color"></span>
-                            <span class="truncate" style="width: 155px;" title="<%= partner['name'] %>"> <%= partner['name'] %> </span>
-                        </td>
-                        <td><%= partner['percentage'] %>%</td>
-                    </tr>
-                <% end %>
-            </table>
-
-        </div>
     </div>
 </div>

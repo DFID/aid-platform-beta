@@ -4,7 +4,7 @@
         <div>
             <h1>
                 <span>AID PLATFORM</span>
-                <%= project['title'] %><span>[<%= project['iati-identifier'] %>]</span>
+                <%= project['title'] %><span>[<%= project['iatiId'] %>]</span>
             </h1>
         </div>
     </div>
@@ -19,10 +19,10 @@
                 <div class="projects-nav">
                     <nav>
                         <ul class="tab-bar">
-                            <li <%= active=="summary" ? "class='active'" : ""%>><a href="/projects/<%=project['iati-identifier']%>">Summary</a></li>
-                            <li <%= active=="documents" ? "class='active'" : ""%>><a href="/projects/<%=project['iati-identifier']%>/documents">Documents</a></li>
-                            <li <%= active=="transactions" ? "class='active'" : ""%>><a href="/projects/<%=project['iati-identifier']%>/transactions">Transactions</a></li>
-                            <li <%= active=="partners" ? "class='active'" : ""%>><a href="/projects/<%=project['iati-identifier']%>/partners">Partners</a></li>
+                            <li <%= active=="summary" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>">Summary</a></li>
+                            <li <%= active=="documents" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/documents">Documents</a></li>
+                            <li <%= active=="transactions" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/transactions">Transactions</a></li>
+                            <li <%= active=="partners" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/partners">Partners</a></li>
                         </ul>
                     </nav>
                 </div>          

@@ -7,7 +7,12 @@ import org.neo4j.graphdb.GraphDatabaseService
 import sys.process._
 import concurrent.Lock
 
-object SingletonEmbeddedNeo4JDatabaseHasALongName extends Provider[GraphDatabaseService] {
+trait GraphDatabaseManager {
+  def get : GraphDatabaseService
+  def restart(flush: Boolean): GraphDatabaseService
+}
+
+object SingletonEmbeddedNeo4JDatabaseHasALongName extends Provider[GraphDatabaseService] with GraphDatabaseManager {
 
   private lazy val path = ConfigFactory.load.getString("neo4j.path")
   private var db : EmbeddedGraphDatabase = _

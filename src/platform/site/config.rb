@@ -4,6 +4,7 @@ require "helpers/formatters"
 require "helpers/country_helpers"
 require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
+require "helpers/lookups"
 require "middleman-smusher"
 
 #------------------------------------------------------------------------------
@@ -39,10 +40,13 @@ end
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
 @cms_db['projects'].find({}).each do |project|
+
+  funded_projects = @cms_db['funded-projects'].find({ 'funding' => project['iatiId'] })
+
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project }
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
 end
 
 #------------------------------------------------------------------------------
@@ -53,7 +57,8 @@ helpers do
   include Formatters
   include CountryHelpers
   include FrontPageHelpers
-  
+  include Lookups
+
 end
 
 #------------------------------------------------------------------------------

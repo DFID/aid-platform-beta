@@ -11,6 +11,7 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import concurrent.ExecutionContext.Implicits.global
 import java.io.PrintWriter
 import java.util
+import uk.gov.dfid.common.{DataLoadAuditor, Auditor}
 
 class AggregatorSpec extends Specification with Mockito  {
 
@@ -31,10 +32,11 @@ class AggregatorSpec extends Specification with Mockito  {
     "should rollup any budgets found" in {
 
       // arrange
-      val engine = mock[ExecutionEngine]
-      val db     = mock[DefaultDB]
-      val coll   = mock[DefaultCollection]
-      val api    = mock[Api[Project]]
+      val engine  = mock[ExecutionEngine]
+      val db      = mock[DefaultDB]
+      val coll    = mock[DefaultCollection]
+      val api     = mock[Api[Project]]
+      val auditor = mock[DataLoadAuditor]
 
       db.collection(anyString) returns coll
 
@@ -45,7 +47,7 @@ class AggregatorSpec extends Specification with Mockito  {
         )
       )
 
-      val aggregator = new Aggregator(engine, db, api)
+      val aggregator = new Aggregator(engine, db, api, auditor)
 
       // act
       aggregator.rollupProjectBudgets

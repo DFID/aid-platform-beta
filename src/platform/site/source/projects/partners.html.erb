@@ -3,3 +3,31 @@ title: Aid Information Platform
 ---
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "partners" } %>
+
+<div class="row">
+
+    <div class="twelve columns">
+      <table>
+        <thead>
+          <tr>
+            <th>Funded Id</th>
+            <th>Description</th>
+            <th>Funds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% funded_projects.each do |funded_project| %>
+            <tr>
+              <td><%=funded_project['reporting']%></td>
+              <td>
+                <h5><%=funded_project['title']%></h5>
+                <%=funded_project['description']%>
+              </td>
+              <td>&pound;<%=funded_project['funds']%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+</div>
