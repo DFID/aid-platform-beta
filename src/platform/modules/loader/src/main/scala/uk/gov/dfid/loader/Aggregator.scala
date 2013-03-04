@@ -112,6 +112,46 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       auditor.success("Country sectors rolled up")
   }
 
+  def rollupCountryProjectBudgets = {
+    auditor.info("Dropping project budgets collection")
+    // drop the collection and start up
+    Await.ready(db.collection("project-budgets").drop, Duration.Inf)
+    auditor.info("Project budgets dropped")
+
+    auditor.info("Rolling up country project budgets")
+
+    val projectBudgets = db.collection("project-budgets")
+    engine.execute(
+      s"""
+      |  START n=node:entities(type="iati-activity")
+      |   MATCH n-[:`recipient-country`]-c,
+      |   n-[:budget]-b,
+      |   b-[:value]-v
+      |   WHERE n.hierarchy=2
+      |   RETURN c.code as country, v.value as budget, v.`value-date` as date, n.title as project
+      |   ORDER BY c.code
+       """.stripMargin).toSeq.foreach { row =>
+      try {
+        auditor.info("Adding project budgets...")
+        val country = row("country").asInstanceOf[String]
+        val budget = row("budget").asInstanceOf[Long].toString
+        val date = row("date").asInstanceOf[String]
+        val project = row("project").asInstanceOf[String]
+
+
+        projectBudgets.insert(
+          BSONDocument("country" -> BSONString(country),
+                       "budget" -> BSONString(budget),
+                       "date" -> BSONString(date),
+                       "project" -> BSONString(project))
+        )
+      } catch {
+        case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
+      }
+    }
+    auditor.success("Project budgets rolled up for countries")
+  }
+
   def rollupProjectBudgets = {
     auditor.info("Rolling up Project Budgets")
 
