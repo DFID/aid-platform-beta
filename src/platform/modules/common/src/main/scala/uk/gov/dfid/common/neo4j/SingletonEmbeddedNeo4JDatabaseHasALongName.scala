@@ -39,7 +39,7 @@ object SingletonEmbeddedNeo4JDatabaseHasALongName extends Provider[GraphDatabase
     lock.acquire
     shutdown
     if(flush) {
-      s"sudo rm -rf $path".!
+      s"rm -rf $path".!
     }
     lock.release
     get
