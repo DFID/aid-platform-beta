@@ -18,7 +18,7 @@ title: Aid Information Platform
 	    <script type="text/javascript">
 	        var labels = {
 	            header : 'Total global spend ' + '<%= current_financial_year %>',
-	            amount : '\u00A3' + '<%= format_billion_stg dfid_total_budget %>'.replace('&pound;', '')
+	            amount : '\u00A3' + '<%= format_billion_stg dfid_total_projects_budget 'global' %>'.replace('&pound;', '')
 	        }
 
 	       	var container = $('#map');

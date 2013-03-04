@@ -170,5 +170,5 @@ SateliteCircle = function (container, selector, data, w, h, r) {
 };
 
 format_million_stg = function(amt) {
-  return '\u00A3' + (amt / 1000000) + 'm';
+  return '\u00A3' + Math.floor(amt / 1000000) + 'm';
 }
