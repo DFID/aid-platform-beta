@@ -7,7 +7,7 @@ title: Aid Information Platform
         <img id="page-title-logo" src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <p style="margin-top:20px;">AID PLATFORM</p>
         <h1>
-            <a href="/countries/<%= country['code'] %>"><img src="/images/flags/et.png" /></a>
+            <a href="/countries/<%= country['code'] %>"><img src="/images/flags/<%= country['code'].downcase%>.png" /></a>
             <%= country['name'] %>
         </h1>
         <span id="sectionFooter"><a href="/index.html">Home </a> > <a href="#"> <%= country['name'] %> </a></span>
@@ -37,7 +37,7 @@ title: Aid Information Platform
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
-                <span><strong>£<%= country['totalBudget'] %></strong></span>
+                <span><strong>£<%= stats['totalBudget'] %></strong></span>
             </li>
             <li class="fact-item">
                 % of DFID budget
@@ -45,7 +45,7 @@ title: Aid Information Platform
             </li>
             <li class="fact-item">
                 Active Projects
-                <span><strong><%= stats['active-projects'] || "&nbsp;" %></strong></span>
+                <span><strong><%= active_projects country['code'] || "&nbsp;" %></strong></span>
             </li>
 
                 <li class="fact-item">
@@ -87,6 +87,21 @@ title: Aid Information Platform
 <div class="row">
     <div class="six columns">
          <h3 class="info-notice">Sector groups</h3>
+         <div id="sectorChart" style="float:left;"></div>
+            <div id="sectorLegend" style="float:left;">
+            <table>
+                <% (sector_groups country['code']).each do |sector| %>
+                    <tr class="legend-item">
+                        <td>
+                            <span class="legend-color"></span>
+                            <span class="truncate" style="width: 185px;" title="<%= sector['name'] %>"> <%= sector['name'] || "Other" %> </span>
+                        </td>
+                        <td><%= sector['total'] %></td>
+                    </tr>
+                <% end %>
+            </table>
+
+        </div>
     </div>
     <div class="six columns">
          <h3 class="info-notice">Project budget total by year</h3>
@@ -94,7 +109,24 @@ title: Aid Information Platform
 </div>
 
 
+ <script src="/javascripts/donut.js"></script>
+ <script src="/javascripts/progress.js"></script>
+ <script src="/javascripts/bar.js"></script>
+ <script>
+ 
+     (function(){
+     
+        var sectors = <%= (sector_groups country['code']).to_json %>
+        charts.donut("#sectorChart", sectors, function(d) { 
+          return d.total; 
+        }, function(d){ 
+          return d.name 
+        }, function(d) { 
+          return d.total + " sectors"; 
+        });
 
-
-
-
+        charts.donutLegend("#sectorLegend", ".legend-color", 14, sectors, function(d){ return d.name });
+     
+         })()
+ 
+ </script>
