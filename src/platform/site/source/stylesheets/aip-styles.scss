@@ -381,12 +381,17 @@ $orange: #F17921;
 	font-size: 18px; margin-top: 10px; 
 }
 
+.project-description {
+	font-size: 20px; margin-top: 10px; margin-bottom: 20px;
+}
+
 .info-notice{
-    background:url(https://djb1962t8apu5.cloudfront.net/static/icon-information.png) no-repeat 0 50%;
-    font-size:1.4em;
-    line-height:2em;
-    height:2em;
+    background:url(../images/icon-information.png) no-repeat 0 50%;
+    font-size: 1.6em;
+    line-height: 2em;
+    height: 2em;
     padding-left: 35px;
+	font-weight: normal;    
 }
 
 .fact-item{
