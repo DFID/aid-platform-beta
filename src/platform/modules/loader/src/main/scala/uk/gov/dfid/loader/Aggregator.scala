@@ -92,7 +92,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | ORDER BY total DESC
        """.stripMargin).toSeq.foreach { row =>
           try {
-            auditor.info("Adding...")
             val country = row("country").asInstanceOf[String]
             val sector = row("sector").asInstanceOf[Long].toString
             val name = row("name").asInstanceOf[String]
@@ -100,10 +99,12 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
 
             sectorBreakdowns.insert(
-              BSONDocument("country" -> BSONString(country),
-                           "sector" -> BSONString(sector),
-                           "name" -> BSONString(name),
-                           "total" -> BSONInteger(total))
+              BSONDocument(
+                "country" -> BSONString(country),
+                "sector"  -> BSONString(sector),
+                "name"    -> BSONString(name),
+                "total"   -> BSONInteger(total)
+              )
             )
           } catch {
               case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
