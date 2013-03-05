@@ -41,11 +41,13 @@ end
 #------------------------------------------------------------------------------
 @cms_db['projects'].find({}).each do |project|
 
+  documents           = @cms_db['documents'].find({ 'project' => project['iatiId'] }).to_a
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => project['iatiId'] }).to_a
   has_funded_projects = funded_projects.size > 0
 
+
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects }
 
   if has_funded_projects then
@@ -56,7 +58,7 @@ end
 #------------------------------------------------------------------------------
 # GENERATE FUNDED PROJECT PAGES
 #------------------------------------------------------------------------------
-@cms_db['funded-projects'].find({}).each do |funded_project|
+@cms_db['funded-projects'].find({}).to_a.each do |funded_project|
 
   # format the project model to suit the project templates
   project = {
@@ -74,9 +76,10 @@ end
 
   # get the parent project
   funding_project = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
+  documents       = @cms_db['documents'].find({ 'project' => funded_project['funded'] }).to_a
 
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :documents => documents }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true }
   proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :funded_projects => funded_projects, :funding_project => funding_project }
 
