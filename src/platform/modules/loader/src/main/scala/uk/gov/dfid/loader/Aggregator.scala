@@ -138,12 +138,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val date = row("date").asInstanceOf[String]
         val project = row("project").asInstanceOf[String]
 
+        auditor.info("Adding")
 
         projectBudgets.insert(
-          BSONDocument("country" -> BSONString(country),
+          BSONDocument(
+                       "country" -> BSONString(country),
                        "budget" -> BSONString(budget),
                        "date" -> BSONString(date),
-                       "project" -> BSONString(project))
+                       "project" -> BSONString(project)
+          )
         )
       } catch {
         case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
