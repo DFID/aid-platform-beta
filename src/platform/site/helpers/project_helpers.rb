@@ -19,12 +19,8 @@ module ProjectHelpers
         )
     end
 
-    def is_dfid_project(projectCode)
-        if (projectCode[0, 4] == "GB-1")
-            true
-        else
-            false
-        end
+    def is_dfid_project(projectCode)   
+        projectCode[0, 4] == "GB-1"
     end
 
     def dfid_region_projects_budget(regionCode)
