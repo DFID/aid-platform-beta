@@ -3,3 +3,30 @@ title: Aid Information Platform
 ---
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "documents", :has_funded_projects => has_funded_projects } %>
+
+<div class="row">
+    <div class="twelve columns">
+      <h3 class="section-group-title">Project Documents</h3>
+      <table style="border:0;">
+        <tbody>
+            <% documents.each do |document| %>
+              <tr>
+                <td>
+                    <a href="<%=document['url']%>">
+                      <%= document['title'] %>
+                    </a>
+                </td>
+                <td><%= document['format'] %></td>
+                <td>
+                  <% document['categories'].each do |category| %>
+                    <span class="category">
+                      <%=category%>
+                    </span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+        </tbody>
+      </table>
+    </div>
+</div>
