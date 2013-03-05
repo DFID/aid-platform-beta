@@ -1,0 +1,148 @@
+@(query:String = "")
+
+    <style>
+        #whitehall-wrapper ul.filter { font-size: 0.9em; list-style-type: none; line-height:2em; }
+        #whitehall-wrapper ul.filter ul{ margin-left: 10px; }
+        #whitehall-wrapper .divShowAll, #whitehall-wrapper .divHideAll { margin-left: 18px; font-weight: bold;  line-height:2em;}
+        #whitehall-wrapper #filter h1{  font-weight: bold; font-size:1.2em; line-height:2em;}
+        #whitehall-wrapper #filter h2{  font-size:1em; line-height:2em;}
+
+        #whitehall-wrapper #filter { width: 28%; float:left; margin-top: 15px; }
+        #whitehall-wrapper #results { width: 70%; float: right; }
+    </style>
+    <div class="row">
+    <div class="twelve columns">
+    	<div id="search-bar">
+            <form action="/?query=@query" method="GET">
+                <label for="query">
+                    <h3>Search Projects</h3>
+                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="@query">
+                </label>
+                <input type="submit" value="Search" class="button">
+            </form>
+        </div>
+    </div>
+    </div>
+    <div id="results">
+    	projects.results(filters, selections, suggestion, query, results)
+    </div>
+
+    <div id="filter">
+        <h1>Status</h1>
+        <ul class="status filter multi">
+            
+                <li>
+                    <label>
+                        <input type="checkbox" name="status" value="key" />
+                    </label>
+                </li>
+       </ul>
+        <h1>Sectors</h1>
+        <ul class="sector filter multi">
+
+                <li class="entry">
+                    <h2>Sectors subgroup</h2>
+                    <ul style="display:none;">
+                      
+                            <li>
+                                <label>
+                                    <input type="checkbox" name="sector" value="sector" />
+                                </label>
+                            </li>
+
+                    </ul>
+                </li>
+
+        </ul>
+        <h1>Countries</h1>
+        <ul class="country filter multi">
+                <li class="entry">
+                    <label>
+                        <input type="checkbox" name="status" value="key" />
+                    </label>
+                </li>
+        </ul>
+        <h1>Regions</h1>
+        <ul class="region filter multi">
+             <li class="entry">
+                    <label>
+                        <input type="checkbox" name="status" value="key" />
+                       
+                    </label>
+                </li>
+          
+        </ul>
+        <h1>Budget</h1>
+        <ul class="budget filter range">
+            <li>
+                <input type="number" step="1000" name="lo" id="lo" value="0" style="width:35%" placeholder="Min"/>
+                <input type="number" step="1000" name="hi" id="hi" value="0" style="width:35%" placeholder="Max"/>
+            </li>
+        </ul>
+
+        </ul>
+        <script type="text/javascript">
+            (function($){
+
+                function getIds(context){
+                    return context.find("input:checkbox:checked").map(function(){
+                        return this.value
+                    }).get()
+                }
+
+                function buildSelections(selector, key){
+                    var data = {}
+                    var selections = getIds($(selector))
+                    for(var i = 0; i < selections.length; i++){
+                        data[key + "[" + i + "]"] = selections[i]
+                    }
+                    return data
+                }
+
+                function getBudgetRange() {
+                    var lo = parseInt($(".budget.filter #lo").val())
+                    var hi = parseInt($(".budget.filter #hi").val())
+
+                    if(!isNaN(lo) && !isNaN(hi) && lo <= hi){
+                        return [lo, hi]
+                    }
+
+                    return null
+                }
+
+                var tID;
+
+                function performFilter(){
+
+                    var data = $.extend(
+                        { query: "@query", page: 1 },
+                        buildSelections(".sector.filter", "sectors"),
+                        buildSelections(".status.filter", "statuses"),
+                        buildSelections(".country.filter", "countries"),
+                        buildSelections(".region.filter", "regions")
+                    );
+
+                    var range = getBudgetRange();
+
+                    if(range !== null){
+                        data["budget.min"] = range[0]
+                        data["budget.max"] = range[1]
+                    }
+
+                    if(tID !== undefined){
+                        clearTimeout(tID)
+                    }
+
+                    
+                }
+
+                $(".sector.filter, .country.filter, .region.filter").showmore()
+                $(".sector.filter h2").click(function(){ $(this).next().toggle() })
+
+                $(".multi.filter input").click(performFilter)
+                $(".range.filter input").change(performFilter)
+
+                $("sector.filter ul:hidden input:checkbox:checked").parents("ul:hidden").show()
+            })(jQuery)
+        </script>
+    </div>
