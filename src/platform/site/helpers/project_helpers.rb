@@ -19,6 +19,10 @@ module ProjectHelpers
         )
     end
 
+    def is_dfid_project(projectCode)   
+        projectCode[0, 4] == "GB-1"
+    end
+
     def dfid_region_projects_budget(regionCode)
         # aggregates a total budget of all the regional projects for the given region code
         result = @cms_db['projects'].aggregate([{
