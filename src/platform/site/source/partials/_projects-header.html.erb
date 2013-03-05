@@ -16,6 +16,14 @@
     <div class="twelve columns">
         <div class="tab-bar-container">
             <div class="row">
+                <div id="tab-links">
+                    <% if is_dfid_project project['iatiId'] then %>
+                    <a href="http://projects.dfid.gov.uk/iati/Project/<%= project['iatiId'][5, project['iatiId'].length] %>">IATI Data Set</a>
+                    <% end %>
+                    <form action="/fraud" method="GET" >
+                        <input type="submit" value="Report Fraud" class="button serious"/>
+                    </form>
+                </div>
                 <div class="projects-nav">
                     <nav>
                         <ul class="tab-bar">
