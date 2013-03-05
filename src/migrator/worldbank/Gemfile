@@ -1,0 +1,6 @@
+
+source "https://rubygems.org"
+
+gem "httparty", "~> 0.10.2"
+gem "mongo", "~> 1.8.2"
+gem "bson_ext", "~> 1.8.0" 

@@ -3,6 +3,7 @@ require "json"
 require "helpers/formatters"
 require "helpers/country_helpers"
 require "helpers/frontpage_helpers"
+require "helpers/project_helpers"
 require "helpers/lookups"
 require "middleman-smusher"
 
@@ -40,12 +41,16 @@ end
 #------------------------------------------------------------------------------
 @cms_db['projects'].find({}).each do |project|
 
-  funded_projects = @cms_db['funded-projects'].find({ 'funding' => project['iatiId'] })
+  funded_projects     = @cms_db['funded-projects'].find({ 'funding' => project['iatiId'] }).to_a
+  has_funded_projects = funded_projects.size > 0
 
-  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects }
+
+  if has_funded_projects then
+    proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+  end
 end
 
 #------------------------------------------------------------------------------

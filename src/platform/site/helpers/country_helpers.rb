@@ -1,11 +1,11 @@
 module CountryHelpers
   def dfid_total_budget
     # aggregates the budgets from all projects
-    @cms_db['country-stats'].aggregate([{ 
+    @cms_db['projects'].aggregate([{ 
       "$group" => { 
         "_id"   => nil,  
         "total" => { 
-          "$sum" => "$totalBudget"  
+          "$sum" => "$budget"  
         }  
       } 
     }]).first['total']
@@ -20,16 +20,18 @@ module CountryHelpers
 
   def sector_groups(countryCode) 
     firstSeven = @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1}).limit(7).to_a
-    others = @cms_db['sector-breakdowns'].aggregate([{ "$match" => {"country" => countryCode} },
-                                                     { "$skip" => 7 },
-                                                     {
-                                                       "$group" => {
-                                                          "_id" => nil,
-                                                          "total" => {
-                                                           "$sum" => "$total"
-                                                          } 
-                                                        } 
-                                                      }])
+    others = @cms_db['sector-breakdowns'].aggregate([{ 
+      "$match" => {"country" => countryCode } 
+    }, { 
+      "$skip" => 7 
+    }, {
+     "$group" => {
+        "_id" => nil,
+        "total" => {
+         "$sum" => "$total"
+        } 
+      } 
+    }])
 
     firstSeven + others
   end
