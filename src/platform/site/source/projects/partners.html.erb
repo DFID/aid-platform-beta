@@ -7,23 +7,23 @@ title: Aid Information Platform
 <div class="row">
 
     <div class="twelve columns">
-      <table>
-        <thead>
-          <tr>
-            <th>Funded Id</th>
-            <th>Description</th>
-            <th>Funds</th>
-          </tr>
-        </thead>
+      <h3 class="section-group-title">Partner Projects</h3>
+      <table style="border:0;">
         <tbody>
           <% funded_projects.each do |funded_project| %>
             <tr>
-              <td><%=funded_project['reporting']%></td>
               <td>
-                <h5><%=funded_project['title']%></h5>
-                <%=funded_project['description']%>
+                <h4><%=funded_project['reporting']%></h4>
               </td>
-              <td>&pound;<%=funded_project['funds']%></td>
+              <td width="60%">
+                <h4><%=funded_project['title']%></h4>
+                <div class="description">
+                  <%=funded_project['description']%>
+                </div>
+              </td>
+              <td>
+                <h4>&pound;<%=funded_project['funds']%></h4>
+              </td>
             </tr>
           <% end %>
         </tbody>
