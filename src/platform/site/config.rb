@@ -49,8 +49,37 @@ end
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects }
 
   if has_funded_projects then
-    proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{project['iatiId']}/partners/index.html", '/projects/partners.html', :locals => { :project => project, :funded_projects => funded_projects }
   end
+end
+
+#------------------------------------------------------------------------------
+# GENERATE FUNDED PROJECT PAGES
+#------------------------------------------------------------------------------
+@cms_db['funded-projects'].find({}).each do |funded_project|
+
+  # format the project model to suit the project templates
+  project = {
+    'iatiId'      => funded_project['funded'],
+    'title'       => funded_project['title'],
+    'description' => funded_project['description'],
+    'funds'       => funded_project['funds']
+  }
+
+  # get the other funded projects
+  funded_projects = @cms_db['funded-projects'].find({ 
+    'funding' => funded_project['funding'],
+    'funded'  => { '$ne' => funded_project['funded'] } 
+  }).to_a
+
+  # get the parent project
+  funding_project = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
+
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :funded_projects => funded_projects, :funding_project => funding_project }
+
 end
 
 #------------------------------------------------------------------------------
