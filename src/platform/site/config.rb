@@ -62,7 +62,7 @@ helpers do
   include CountryHelpers
   include FrontPageHelpers
   include Lookups
-
+  include ProjectHelpers
 end
 
 #------------------------------------------------------------------------------
