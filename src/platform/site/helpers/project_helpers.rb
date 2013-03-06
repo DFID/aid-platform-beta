@@ -45,7 +45,10 @@ module ProjectHelpers
     def dfid_country_projects_data
         result = @cms_db['projects'].aggregate([{
                 "$match" => {
-                    "projectType" => "country"
+                    "projectType" => "country",
+                    "status" => {
+                        "$lt" => 3
+                    }
                 }
             }, {
                 "$group" => { 
