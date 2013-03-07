@@ -17,6 +17,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
+    auditor.info("Collecting Project Transactions")
+
     Await.ready(db.collection("transactions").drop, Duration.Inf)
 
     engine.execute(
@@ -56,5 +58,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       )
     }
 
+    auditor.success("Collected Project Transactions")
   }
 }

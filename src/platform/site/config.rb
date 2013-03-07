@@ -95,12 +95,32 @@ end
   }).to_a
 
   # get the parent project
-  funding_project = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
-  documents       = @cms_db['documents'].find({ 'project' => funded_project['funded'] }).to_a
+  funding_project    = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
+  documents          = @cms_db['documents'].find({ 'project' => funded_project['funded'] }).to_a
+  transaction_groups = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => funded_project['funded']
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
 
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :documents => documents }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :transaction_groups => transaction_groups }
   proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :funded_projects => funded_projects, :funding_project => funding_project }
 
 end
