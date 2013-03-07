@@ -147,7 +147,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       )
     }
 
-    auditor.info("Summing up Project Budget spent")
+    auditor.info("Summing up Project Budget spend")
     engine.execute(
       s"""
         | START n=node:entities(type="iati-activity")
@@ -164,7 +164,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | RETURN distinct a.ref as id, SUM(tv.value) as spend
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
-      val spent = row("spend") match {
+      val spend = row("spend") match {
         case v: java.lang.Integer => v.toLong
         case v: java.lang.Long    => v.toLong
       }
@@ -172,7 +172,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "projectSpend" -> BSONLong(spent)
+          "projectSpend" -> BSONLong(spend)
         )),
         upsert = false, multi = false
       )
