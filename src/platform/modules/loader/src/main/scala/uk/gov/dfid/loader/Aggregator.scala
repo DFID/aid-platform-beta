@@ -161,10 +161,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | AND   td.`iso-date` >= "$start"
         | AND   td.`iso-date` <= "$end"
         | AND   (tt.code = 'D' OR tt.code = 'E')
-        | RETURN distinct a.ref as id, SUM(tv.value) as spent
+        | RETURN distinct a.ref as id, SUM(tv.value) as spend
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
-      val spent = row("spent") match {
+      val spent = row("spend") match {
         case v: java.lang.Integer => v.toLong
         case v: java.lang.Long    => v.toLong
       }
@@ -172,7 +172,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "budgetSpent" -> BSONLong(spent)
+          "projectSpend" -> BSONLong(spent)
         )),
         upsert = false, multi = false
       )
