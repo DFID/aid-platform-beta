@@ -3,3 +3,23 @@ title: Aid Information Platform
 ---
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "transactions", :has_funded_projects => has_funded_projects } %>
+
+<% transaction_groups.each do |transaction_group| %>
+  <div class="row">
+    <div class="twelve columns">
+      <h3 class="section-group-title"><%=transaction_group['_id']%> <span style="float:right">&pound;<%=transaction_group["total"]%></span></h3> 
+      <table style="width:100%">
+        <tbody>
+          <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
+            <tr>
+              <td><%=transaction['description']%></td>
+              <td width="15%"><%=transaction['component']%></td>
+              <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
+              <td width="15%" style="text-align:right;">&pound;<%=transaction['value']%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
