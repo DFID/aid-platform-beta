@@ -46,34 +46,6 @@ title: Aid Information Platform
                         <td><%= sector['percentage'] %>%</td>
                     </tr>
                 <% end %>
-                <tr class="legend-item">
-                    <td>
-                        <span class="legend-color"></span>
-                        <span class="truncate" style="width: 155px;" title="Primary education: 65.07%"> Primary education </span>
-                    </td>
-                    <td>65.07%</td>
-                </tr>
-                <tr class="legend-item">
-                    <td>
-                        <span class="legend-color"></span>
-                        <span class="truncate" style="width: 155px;" title="Education facilities: 29.85%"> Education facilities </span>
-                    </td>
-                    <td>29.85%</td>
-                </tr>
-                <tr class="legend-item">
-                    <td>
-                        <span class="legend-color"></span>
-                        <span class="truncate" style="width: 155px;" title="Social/ welfare services: 4.97%"> Social/ welfare services </span>
-                    </td>
-                    <td>4.97%</td>
-                </tr>
-                <tr class="legend-item">
-                    <td>
-                        <span class="legend-color"></span>
-                        <span class="truncate" style="width: 155px;" title="Teacher training: 0.11%"> Teacher training </span>
-                    </td>
-                    <td>0.11%</td>
-                </tr>
             </table>
 
         </div>
@@ -89,18 +61,19 @@ title: Aid Information Platform
 
     <script type="text/javascript">
         (function(){
+        /*
             var sectors = [ {sector: "Primary education", budget: 65.0668621451205, formatted: "65.07%"},  
                             {sector: "Education facilities and training", budget: 29.84961237371139, formatted: "29.85%"},  
                             {sector: "Social/ welfare services", budget: 4.974934833555173, formatted: "4.97%"},  
                             {sector: "Teacher training", budget: 0.10859064761293796, formatted: "0.11%"}, ];
             charts.donut("#sector-breakdown", sectors, function(d) { return d.budget; }, function(d){ return d.sector }, function(d){ return d.formatted });
             charts.donutLegend("#sector-legend", ".legend-color", 14, sectors, function(d){ return d.sector });
-
+        */
             var funding = [ {label: "", text: "", value: 0},
-                            {label: "Budget spend to date", text: "£293148958", value: 293148958},
-                            {label: "Project budget", text: "£296526460", value: 296526460}]
+                            {label: "Budget spend to date", text: "£<%= project['budgetSpent'] %>", value: <%= project['budgetSpent'] %>},
+                            {label: "Project budget", text: "£<%= project['budget'] %>", value: <%= project['budget'] %>}]
             charts.progressBar("#funding-progress", funding, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
-
+            /*
             var time = [ {label: "Start",            text: "11 Mar 2008", value: 1205193600000},
                          {label: "Progress by time", text: "",            value: 1362416631819},
                          {label: "End",              text: "31 Mar 2013", value: 1364688000000}];
@@ -108,7 +81,8 @@ title: Aid Information Platform
 
             var budgets = [ ["Year" ,"Plan", "Spend"],
                             [ "FY11/12", 0, 66026638 ], [ "FY12", 257747241, 48943383 ], ];
-            charts.bar("#budget-plan-spend", budgets, ".2s", null, null, ["#D8DCBF", "#2B6367"]);            
+            charts.bar("#budget-plan-spend", budgets, ".2s", null, null, ["#D8DCBF", "#2B6367"]);
+            */
         })()
     </script>
 
