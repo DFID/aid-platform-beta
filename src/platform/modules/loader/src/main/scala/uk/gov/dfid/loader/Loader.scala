@@ -28,6 +28,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
       val partners   = new PartnerAggregator(engine, mongodb, auditor)
+      val documents  = new DocumentAggregator(engine, mongodb, auditor)
 
       auditor.info("Loading data")
 
@@ -38,6 +39,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
       partners.collectPartnerProjects
+      documents.collectProjectDocuments
 
       auditor.success("Loading process completed")
     }

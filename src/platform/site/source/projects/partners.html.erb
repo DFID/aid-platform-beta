@@ -3,9 +3,37 @@ title: Aid Information Platform
 ---
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true } %>
+<% if defined?(funding_project) then %>
+  <div class="row">
+      <div class="twelve columns">
+        <h3 class="section-group-title">Funding Project</h3>
+        <table style="border:0;">
+          <tbody>
+              <tr>
+                <td>
+                  <h4>DFID</h4>
+                </td>
+                <td width="60%">
+                  <h4>
+                    <a href="/projects/<%=funding_project['iatiId']%>">
+                      <%=funding_project['title']%>
+                    </a>
+                  </h4>
+                  <div class="description">
+                    <%=funding_project['description']%>
+                  </div>
+                </td>
+                <td style="text-align:right;">
+                  <h4>&pound;<%=project['funds']%></h4>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+  </div>
+<% end %>
 
 <div class="row">
-
     <div class="twelve columns">
       <h3 class="section-group-title">Partner Projects</h3>
       <table style="border:0;">
@@ -16,7 +44,11 @@ title: Aid Information Platform
                 <h4><%=funded_project['reporting']%></h4>
               </td>
               <td width="60%">
-                <h4><%=funded_project['title']%></h4>
+                <h4>
+                  <a href="/projects/<%=funded_project['funded']%>">
+                    <%=funded_project['title']%>
+                  </a>
+                </h4>
                 <div class="description">
                   <%=funded_project['description']%>
                 </div>
@@ -29,5 +61,4 @@ title: Aid Information Platform
         </tbody>
       </table>
     </div>
-
 </div>
