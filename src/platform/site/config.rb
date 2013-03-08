@@ -4,6 +4,7 @@ require "helpers/formatters"
 require "helpers/country_helpers"
 require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
+require "helpers/codelists"
 require "helpers/lookups"
 require "middleman-smusher"
 
@@ -135,6 +136,8 @@ helpers do
   include FrontPageHelpers
   include Lookups
   include ProjectHelpers
+  include CodeLists
+
 end
 
 #------------------------------------------------------------------------------

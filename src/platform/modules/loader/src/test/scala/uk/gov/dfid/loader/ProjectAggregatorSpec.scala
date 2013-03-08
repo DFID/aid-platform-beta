@@ -40,4 +40,18 @@ class ProjectAggregatorSpec extends Specification with Mockito {
   }
   */
 
+  /*
+  "ProjectAggregator" should {
+    "load up all the transatiosn" in {
+      val a = new ProjectAggregator(
+        new ExecutionEngine(new EmbeddedReadOnlyGraphDatabase("/Users/james/Projects/dfid/data/neo4j")),
+        MongoConnection("localhost:27017" :: Nil).db("dfid"),
+        mock[DataLoadAuditor]
+      )
+
+      a.collectTransactions
+      a.collectPartnerTransactions
+    }
+  }
+  */
 }
