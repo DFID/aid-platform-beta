@@ -13,6 +13,7 @@ import uk.gov.dfid.common.models.Project
 import concurrent.Await
 import concurrent.duration._
 import uk.gov.dfid.common.DataLoadAuditor
+import org.joda.time.format.DateTimeFormat
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -141,6 +142,37 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
           "budget" -> BSONLong(budget)
+        )),
+        upsert = false, multi = false
+      )
+    }
+
+    auditor.info("Summing up Project Budget spent")
+    engine.execute(
+      s"""
+        | START n=node:entities(type="iati-activity")
+        | MATCH n-[:`related-activity`]-a,
+        |       n-[:transaction]-t,
+        |       t-[:`transaction-type`]-tt,
+        |       t-[:`transaction-date`]-td,
+        |       t-[:`value`]-tv
+        | WHERE n.hierarchy = 2
+        | AND   a.type = 1
+        | AND   td.`iso-date` >= "$start"
+        | AND   td.`iso-date` <= "$end"
+        | AND   (tt.code = 'D' OR tt.code = 'E')
+        | RETURN distinct a.ref as id, SUM(tv.value) as spent
+      """.stripMargin).foreach { row =>
+      val id = row("id").asInstanceOf[String]
+      val spent = row("spent") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
+
+      projects.update(
+        BSONDocument("iatiId" -> BSONString(id)),
+        BSONDocument("$set" -> BSONDocument(
+          "budgetSpent" -> BSONLong(spent)
         )),
         upsert = false, multi = false
       )
