@@ -1,16 +1,28 @@
 package uk.gov.dfid.es;
 
 import java.util.List;
+import java.util.Set;
 
 public class IndexBean {
 	private String iatiId;
 	private String description;
 	private String status;
 	private String title;
+	private Set<String> organizations;
+	private Set<String> subProjects;
 	private List<String> sector;
 	private List<String> country;
 	private List<String> region;
 
+	
+	public Set<String> getSubProjects() {
+		return subProjects;
+	}
+
+	public void setSubProjects(Set<String> subProjects) {
+		this.subProjects = subProjects;
+	}
+	
 	public String getIatiId() {
 		return iatiId;
 	}
@@ -65,6 +77,14 @@ public class IndexBean {
 
 	public void setRegion(List<String> region) {
 		this.region = region;
+	}
+
+	public Set<String> getOrganizations() {
+		return organizations;
+	}
+
+	public void setOrganizations(Set<String> organizations) {
+		this.organizations = organizations;
 	}
 
 }
