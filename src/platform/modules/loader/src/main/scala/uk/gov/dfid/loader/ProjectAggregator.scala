@@ -84,7 +84,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       db.collection("projects").update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          dateType -> BSONLong(spend)
+          dateType -> BSONDateTime(date.getMillis)
         )),
         upsert = false, multi = false
       )
