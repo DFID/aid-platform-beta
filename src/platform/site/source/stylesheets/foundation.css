@@ -790,9 +790,10 @@ table thead tr th:last-child, table tfoot tr td:last-child { border-right: none;
 
 table tbody tr.even, table tbody tr.alt { background: #f9f9f9; }
 
-table tbody tr:nth-child(even) { background: #f9f9f9; }
+/* table tbody tr:nth-child(even) { background: #f9f9f9; } */
 
-table tbody tr td { color: #333; padding: 9px 10px; vertical-align: top; border: none; }
+table tbody tr td { color: #333; padding: 9px 10px; vertical-align: top; border: none;}
+
 
 /* Microformats ---------------------- */
 ul.vcard { display: inline-block; margin: 0 0 12px 0; border: 1px solid #ddd; padding: 10px; }
@@ -803,7 +804,7 @@ p.vevent span.summary { font-weight: bold; }
 p.vevent abbr { cursor: default; text-decoration: none; font-weight: bold; border: none; padding: 0 1px; }
 
 /* Progress Bar ---------------------- */
-div.progress { padding: 2px; margin-bottom: 10px; border: 1px solid #cccccc; height: 25px; /* meter */ /* border radii */ }
+div.progress { padding: 2px; margin-bottom: 10px; height: 25px; /* meter */ /* border radii */ }
 div.progress .meter { background: #2ba6cb; height: 100%; display: block; width: 50%; }
 div.progress.secondary .meter { background: #e9e9e9; }
 div.progress.success .meter { background: #5da423; }
