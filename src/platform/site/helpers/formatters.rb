@@ -21,4 +21,9 @@ module Formatters
       "#{now.year}/#{now.year +1}"
     end
   end
+
+  def format_date(d)
+    # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
+    Time.at(d/1000.0).strftime("%d %b %Y")
+  end
 end

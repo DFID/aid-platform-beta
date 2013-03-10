@@ -41,6 +41,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectTransactions
       projects.collectPartnerProjects
       projects.collectPartnerTransactions
+      projects.collectProjectDetails
+
 
       auditor.success("Loading process completed")
     }

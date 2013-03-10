@@ -112,6 +112,38 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.success("Collected Project Transactions")
   }
 
+  def collectProjectDetails = {
+    val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
+
+    auditor.info("Getting project start and end dates")
+
+    engine.execute(
+      """
+        | START n=node:entities(type="iati-activity")
+        | MATCH n-[:`reporting-org`]-o,
+        |       n-[:`activity-status`]-a,
+        |       n-[:`activity-date`]-d
+        | WHERE n.hierarchy = 1
+        | AND   o.ref = "GB-1"
+        | RETURN distinct(n.`iati-identifier`) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
+      """.stripMargin).foreach { row =>
+
+      val id       = row("id").asInstanceOf[String]
+      val dateType = row("type").asInstanceOf[String]
+      val date     = DateTime.parse(row("date").asInstanceOf[String], format)
+
+      db.collection("projects").update(
+        BSONDocument("iatiId" -> BSONString(id)),
+        BSONDocument("$set" -> BSONDocument(
+          dateType -> BSONDateTime(date.getMillis)
+        )),
+        upsert = false, multi = false
+      )
+    }
+
+    auditor.success("Project dates added")
+  }
+  
   def collectPartnerProjects = {
 
     auditor.info("Collecting Partner Projects")
