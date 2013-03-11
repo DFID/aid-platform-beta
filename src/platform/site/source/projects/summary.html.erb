@@ -43,7 +43,7 @@ title: Aid Information Platform
                             <span class="legend-color"></span>
                             <span class="truncate" style="width: 155px;" title="<%= sector['name'] %>"> <%= sector['name'] %> </span>
                         </td>
-                        <td><%= sector['percentage'] %>%</td>
+                        <td><%= format_percentage sector['percentage'] %></td>
                     </tr>
                 <% end %>
             </table>
@@ -62,7 +62,16 @@ title: Aid Information Platform
     <script type="text/javascript">
         (function(){
         /*
-            var sectors = [ {sector: "Primary education", budget: 65.0668621451205, formatted: "65.07%"},  
+            var sectors = [ <% (project["sector-groups"] || []).each do |sector| %>
+                            { sector: <%= sector['name'] %>,
+                              budget: <%= sector['percentage'] %>,
+                              formatted: <%= format_percentage sector['percentage'] %>}
+                            <% end %> ];
+
+            <%=  %>
+
+
+            {sector: "Primary education", budget: 65.0668621451205, formatted: "65.07%"},
                             {sector: "Education facilities and training", budget: 29.84961237371139, formatted: "29.85%"},  
                             {sector: "Social/ welfare services", budget: 4.974934833555173, formatted: "4.97%"},  
                             {sector: "Teacher training", budget: 0.10859064761293796, formatted: "0.11%"}, ];

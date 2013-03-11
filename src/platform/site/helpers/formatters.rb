@@ -26,4 +26,8 @@ module Formatters
     # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
     Time.at(d/1000.0).strftime("%d %b %Y")
   end
+
+  def format_percentage(v)
+    "{"%.3f" % v}%"
+  end
 end
