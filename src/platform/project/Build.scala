@@ -64,6 +64,18 @@ object ApplicationBuild extends Build {
     )
   ).dependsOn(common).aggregate(common)
 
+  lazy val search = play.Project(
+    appName + "-search", appVersion, base, path = file("modules/search")
+    ).settings(
+    resolvers ++= Seq("Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"),
+    libraryDependencies ++= base ++ Seq(
+	"org.elasticsearch" % "elasticsearch"  % "0.20.5",
+	"org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
+        "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
+	)
+   )
+  
+
   lazy val admin = play.Project(
     appName + "-admin", appVersion, base, path = file("modules/admin")
   ).aggregate(
@@ -78,9 +90,10 @@ object ApplicationBuild extends Build {
       "org.neo4j"         %  "neo4j-cypher"        % "1.8.1"
     )
   ).dependsOn(
-    common, admin
+    common, admin, search
   ).aggregate(
-    common, admin
+    common, admin, search
   )
 
 }
+
