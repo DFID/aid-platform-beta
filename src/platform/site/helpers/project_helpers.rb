@@ -9,7 +9,7 @@ module ProjectHelpers
             "$group" => {
                 "_id"   => "$projectType",
                 "total" => {
-                    "$sum" => "$budget"
+                    "$sum" => "$currentFYBudget"
                 }
             } }, {
                 "$match" => {
@@ -34,7 +34,7 @@ module ProjectHelpers
                 "$group" => {
                     "_id" => "$recipient",
                     "total" => {
-                        "$sum" => "$budget"
+                        "$sum" => "$currentFYBudget"
                     }
                 }
             }]
@@ -54,7 +54,7 @@ module ProjectHelpers
                 "$group" => { 
                     "_id" => "$recipient", 
                     "total" => {
-                        "$sum" => "$budget"
+                        "$sum" => "$currentFYBudget"
                     }
                 }
             }]
