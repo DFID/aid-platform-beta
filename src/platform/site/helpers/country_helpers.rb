@@ -36,6 +36,51 @@ module CountryHelpers
     firstSeven + others
   end
 
+  
+  def country_project_budgets(country_code)
+    projects = @cms_db['projects'].find({"projectType" => "country", "recipient" => country_code})
+    startDate = "#{(financial_year-3)} 04-01"
+    endDate = "#{(financial_year+2)} 03-31"
+
+    projects.inject([]) { |graph, project|
+
+      project_budgets = @cms_db['project-budgets'].find({
+          'id' => project['iatiId'],
+          'date' => {
+            '$gte' => startDate,
+            '$lte' => endDate
+          }}).to_a
+
+      graph + project_budgets.inject({}) { |results, budget| 
+        fy = financial_year_formatter budget['date']
+        results[fy] = (results[fy] || 0) + budget['value']
+        results
+      }.map { |fy, budget| [fy, budget] }
+      }.inject({}) { |graph, group|
+        graph[group.first] = (graph[group.first] || 0) + group.last
+        graph
+      }.map { |fy, budget| [fy, budget] }.sort
+
+  end
+
+  def financial_year_formatter(dateStr)
+    date = Date.parse dateStr
+    if date.month < 4
+      "FY" + (date.year-1).to_s
+    else
+      "FY" + date.year.to_s
+    end
+  end
+
+  def financial_year 
+    now = Time.new
+    if(now.month < 4)
+      now.year-1
+    else
+      now.year
+    end
+  end
+
   def top_5_countries
     @cms_db['country-stats'].aggregate([{
       "$sort" => {
