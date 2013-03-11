@@ -35,6 +35,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
+      aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
       documents.collectProjectDocuments
