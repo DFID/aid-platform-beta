@@ -71,8 +71,8 @@ title: Aid Information Platform
         */
 
             var funding = [ {label: "", text: "", value: 0},
-                            {label: "Budget spend to date", text: "£<%= project['projectSpend'] %>", value: <%= project['projectSpend'] %>},
-                            {label: "Project budget", text: "£<%= project['budget'] %>", value: <%= project['budget'] %>}]
+                            {label: "Budget spend to date", text: "£<%= project['totalProjectSpend'] %>", value: <%= project['totalProjectSpend'] %>},
+                            {label: "Project budget", text: "£<%= project['totalBudget'] %>", value: <%= project['totalBudget'] %>}]
             charts.progressBar("#funding-progress", funding, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
 
             var time = [ {label: "Start",
