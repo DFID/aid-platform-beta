@@ -32,9 +32,9 @@ ignore "/projects/partners.html"
 #------------------------------------------------------------------------------
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
-  projects = @cms_db['projects'].find({ "recipient" => country['code'] }).to_a
+  projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
 
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 

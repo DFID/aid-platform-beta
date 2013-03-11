@@ -16,7 +16,7 @@ title: Aid Information Platform
 
 
 <%= partial "partials/search-bar" %>
-<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'] } %>
+<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'], :project_count => projects.size } %>
 
 <div class="row">
     <div class="twelve columns">
