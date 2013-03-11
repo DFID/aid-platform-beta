@@ -13,7 +13,6 @@ import uk.gov.dfid.common.models.Project
 import concurrent.Await
 import concurrent.duration._
 import uk.gov.dfid.common.DataLoadAuditor
-import org.joda.time.format.DateTimeFormat
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -120,34 +119,17 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     val projects = db.collection("projects")
     val (start, end) = currentFinancialYear
 
-    auditor.info("Summing up all budgets in current financial year for all projects")
-    engine.execute(
-      s"""
-        | START  n=node:entities(type="iati-activity")
-        | MATCH  n-[:`related-activity`]-a,
-        |        n-[:budget]-b-[:value]-v
-        | WHERE  a.type = 1
-        | AND    v.`value-date` >= "$start"
-        | AND    v.`value-date` <= "$end"
-        | AND    n.hierarchy = 2
-        | RETURN a.ref as id, SUM(v.value) as value
-      """.stripMargin).foreach { row =>
-      val id = row("id").asInstanceOf[String]
-      val budget = row("value") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      projects.update(
-        BSONDocument("iatiId" -> BSONString(id)),
-        BSONDocument("$set" -> BSONDocument(
-          "budget" -> BSONLong(budget)
-        )),
-        upsert = false, multi = false
+    // clear all values from the projects
+    Await.ready(projects.update(
+      BSONDocument(),
+      BSONDocument("$set" -> BSONDocument(
+        "totalBudget" -> BSONLong(0),
+        "currentFYBudget" -> BSONLong(0),
+        "projectSpend" -> BSONLong(0)
       )
-    }
+    ), multi = true), Duration Inf)
 
-    auditor.info("Summing up total budgets for all projects")
+    auditor.info("Summing up all budgets for all projects")
     engine.execute(
       s"""
         | START  n=node:entities(type="iati-activity")
@@ -155,24 +137,28 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         |        n-[:budget]-b-[:value]-v
         | WHERE  a.type = 1
         | AND    n.hierarchy = 2
-        | RETURN a.ref as id, SUM(v.value) as value
+        | RETURN a.ref as id, v.value as value, v.`value-date` as date
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
       val budget = row("value") match {
         case v: java.lang.Integer => v.toLong
         case v: java.lang.Long    => v.toLong
       }
+      val date = row("date").asInstanceOf[String]
+      val currentFy = date >= start && date <= end
 
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
-        BSONDocument("$set" -> BSONDocument(
-          "totalBudget" -> BSONLong(budget)
+        BSONDocument(
+          "$inc" -> BSONDocument("totalBudget" -> BSONLong(budget)),
+          "$inc" -> BSONDocument("currentFYBudget" -> BSONLong(if(currentFy) budget else 0L)
         )),
         upsert = false, multi = false
       )
     }
 
-    auditor.info("Summing up total Project Budgets spend")
+    auditor.info("Summing up Project Budget spend")
+
     engine.execute(
       s"""
         | START  txn = node:entities(type="transaction")
