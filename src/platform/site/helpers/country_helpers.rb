@@ -5,7 +5,7 @@ module CountryHelpers
       "$group" => { 
         "_id"   => nil,  
         "total" => { 
-          "$sum" => "$budget"  
+          "$sum" => "$currentFYBudget"  
         }  
       } 
     }]).first['total']
