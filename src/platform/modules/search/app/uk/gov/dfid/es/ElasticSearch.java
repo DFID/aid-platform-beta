@@ -1,6 +1,8 @@
 package uk.gov.dfid.es;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.action.index.IndexRequest;
@@ -52,21 +54,29 @@ public class ElasticSearch {
 
 	}
 
-	public static Map<String, String> search(String search, String dataLocation) {
+	public static List<Map<String, String>> search(String search, String dataLocation) {
 		if(client == null){
-			System.out.println("Launching es client");
+			System.out.println("Launching ES client");
 			connectToESNode(dataLocation);
+			System.out.println("ES client launched");
 		}
-		Map<String, String> result = new HashMap<String, String>();
+		
+		Long counter = System.currentTimeMillis();
+		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
+		
 		SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.queryString(search)).execute()
+				.setQuery(QueryBuilders.queryString(search)).setSize(10).execute()
 				.actionGet();
-		SearchHit[] results = response.getHits().getHits();
-		for (SearchHit hit : results) {
-			Map<String, String> hitMap = (Map<String, String>)(Object) hit.getSource();
-			System.out.println("Keyword: '" + search + "' Result: " + hitMap);
-			result.putAll(hitMap);
+		SearchHit[] hits = response.getHits().getHits();
+		
+		for (SearchHit hit : hits) {
+			Map<String, String> hitMap = (HashMap<String, String>)(Object)hit.getSource();
+			results.add(hitMap);
 		}
-		return result;
+		
+		System.out.println(new StringBuilder().append("Keyword '").append(search).append("'")
+				.append(" numer of results: ").append(results.size())
+				.append(" took (s): ").append( (System.currentTimeMillis() - counter)/(float)1000) );
+		return results;
 	}
 }

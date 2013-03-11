@@ -1,4 +1,4 @@
-@(query:String = "", results:Map[String,_])
+@(query:String = "", results:scala.collection.mutable.ListBuffer[Map[String,String]])
 
 <!DOCTYPE html>
 
@@ -68,7 +68,14 @@
                 </div>
                 @partials.header("DEPARTMENT FOR INTERNATIONAL DEVELOPMENT") { Search Results }
                 @partials.search()
-                content
+                @for(i <- 0 to results.size -1) {
+                		<div class="search-result">
+                			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title") <small>[@results(i).get("id")]</small></a></h3>
+                			<p class="budget">Budget: <em>£3,377,416</em></p> 
+                			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>
+                			<p class="description">@results(i).get("description")</p>
+                		</div>
+                	}
             </div>
         </div>
     </div><!--end wrapper-->
@@ -78,6 +85,7 @@
           This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
       </div>
     </div>
+
     <footer class="group" id="footer" role="contentinfo">
       <div class="inner group">
         <div class="colophon-and-help">
