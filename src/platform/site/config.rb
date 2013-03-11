@@ -4,6 +4,7 @@ require "helpers/formatters"
 require "helpers/country_helpers"
 require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
+require "helpers/codelists"
 require "helpers/lookups"
 require "middleman-smusher"
 
@@ -30,10 +31,11 @@ ignore "/projects/partners.html"
 # GENERATE COUNTRIES
 #------------------------------------------------------------------------------
 @cms_db['countries'].find({}).each do |country|
-  stats = @cms_db['country-stats'].find_one({ "code" => country["code"] })
+  stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
+  projects = @cms_db['projects'].find({ "recipient" => country['code'] }).to_a
 
   proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats }
-  proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country }
+  proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
 #------------------------------------------------------------------------------
@@ -135,6 +137,8 @@ helpers do
   include FrontPageHelpers
   include Lookups
   include ProjectHelpers
+  include CodeLists
+
 end
 
 #------------------------------------------------------------------------------

@@ -7,7 +7,7 @@ title: Aid Information Platform
 <% transaction_groups.each do |transaction_group| %>
   <div class="row">
     <div class="twelve columns">
-      <h3 class="section-group-title"><%=transaction_group['_id']%> <span style="float:right">&pound;<%=transaction_group["total"]%></span></h3> 
+      <h3 class="section-group-title"><%= transaction_type transaction_group['_id']%> <span style="float:right">&pound;<%=transaction_group["total"]%></span></h3> 
       <table style="width:100%">
         <tbody>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>

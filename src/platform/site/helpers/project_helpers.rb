@@ -9,7 +9,7 @@ module ProjectHelpers
             "$group" => {
                 "_id"   => "$projectType",
                 "total" => {
-                    "$sum" => "$budget"
+                    "$sum" => "$currentFYBudget"
                 }
             } }, {
                 "$match" => {
@@ -34,7 +34,7 @@ module ProjectHelpers
                 "$group" => {
                     "_id" => "$recipient",
                     "total" => {
-                        "$sum" => "$budget"
+                        "$sum" => "$currentFYBudget"
                     }
                 }
             }]
@@ -54,7 +54,7 @@ module ProjectHelpers
                 "$group" => { 
                     "_id" => "$recipient", 
                     "total" => {
-                        "$sum" => "$budget"
+                        "$sum" => "$currentFYBudget"
                     }
                 }
             }]
@@ -78,5 +78,13 @@ module ProjectHelpers
             :region => region['name'],
             :budget => dfid_region_projects_budget(region['code']) || 0
         }}.to_json
-    end    
+    end
+
+    def choose_better_date(actual, planned)
+        # determines project actual start/end date - use actual date, planned date as a fallback
+        unless actual.nil? || actual == ''
+            return (Time.at(planned).to_f * 1000.0).to_i
+        end
+        return (Time.at(actual).to_f * 1000.0).to_i
+    end
 end

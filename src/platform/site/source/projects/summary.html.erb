@@ -7,7 +7,7 @@ title: Aid Information Platform
 <div class="row">
 
     <div class="twelve columns">
-        <p class="description"><%= project['description'] %></p>
+        <p class="project-description"><%= project['description'] %></p>
     </div>
 
 </div>
@@ -16,12 +16,12 @@ title: Aid Information Platform
 
     <div class="six columns">
 
-            <h3 class="section-group-title">Funding - Unconditional</h3>
+            <h3 class="info-notice">Funding - Unconditional</h3>
             <div id="funding-progress" style="height: 150px;" class="progress">
             </div>
 
        
-            <h3 class="section-group-title">Status - <%= activty_status(project['status']) %></h3>
+            <h3 class="info-notice">Status - <%= activty_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress">
             </div>
     </div>
@@ -33,9 +33,9 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="six columns">
-        <h3 class="section-group-title">Sector groups</h3>
-        <div id="sectorChart" style="float:left;"></div>
-        <div id="sectorLegend" style="float:left;">
+        <h3 class="info-notice">Sector groups</h3>
+        <div id="sector-breakdown" style="float:left;" class="donut"></div>
+        <div id="sector-legend" style="float:left;">
             <table>
                 <% (project["sector-groups"] || []).each do |sector| %>
                     <tr class="legend-item">
@@ -51,6 +51,47 @@ title: Aid Information Platform
         </div>
     </div>
     <div class="six columns">
-        <h3 class="section-group-title">Project budget vs actual spend</h3>
+        <h3 class="info-notice">Project budget vs actual spend</h3>
+        <div id="budget-plan-spend" style="height: 250px; width: 480px;" class="progress"></div>
     </div>
+
+    <script type="text/javascript" src="/javascripts/donut.js"></script>
+    <script type="text/javascript" src="/javascripts/progress.js"></script>
+    <script type="text/javascript" src="/javascripts/bar.js"></script>
+
+    <script type="text/javascript">
+        (function(){
+        /*
+            var sectors = [ {sector: "Primary education", budget: 65.0668621451205, formatted: "65.07%"},  
+                            {sector: "Education facilities and training", budget: 29.84961237371139, formatted: "29.85%"},  
+                            {sector: "Social/ welfare services", budget: 4.974934833555173, formatted: "4.97%"},  
+                            {sector: "Teacher training", budget: 0.10859064761293796, formatted: "0.11%"}, ];
+            charts.donut("#sector-breakdown", sectors, function(d) { return d.budget; }, function(d){ return d.sector }, function(d){ return d.formatted });
+            charts.donutLegend("#sector-legend", ".legend-color", 14, sectors, function(d){ return d.sector });
+        */
+
+            var funding = [ {label: "", text: "", value: 0},
+                            {label: "Budget spend to date", text: "£<%= project['projectSpend'] %>", value: <%= project['projectSpend'] %>},
+                            {label: "Project budget", text: "£<%= project['budget'] %>", value: <%= project['budget'] %>}]
+            charts.progressBar("#funding-progress", funding, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
+
+            var time = [ {label: "Start",
+                          text: "<%= format_date(choose_better_date(project['start-actual'], project['start-planned'])) %>",
+                          value: <%= choose_better_date(project['start-actual'], project['start-planned']) %>},
+                         {label: "Progress by time",
+                          text: "",
+                          value: new Date().getTime()},
+                         {label: "End",
+                          text: "<%= format_date(choose_better_date(project['end-actual'], project['end-planned'])) %>",
+                          value: <%= choose_better_date(project['end-actual'],   project['end-planned']) %>}];
+            charts.progressBar("#time-progress", time, function(d) { return d.value; }, function(d) { return d.label; }, function(d) { return d.text; });
+        /*
+            var budgets = [ ["Year" ,"Plan", "Spend"],
+                            [ "FY11/12", 0, 66026638 ], [ "FY12", 257747241, 48943383 ], ];
+            charts.bar("#budget-plan-spend", budgets, ".2s", null, null, ["#D8DCBF", "#2B6367"]);
+        */
+        })()
+    </script>
+
+
 </div>

@@ -93,6 +93,24 @@ class MapperSpec extends Specification with Mockito {
       there was one(node).setProperty("value", 8100000000L)
       there was one(node).setProperty("value-date", "2010-10-20")
     }
+
+    "add nodes that only have attributes" in {
+
+      //arrange
+      val db = mockDb
+      val root = mock[Node]
+      val child1 = mock[Node]
+      val child2 = mock[Node]
+
+      db.createNode returns root thenReturn child1 thenReturn child2
+
+      // act
+      new Mapper(db, auditor).map(<activity><transaction><transaction-type code="C"/></transaction></activity>)
+
+      // assert
+      there was three(db).createNode
+      there was one(child2).setProperty("code", "C")
+    }
   }
 
   def mockDb = {
