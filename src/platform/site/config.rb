@@ -78,6 +78,40 @@ end
 end
 
 #------------------------------------------------------------------------------
+# GENERATE OTHER PROJECTS
+#------------------------------------------------------------------------------
+@cms_db['other-org-projects'].find({}).each do |project|
+
+  id                  = project['iatiId']
+  documents           = @cms_db['documents'].find({ 'project' => id }).to_a
+  transaction_groups  = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => id
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
+
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :transaction_groups => transaction_groups }
+
+end
+
+#------------------------------------------------------------------------------
 # GENERATE FUNDED PROJECT PAGES
 #------------------------------------------------------------------------------
 @cms_db['funded-projects'].find({}).to_a.each do |funded_project|
