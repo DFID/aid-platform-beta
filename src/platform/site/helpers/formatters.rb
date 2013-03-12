@@ -23,11 +23,15 @@ module Formatters
   end
 
   def format_date(d)
-    # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
-    Time.at(d/1000.0).strftime("%d %b %Y")
+    if (d > 0)
+        # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
+        Time.at(d/1000.0).strftime("%d %b %Y")
+    else
+        ""
+    end
   end
 
   def format_percentage(v)
-    "{"%.3f" % v}%"
+    "%.3f" % v + "%"
   end
 end

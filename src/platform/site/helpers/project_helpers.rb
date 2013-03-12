@@ -85,6 +85,11 @@ module ProjectHelpers
         unless actual.nil? || actual == ''
             return (Time.at(actual).to_f * 1000.0).to_i
         end
-        return (Time.at(planned).to_f * 1000.0).to_i
+
+        unless planned.nil? || planned == ''
+            return (Time.at(planned).to_f * 1000.0).to_i
+        end
+
+        return 0
     end
 end
