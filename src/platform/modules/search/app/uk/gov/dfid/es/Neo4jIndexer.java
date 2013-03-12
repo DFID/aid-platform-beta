@@ -1,10 +1,8 @@
 package uk.gov.dfid.es;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,54 +36,71 @@ public class Neo4jIndexer {
 		for (IndexBean ib : elementsToindex.values()) {
 			Map<String, Object> forES = new HashMap<String, Object>();
 
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sbSubs = new StringBuilder();
 			for (String sub : ib.getSubProjects()) {
-				sb.append(sub);
-				sb.append(" ");
+				sbSubs.append(sub);
+				sbSubs.append(" ");
 			}
-			StringBuilder sborg = new StringBuilder();
+			StringBuilder sbOrgganization = new StringBuilder();
 			for (String org : ib.getOrganizations()) {
-				sborg.append(org);
-				sborg.append(" ");
+				sbOrgganization.append(org);
+				sbOrgganization.append(" ");
 			}
-			
+			StringBuilder sbCountry = new StringBuilder();
+			for (String country : ib.getCountry()) {
+				sbCountry.append(country);
+				sbCountry.append(" ");
+			}
+			StringBuilder sbSector = new StringBuilder();
+			for (String sector : ib.getSector()) {
+				sbSector.append(sector);
+				sbSector.append(" ");
+			}
+			StringBuilder sbRegion = new StringBuilder();
+			for (String region : ib.getRegion()) {
+				sbRegion.append(region);
+				sbRegion.append(" ");
+			}
 			forES.put("id", ib.getIatiId());
 			forES.put("title", ib.getTitle());
 			forES.put("description", ib.getDescription());
 			forES.put("status", ib.getStatus());
-			forES.put("organizations", sborg.toString());
-			forES.put("subActivities", sb.toString());
-
+			forES.put("organizations", sbOrgganization.toString());
+			forES.put("subActivities", sbSubs.toString());
+			forES.put("countries", sbCountry.toString());
+			forES.put("sectors", sbSector.toString());
+			forES.put("regions", sbRegion.toString());
+			
 			es.putIndex(forES, "aid" ,elasticSearchNodeLocation);
 		}
 	}
 
-	private static void aquireDataFromRealatedActivityNodes(Map<String, List<String>> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
-
+	private static void aquireDataFromRealatedActivityNodes(Map<String, String> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
 		System.out.println("Getting data from activity realted nodes");
-		for (String iatiId : structure.keySet()) {
-			System.out
-					.println("Getting data from related nodes, for activity: "
-							+ iatiId);
-			for (String subIatiId : structure.get(iatiId)) {
-				String relatedActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`recipient-region`]-region, n-[:`sector`]-sector "
-						+ "WHERE n.`iati-identifier` = \""
-						+ subIatiId
-						+ "\" RETURN region.`recipient-region`, sector.`sector`";
-
-				ExecutionResult result = engine.execute(relatedActivities);
-				Iterator<Map<String, Object>> it = result.iterator();
-
-				while (it.hasNext()) {
-					Map<String, Object> item = it.next();
-					IndexBean ib = elementsToindex.get(iatiId);
-					ib.getRegion().add(
-							(String) item.get("region.recipient-region"));
-					ib.getSector().add((String) item.get("sector.sector"));
-					elementsToindex.put(iatiId, ib);
+		try {
+			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 RETURN n.`iati-identifier`, region.`recipient-region`?, sector.`sector`, region.`recipient-country`?";
+			ExecutionResult result = engine.execute(secondaryActivities);
+			Iterator<Map<String, Object>> it = result.iterator();
+		
+			while (it.hasNext()) {
+			
+				Map<String, Object> item = it.next();
+				String id = (String) item.get("n.iati-identifier");
+				String region = (String) ((item.get("region.recipient-region?") == null) ? "" : item.get("region.recipient-region?"));
+				String country = (String) ((item.get("region.recipient-country?") == null) ? "" : item.get("region.recipient-country?"));
+				String sector = (String) item.get("sector.sector");
+				
+				String primaryAcitivity = structure.get(id);
+				IndexBean idnexBean = elementsToindex.get(primaryAcitivity);
+				if (idnexBean != null) {
+					idnexBean.getRegion().add(region);
+					idnexBean.getCountry().add(country);
+					idnexBean.getSector().add(sector);
+					elementsToindex.put(primaryAcitivity, idnexBean);
 				}
 			}
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		System.out.println("Done getting data from activity realted nodes");
 	}
@@ -95,10 +110,11 @@ public class Neo4jIndexer {
 		System.out.println("Creating basic structure");
 		HashMap<String, IndexBean> elementsToindex = new HashMap<String, IndexBean>();
 
-		String relatedActivities = "START n=node:entities(type=\"iati-activity\")MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org WHERE n.`hierarchy` = 1 RETURN  n.`iati-identifier`,r.`ref`,n.`title`, x.`activity-status`, org.`type`? ,n.`description`?";
-		ExecutionResult result = engine.execute(relatedActivities);
+		String primaryActivities = "START n=node:entities(type=\"iati-activity\")MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org WHERE n.`hierarchy` = 1 RETURN  n.`iati-identifier`,r.`ref`,n.`title`, x.`activity-status`, org.`type`? ,n.`description`?";
+
+		ExecutionResult result = engine.execute(primaryActivities);
 		Iterator<Map<String, Object>> it = result.iterator();
-		Map<String, List<String>> hierarhyRelations = new HashMap<String, List<String>>();
+		Map<String, HashSet<String>> hierarhyRelations = new HashMap<String, HashSet<String>>();
 
 		while (it.hasNext()) {
 			Map<String, Object> item = it.next();
@@ -130,26 +146,39 @@ public class Neo4jIndexer {
 				indexBean.getSubProjects().add(ref);
 			}
 
-			indexBean.setCountry(new ArrayList<String>());
-			indexBean.setRegion(new ArrayList<String>());
-			indexBean.setSector(new ArrayList<String>());
+			indexBean.setCountry(new HashSet<String>());
+			indexBean.setRegion(new HashSet<String>());
+			indexBean.setSector(new HashSet<String>());
 
-			List<String> references = hierarhyRelations.get(id);
+			HashSet<String> references = hierarhyRelations.get(id);
 			if (references != null) {
 				references.add(ref);
 			} else {
-				references = new ArrayList<String>();
+				references = new HashSet<String>();
 				references.add(ref);
 			}
 
 			elementsToindex.put(id, indexBean);
 			hierarhyRelations.put(id, references);
-			
+
 		}
-		
-		// TODO: optimize aquireDataFromRealatedActivityNodes - when filtering is needed
-		//aquireDataFromRealatedActivityNodes(hierarhyRelations, elementsToindex, engine);
 		System.out.println("Done creating basic structure");
+		
+		aquireDataFromRealatedActivityNodes(reverseRelatedActivietes(hierarhyRelations), elementsToindex, engine);
+		
 		return elementsToindex;
+	}
+	
+	private static Map<String, String> reverseRelatedActivietes(
+			Map<String, HashSet<String>> hierarhyRelations) {
+		Map<String, String> secondaryActivities = new HashMap<String, String>();
+		for (String primaryActivity : hierarhyRelations.keySet()) {
+			Iterator<String> it = hierarhyRelations.get(primaryActivity).iterator();
+			while (it.hasNext()) {
+				secondaryActivities.put(it.next(), primaryActivity);
+			}
+
+		}
+		return secondaryActivities;
 	}
 }

@@ -1,6 +1,5 @@
 package uk.gov.dfid.es;
 
-import java.util.List;
 import java.util.Set;
 
 public class IndexBean {
@@ -10,9 +9,9 @@ public class IndexBean {
 	private String title;
 	private Set<String> organizations;
 	private Set<String> subProjects;
-	private List<String> sector;
-	private List<String> country;
-	private List<String> region;
+	private Set<String> sector;
+	private Set<String> country;
+	private Set<String> region;
 
 	
 	public Set<String> getSubProjects() {
@@ -55,27 +54,27 @@ public class IndexBean {
 		this.title = title;
 	}
 
-	public List<String> getSector() {
+	public Set<String> getSector() {
 		return sector;
 	}
 
-	public void setSector(List<String> sector) {
+	public void setSector(Set<String> sector) {
 		this.sector = sector;
 	}
 
-	public List<String> getCountry() {
+	public Set<String> getCountry() {
 		return country;
 	}
 
-	public void setCountry(List<String> country) {
+	public void setCountry(Set<String> country) {
 		this.country = country;
 	}
 
-	public List<String> getRegion() {
+	public Set<String> getRegion() {
 		return region;
 	}
 
-	public void setRegion(List<String> region) {
+	public void setRegion(Set<String> region) {
 		this.region = region;
 	}
 

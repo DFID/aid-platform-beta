@@ -1,3 +1,3 @@
-package controllers.search
+package controllers
 
 object Assets extends controllers.AssetsBuilder

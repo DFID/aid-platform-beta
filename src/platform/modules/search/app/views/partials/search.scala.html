@@ -4,7 +4,7 @@
 	@helper.form(action = routes.Application.search(query)) {
         <label for="query">
             @label
-            <input id="query" name="query"  type="text" placeholder="e.g. location, sector, organisation or keyword" value="@query">
+            <input id="query" name="query"  type="text" placeholder="e.g. location, sector, organisation or keyword" text="@query" value="@query">
         </label>
         <input type="submit" value="Search" class="button big"/>
 	}
