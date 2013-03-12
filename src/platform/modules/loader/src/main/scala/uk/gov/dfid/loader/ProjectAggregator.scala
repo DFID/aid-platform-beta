@@ -148,6 +148,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     val projects = db.collection("projects")
     // set default values for all the projects
+auditor.info("set default values for all the projects")
     projects.update(
       BSONDocument(),
       BSONDocument("$set" -> BSONDocument(
@@ -156,47 +157,45 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       )
       ), multi = true
     )
-
+auditor.info("set default values for all the projects - end")
     auditor.info("Getting project sector groups")
 
     engine.execute(
       """
-        |START  n=node:entities(type="iati-activity")
-        |MATCH  n-[:`reporting-org`]-o,
-        |	   n-[:`related-activity`]-a,
-        |       n-[:`budget`]-b-[:`value`]-v,
-        |       n-[:`sector`]-s
-        |WHERE  n.hierarchy = 2
-        |AND    o.ref = "GB-1"
-        |AND	   a.type = 1
-        |RETURN a.ref as id,
-        |       s.sector as name,
-        |       COALESCE(s.percentage?, 100) as percentage,
-        |       sum(v.value) as val,
-        |       (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
-        |order by id asc, total desc
+        | START  n=node:entities(type="iati-activity")
+        | MATCH  n-[:`reporting-org`]-o,
+        |   	   n-[:`related-activity`]-a,
+        |        n-[:`budget`]-b-[:`value`]-v,
+        |        n-[:`sector`]-s
+        | WHERE  n.hierarchy = 2
+        | AND    o.ref = "GB-1"
+        | AND	   a.type = 1
+        | RETURN a.ref as id, s.sector as name, COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
+        |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+        | ORDER BY id asc, total desc
       """.stripMargin).foreach { row =>
-
-      val id    = row("id").asInstanceOf[String]
-      val name  = row("name").asInstanceOf[String]
-      val total = row("total")  match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      projects.update(
-        BSONDocument("iatiId" -> BSONString(id)),
-        BSONDocument(
-          "$inc"  -> BSONDocument("sectorBudget" -> BSONLong(total)),
-          "$push" -> BSONDocument(
-            "sectorGroups" -> BSONDocument(
-              "name" -> BSONString(name),
-              "percentage" -> BSONLong(total)
+        val id    = row("id").asInstanceOf[String]
+        val name  = row("name").asInstanceOf[String]
+auditor.info("id: " + id + " name: " + name)
+        val total = row("total")  match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+        }
+auditor.info("update")
+        projects.update(
+          BSONDocument("iatiId" -> BSONString(id)),
+          BSONDocument(
+            "$inc"  -> BSONDocument("sectorBudget" -> BSONLong(total)),
+            "$push" -> BSONDocument(
+              "sectorGroups" -> BSONDocument(
+                "name" -> BSONString(name),
+                "percentage" -> BSONLong(total)
+              )
             )
-          )
-        ), upsert = false, multi = false
-      )
-    }
+          ), upsert = false, multi = false
+        )
+auditor.info("update - done")
+      }
 
     auditor.success("Collected project sector groups")
   }

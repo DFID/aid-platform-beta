@@ -44,6 +44,7 @@ end
 @cms_db['projects'].find({}).each do |project|
 
   id                  = project['iatiId']
+  sectorBudget        = project['sectorBudget'] || 1.0
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
