@@ -69,6 +69,10 @@ end
     }
   }])
 
+  (project["sector-groups"] || []).each do |sector|
+    sector['percentage'] = sector['percentage'] / sectorBudget
+  end
+
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
   proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
   proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :transaction_groups => transaction_groups }
