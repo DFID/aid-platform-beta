@@ -16,7 +16,7 @@ title: Aid Information Platform
 
 
 <%= partial "partials/search-bar" %>
-<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'] } %>
+<%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'], :project_count => projects.size } %>
 
 <div class="row">
     <div class="twelve columns">
@@ -104,6 +104,8 @@ title: Aid Information Platform
     </div>
     <div class="six columns">
          <h3 class="info-notice">Project budget total by year</h3>
+         <div id="budget-year-chart" style="height: 250px;" class="standard">
+        </div>
     </div>
 </div>
 
@@ -114,7 +116,11 @@ title: Aid Information Platform
  <script>
  
      (function(){
-     
+        var budgets = <%= ([["Year", "Budget"]]) + (country_project_budgets country['code'])%>
+        ;
+
+        charts.bar("#budget-year-chart", budgets, ".2s", null, null, ["#2B6367"]);
+
         var sectors = <%= (sector_groups country['code']).to_json %>
         charts.donut("#sectorChart", sectors, function(d) { 
           return d.total; 

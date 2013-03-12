@@ -35,6 +35,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
+      aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
       documents.collectProjectDocuments
@@ -68,7 +69,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       // validate the data source
       val url     = source.getAs[BSONString]("url").map(_.value).get
       val ele     = XML.load(url)
-      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.01")
+      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.02")
       val stream  = new URL(url).openStream
 
       // validation throws uncontrollable errors

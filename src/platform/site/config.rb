@@ -32,9 +32,9 @@ ignore "/projects/partners.html"
 #------------------------------------------------------------------------------
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
-  projects = @cms_db['projects'].find({ "recipient" => country['code'] }).to_a
+  projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
 
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
@@ -80,6 +80,40 @@ end
   if has_funded_projects then
     proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
   end
+end
+
+#------------------------------------------------------------------------------
+# GENERATE OTHER PROJECTS
+#------------------------------------------------------------------------------
+@cms_db['other-org-projects'].find({}).each do |project|
+
+  id                  = project['iatiId']
+  documents           = @cms_db['documents'].find({ 'project' => id }).to_a
+  transaction_groups  = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => id
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
+
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :transaction_groups => transaction_groups }
+
 end
 
 #------------------------------------------------------------------------------
