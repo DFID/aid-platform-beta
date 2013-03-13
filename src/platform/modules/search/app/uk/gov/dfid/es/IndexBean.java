@@ -7,13 +7,13 @@ public class IndexBean {
 	private String description;
 	private String status;
 	private String title;
+	private Long budget;
 	private Set<String> organizations;
 	private Set<String> subProjects;
 	private Set<String> sector;
 	private Set<String> country;
 	private Set<String> region;
 
-	
 	public Set<String> getSubProjects() {
 		return subProjects;
 	}
@@ -21,7 +21,7 @@ public class IndexBean {
 	public void setSubProjects(Set<String> subProjects) {
 		this.subProjects = subProjects;
 	}
-	
+
 	public String getIatiId() {
 		return iatiId;
 	}
@@ -52,6 +52,14 @@ public class IndexBean {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Long getBudget() {
+		return budget;
+	}
+
+	public void setBudget(Long budget) {
+		this.budget = budget;
 	}
 
 	public Set<String> getSector() {

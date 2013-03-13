@@ -65,6 +65,7 @@ public class Neo4jIndexer {
 			forES.put("title", ib.getTitle());
 			forES.put("description", ib.getDescription());
 			forES.put("status", ib.getStatus());
+			forES.put("budget", ib.getBudget());
 			forES.put("organizations", sbOrgganization.toString());
 			forES.put("subActivities", sbSubs.toString());
 			forES.put("countries", sbCountry.toString());
@@ -78,7 +79,7 @@ public class Neo4jIndexer {
 	private static void aquireDataFromRealatedActivityNodes(Map<String, String> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
 		System.out.println("Getting data from activity realted nodes");
 		try {
-			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 RETURN n.`iati-identifier`, region.`recipient-region`?, sector.`sector`, region.`recipient-country`?";
+			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region, n-[:`sector`]-sector, n-[:budget]-b-[:value]-budget WHERE n.`hierarchy` = 2 RETURN n.`iati-identifier`, region.`recipient-region`?, sector.`sector`, region.`recipient-country`?, budget.`value`";
 			ExecutionResult result = engine.execute(secondaryActivities);
 			Iterator<Map<String, Object>> it = result.iterator();
 		
@@ -89,14 +90,16 @@ public class Neo4jIndexer {
 				String region = (String) ((item.get("region.recipient-region?") == null) ? "" : item.get("region.recipient-region?"));
 				String country = (String) ((item.get("region.recipient-country?") == null) ? "" : item.get("region.recipient-country?"));
 				String sector = (String) item.get("sector.sector");
+				Long budget = (Long) item.get("budget.value");
 				
 				String primaryAcitivity = structure.get(id);
-				IndexBean idnexBean = elementsToindex.get(primaryAcitivity);
-				if (idnexBean != null) {
-					idnexBean.getRegion().add(region);
-					idnexBean.getCountry().add(country);
-					idnexBean.getSector().add(sector);
-					elementsToindex.put(primaryAcitivity, idnexBean);
+				IndexBean indexBean = elementsToindex.get(primaryAcitivity);
+				if (indexBean != null) {
+					indexBean.getRegion().add(region);
+					indexBean.getCountry().add(country);
+					indexBean.getSector().add(sector);
+					indexBean.setBudget(indexBean.getBudget() + budget);
+					elementsToindex.put(primaryAcitivity, indexBean);
 				}
 			}
 		} catch (Exception e) {
@@ -149,7 +152,8 @@ public class Neo4jIndexer {
 			indexBean.setCountry(new HashSet<String>());
 			indexBean.setRegion(new HashSet<String>());
 			indexBean.setSector(new HashSet<String>());
-
+			indexBean.setBudget(0l);
+			
 			HashSet<String> references = hierarhyRelations.get(id);
 			if (references != null) {
 				references.add(ref);
@@ -160,7 +164,6 @@ public class Neo4jIndexer {
 
 			elementsToindex.put(id, indexBean);
 			hierarhyRelations.put(id, references);
-
 		}
 		System.out.println("Done creating basic structure");
 		
@@ -177,7 +180,6 @@ public class Neo4jIndexer {
 			while (it.hasNext()) {
 				secondaryActivities.put(it.next(), primaryActivity);
 			}
-
 		}
 		return secondaryActivities;
 	}
