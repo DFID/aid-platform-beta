@@ -92,4 +92,14 @@ module ProjectHelpers
 
         return 0
     end
+
+    def project_budget_per_fy(projectId)
+        # aggregates the project budgets and budgets spend per financial years for given project
+        @cms_db['project-budgets'].find({
+            "id"    => projectId,
+            "value" => { "$gt" => 0 }
+        }).sort({
+            "date" => 1
+        }).map { |budget| [ financial_year_formatter(budget['date'].strftime("%Y-%m-%d")), budget['value'], 0 ] }
+    end
 end
