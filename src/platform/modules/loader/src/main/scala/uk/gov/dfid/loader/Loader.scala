@@ -27,7 +27,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val sources    = mongodb.collection("iati-datasources")
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
-      val partners   = new PartnerAggregator(engine, mongodb, auditor)
+      val documents  = new DocumentAggregator(engine, mongodb, auditor)
+      val projects   = new ProjectAggregator(engine, mongodb, auditor)
 
       auditor.info("Loading data")
 
@@ -36,7 +37,12 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       aggregator.rollupCountrySectorBreakdown
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
-      partners.collectPartnerProjects
+      documents.collectProjectDocuments
+      projects.collectTransactions
+      projects.collectPartnerProjects
+      projects.collectPartnerTransactions
+      projects.collectProjectDetails
+
 
       auditor.success("Loading process completed")
     }
@@ -62,7 +68,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       // validate the data source
       val url     = source.getAs[BSONString]("url").map(_.value).get
       val ele     = XML.load(url)
-      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.01")
+      val version = (ele \ "@version").headOption.map(_.text).getOrElse("1.02")
       val stream  = new URL(url).openStream
 
       // validation throws uncontrollable errors

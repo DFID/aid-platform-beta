@@ -381,12 +381,17 @@ $orange: #F17921;
 	font-size: 18px; margin-top: 10px; 
 }
 
+.project-description {
+	font-size: 20px; margin-top: 10px; margin-bottom: 20px;
+}
+
 .info-notice{
-    background:url(https://djb1962t8apu5.cloudfront.net/static/icon-information.png) no-repeat 0 50%;
-    font-size:1.4em;
-    line-height:2em;
-    height:2em;
+    background:url(../images/icon-information.png) no-repeat 0 50%;
+    font-size: 1.6em;
+    line-height: 2em;
+    height: 2em;
     padding-left: 35px;
+	font-weight: normal;    
 }
 
 .fact-item{
@@ -486,3 +491,11 @@ $orange: #F17921;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.search-result h3 small { font-size: 0.7em; }
+.search-result h3 { font-size:1.2em; font-weight:bold; }
+.search-result { margin: 30px 0; }
+.search-result p.budget em { font-weight: bold; font-style: normal; color:#008270; }
+.search-result p.budget { margin-bottom:5px; }
+.search-result p{ font-size: 1.1em; line-height:1.5em; }
+.search-result p.description{ font-size: 1em; }

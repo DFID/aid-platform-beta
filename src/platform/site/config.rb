@@ -4,6 +4,7 @@ require "helpers/formatters"
 require "helpers/country_helpers"
 require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
+require "helpers/codelists"
 require "helpers/lookups"
 require "middleman-smusher"
 
@@ -30,10 +31,11 @@ ignore "/projects/partners.html"
 # GENERATE COUNTRIES
 #------------------------------------------------------------------------------
 @cms_db['countries'].find({}).each do |country|
-  stats = @cms_db['country-stats'].find_one({ "code" => country["code"] })
+  stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
+  projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
 
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats }
-  proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
+  proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
 #------------------------------------------------------------------------------
@@ -41,16 +43,122 @@ end
 #------------------------------------------------------------------------------
 @cms_db['projects'].find({}).each do |project|
 
-  funded_projects     = @cms_db['funded-projects'].find({ 'funding' => project['iatiId'] }).to_a
+  id                  = project['iatiId']
+  funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
+  documents           = @cms_db['documents'].find({ 'project' => id}).to_a
+  transaction_groups  = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => id
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
 
-  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects }
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :transaction_groups => transaction_groups }
 
   if has_funded_projects then
-    proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
   end
+end
+
+#------------------------------------------------------------------------------
+# GENERATE OTHER PROJECTS
+#------------------------------------------------------------------------------
+@cms_db['other-org-projects'].find({}).each do |project|
+
+  id                  = project['iatiId']
+  documents           = @cms_db['documents'].find({ 'project' => id }).to_a
+  transaction_groups  = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => id
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
+
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :transaction_groups => transaction_groups }
+
+end
+
+#------------------------------------------------------------------------------
+# GENERATE FUNDED PROJECT PAGES
+#------------------------------------------------------------------------------
+@cms_db['funded-projects'].find({}).to_a.each do |funded_project|
+
+  # format the project model to suit the project templates
+  project = {
+    'iatiId'      => funded_project['funded'],
+    'title'       => funded_project['title'],
+    'description' => funded_project['description'],
+    'funds'       => funded_project['funds']
+  }
+
+  # get the other funded projects
+  funded_projects = @cms_db['funded-projects'].find({ 
+    'funding' => funded_project['funding'],
+    'funded'  => { '$ne' => funded_project['funded'] } 
+  }).to_a
+
+  # get the parent project
+  funding_project    = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
+  documents          = @cms_db['documents'].find({ 'project' => funded_project['funded'] }).to_a
+  transaction_groups = @cms_db['transactions'].aggregate([{
+    "$match" => {
+      "project" => funded_project['funded']
+    }
+  },{
+    "$group" => {
+      "_id" => "$type",
+      "total" => {
+        "$sum" => "$value"
+      },
+      "transactions" => {
+        "$addToSet" => {
+          "description" => "$description",
+          "component"   => "$component",
+          "date"        => "$date",
+          "value"       => "$value",
+        }
+      }
+    }
+  }])
+
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :documents => documents }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :transaction_groups => transaction_groups }
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :funded_projects => funded_projects, :funding_project => funding_project }
+
 end
 
 #------------------------------------------------------------------------------
@@ -62,6 +170,8 @@ helpers do
   include CountryHelpers
   include FrontPageHelpers
   include Lookups
+  include ProjectHelpers
+  include CodeLists
 
 end
 

@@ -119,6 +119,16 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     val projects = db.collection("projects")
     val (start, end) = currentFinancialYear
 
+    // clear all values from the projects
+    Await.ready(projects.update(
+      BSONDocument(),
+      BSONDocument("$set" -> BSONDocument(
+        "totalBudget" -> BSONLong(0),
+        "currentFYBudget" -> BSONLong(0),
+        "projectSpend" -> BSONLong(0)
+      )
+    ), multi = true), Duration Inf)
+
     auditor.info("Summing up all budgets for all projects")
     engine.execute(
       s"""
@@ -126,13 +136,48 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | MATCH  n-[:`related-activity`]-a,
         |        n-[:budget]-b-[:value]-v
         | WHERE  a.type = 1
-        | AND    v.`value-date` >= "$start"
-        | AND    v.`value-date` <= "$end"
         | AND    n.hierarchy = 2
-        | RETURN a.ref as id, SUM(v.value) as value
+        | RETURN a.ref as id, v.value as value, v.`value-date` as date
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
       val budget = row("value") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
+      val date = row("date").asInstanceOf[String]
+      val currentFy = date >= start && date <= end
+
+      projects.update(
+        BSONDocument("iatiId" -> BSONString(id)),
+        BSONDocument(
+          "$inc" -> BSONDocument("totalBudget" -> BSONLong(budget)),
+          "$inc" -> BSONDocument("currentFYBudget" -> BSONLong(if(currentFy) budget else 0L)
+        )),
+        upsert = false, multi = false
+      )
+    }
+
+    auditor.info("Summing up Project Budget spend")
+
+    engine.execute(
+      s"""
+        | START  txn = node:entities(type="transaction")
+        | MATCH  project-[:`related-activity`]-component-[:transaction]-txn,
+        | component-[:`reporting-org`]-org,
+        | txn-[:value]-value,
+        | txn-[:`transaction-date`]-date,
+        | txn-[:`transaction-type`]-type
+        | WHERE  project.type = 1
+        | AND    org.ref      = "GB-1"
+        | AND    (type.`code` = 'D' OR type.`code` = 'E')
+        | AND	   date.`iso-date` >= "$start"
+        | AND	   date.`iso-date` <= "$end"
+        | RETURN
+        | distinct project.ref as id,
+        | sum(value.value)     as spend
+      """.stripMargin).foreach { row =>
+      val id = row("id").asInstanceOf[String]
+      val spend = row("spend") match {
         case v: java.lang.Integer => v.toLong
         case v: java.lang.Long    => v.toLong
       }
@@ -140,7 +185,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "budget" -> BSONLong(budget)
+          "projectSpend" -> BSONLong(spend)
         )),
         upsert = false, multi = false
       )
