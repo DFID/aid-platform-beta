@@ -9,16 +9,23 @@ import scala.collection.immutable.HashSet
 
 object Application extends Controller {
 
-  def search(query: String) = Action {
-    
+  def search = Action { request =>
+
+    request.getQueryString("query").map { query =>
+
     val javaResults = ElasticSearch.search(query, "/dfid/aid-platform-beta/data/elasticsearch")
     val scalaResults = scala.collection.mutable.ListBuffer[Map[String,String]]()
     val scalaList = javaResults.toSet
     scalaList.foreach { map =>
       scalaResults += asScala(map)
     }
+      Ok(views.html.search(query, scalaResults))
 
-    Ok(views.html.search(query, scalaResults))
+    } getOrElse {
+
+      Redirect("/")
+
+    }
+
   }
-
 }

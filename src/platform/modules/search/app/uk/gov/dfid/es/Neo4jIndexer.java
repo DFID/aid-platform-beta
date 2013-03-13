@@ -1,8 +1,10 @@
 package uk.gov.dfid.es;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,11 +63,13 @@ public class Neo4jIndexer {
 				sbRegion.append(region);
 				sbRegion.append(" ");
 			}
+			
 			forES.put("id", ib.getIatiId());
 			forES.put("title", ib.getTitle());
 			forES.put("description", ib.getDescription());
 			forES.put("status", ib.getStatus());
-			forES.put("budget", ib.getBudget());
+			forES.put("budget",  ib.getBudget());
+			forES.put("formatedBudget",  NumberFormat.getCurrencyInstance(Locale.UK).format(ib.getBudget()));
 			forES.put("organizations", sbOrgganization.toString());
 			forES.put("subActivities", sbSubs.toString());
 			forES.put("countries", sbCountry.toString());
