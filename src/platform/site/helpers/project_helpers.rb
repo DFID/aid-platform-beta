@@ -95,11 +95,27 @@ module ProjectHelpers
 
     def project_budget_per_fy(projectId)
         # aggregates the project budgets and budgets spend per financial years for given project
+        spends = @cms_db['transactions'].find({
+            "project" => projectId,
+            "$or"     => [{ "type" => "C"}, {"type" => "D"}]
+        }).map { |t| {
+            "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
+            "value" => t['value']
+        }}.group_by { |year| year["fy"] }.map do |fy, v|
+            total = v.map { |year| year["value"] }.inject(:+)
+            {'fy' => fy, 'value' => total}
+        end.map { |year| {
+            year['fy'] => year['value']
+        }}.reduce(Hash.new, :merge)
+
         @cms_db['project-budgets'].find({
             "id"    => projectId,
             "value" => { "$gt" => 0 }
         }).sort({
             "date" => 1
-        }).map { |budget| [ financial_year_formatter(budget['date'].strftime("%Y-%m-%d")), budget['value'], 0 ] }
+        }).map { |budget| [ financial_year_formatter(budget['date'].strftime("%Y-%m-%d")),
+                            budget['value'],
+                            spends[financial_year_formatter(budget['date'].strftime("%Y-%m-%d"))] || 0 ]
+        }
     end
 end
