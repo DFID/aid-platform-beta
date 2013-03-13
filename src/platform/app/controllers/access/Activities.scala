@@ -3,27 +3,47 @@ package controllers
 import play.api.mvc.{Action, Controller}
 import play.api.libs.json._
 import com.google.inject.Inject
+import org.neo4j.graphdb.{GraphDatabaseService, Node}
 import lib.JsonWriters._
-import uk.gov.dfid.common.lib.ProjectService
+import lib.ApiController
 
-class Activities @Inject()(projectService: ProjectService )extends Controller {
 
-  def index = Action { request =>
+class Activities @Inject()(implicit graph: GraphDatabaseService) extends Controller with ApiController {
 
-    val whereClause = request.queryString.map { case (key, values) =>
-      s"n.$key=${values.head}"
-    }.mkString("WHERE ", " AND ", "")
+  def index = Action { implicit request =>
 
-    val result = projectService.getIatiActivityNodes(request.queryString.isEmpty, whereClause)
+    val (start, limit) = paging.bindFromRequest.get
 
-    Ok(Json.toJson(result.toSeq))
+    val result = engine.execute(
+      s"""
+        | START    activity = node:entities(type="iati-activity")
+        | RETURN   activity
+        | ORDER BY activity.`iati-identifier`
+        | SKIP     $start
+        | LIMIT    $limit
+      """.stripMargin).columnAs[Node]("activity")
+
+    Ok(Json.toJson(
+      Json.obj(
+        "options" -> Json.obj(
+          "start" -> start,
+          "limit" -> limit
+        ),
+        "results" -> result.toSeq
+      )
+    ))
   }
 
-  def getFundedProjectsForActivity (iatiId: String) = Action  {
+  def view(id: String) = Action {
 
-    val result = projectService.getFundedProjectsForActivity(iatiId)
-    Ok(Json.toJson(result.toSeq))
+    val result = engine.execute(
+      s"""
+        | START    activity = node:entities(type="iati-activity")
+        | WHERE    activity.`iati-identifier` = '$id'
+        | RETURN   activity
+      """.stripMargin).columnAs[Node]("activity")
+
+    Ok(Json.toJson(result.toSeq.headOption))
   }
-
 }
 
