@@ -1,4 +1,4 @@
-package controllers
+package controllers.search
 
 import play.api._
 import play.api.mvc._

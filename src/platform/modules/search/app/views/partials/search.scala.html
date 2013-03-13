@@ -1,11 +1,11 @@
 @(query: String = "", label: String = "Search Projects", compact: Boolean = false)
 
 <div id="search-bar" class="@("compact".when(compact))">
-	@helper.form(action = routes.Application.search(query)) {
+	@@helper.form(action = search.routes.Application.search(query)) {
         <label for="query">
             @label
             <input id="query" name="query"  type="text" placeholder="e.g. location, sector, organisation or keyword" text="@query" value="@query">
         </label>
         <input type="submit" value="Search" class="button big"/>
-	}
+	@@}
 </div>
