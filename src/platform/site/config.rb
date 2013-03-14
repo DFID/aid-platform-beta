@@ -35,6 +35,7 @@ ignore "/projects/partners.html"
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
 
   proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
+  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
