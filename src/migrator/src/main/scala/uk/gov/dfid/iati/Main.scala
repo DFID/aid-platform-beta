@@ -12,6 +12,7 @@ import io.Source
 import reactivemongo.api.indexes.{IndexType, Index}
 import concurrent.Await
 import concurrent.duration._
+import util.parsing.combinator.RegexParsers
 
 object Main extends App  {
 
@@ -21,6 +22,8 @@ object Main extends App  {
   val database  = mongo.db(config.getString("mongodb.db"))
   val countries = database.collection("countries")
   val regions   = database.collection("regions")
+  val country_results = database.collection("country-results")
+  val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
 
   // create an index to avoid dirty data
   countries.indexesManager.create(
@@ -31,6 +34,8 @@ object Main extends App  {
   loadCountries
   println("Loading Collection of Regions")
   loadRegions
+  println("Loading Collection of country results")
+  loadCountryResults
   println("Shutting down Mongo")
   MongoConnection.system.shutdown()
   println("Exiting")
@@ -115,6 +120,54 @@ object Main extends App  {
       Await.ready(countries.insert(document), Duration.Inf)
 
       println(s"Inserted ${code}:${name}")
+    }
+  }
+
+  private def loadCountryResults = {
+    Await.ready(country_results.drop(), Duration.Inf)
+    val source = country_results_src.getLines.drop(1).mkString("\n")
+    val results = CSV.parse(source)
+    results.foreach(result => {
+      val document = BSONDocument(
+        "country" -> BSONString(result(0)),
+        "code" -> BSONString(result(1)),
+        "pillar" -> BSONString(result(2)),
+        "results" -> BSONString(result(3)),
+        "total" -> BSONString(result(4))
+      )
+
+      Await.ready(country_results.insert(document), Duration.Inf)
+      println(s"Inserted document! ")
+    })
+  }
+
+  object CSV extends RegexParsers {
+    override val skipWhitespace = false   // meaningful spaces in CSV
+
+    def COMMA   = ","
+    def DQUOTE  = "\""
+    def DQUOTE2 = "\"\"" ^^ { case _ => "\"" }  // combine 2 dquotes into 1
+    def CRLF    = "\r\n" | "\n"
+    def TXT     = "[^\",\r\n]".r
+    def SPACES  = "[ \t]+".r
+
+    def file: Parser[List[List[String]]] = repsep(record, CRLF) <~ (CRLF?)
+
+    def record: Parser[List[String]] = repsep(field, COMMA)
+
+    def field: Parser[String] = escaped|nonescaped
+
+    def escaped: Parser[String] = {
+      ((SPACES?)~>DQUOTE~>((TXT|COMMA|CRLF|DQUOTE2)*)<~DQUOTE<~(SPACES?)) ^^ {
+        case ls => ls.mkString("")
+      }
+    }
+
+    def nonescaped: Parser[String] = (TXT*) ^^ { case ls => ls.mkString("") }
+
+    def parse(s: String) = parseAll(file, s) match {
+      case Success(res, _) => res
+      case e => throw new Exception(e.toString)
     }
   }
 }
