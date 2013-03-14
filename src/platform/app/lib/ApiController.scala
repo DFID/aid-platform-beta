@@ -20,18 +20,11 @@ trait ApiController { self: Controller =>
     )
   )
 
-  def filters(implicit request: Request[_]) = {
-    request.queryString.map { parameter =>
-      para
-      ""
-    }
-  }
-
   def single(entity: String, id: String, property: String = "iati-identifier") = {
     engine.execute(
       s"""
         | START    node = node:entities(type="$entity")
-        | WHERE    node.`$property` = $id
+        | WHERE    node.`$property` = '$id'
         | RETURN   node
       """.stripMargin).columnAs[Node]("node").toSeq.headOption
   }

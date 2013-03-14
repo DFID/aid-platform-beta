@@ -10,10 +10,10 @@ import lib.ApiController
 
 class Activities @Inject()(val graph: GraphDatabaseService) extends Controller with ApiController {
 
-  import lib.JsonWriters.DefaultNodeWrites
 
   def index = Action { implicit request =>
 
+    implicit val writes = lib.JsonWriters.DefaultNodeWrites
     val (options, results) = list("iati-activity")
     Ok(Json.obj(
       "options" -> options,
@@ -22,15 +22,15 @@ class Activities @Inject()(val graph: GraphDatabaseService) extends Controller w
   }
 
   def view(id: String) = Action {
+    implicit val writes = lib.JsonWriters.DeepNodeWrites
     Ok(Json.toJson(single("iati-activity", id)))
   }
 }
 
 class Transactions @Inject()(val graph: GraphDatabaseService) extends Controller with ApiController {
 
-  import lib.JsonWriters.DefaultNodeWrites
-
   def index = Action { implicit request =>
+    implicit val writes = lib.JsonWriters.DeepNodeWrites
     val (options, results) = list("transaction", "label")
     Ok(Json.obj(
       "options" -> options,
@@ -41,9 +41,8 @@ class Transactions @Inject()(val graph: GraphDatabaseService) extends Controller
 
 class Organisations @Inject()(val graph: GraphDatabaseService) extends Controller with ApiController {
 
-  import lib.JsonWriters.DefaultNodeWrites
-
   def index = Action { implicit request =>
+    implicit val writes = lib.JsonWriters.DefaultNodeWrites
     val (options, results) = list("iati-organisation")
     Ok(Json.obj(
       "options" -> options,
@@ -52,6 +51,7 @@ class Organisations @Inject()(val graph: GraphDatabaseService) extends Controlle
   }
 
   def view(id: String) = Action {
+    implicit val writes = lib.JsonWriters.DeepNodeWrites
     Ok(Json.toJson(single("iati-organisation", id)))
   }
 }
