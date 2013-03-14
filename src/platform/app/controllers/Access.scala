@@ -14,8 +14,12 @@ class Access extends Controller {
           "url" -> routes.Organisations.index.absoluteURL()
         ),
         "activities" -> Json.obj(
-          "description" -> "for returning a list of activities based on DFID data",
+          "description" -> "for returning a list of activities",
           "url" -> routes.Activities.index.absoluteURL()
+        ),
+        "transactions" -> Json.obj(
+          "description" -> "for returning a list of transactions",
+          "url" -> routes.Transactions.index.absoluteURL()
         )
       )
     ))
