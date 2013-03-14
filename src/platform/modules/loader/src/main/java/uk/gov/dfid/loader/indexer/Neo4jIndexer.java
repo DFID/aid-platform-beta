@@ -1,4 +1,4 @@
-package uk.gov.dfid.es;
+package uk.gov.dfid.loader.indexer;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-
-import uk.gov.dfid.es.helper.Organization;
+import uk.gov.dfid.common.search.ElasticSearch;
+import uk.gov.dfid.loader.indexer.helper.Organization;
 
 public class Neo4jIndexer {
 
@@ -24,7 +24,7 @@ public class Neo4jIndexer {
 	 * @param elasticSearchNodeLocation
 	 * @param graphDb - optional
 	 */
-	public static void index(String databaseLocation, String elasticSearchNodeLocation,GraphDatabaseService graphDb) {
+	public static void index(String databaseLocation, String elasticSearchNodeLocation, GraphDatabaseService graphDb) {
 		Long counter = System.currentTimeMillis();
 		boolean isGraphDBprovided = true;
 		if(graphDb == null){

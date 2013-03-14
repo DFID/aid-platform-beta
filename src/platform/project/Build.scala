@@ -37,7 +37,8 @@ object ApplicationBuild extends Build {
       "com.typesafe" %  "config"             % "1.0.0",
       "org.neo4j"    %  "neo4j-kernel"       % "1.8.1",
       "org.neo4j"    %  "neo4j-lucene-index" % "1.8.1",
-      "org.neo4j"    %  "neo4j-cypher"       % "1.8.1"
+      "org.neo4j"    %  "neo4j-cypher"       % "1.8.1",
+      "org.elasticsearch" % "elasticsearch"  % "0.20.5"
     )
   )
 
@@ -69,8 +70,8 @@ object ApplicationBuild extends Build {
     ).settings(
     resolvers ++= Seq("Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"),
     libraryDependencies ++= base ++ Seq(
-	"org.elasticsearch" % "elasticsearch"  % "0.20.5",
-	"org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
+	      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
+	      "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
         "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
 	)
    )
