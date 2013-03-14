@@ -1,148 +1,114 @@
-@(query:String = "")
+@(query:String, results:scala.collection.mutable.ListBuffer[Map[String,String]])
 
-    <style>
-        #whitehall-wrapper ul.filter { font-size: 0.9em; list-style-type: none; line-height:2em; }
-        #whitehall-wrapper ul.filter ul{ margin-left: 10px; }
-        #whitehall-wrapper .divShowAll, #whitehall-wrapper .divHideAll { margin-left: 18px; font-weight: bold;  line-height:2em;}
-        #whitehall-wrapper #filter h1{  font-weight: bold; font-size:1.2em; line-height:2em;}
-        #whitehall-wrapper #filter h2{  font-size:1em; line-height:2em;}
+<!DOCTYPE html>
 
-        #whitehall-wrapper #filter { width: 28%; float:left; margin-top: 15px; }
-        #whitehall-wrapper #results { width: 70%; float: right; }
-    </style>
-    <div class="row">
-    <div class="twelve columns">
-    	<div id="search-bar">
-            <form action="/?query=@query" method="GET">
-                <label for="query">
-                    <h3>Search Projects</h3>
-                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="@query">
-                </label>
-                <input type="submit" value="Search" class="button">
-            </form>
+  <head>
+    <meta charset="utf-8">
+    <title>Aid Information Platform</title>
+    <script type="text/javascript">
+      (function(){if(window.opera){return;}
+      setTimeout(function(){var a=document,g,b={families:(g=
+      ["nta"]),urls:["stylesheets/fonts-ie8.css"]},
+      c="javascripts/webfont-debug.js",d="script",
+      e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
+      ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h--;a.documentElement
+      .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
+      })()
+    </script>
+    <![endif]-->
+    <!--[if gte IE 9]><!--><link href="stylesheets/fonts.css" media="all" rel="stylesheet" type="text/css"><!--<![endif]-->
+
+
+    <script src="javascripts/jquery.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.expander.min.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.showmore.js" type="text/javascript"></script>
+    <!--[if lt IE 9]>
+      <script src="javascripts/ie.js" type="text/javascript"></script>
+      <script src="javascripts/compat.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="javascripts/d3.v3.min.js" type="text/javascript"></script>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <link href="stylesheets/main.css" media="all" rel="stylesheet" type="text/css">
+  </head>
+  <body class="citizen mainstream">
+    <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visuallyhidden">Skip to main content</a>
+    <header role="banner" class="group" id="global-header">
+      <div class="header-global group">
+        <h1><a href="/" title="Go to the homepage">Department for International Development</a></h1>
+      </div>
+    </header>
+    <div id="whitehall-wrapper">
+        <div id="content">
+
         </div>
+        <div id="page">
+            <div class="inner-block">
+                <div class="disclaimer">
+                    <div class="inner group">
+                        This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
+                    </div>
+                </div>
+                @partials.header("DEPARTMENT FOR INTERNATIONAL DEVELOPMENT") { Search Results }
+                @partials.search(query)
+                <script>
+                
+                </script>
+                <div id="filter" style="float:left;margin-top: 15px;width: 28%;">
+                <h1>Status</h1>
+                <h1>Sectors</h1>
+                <h1>Countries</h1>
+                <h1>Regions</h1>
+                <h1>Budget</h1>
+                <ul class="budget filter range">
+                    <li>
+                        <input type="number" placeholder="Min" style="width:35%" value="" id="lo" name="lo" step="1000">
+                        <input type="number" placeholder="Max" style="width:35%" value="" id="hi" name="hi" step="1000">
+                    </li>
+                </ul>
+            </div>
+                @for(i <- 0 to results.size -1) {
+                		<div class="search-result" style="float: right;width: 70%;">
+                			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title") <small>[@results(i).get("id")]</small></a></h3>
+                			<p class="budget">Budget: <em>@results(i).get("formatedBudget")</em></p> 
+                			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>
+                			<p class="description">@results(i).get("description")</p>
+                		</div>
+                	}
+            </div>
+        </div>
+    </div><!--end wrapper-->
+
+    <div class="disclaimer" id="disclaimer">
+       <div class="inner group">
+          This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
+      </div>
     </div>
-    </div>
-    <div id="results">
-    	projects.results(filters, selections, suggestion, query, results)
-    </div>
 
-    <div id="filter">
-        <h1>Status</h1>
-        <ul class="status filter multi">
-            
-                <li>
-                    <label>
-                        <input type="checkbox" name="status" value="key" />
-                    </label>
-                </li>
-       </ul>
-        <h1>Sectors</h1>
-        <ul class="sector filter multi">
+    <footer class="group" id="footer" role="contentinfo">
+      <div class="inner group">
+        <div class="colophon-and-help">
+          <nav class="help">
+            <ul>
+              <li><a href="/help">Help</a></li>
+              <li><a href="/help/cookies">Cookies</a></li>
+            </ul>
+          </nav>
+          <div class="colophon">
+            <p>Much of the information on this website is available for reuse under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/" rel="license">Open Government Licence</a></p>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; Crown Copyright</p>
+        </div>
+      </div>
+    </footer>
+    <script type="text/javascript" src="http://uk1.siteimprove.com/js/siteanalyze_advanced.js"></script>
+    <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+  </body>
+</html>
 
-                <li class="entry">
-                    <h2>Sectors subgroup</h2>
-                    <ul style="display:none;">
-                      
-                            <li>
-                                <label>
-                                    <input type="checkbox" name="sector" value="sector" />
-                                </label>
-                            </li>
 
-                    </ul>
-                </li>
 
-        </ul>
-        <h1>Countries</h1>
-        <ul class="country filter multi">
-                <li class="entry">
-                    <label>
-                        <input type="checkbox" name="status" value="key" />
-                    </label>
-                </li>
-        </ul>
-        <h1>Regions</h1>
-        <ul class="region filter multi">
-             <li class="entry">
-                    <label>
-                        <input type="checkbox" name="status" value="key" />
-                       
-                    </label>
-                </li>
-          
-        </ul>
-        <h1>Budget</h1>
-        <ul class="budget filter range">
-            <li>
-                <input type="number" step="1000" name="lo" id="lo" value="0" style="width:35%" placeholder="Min"/>
-                <input type="number" step="1000" name="hi" id="hi" value="0" style="width:35%" placeholder="Max"/>
-            </li>
-        </ul>
 
-        </ul>
-        <script type="text/javascript">
-            (function($){
-
-                function getIds(context){
-                    return context.find("input:checkbox:checked").map(function(){
-                        return this.value
-                    }).get()
-                }
-
-                function buildSelections(selector, key){
-                    var data = {}
-                    var selections = getIds($(selector))
-                    for(var i = 0; i < selections.length; i++){
-                        data[key + "[" + i + "]"] = selections[i]
-                    }
-                    return data
-                }
-
-                function getBudgetRange() {
-                    var lo = parseInt($(".budget.filter #lo").val())
-                    var hi = parseInt($(".budget.filter #hi").val())
-
-                    if(!isNaN(lo) && !isNaN(hi) && lo <= hi){
-                        return [lo, hi]
-                    }
-
-                    return null
-                }
-
-                var tID;
-
-                function performFilter(){
-
-                    var data = $.extend(
-                        { query: "@query", page: 1 },
-                        buildSelections(".sector.filter", "sectors"),
-                        buildSelections(".status.filter", "statuses"),
-                        buildSelections(".country.filter", "countries"),
-                        buildSelections(".region.filter", "regions")
-                    );
-
-                    var range = getBudgetRange();
-
-                    if(range !== null){
-                        data["budget.min"] = range[0]
-                        data["budget.max"] = range[1]
-                    }
-
-                    if(tID !== undefined){
-                        clearTimeout(tID)
-                    }
-
-                    
-                }
-
-                $(".sector.filter, .country.filter, .region.filter").showmore()
-                $(".sector.filter h2").click(function(){ $(this).next().toggle() })
-
-                $(".multi.filter input").click(performFilter)
-                $(".range.filter input").change(performFilter)
-
-                $("sector.filter ul:hidden input:checkbox:checked").parents("ul:hidden").show()
-            })(jQuery)
-        </script>
-    </div>
