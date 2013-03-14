@@ -74,7 +74,7 @@ object ApplicationBuild extends Build {
 	      "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
         "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
 	)
-   )
+   ).dependsOn(common).aggregate(common)
   
 
   lazy val admin = play.Project(
