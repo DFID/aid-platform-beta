@@ -218,8 +218,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | WHERE  project.type = 1
         | AND    org.ref      = "GB-1"
         | AND    (type.`code` = 'D' OR type.`code` = 'E')
-        | AND	   date.`iso-date` >= "$start"
-        | AND	   date.`iso-date` <= "$end"
         | RETURN
         | distinct project.ref as id,
         | sum(value.value)     as spend
@@ -233,7 +231,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "projectSpend" -> BSONLong(spend)
+          "totalProjectSpend" -> BSONLong(spend)
         )),
         upsert = false, multi = false
       )
