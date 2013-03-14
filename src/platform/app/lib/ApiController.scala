@@ -15,10 +15,17 @@ trait ApiController { self: Controller =>
 
   val paging = Form(
     tuple(
-      "start" -> default(number, 0),
-      "limit" -> default(number, 100)
+      "start" -> default(longNumber, 0L),
+      "limit" -> default(longNumber, 100L)
     )
   )
+
+  def filters(implicit request: Request[_]) = {
+    request.queryString.map { parameter =>
+      para
+      ""
+    }
+  }
 
   def single(entity: String, id: String, property: String = "iati-identifier") = {
     engine.execute(
@@ -31,7 +38,11 @@ trait ApiController { self: Controller =>
 
   def list(entity: String, sort: String = "iati-identifier")(implicit request: Request[_]) = {
     val (start, limit) = paging.bindFromRequest.get
-    Map("start" -> start, "limit" -> limit) -> (engine.execute(
+    Map("start" -> start, "limit" -> limit, "total" ->engine.execute(
+      s"""
+      | START    node = node:entities(type="$entity")
+      | RETURN   COUNT(node) as total
+    """.stripMargin).columnAs[Long]("total").toSeq.head) -> (engine.execute(
       s"""
       | START    node = node:entities(type="$entity")
       | RETURN   node
@@ -40,4 +51,5 @@ trait ApiController { self: Controller =>
       | LIMIT    $limit
     """.stripMargin).columnAs[Node]("node").toSeq)
   }
+
 }

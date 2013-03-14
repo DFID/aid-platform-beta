@@ -13,6 +13,7 @@ class Activities @Inject()(val graph: GraphDatabaseService) extends Controller w
   import lib.JsonWriters.DefaultNodeWrites
 
   def index = Action { implicit request =>
+
     val (options, results) = list("iati-activity")
     Ok(Json.obj(
       "options" -> options,

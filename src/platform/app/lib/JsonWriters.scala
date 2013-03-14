@@ -28,4 +28,15 @@ object JsonWriters {
     }
   }
 
+  implicit object DeepNodeWrites extends Writes[Node]{
+    def writes(o: Node): JsValue = {
+
+      val root = DefaultNodeWrites.writes(o)
+
+      o.getRelationships.map { relationship =>
+        
+      }
+    }
+  }
+
 }
