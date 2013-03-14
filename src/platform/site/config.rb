@@ -6,6 +6,7 @@ require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
 require "helpers/codelists"
 require "helpers/lookups"
+require "helpers/results_helpers"
 require "middleman-smusher"
 
 #------------------------------------------------------------------------------
@@ -173,6 +174,7 @@ helpers do
   include Lookups
   include ProjectHelpers
   include CodeLists
+  include ResultsHelpers
 
 end
 
