@@ -143,7 +143,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         auditor.info("Adding project budgets...")
         val id = row("projectId").asInstanceOf[String]
         val value = row("value").asInstanceOf[Long].toInt
-        val date = DateTime.parse(row("date").asInstanceOf[String], format)
+        val date = row("date").asInstanceOf[String]
 
         auditor.info("Adding")
 
@@ -151,7 +151,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           BSONDocument(
                        "id" -> BSONString(id),
                        "value" -> BSONInteger(value),
-                       "date" -> BSONDateTime(date.getMillis)
+                       "date" -> BSONString(date)
           )
         )
       } catch {
