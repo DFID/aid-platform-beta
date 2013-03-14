@@ -42,6 +42,18 @@ object Implicits {
         case e: NotFoundException => None
       }
     }
+
+    def toMap = {
+      n.getPropertyKeys.map { key =>
+        (key, n.getProperty(key) match {
+          case v: java.lang.String  => v
+          case v: java.lang.Integer => v.toInt
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toDouble
+          case v: java.lang.Boolean => !(!v)
+        })
+      }
+    }
   }
 
   /**

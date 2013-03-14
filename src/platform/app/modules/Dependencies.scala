@@ -12,10 +12,9 @@ import concurrent.ExecutionContext.Implicits.global
 import org.neo4j.graphdb.GraphDatabaseService
 import uk.gov.dfid.common.neo4j.{GraphDatabaseManager, SingletonEmbeddedNeo4JDatabaseHasALongName}
 import uk.gov.dfid.loader.{DataLoader, Loader}
-import reactivemongo.api.DefaultDB
-import uk.gov.dfid.common.lib.{CommonProjectService, ProjectService}
 import uk.gov.dfid.common.{DataLoadAuditor, Auditor}
 import reactivemongo.api.DefaultDB
+import org.neo4j.cypher.ExecutionEngine
 
 class Dependencies extends ScalaModule {
    def configure() {
@@ -28,6 +27,7 @@ class Dependencies extends ScalaModule {
        val db = connection.db(Play.current.configuration.getString("mongodb.db").get)
        db
      })
+
      bind[Api[Country]].to[CountriesApi]
      bind[ReadOnlyApi[Country]].to[ReadOnlyCountriesApi]
      bind[ReadOnlyApi[CountryStats]].to[ReadonlyCountryStatsApi]
@@ -40,9 +40,9 @@ class Dependencies extends ScalaModule {
 
      bind[GraphDatabaseService].toProvider(SingletonEmbeddedNeo4JDatabaseHasALongName)
      bind[GraphDatabaseManager].toInstance(SingletonEmbeddedNeo4JDatabaseHasALongName)
+
      bind[DataLoader].to[Loader]
      bind[FrontPageManagedContentApi].to[MongoBackedFrontPageManagedContentApi]
-     bind[ProjectService].to[CommonProjectService]
 
      bind[Auditor].to[DataLoadAuditor]
      bind[ReadOnlyApi[AuditLog]].to[ReadOnlyDataLoaderAuditLogsApi]
