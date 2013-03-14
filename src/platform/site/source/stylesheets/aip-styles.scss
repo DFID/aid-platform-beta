@@ -44,22 +44,39 @@ $orange: #F17921;
 	background-position: 0 -42px;
 	text-decoration: underline;
 }
+
 #page-title {
 	/*margin: 0.5em 0;*/
 }
-#page-title h1{
-	font-weight: normal;
-}
-#page-title h1 span{
-	display: block;
-	font-size: 30%;
-	font-weight: normal;
-	text-transform: uppercase;
+
+#page-title h1 {
+   font-weight: normal;
+   margin-top: 0;
 }
 
-#page-title-logo{
-	float: right;
-	padding: 20px 0;
+#page-title h1 small {
+  white-space: nowrap;
+}
+
+#page-title span {
+  display: block;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+#page-title img {
+    float: right;
+    padding: 20px 0;
+}
+
+#page-title img + div {
+  padding-right: 90px;
+}
+
+#page-title h1 img {
+  float: left;
+  padding: 0.15em 0.25em 0 0;
 }
 
 /* global search styles
@@ -499,8 +516,3 @@ $orange: #F17921;
 .search-result p.budget { margin-bottom:5px; }
 .search-result p{ font-size: 1.1em; line-height:1.5em; }
 .search-result p.description{ font-size: 1em; }
-
-.floated-rigth  { float: right; }
-#project-header { margin-top: 30px; }
-#project-title  { padding-right: 90px; }
-#project-title span { margin: 10px 0; }
