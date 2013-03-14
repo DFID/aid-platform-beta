@@ -118,4 +118,18 @@ module ProjectHelpers
                             spends[financial_year_formatter(budget['date'].strftime("%Y-%m-%d"))] || 0 ]
         }
     end
+
+    def project_sector_groups(projectId)
+    	projectData = @cms_db['projects'].find({
+    		"iatiId" => projectId
+    	})
+    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups'].sort_by{ |sg| -sg["budget"]}
+    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
+
+    	sectorGroups.map { |sg| {
+    		:sector => sg['name'],
+    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
+    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
+		}}
+    end
 end
