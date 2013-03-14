@@ -44,6 +44,7 @@ end
 @cms_db['projects'].find({}).each do |project|
 
   id                  = project['iatiId']
+  sectorBudget        = project['sectorBudget'] || 1.0
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
@@ -67,6 +68,10 @@ end
       }
     }
   }])
+
+  (project["sector-groups"] || []).each do |sector|
+    sector['percentage'] = sector['percentage'] / sectorBudget
+  end
 
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
   proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }

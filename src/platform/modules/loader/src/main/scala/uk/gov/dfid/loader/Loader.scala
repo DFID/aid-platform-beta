@@ -36,6 +36,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
+      aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
       documents.collectProjectDocuments
@@ -45,7 +46,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectProjectDetails
 
       Neo4jIndexer.index( scala.util.Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),  scala.util.Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ), neo4j);
-      
+//      projects.collectProjectSectorGroups
+
       auditor.success("Loading process completed")
     }
   }
