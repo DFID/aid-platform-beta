@@ -34,8 +34,10 @@ object JsonWriters {
       val root = DefaultNodeWrites.writes(o)
 
       o.getRelationships.map { relationship =>
-        
+        relationship.getType.name -> DefaultNodeWrites.writes(relationship.getEndNode)
       }
+
+      root
     }
   }
 
