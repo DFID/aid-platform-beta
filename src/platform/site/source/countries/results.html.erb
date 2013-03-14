@@ -14,8 +14,24 @@ title: Aid Information Platform
   </div>
 </header>
 
-
 <%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "results", :code => country['code'], :project_count => projects.size } %>
+
+<div class="row">
+    <div class="twelve-columns">
+        <h4 class="section-group-title">
+            Results: How DFID has made a difference
+        </h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="twelve-columns">
+        <% (country_results country['code']).each do |result| %>
+        <li><%= result['pillar'] %></li>
+        <% end %>
+    </div>
+</div>
+
 
 
