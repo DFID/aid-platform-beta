@@ -51,22 +51,39 @@ $normal-plus: 1.25em;
 	background-position: 0 -42px;
 	text-decoration: underline;
 }
+
 #page-title {
 	/*margin: 0.5em 0;*/
 }
-#page-title h1{
-	font-weight: normal;
-}
-#page-title h1 span{
-	display: block;
-	font-size: 30%;
-	font-weight: normal;
-	text-transform: uppercase;
+
+#page-title h1 {
+   font-weight: normal;
+   margin-top: 0;
 }
 
-#page-title-logo{
-	float: right;
-	padding: 20px 0;
+#page-title h1 small {
+  white-space: nowrap;
+}
+
+#page-title span {
+  display: block;
+  font-weight: normal;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+#page-title img {
+    float: right;
+    padding: 20px 0;
+}
+
+#page-title img + div {
+  padding-right: 90px;
+}
+
+#page-title h1 img {
+  float: left;
+  padding: 0.15em 0.25em 0 0;
 }
 
 /* global search styles

@@ -3,6 +3,7 @@ package uk.gov.dfid.loader
 import reactivemongo.api.{DefaultCollection, DefaultDB}
 import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
+import uk.gov.dfid.loader.indexer._
 import xml.XML
 import java.net.URL
 import concurrent.ExecutionContext.Implicits.global
@@ -35,6 +36,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
+      aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
       documents.collectProjectDocuments
@@ -42,6 +44,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectPartnerProjects
       projects.collectPartnerTransactions
       projects.collectProjectDetails
+      projects.collectProjectSectorGroups
+      Neo4jIndexer.index( scala.util.Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),  scala.util.Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ), neo4j);
 
 
       auditor.success("Loading process completed")

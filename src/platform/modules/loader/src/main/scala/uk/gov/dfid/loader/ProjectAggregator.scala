@@ -143,6 +143,61 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     auditor.success("Project dates added")
   }
+
+  def collectProjectSectorGroups = {
+
+    val projects = db.collection("projects")
+    // set default values for all the projects
+    projects.update(
+      BSONDocument(),
+      BSONDocument("$set" -> BSONDocument(
+        "sectorGroups" -> BSONArray()
+      )), multi = true
+    )
+
+    try {
+      auditor.info("Getting project sector groups")
+
+      engine.execute(
+        """
+          | START  n=node:entities(type="iati-activity")
+          | MATCH  n-[:`reporting-org`]-o,
+          |   	   n-[:`related-activity`]-a,
+          |        n-[:`budget`]-b-[:`value`]-v,
+          |        n-[:`sector`]-s
+          | WHERE  n.hierarchy = 2
+          | AND    o.ref = "GB-1"
+          | AND	   a.type = 1
+          | RETURN a.ref as id, s.sector as name, COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
+          |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          | ORDER BY id asc, total desc
+        """.stripMargin).foreach { row =>
+
+        val id    = row("id").asInstanceOf[String]
+        val name  = row("name").asInstanceOf[String]
+        val total = row("total")  match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
+        }
+
+        projects.update(
+          BSONDocument("iatiId" -> BSONString(id)),
+          BSONDocument(            
+            "$push" -> BSONDocument(
+              "sectorGroups" -> BSONDocument(
+                "name" -> BSONString(name),
+                "budget" -> BSONLong(total)
+              )
+            )
+          ), upsert = false, multi = false
+        )
+      }
+      auditor.success("Collected project sector groups")
+    } catch {
+      case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
+    }
+  }
   
   def collectPartnerProjects = {
 
