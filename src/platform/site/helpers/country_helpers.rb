@@ -8,7 +8,7 @@ module CountryHelpers
           "$sum" => "$currentFYBudget"  
         }  
       } 
-    }]).first['total']
+    }]).first['total'].to_f
   end
 
   def active_projects(countryCode)

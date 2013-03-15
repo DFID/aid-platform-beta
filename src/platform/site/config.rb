@@ -33,18 +33,30 @@ ignore "/projects/partners.html"
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-
+  results = @cms_db['country-results'].aggregate([{ 
+        "$match" => {"code" => country["code"]}
+        }, {
+         "$group" => {
+            "_id" => "$pillar",
+            "countryResult" => {
+              "$addToSet" => "$results"
+            },
+            "resultTotal" => {
+              "$addToSet" => "$total"
+            }
+        } 
+      }])
+  
   proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
+  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
-
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
 @cms_db['projects'].find({}).each do |project|
 
   id                  = project['iatiId']
-  sectorBudget        = project['sectorBudget'] || 1.0
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
@@ -68,10 +80,6 @@ end
       }
     }
   }])
-
-  (project["sector-groups"] || []).each do |sector|
-    sector['percentage'] = sector['percentage'] / sectorBudget
-  end
 
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
   proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
@@ -177,7 +185,7 @@ helpers do
   include Lookups
   include ProjectHelpers
   include CodeLists
-
+  
 end
 
 #------------------------------------------------------------------------------
