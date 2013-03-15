@@ -37,11 +37,11 @@ title: Aid Information Platform
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
-                <span><strong>£<%= stats['totalBudget'] %></strong></span>
+                <span><strong><%= number_to_currency(stats['totalBudget'], :unit=>"£", :precision => 0) %></strong></span>
             </li>
             <li class="fact-item">
                 % of DFID budget
-                <span><strong><%= (stats['totalBudget']/(dfid_total_budget.nonzero? || 1) * 100) || "&nbsp;" %>%</strong></span>
+                <span><strong><%= (stats['totalBudget']/(dfid_total_budget.nonzero? || 1) * 100).round(2) || "&nbsp;" %>%</strong></span>
             </li>
             <li class="fact-item">
                 Active Projects
@@ -54,7 +54,7 @@ title: Aid Information Platform
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (source: <a href="http://data.worldbank.org/country">World Bank</a>):
-                    <span><strong><%= country['lifeExpectancy'] || "&nbsp;"%></strong></span>
+                    <span><strong><%= country['lifeExpectancy'].to_f.round(0) || "&nbsp;"%></strong></span>
                 </li>
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country">World Bank</a>):
