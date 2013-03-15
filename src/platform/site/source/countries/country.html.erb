@@ -41,7 +41,7 @@ title: Aid Information Platform
             </li>
             <li class="fact-item">
                 % of DFID budget
-                <span><strong><%= (stats['totalBudget']/dfid_total_budget * 100) %>%</strong></span>
+                <span><strong><%= (stats['totalBudget']/(dfid_total_budget.nonzero? || 1) * 100) || "&nbsp;" %>%</strong></span>
             </li>
             <li class="fact-item">
                 Active Projects
