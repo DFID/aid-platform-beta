@@ -20,7 +20,7 @@ title: Aid Information Platform
 <div class="row">
     <div class="twelve columns content results-info">
         <h2 class="section-group-title">What DFID has achieved</h2>
-        <% (country_results country['code']).each do |result| %>
+        <% results.each do |result| %>
         <div class="row">
             <div class="four columns summary">
                 <h3><%= result['_id'] %></h3>     
@@ -28,7 +28,7 @@ title: Aid Information Platform
             <div class="eight columns">
                 <ul>
                     <% result['countryResult'].each_with_index do |result_description, index| %>
-                    <li><%= result_description %><span><%= (result['resultTotal'])[index] %></span></li>
+                    <li><%= result_description %><span><%= result['resultTotal'][index] %></span></li>
                     <% end %>
                 </ul> 
             </div>

@@ -6,7 +6,6 @@ require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
 require "helpers/codelists"
 require "helpers/lookups"
-require "helpers/results_helpers"
 require "middleman-smusher"
 
 #------------------------------------------------------------------------------
@@ -34,12 +33,24 @@ ignore "/projects/partners.html"
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-
+  results = @cms_db['country-results'].aggregate([{ 
+        "$match" => {"code" => country["code"]}
+        }, {
+         "$group" => {
+            "_id" => "$pillar",
+            "countryResult" => {
+              "$addToSet" => "$results"
+            },
+            "resultTotal" => {
+              "$addToSet" => "$total"
+            }
+        } 
+      }])
+  
   proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
-  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects }
+  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
-
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
@@ -174,8 +185,7 @@ helpers do
   include Lookups
   include ProjectHelpers
   include CodeLists
-  include ResultsHelpers
-
+  
 end
 
 #------------------------------------------------------------------------------
