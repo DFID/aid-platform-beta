@@ -113,9 +113,9 @@ module ProjectHelpers
             "value" => { "$gt" => 0 }
         }).sort({
             "date" => 1
-        }).map { |budget| [ financial_year_formatter(budget['date'].strftime("%Y-%m-%d")),
+        }).map { |budget| [ financial_year_formatter(budget['date']),
                             budget['value'],
-                            spends[financial_year_formatter(budget['date'].strftime("%Y-%m-%d"))] || 0 ]
+                            spends[financial_year_formatter(budget['date'])] || 0 ]
         }
     end
 
