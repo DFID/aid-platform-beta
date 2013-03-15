@@ -10,12 +10,19 @@ $lightGrey: #F5F5F5;
 $orange: #F17921;
 
 /*  
+
+
 -----------------------------------------------*/
 @media screen{
 	body{ 
 		background: $midGrey;
 	}
 }
+
+/* font sizes
+-----------------------------------------------*/
+$normal: 1.2em;
+$normal-plus: 1.25em;
 
 /* Main header/masthead styles 
 -----------------------------------------------*/
@@ -398,6 +405,28 @@ $orange: #F17921;
 	font-size: 18px; margin-top: 10px; 
 }
 
+.results-info h3 {
+	font-size: 1.5em;
+	/*font-weight: normal;*/
+
+}
+.results-info ul {
+	margin-bottom: 3em;
+}
+.results-info li {
+	padding: 0.75em 0 0.5em 0;
+	line-height: 1.1em;
+	list-style: none;
+	font-size: $normal;
+	border-bottom: 1px solid $midGrey;	
+}
+.results-info li span {
+	display: block;
+	padding: 0.5em 0;
+	font-size: $normal-plus;
+
+}
+
 .project-description {
 	font-size: 20px; margin-top: 10px; margin-bottom: 20px;
 }
@@ -508,6 +537,8 @@ $orange: #F17921;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
 
 .search-result h3 small { font-size: 0.7em; }
 .search-result h3 { font-size:1.2em; font-weight:bold; }
