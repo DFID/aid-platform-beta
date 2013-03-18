@@ -123,16 +123,21 @@ module ProjectHelpers
     	projectData = @cms_db['projects'].find({
     		"iatiId" => projectId
     	})
-    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups'].group_by { |s| 
-    		s['code'] }.map do |code, sectors| { 
-    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+) 
-    	} end.sort_by{ |sg| -sg["budget"]}
-    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
+    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups']
+    	if sectorGroups.any? then
+	    	sectorGroups = sectorGroups.group_by { |s| 
+	    		s['code'] }.map do |code, sectors| { 
+	    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+)
+	    	} end.sort_by{ |sg| -sg["budget"]}
+	    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
 
-    	sectorGroups.map { |sg| {
-    		:sector => sg['name'],
-    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
-    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
-		}}
+	    	sectorGroups.map { |sg| {
+	    		:sector => sg['name'],
+	    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
+	    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
+			}}
+		else
+			return sectorGroups
+		end
     end
 end
