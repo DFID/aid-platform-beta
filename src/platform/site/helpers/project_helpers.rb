@@ -123,7 +123,10 @@ module ProjectHelpers
     	projectData = @cms_db['projects'].find({
     		"iatiId" => projectId
     	})
-    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups'].sort_by{ |sg| -sg["budget"]}
+    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups'].group_by { |s| 
+    		s['code'] }.map do |code, sectors| { 
+    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+) 
+    	} end.sort_by{ |sg| -sg["budget"]}
     	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
 
     	sectorGroups.map { |sg| {
