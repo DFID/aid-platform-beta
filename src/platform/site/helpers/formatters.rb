@@ -32,6 +32,6 @@ module Formatters
   end
 
   def format_percentage(v)
-    "%.3f" % v + "%"
+    "%.2f" % v + "%"
   end
 end
