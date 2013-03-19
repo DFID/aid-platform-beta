@@ -9,14 +9,32 @@ $midGrey: #dee0e2;
 $lightGrey: #F5F5F5;
 $orange: #F17921;
 
+/* re-usable styles
+-----------------------------------------------*/
+@mixin list-item {
+	list-style: none;
+	font-size: $normal;
+	border-bottom: 1px solid $midGrey;
+}
+@mixin list-span{
+	display: block;
+	font-size: $normal-plus;
+}
+
 /*  
-
-
 -----------------------------------------------*/
 @media screen{
 	body{ 
 		background: $midGrey;
 	}
+}
+.clr-fix:before,
+.clr-fix:after {
+    content: " ";
+    display: table;
+}
+.clr-fix:after {
+    clear: both;
 }
 
 /* font sizes
@@ -150,6 +168,52 @@ $normal-plus: 1.25em;
 	border-bottom: 5px solid $dfid;
 	padding-top: 1em;
 	padding-bottom: 0.25em
+}
+
+.content .section-group-title {
+	font-weight: normal;
+	font-size: 1.75em;
+}
+
+/*---------------------------------------------
+Sector breakdown
+-----------------------------------------------*/
+.sector-list {
+	list-style: none;
+}
+.sector-list li{
+	padding: 0.25em 0 ;
+	@include list-item;
+}
+.sector-list li:first-child{
+	padding: 1em 0 0.25em 0 ;
+}
+.sector-list li a{
+	display: block;
+}
+.sector-list div.progress{
+	border: none;
+	padding: 0;
+	margin: 0;
+	position: relative;
+}
+.sector-list div.progress em{
+	position: absolute;
+	top: 2px;
+	left: 5px;
+	font-style: normal;
+	font-weight: bold;
+}
+.sector-list div.progress .meter {
+	background-color: #d4e2f0;
+	float: left;
+}
+.sector-list div.progress .meter+span {
+	float: left;
+	display: inline-block;
+	padding-top: 2px;
+	font-weight: bold;
+	margin-left: 20px;
 }
 
 /* site entry navigation styles
@@ -376,6 +440,35 @@ $normal-plus: 1.25em;
 .disclaimer em{
 	font-style: normal;
 	font-weight: bold;
+}
+
+/* Breadcrumb Styles
+-----------------------------------------------*/
+.breadcrumb {
+	margin-bottom: 10px;
+}
+.breadcrumb ul{
+    list-style-type:none;
+}
+
+.breadcrumb li {
+    float:left;
+    color:#777;
+    max-width: 15em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb li a{
+    display:block;
+    padding:0 15px 0 0;
+    margin-right: 15px;
+    background: url(../images/separator.png) no-repeat right center;
+}
+
+.breadcrumb li:last-child a{
+    background: none;
 }
 
 /* Footer styles

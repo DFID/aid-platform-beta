@@ -2,9 +2,50 @@
 title: Aid Information Platform
 ---
 
-<%= partial "partials/title-bar" %>
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <span>Aid Information Platform</span>
+            <h1>
+                Aid by Sector
+            </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li>Aid by Sector</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <%= partial "partials/search-bar" %>
 
 <div class="row">
-    
+    <div class="twelve columns content">
+        <h2 class="section-group-title">Sector Breakdown</h2>
+        <div class="row">
+            <div class="four columns summary">
+                <p>DFID breakdown of Primary sector showing percentage spend and buget spend across all projects for current financial year </p>
+            </div>
+            <div class="eight columns">
+                <ul class="sector-list">
+                    <li>
+                        <a href="#">Agriculture</a>
+                        <div class="progress eight"><em>9%</em><span class="meter" style="width: 45%"></span><span>£33.7m</span></div>
+                    </li>
+                    <li>
+                        <a href="#">Business</a>
+                        <div class="progress eight"><em>2%</em><span class="meter" style="width: 10%"></span><span>£7.7m</span></div>
+                    </li>
+                    <li>
+                        <a href="#">Disaster</a>
+                        <div class="progress eight"><em>7%</em><span class="meter" style="width: 35%"></span><span>£24.8m</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 </div>
