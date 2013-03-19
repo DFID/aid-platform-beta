@@ -4,6 +4,21 @@ title: Aid Information Platform
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "transactions", :has_funded_projects => has_funded_projects } %>
 
+<div class="row">
+  <div class="twelve columns">
+    <h3 class="section-group-title">Budgets by financial year</h3>
+    <table style="width:100%">
+      <tbody>
+        <% (project_budgets project['iatiId']).each do |project_budget| %>
+          <tr>
+            <td><%= project_budget[0] %></td>
+            <td style="float:right"><%= number_to_currency(project_budget[1], :unit=>"£", :precision => 0) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 <% transaction_groups.each do |transaction_group| %>
   <div class="row">
     <div class="twelve columns">
