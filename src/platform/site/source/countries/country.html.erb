@@ -50,7 +50,7 @@ title: Aid Information Platform
 
                 <li class="fact-item">
                     Population (source: <a href="http://data.worldbank.org/country">World Bank</a>):
-                    <span><strong><%= country['population'] || "&nbsp;" %></strong></span>
+                    <span><strong><%= format_round_million country['population'].to_f || "&nbsp;" %></strong></span>
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (source: <a href="http://data.worldbank.org/country">World Bank</a>):
@@ -59,7 +59,7 @@ title: Aid Information Platform
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country">World Bank</a>):
                     <span><strong><%= country['incomeLevel'] || "&nbsp;" %></strong></span>
-                </li>
+                </li>   
 
         </ul>
     </div>
