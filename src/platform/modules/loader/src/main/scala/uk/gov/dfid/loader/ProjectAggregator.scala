@@ -168,14 +168,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | WHERE  n.hierarchy = 2
           | AND    o.ref = "GB-1"
           | AND	   a.type = 1
-          | RETURN a.ref as id, s.sector as name, COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
+          | RETURN a.ref as id, s.code as code, s.sector as name, COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
           |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
           | ORDER BY id asc, total desc
         """.stripMargin).foreach { row =>
 
         val id    = row("id").asInstanceOf[String]
         val name  = row("name").asInstanceOf[String]
-        val total = row("total")  match {
+        val code  = row("code").asInstanceOf[Long]
+        val total = row("total")  match {          
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
           case v: java.lang.Double  => v.toLong
@@ -186,7 +187,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           BSONDocument(            
             "$push" -> BSONDocument(
               "sectorGroups" -> BSONDocument(
-                "name" -> BSONString(name),
+                "name"   -> BSONString(name),
+                "code"   -> BSONLong(code),
                 "budget" -> BSONLong(total)
               )
             )

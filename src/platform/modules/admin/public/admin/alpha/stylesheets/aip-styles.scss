@@ -10,19 +10,12 @@ $lightGrey: #F5F5F5;
 $orange: #F17921;
 
 /*  
-
-
 -----------------------------------------------*/
 @media screen{
 	body{ 
 		background: $midGrey;
 	}
 }
-
-/* font sizes
------------------------------------------------*/
-$normal: 1.2em;
-$normal-plus: 1.25em;
 
 /* Main header/masthead styles 
 -----------------------------------------------*/
@@ -51,46 +44,25 @@ $normal-plus: 1.25em;
 	background-position: 0 -42px;
 	text-decoration: underline;
 }
-
 #page-title {
 	/*margin: 0.5em 0;*/
 }
-
-#page-title h1 {
-   font-weight: normal;
-   margin-top: 0;
+#page-title h1{
+	font-weight: normal;
 }
-
-#page-title h1 small {
-  white-space: nowrap;
+#page-title h1 span{
+	display: block;
+	font-size: 30%;
+	font-weight: normal;
+	text-transform: uppercase;
 }
-
-#page-title span {
-  display: block;
-  font-weight: normal;
-  text-transform: uppercase;
-  margin-top: 20px;
-}
-
 #page-title img {
-    float: right;
-    padding: 20px 0;
+	float: right;
+	padding: 0.75em 0;
 }
-
-#page-title img + div {
-  padding-right: 90px;
+#page-title img+div {
+	padding-right: 90px;
 }
-
-#page-title h1 img {
-  float: left;
-  padding: 0.15em 0.25em 0 0;
-}
-
-#page-title h1 a {
-  color: #222222;
-  text-decoration: none;
-}
-
 /* global search styles
 -----------------------------------------------*/
 #search-bar {
@@ -407,42 +379,7 @@ $normal-plus: 1.25em;
 /* Content Styles
 ------------------------------------------------*/ 
 .description { 
-	font-size: 18px; margin-top: 10px; 
-}
-
-.results-info h3 {
-	font-size: 1.5em;
-	/*font-weight: normal;*/
-
-}
-.results-info ul {
-	margin-bottom: 3em;
-}
-.results-info li {
-	padding: 0.75em 0 0.5em 0;
-	line-height: 1.1em;
-	list-style: none;
-	font-size: $normal;
-	border-bottom: 1px solid $midGrey;	
-}
-.results-info li span {
-	display: block;
-	padding: 0.5em 0;
-	font-size: $normal-plus;
-
-}
-
-.project-description {
-	font-size: 20px; margin-top: 10px; margin-bottom: 20px;
-}
-
-.info-notice{
-    background:url(../images/icon-information.png) no-repeat 0 50%;
-    font-size: 1.6em;
-    line-height: 2em;
-    height: 2em;
-    padding-left: 35px;
-	font-weight: normal;    
+	font-size: 1.2em; margin-bottom: 20px; 
 }
 
 .fact-item{
@@ -489,66 +426,3 @@ $normal-plus: 1.25em;
     color: #000;
     margin-top: -0.25em;
 }
-
-#tab-links { 
-	float:right; 
-	padding: 0.5em 0;
-	margin: 0 20px 0 0; 
-	font-size: 1.25em;
-}
-
-#tab-links input { 
-	background-color:#990000; 
-	color:#fff;
-	margin:0 0 0 10px;
-	padding: 0.5em 0;
-}
-
-#tab-links input:hover { 
-	background-color:#AA0000; 
-	color:#fff; 
-}
-
-#tab-links a { 
-	color:#fff; 
-	margin-right: 10px; 
-	font-size:0.9em; 
-	text-decoration: underline; 
-	margin:0; 
-	padding:0;
-}
-
-#tab-links form {
-    display:inline;
-    margin:0;
-    padding:0;
-}
-
-#map {
-	width: 100%; 
-	height: 500px;
-}
-
-.static-background {
-	background-image: url(/images/map_transparent.gif);
-	background-repeat: no-repeat;
-	background-size: contain;
-}
-
-.truncate {
-    width: 200px;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-
-
-.search-result h3 small { font-size: 0.7em; }
-.search-result h3 { font-size:1.2em; font-weight:bold; }
-.search-result { margin: 30px 0; }
-.search-result p.budget em { font-weight: bold; font-style: normal; color:#008270; }
-.search-result p.budget { margin-bottom:5px; }
-.search-result p{ font-size: 1.1em; line-height:1.5em; }
-.search-result p.description{ font-size: 1em; }

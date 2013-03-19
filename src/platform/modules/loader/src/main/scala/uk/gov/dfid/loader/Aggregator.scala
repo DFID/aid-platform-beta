@@ -173,7 +173,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       BSONDocument("$set" -> BSONDocument(
         "totalBudget" -> BSONLong(0),
         "currentFYBudget" -> BSONLong(0),
-        "projectSpend" -> BSONLong(0)
+        "totalProjectSpend" -> BSONLong(0)
       )
     ), multi = true), Duration Inf)
 
