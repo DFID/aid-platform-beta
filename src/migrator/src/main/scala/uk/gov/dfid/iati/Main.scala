@@ -23,7 +23,9 @@ object Main extends App  {
   val countries = database.collection("countries")
   val regions   = database.collection("regions")
   val country_results = database.collection("country-results")
+  val sector_hierarchies = database.collection("sector-hierarchies")
   val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+  val sector_hierarchies_src = Source.fromURL(getClass.getResource("/sector_hierarchies.csv"))
 
   // create an index to avoid dirty data
   countries.indexesManager.create(
@@ -36,6 +38,8 @@ object Main extends App  {
   loadRegions
   println("Loading Collection of country results")
   loadCountryResults
+  println("Loading Collection of sector hierarchies")
+  loadSectorHierarchies
   println("Shutting down Mongo")
   MongoConnection.system.shutdown()
   println("Exiting")
@@ -138,6 +142,26 @@ object Main extends App  {
 
       Await.ready(country_results.insert(document), Duration.Inf)
       println(s"Inserted document! ")
+    })
+  }
+
+  private def loadSectorHierarchies = {
+    Await.ready(sector_hierarchies.drop(), Duration.Inf)
+    val source = sector_hierarchies_src.getLines.drop(1).mkString("\n")
+    val sectors = CSV.parse(source)
+    sectors.foreach(sector => {
+      val document = BSONDocument(
+        "highLevelCode" -> BSONString(sector(1)),
+        "highLevelName" -> BSONString(sector(2)),
+        "categoryCode"  -> BSONString(sector(5)),
+        "categoryName"  -> BSONString(sector(6)),
+        "sectorCode"    -> BSONString(sector(0)),
+        "sectorName"    -> BSONString(sector(3)),
+        "sectorDesc"    -> BSONString(sector(4))
+      )
+
+      Await.ready(sector_hierarchies.insert(document), Duration.Inf)
+      println(s"Sector hierarchy element inserted!")
     })
   }
 
