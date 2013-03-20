@@ -5,7 +5,7 @@ import reactivemongo.api.MongoConnection
 import collection.JavaConversions._
 import xml.XML
 import java.net.URL
-import reactivemongo.bson.{BSONString, BSONDocument}
+import reactivemongo.bson.{BSONString, BSONDocument, BSONLong}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import concurrent.ExecutionContext.Implicits.global
 import io.Source
@@ -150,12 +150,16 @@ object Main extends App  {
     val source = sector_hierarchies_src.getLines.drop(1).mkString("\n")
     val sectors = CSV.parse(source)
     sectors.foreach(sector => {
+      val highLevelCode = sector(1).toLong
+      val categoryCode  = sector(5).toLong        
+      val sectorCode    = sector(0).toLong
+
       val document = BSONDocument(
-        "highLevelCode" -> BSONString(sector(1)),
+        "highLevelCode" -> BSONLong(highLevelCode),
         "highLevelName" -> BSONString(sector(2)),
-        "categoryCode"  -> BSONString(sector(5)),
+        "categoryCode"  -> BSONLong(categoryCode),
         "categoryName"  -> BSONString(sector(6)),
-        "sectorCode"    -> BSONString(sector(0)),
+        "sectorCode"    -> BSONLong(sectorCode),
         "sectorName"    -> BSONString(sector(3)),
         "sectorDesc"    -> BSONString(sector(4))
       )
