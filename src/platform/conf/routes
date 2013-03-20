@@ -9,7 +9,9 @@ GET     /aggregate                  @controllers.Aggregate.index
 GET     /access/organisations       @controllers.Organisations.index
 GET     /access/organisations/:id   @controllers.Organisations.view(id: String)
 
-GET     /access/transactions          @controllers.Transactions.index
+GET     /access/transactions        @controllers.Transactions.index
+
+GET     /access/participating-orgs  @controllers.ParticipatingOrgs.index
 
 GET     /access/activities          @controllers.Activities.index
 GET     /access/activities/:id      @controllers.Activities.view(id: String)
