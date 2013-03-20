@@ -65,7 +65,7 @@ public class ElasticSearch {
 		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 		
 		SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.queryString(search)).setSize(100).execute()
+				.setQuery(QueryBuilders.queryString(search)).setSize(300).execute()
 				.actionGet();
 		SearchHit[] hits = response.getHits().getHits();
 		
