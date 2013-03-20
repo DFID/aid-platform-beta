@@ -2,17 +2,24 @@
 title: Aid Information Platform
 ---
 
-<header id="page-title" class="row">
+<div id="page-title" class="row">
     <div class="twelve columns">
-        <img id="page-title-logo" src="/images/ukaid_logo.gif" alt="UK aid from the British people">
-        <p style="margin-top:20px;">AID PLATFORM</p>
-        <h1>
-            <a href="/countries/<%= country['code'] %>"><img src="/images/flags/<%= country['code'].downcase%>.png" /></a>
-            <%= country['name'] %>
-        </h1>
-        <span id="sectionFooter"><a href="/index.html">Home </a> > <a href="#"> <%= country['name'] %> </a></span>
-  </div>
-</header>
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <span>Aid Information Platform</span>
+            <h1>
+                <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
+            </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/location/country/index.html">Aid by Location</a></li>
+                <li><%= country['name'] %></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "projects", :code => country['code'], :project_count => projects.size } %>
