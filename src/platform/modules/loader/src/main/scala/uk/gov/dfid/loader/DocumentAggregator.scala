@@ -17,11 +17,11 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
       """
         | START  doc = node:entities(type = "document-link")
         | MATCH  category -[:category]- doc <-[:`document-link`]- project
-        | RETURN project.`iati-identifier`  as id,
-        |        doc.title!                 as title,
-        |        doc.format                 as format,
-        |        doc.url                    as url,
-        |        COLLECT(category.category) as categories
+        | RETURN project.`iati-identifier`                 as id,
+        |        doc.title!                                as title,
+        |        doc.format                                as format,
+        |        doc.url                                   as url,
+        |        COLLECT(COALESCE(category.category?, "")) as categories
       """.stripMargin).foreach { row =>
 
       val projectId  = row("id").asInstanceOf[String]

@@ -93,6 +93,21 @@ module ProjectHelpers
         return 0
     end
 
+    def project_budgets(projectId)
+        project_budgets = @cms_db['project-budgets'].find({
+              'id' => projectId
+            }).to_a
+        graph = []
+        graph + project_budgets.inject({}) { |results, budget| 
+          fy = financial_year_formatter budget['date']
+          results[fy] = (results[fy] || 0) + budget['value']
+          results
+        }.map { |fy, budget| [fy, budget] }.inject({}) { |graph, group|
+          graph[group.first] = (graph[group.first] || 0) + group.last
+          graph
+        }.map { |fy, budget| [fy, budget] }.sort
+    end
+
     def project_budget_per_fy(projectId)
         # aggregates the project budgets and budgets spend per financial years for given project
         spends = @cms_db['transactions'].find({
