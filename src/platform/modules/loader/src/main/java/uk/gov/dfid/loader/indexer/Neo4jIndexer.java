@@ -17,9 +17,20 @@ import uk.gov.dfid.loader.indexer.helper.Organization;
 
 public class Neo4jIndexer {
 
-	public static void index(String databaseLocation, String elasticSearchNodeLocation) {
+	/**
+	 * Indexing neo4jDatabse, if grpaphDB is not provided - creating new one, and shutting down, when done 
+	 * 
+	 * @param databaseLocation - optional
+	 * @param elasticSearchNodeLocation
+	 * @param graphDb - optional
+	 */
+	public static void index(String databaseLocation, String elasticSearchNodeLocation, GraphDatabaseService graphDb) {
 		Long counter = System.currentTimeMillis();
-		GraphDatabaseService graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(databaseLocation);
+		boolean isGraphDBprovided = true;
+		if(graphDb == null){
+			isGraphDBprovided = false;
+			graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(databaseLocation);
+		}
 		try {
 			
 			ExecutionEngine engine = new ExecutionEngine(graphDb);
@@ -28,10 +39,9 @@ public class Neo4jIndexer {
 			System.out.println("Done in : "	+ (System.currentTimeMillis() - counter));
 		
 		} catch (Exception e) {
-			e.printStackTrace();
-			graphDb.shutdown();
+			if(!isGraphDBprovided) graphDb.shutdown();
 		}
-		graphDb.shutdown();
+		if(!isGraphDBprovided) graphDb.shutdown();
 	}
 
 	private static void indexToElasticSearch(Map<String, IndexBean> elementsToindex, String elasticSearchNodeLocation) {
@@ -42,27 +52,27 @@ public class Neo4jIndexer {
 			StringBuilder sbSubs = new StringBuilder();
 			for (String sub : ib.getSubProjects()) {
 				sbSubs.append(sub);
-				sbSubs.append(";");
+				sbSubs.append(" ");
 			}
 			StringBuilder sbOrgganization = new StringBuilder();
 			for (String org : ib.getOrganizations()) {
 				sbOrgganization.append(org);
-				sbOrgganization.append(";");
+				sbOrgganization.append(" ");
 			}
 			StringBuilder sbCountry = new StringBuilder();
 			for (String country : ib.getCountry()) {
 				sbCountry.append(country);
-				sbCountry.append(";");
+				sbCountry.append(" ");
 			}
 			StringBuilder sbSector = new StringBuilder();
 			for (String sector : ib.getSector()) {
 				sbSector.append(sector);
-				sbSector.append(";");
+				sbSector.append(" ");
 			}
 			StringBuilder sbRegion = new StringBuilder();
 			for (String region : ib.getRegion()) {
 				sbRegion.append(region);
-				sbRegion.append(";");
+				sbRegion.append(" ");
 			}
 			
 			forES.put("id", ib.getIatiId());
@@ -82,7 +92,7 @@ public class Neo4jIndexer {
 	}
 
 	private static void aquireDataFromRealatedActivityNodes(Map<String, String> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
-		System.out.println("Getting data from activity realted nodes");
+				System.out.println("Getting data from activity realted nodes");
 		try {
 			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 RETURN n.`iati-identifier`, region.`recipient-region`?, sector.`sector`, region.`recipient-country`?";
 			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2	RETURN a.ref as id, v.value as value";
