@@ -5,8 +5,12 @@ module Formatters
     "&pound;#{v/1000000}M"
   end 
 
+  def format_round_million(v)
+    "#{(v/1000000).round(2)} million"
+  end
+
   def format_billion_stg(v)
-    "&pound;#{v/1000000000}bn"
+    "&pound;#{(v/1000000000).round(2)}bn"
   end
 
   def markdown_to_html(md)
@@ -32,6 +36,6 @@ module Formatters
   end
 
   def format_percentage(v)
-    "%.3f" % v + "%"
+    "%.2f" % v + "%"
   end
 end

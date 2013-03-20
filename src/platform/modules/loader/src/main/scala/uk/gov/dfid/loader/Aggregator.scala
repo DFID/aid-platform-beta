@@ -92,8 +92,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       s"""
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`recipient-country`]-c,
-        | n-[:sector]-s
+        |       n-[:`reporting-org`]-o,
+        |       n-[:sector]-s
         | WHERE n.hierarchy=2
+        | AND   o.ref = "GB-1"
         | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
         | ORDER BY total DESC
        """.stripMargin).toSeq.foreach { row =>
@@ -173,7 +175,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       BSONDocument("$set" -> BSONDocument(
         "totalBudget" -> BSONLong(0),
         "currentFYBudget" -> BSONLong(0),
-        "projectSpend" -> BSONLong(0)
+        "totalProjectSpend" -> BSONLong(0)
       )
     ), multi = true), Duration Inf)
 

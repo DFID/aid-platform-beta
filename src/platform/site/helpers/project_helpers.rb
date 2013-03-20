@@ -93,6 +93,21 @@ module ProjectHelpers
         return 0
     end
 
+    def project_budgets(projectId)
+        project_budgets = @cms_db['project-budgets'].find({
+              'id' => projectId
+            }).to_a
+        graph = []
+        graph + project_budgets.inject({}) { |results, budget| 
+          fy = financial_year_formatter budget['date']
+          results[fy] = (results[fy] || 0) + budget['value']
+          results
+        }.map { |fy, budget| [fy, budget] }.inject({}) { |graph, group|
+          graph[group.first] = (graph[group.first] || 0) + group.last
+          graph
+        }.map { |fy, budget| [fy, budget] }.sort
+    end
+
     def project_budget_per_fy(projectId)
         # aggregates the project budgets and budgets spend per financial years for given project
         spends = @cms_db['transactions'].find({
@@ -113,9 +128,9 @@ module ProjectHelpers
             "value" => { "$gt" => 0 }
         }).sort({
             "date" => 1
-        }).map { |budget| [ financial_year_formatter(budget['date'].strftime("%Y-%m-%d")),
+        }).map { |budget| [ financial_year_formatter(budget['date']),
                             budget['value'],
-                            spends[financial_year_formatter(budget['date'].strftime("%Y-%m-%d"))] || 0 ]
+                            spends[financial_year_formatter(budget['date'])] || 0 ]
         }
     end
 
@@ -123,13 +138,21 @@ module ProjectHelpers
     	projectData = @cms_db['projects'].find({
     		"iatiId" => projectId
     	})
-    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups'].sort_by{ |sg| -sg["budget"]}
-    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
+    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups']
+    	if sectorGroups.any? then
+	    	sectorGroups = sectorGroups.group_by { |s| 
+	    		s['code'] }.map do |code, sectors| { 
+	    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+)
+	    	} end.sort_by{ |sg| -sg["budget"]}
+	    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
 
-    	sectorGroups.map { |sg| {
-    		:sector => sg['name'],
-    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
-    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
-		}}
+	    	sectorGroups.map { |sg| {
+	    		:sector => sg['name'],
+	    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
+	    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
+			}}
+		else
+			return sectorGroups
+		end
     end
 end
