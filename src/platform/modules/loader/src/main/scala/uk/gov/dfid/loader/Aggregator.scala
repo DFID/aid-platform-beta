@@ -2,12 +2,10 @@ package uk.gov.dfid.loader
 
 import org.joda.time.DateTime
 import concurrent.ExecutionContext.Implicits.global
-import reactivemongo.api.DefaultDB
 import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
-import Implicits._
 import uk.gov.dfid.common.api.Api
 import uk.gov.dfid.common.models.Project
 import concurrent.Await
@@ -16,7 +14,7 @@ import uk.gov.dfid.common.DataLoadAuditor
 import org.joda.time.format.DateTimeFormat
 import reactivemongo.bson.BSONString
 import reactivemongo.bson.BSONLong
-import uk.gov.dfid.loader.Implicits
+import uk.gov.dfid.loader.Implicits._
 import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
 

@@ -39,20 +39,28 @@
         return "" +
         "<div class='popup' style='min-width:350px;'>" +
         "   <h1><img class='flag' src='" + countryData.flag + "' /> " + countryData.country + "</h1>"  +
-        "   <div class='side-by-side' style='margin-bottom:10px;'>" +
-        "       <div class='stat'>" +
-        "           <h3>Country budget 2012/13</h3>" +
-        "           <p>\u00A3" + addCommas(countryData.budget) + "</p>"  +
-        "       </div>"  +
-        "       <div class='stat'>" +
-        "           <h3>No. of active projects</h3>" +
-        "           <p>" + countryData.projects + "</p>"  +
+        "   <div class='row'>" +
+        "       <div class='six columns'>" +
+        "           <div class='stat'>" +
+        "               <h3>Country budget 2012/13</h3>" +
+        "               <p>\u00A3" + addCommas(countryData.budget) + "</p>"  +
+        "           </div>"  +
         "       </div>" +
-        "   </div>"  +
-        "   <div class='side-by-side'>" +
-        "       <div class='stat'><a href='/countries/" + countryData.id + "'>View country info</a></div>"  +
-        "       <div class='stat'><a href='/countries/" + countryData.id + "/projects'>View projects list</a></div>"  +
-        "   </div>"  +
+        "       <div class='six columns'>" +
+        "           <div class='stat'>" +
+        "              <h3>No. of active projects</h3>" +
+        "              <p>" + countryData.projects + "</p>"  +
+        "          </div>" +
+        "       </div>"  +
+        "   </div>" +
+        "   <div class='row'>" +
+        "       <div class='six columns'>" +
+        "           <div class='stat'><a href='/countries/" + countryData.id + "'>View country info</a></div>"  +
+        "       </div>" +
+        "       <div class='six columns'> " +
+        "          <div class='stat'><a href='/countries/" + countryData.id + "/projects'>View projects list</a></div>"  +
+        "        </div>"  +
+        "   </div>" +
         "</div>";
     }
 
