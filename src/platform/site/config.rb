@@ -22,7 +22,7 @@ require "middleman-smusher"
 #------------------------------------------------------------------------------
 ignore "/countries/country.html"
 ignore "/countries/projects.html"
-
+ignore "/countries/results.html"
 ignore "/projects/summary.html"
 ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
