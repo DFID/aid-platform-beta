@@ -34,12 +34,12 @@ trait ApiController { self: Controller =>
     Map("start" -> start, "limit" -> limit, "total" ->engine.execute(
       s"""
       | START    node = node:entities(type="$entity")
-      | RETURN   COUNT(node) as total
+      | RETURN   COUNT(DISTINCT(node.`$sort`?)) as total
     """.stripMargin).columnAs[Long]("total").toSeq.head) -> (engine.execute(
       s"""
       | START    node = node:entities(type="$entity")
       | RETURN   node
-      | ORDER BY node.`$sort`
+      | ORDER BY STR(node.`$sort`?)
       | SKIP     $start
       | LIMIT    $limit
     """.stripMargin).columnAs[Node]("node").toSeq)

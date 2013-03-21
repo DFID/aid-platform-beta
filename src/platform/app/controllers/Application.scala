@@ -11,11 +11,11 @@ class Application extends Controller {
       "links" -> Json.obj(
         "access" -> Json.obj(
           "description" -> "for all queries that return lists, collections or individual records",
-          "url" -> routes.Access.index.absoluteURL()
+          "url" -> routes.Access.index.url
         ),
         "aggregate" -> Json.obj(
           "description" -> "for all aggregations across activities or organisations.",
-          "url" -> routes.Aggregate.index.absoluteURL()
+          "url" -> routes.Aggregate.index.url
         )
       )
     ))

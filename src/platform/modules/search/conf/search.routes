@@ -4,4 +4,4 @@
 
 # Home page
 GET     /				            controllers.search.Application.search
-
+POST     /				            controllers.search.Application.search
