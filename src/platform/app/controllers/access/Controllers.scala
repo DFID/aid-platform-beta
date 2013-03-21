@@ -8,6 +8,7 @@ import lib.ApiController
 
 
 object ActivityQueryBuilder {
+
   val whitelist = Map(
     "status"    -> "status.code",
     "hierarchy" -> "node.hierarchy"
@@ -19,23 +20,32 @@ object ActivityQueryBuilder {
   """.stripMargin)
 
   def where(query: Map[String, Seq[String]]) = {
-    whitelist.flatMap { case (key, property) =>
+    val result = whitelist.flatMap { case (key, property) =>
       query.get(key).map { parameter =>
         parameter.mkString(s"$property IN [", ",", "]")
       }
-    }.mkString("WHERE ", " AND ", "")
+    }
+
+    if (result.isEmpty){
+      ""
+    }else {
+      result.mkString("WHERE ", " AND ", "")
+    }
   }
 
   def count(query: StringBuilder) = new StringBuilder(query.toString) ++= "RETURN COUNT(node) as total"
 
-  def page(query: StringBuilder, start: Int, limit: Int) = {
-
+  def page(query: StringBuilder, start: Long, limit: Long) = {
+    (new StringBuilder(query.toString) ++= s"""
+        | RETURN   node
+        | ORDER BY node.`iati-identifier`
+        | SKIP     $start
+        | LIMIT    $limit
+      """.stripMargin).toString
   }
 }
 
 class Activities @Inject()(val graph: GraphDatabaseService) extends Controller with ApiController {
-
-
 
   def index = Action { implicit request =>
 
@@ -51,12 +61,11 @@ class Activities @Inject()(val graph: GraphDatabaseService) extends Controller w
       "limit" -> limit,
       "total" -> engine.execute(totalizer.toString).columnAs[Long]("total").toSeq.head
     ) -> (
-      engine.execute(builder.append(s"""
-        | RETURN   node
-        | ORDER BY node.`iati-identifier`
-        | SKIP     $start
-        | LIMIT    $limit
-      """.stripMargin).toString).columnAs[Node]("node").toSeq
+      engine.execute(
+        page(
+          activities ++= where(request.queryString), start, limit
+        )
+      ).columnAs[Node]("node").toSeq
     )
 
     Ok(Json.obj(
