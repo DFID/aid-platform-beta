@@ -27,6 +27,8 @@ ignore "/projects/summary.html"
 ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
+ignore "sector/categories.html"
+ignore "sector/sectors.html"
 
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
@@ -48,8 +50,8 @@ ignore "/projects/partners.html"
         } 
       }])
   
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
-  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats    => stats,    :projects => projects }
+  proxy "/countries/#{country['code']}/results/index.html",  "/countries/results.html",  :locals => { :country => country, :projects => projects, :results  => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
@@ -184,7 +186,7 @@ end
     "sectorName" => {"$first" => "$highLevelName"} } }]).each do |sector|
 
   sectorCode = sector['_id']
-  proxy "/sector/#{sectorCode}/categories/index.html", '/sector/categories.html', :locals => { :sector => sector }
+  proxy "/sector/#{sectorCode}/index.html", '/sector/categories.html', :locals => { :sector => sector }
 
 end
 
@@ -196,7 +198,7 @@ end
 
   categoryCode = sector['_id']
   sectorCode   = sector['sectorCode']
-  proxy "/sector/#{sectorCode}/categories/#{categoryCode}/sectors/index.html", '/sector/sectors.html', :locals => { :sector => sector }
+  proxy "/sector/#{sectorCode}/categories/#{categoryCode}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
 
 end
 

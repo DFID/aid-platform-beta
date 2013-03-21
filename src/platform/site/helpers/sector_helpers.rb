@@ -12,8 +12,8 @@ module SectorHelpers
 				} 
 			} 
 		}]).map { |l| {
-			:code => l['_id'],
-			:name => l['name'],
+			:code   => l['_id'],
+			:name   => l['name'],
 			:budget => calculate_total_sector_level_budget(l['sectorCodes'])
 		}}
 
@@ -36,9 +36,21 @@ module SectorHelpers
 				} 
 			} 
 		}]).map { |l| {
-			:code => l['_id'],
-			:name => l['name'],
+			:code   => l['_id'],
+			:name   => l['name'],
 			:budget => calculate_total_sector_level_budget(l['sectorCodes'])
+		}}
+
+		calculate_hierarchy_structure(sectors)
+	end
+
+	def sectors_structure(categoryCode)		
+ 		sectors = @cms_db['sector-hierarchies'].find({
+			"categoryCode" => categoryCode
+		}).map { |l| {
+			:code   => l['sectorCode'],
+			:name   => l['sectorName'],
+			:budget => calculate_total_sector_level_budget([ l['sectorCode'] ])
 		}}
 
 		calculate_hierarchy_structure(sectors)

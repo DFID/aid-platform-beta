@@ -33,7 +33,16 @@ title: Aid Information Platform
             </div>
             <div class="eight columns">
                 <ul class="sector-list">
-
+                    <% (sectors_structure(sector['_id']) || []).each do |sector| %>
+                        <li>
+                            <a href="#"><%=sector[:name]%></a>
+                            <div class="progress eight">
+                                <em><%=format_percentage sector[:percentage]%></em>
+                                <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
+                                <span>£<%=format_round_m sector[:budget] || 0.0 %></span>                                
+                            </div>
+                        </li>
+                    <% end %>
                 </ul>
             </div>
         </div>
