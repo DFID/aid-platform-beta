@@ -2,11 +2,19 @@
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>AID PLATFORM</span>
+            <span>Aid Information Platform</span>
             <h1>
-                <a href="/projects/<%=project['iatiId']%>"><%= project['title'] %></a>
+                <img src="/images/flags/<%= project['recipient'].downcase %>.png" alt="<%= project['recipient']%>">
+                <%= project['title'] %> 
                 <small>[<%= project['iatiId'] %>]</small>
             </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/countries/<%= project['recipient']%>/index.html"><%= project['recipient'] %></a></li>
+                <li title="<%= project['title'] %>"><%= project['title'] %></li>
+            </ul>
         </div>
     </div>
 </div>

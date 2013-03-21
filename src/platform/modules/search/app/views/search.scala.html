@@ -20,6 +20,7 @@
 
 
     <script src="admin/assets/admin/alpha/javascripts/jquery.js" type="text/javascript"></script>
+    <script src="admin/assets/admin/alpha/javascripts/filters.js" type="text/javascript"></script>
     <script src="admin/assets/admin/alpha/javascripts/jquery.expander.min.js" type="text/javascript"></script>
     <script src="admin/assets/admin/alpha/javascripts/jquery.showmore.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
@@ -53,21 +54,18 @@
                 </div>
                 @partials.header("DEPARTMENT FOR INTERNATIONAL DEVELOPMENT") { Search Results }
                 @partials.search(query)
-                <script>
-                
-                </script>
-                <div id="filter" style="float:left;margin-top: 15px;width: 28%;">
-                <h1>Status</h1>
-                <h1>Sectors</h1>
-                <h1>Countries</h1>
-                <h1>Regions</h1>
-                <h1>Budget</h1>
-                <ul class="budget filter range">
-                    <li>
-                        <input type="number" placeholder="Min" style="width:35%" value="" id="lo" name="lo" step="1000">
-                        <input type="number" placeholder="Max" style="width:35%" value="" id="hi" name="hi" step="1000">
-                    </li>
-                </ul>
+                <div id="info" style="margin-top: 2px"></div>
+                <div id="filters" style="float:left;margin-top: 15px;width: 28%;">
+                <div name="status"><h1>Status</h1></div>
+                <div name="organizations"><h1>Organization</h1></div>
+                <div name="sectors"><h1>Sectors</h1></div>
+                <div name="countries"><h1>Countries</h1></div>
+                <div name="regions"><h1>Regions</h1></div>
+                <div name="budget"><h1>Budget</h1></div>
+                <div class="budget filter range">
+                        <input type="number" placeholder="Min" name="min" style="width:35%" value="" id="lo" name="lo" step="1000">
+                        <input type="number" placeholder="Max" name="max" style="width:35%" value="" id="hi" name="hi" step="1000">
+                </div>
             </div>
                 @for(i <- 0 to results.size -1) {
                 		<div class="search-result" style="float: right;width: 70%;">
@@ -76,6 +74,7 @@
                 		<input type="hidden" name="countries" value="@results(i).get("countries")">
                 		<input type="hidden" name="sectors" value="@results(i).get("sectors")">
                 		<input type="hidden" name="regions" value="@results(i).get("regions")">
+                		<input type="hidden" name="budget" value="@results(i).get("budget")">
                 			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title")<small>[@results(i).get("id")]</small></a></h3>
                 			<p class="budget">Budget: <em>@results(i).get("formatedBudget")</em></p> 
                 			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>

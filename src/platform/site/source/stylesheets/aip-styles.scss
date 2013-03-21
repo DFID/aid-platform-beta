@@ -37,6 +37,45 @@ $orange: #F17921;
     clear: both;
 }
 
+.clr-fix:before,
+.clr-fix:after {
+    content: " ";
+    display: table;
+}
+.clr-fix:after {
+    clear: both;
+}
+
+/* Breadcrumb Styles 
+-----------------------------------------------*/
+.breadcrumb {
+	margin-bottom: 10px;
+}
+.breadcrumb ul{
+    list-style-type:none;
+}
+
+.breadcrumb li {
+    float:left;
+    color:#777;
+    max-width: 15em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb li a{
+    display:block;
+    padding:0 15px 0 0;
+    margin-right: 15px;
+    background: url(../images/separator.png) no-repeat right center;
+}
+
+.breadcrumb li:last-child a{
+    background: none;
+
+}
+
 /* font sizes
 -----------------------------------------------*/
 $normal: 1.2em;
@@ -397,6 +436,22 @@ Sector breakdown
 }
 /* button styles
 -----------------------------------------------*/
+
+.button-row {
+	float: right; min-height: 1px; padding: 0 15px 0 0; position: relative;
+}
+.button-row a{
+	color:#fff;
+	margin-left: 20px;
+}
+.button-row span{
+	
+	line-height: 2.75em;
+	height: 2.75em;
+	text-align: right;
+	margin: 0.5em 1em 0;
+	display: inline-block;
+}
 .button {
     background-color:#008270;
     color:#fff;
@@ -424,6 +479,17 @@ Sector breakdown
     background-color:#3ABAA8;
     color:#fff
 }
+
+.button.serious {
+    background-color:#990000;
+    color:#fff;
+    font-weight: bold;
+}
+.button.serious:hover {
+    background-color:#AA0000;
+    color:#fff;
+}
+
 /* Disclaimer Styles 
 -----------------------------------------------*/
 .disclaimer{
@@ -645,3 +711,77 @@ Sector breakdown
 .search-result p.budget { margin-bottom:5px; }
 .search-result p{ font-size: 1.1em; line-height:1.5em; }
 .search-result p.description{ font-size: 1em; }
+
+/* -----------------------------------------
+   transactions styles
+-----------------------------------------------*/
+.transactions h3{
+	border-bottom: 1px solid $midGrey;
+	padding-bottom: 0.5em; 
+	margin-bottom: 0;
+	font-size: 1.5em
+}
+.transactions h3 span{
+	float: right;
+}
+
+/* -----------------------------------------
+   transactions table styles
+-----------------------------------------------*/
+
+.transactions-table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	margin-bottom: 60px;
+	width: 100%;
+}
+.transactions-table tr {
+	border-bottom: 1px solid $midGrey;
+}
+.transactions-table th {
+	background: #FFF;
+} 
+.transactions-table tbody th {
+	font-weight: normal;
+	line-height: 1.5em;
+}
+.transactions-table th,
+.transactions-table td{
+	font-size: $normal;
+	text-align: left;
+	padding: 0.5em 30px 0.5em 0 ;
+	margin: 0 ;
+	width: 12.5%;
+	white-space: nowrap;
+	line-height: 1.5em;
+}
+.transactions-table th:first-child,
+.transactions-table td:first-child{
+	width: 62.5%;
+	white-space: normal;
+}
+.transactions-table th:last-child,
+.transactions-table td:last-child{
+	text-align: right;
+	padding-right: 0;
+	font-weight: bold;
+}
+.transactions-table tbody td{
+	padding-right: 30px;
+}
+@media screen and (max-width: 700px) {
+	
+	.transactions-table th,
+	.transactions-table td {
+		float: left;
+		margin-right: 20px;
+		width: auto!important;
+
+	}
+	.transactions-table tbody th {
+	width: 100%!important;
+	display: block;
+	padding-right: 0
+	}
+}
