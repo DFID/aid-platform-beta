@@ -179,10 +179,24 @@ end
 #------------------------------------------------------------------------------
 # GENERATE SECTOR HIERARCHIES
 #------------------------------------------------------------------------------
-@cms_db['sector-hierarchies'].aggregate([{ "$group" => { "_id"  => "$highLevelCode", "name" => {"$first" => "$highLevelName"} } }]).each do |sector|
+@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+    "_id"  => "$highLevelCode", 
+    "sectorName" => {"$first" => "$highLevelName"} } }]).each do |sector|
 
-  code = sector['_id']
-  proxy "/sector/#{code}/categories/index.html", '/sector/categories.html', :locals => { :sector => sector }
+  sectorCode = sector['_id']
+  proxy "/sector/#{sectorCode}/categories/index.html", '/sector/categories.html', :locals => { :sector => sector }
+
+end
+
+@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+    "_id"          => "$categoryCode", 
+    "sectorCode"   => {"$first" => "$highLevelCode"}, 
+    "sectorName"   => {"$first" => "$highLevelName"}, 
+    "categoryName" => {"$first" => "$categoryName"} } }]).each do |sector|
+
+  categoryCode = sector['_id']
+  sectorCode   = sector['sectorCode']
+  proxy "/sector/#{sectorCode}/categories/#{categoryCode}/sectors/index.html", '/sector/sectors.html', :locals => { :sector => sector }
 
 end
 
