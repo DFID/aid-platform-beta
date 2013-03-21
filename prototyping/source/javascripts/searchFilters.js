@@ -38,6 +38,7 @@ $('input[type=checkbox]').change(function() {
 
 if(!$('input[type=checkbox]').is(':checked')){
     $('.search-result').css("display", "inline");
+    displayResultsAmount();
     return false;
 }
 
@@ -120,9 +121,16 @@ divsToCheck.each(function(i, div){
                 $('.search-result').css("display", "none"); //show none cuz nothing found
             }
         });
+
+displayResultsAmount();
+
 });
 }
  
+function displayResultsAmount(){
+  $('span[name=afterFilteringAmount]').html(($(".search-result").length - $("div:hidden").length) + " of ");
+}
+
 var Status = new Array();
 var Sectors = new Array();
 var Countries = new Array();

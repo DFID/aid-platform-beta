@@ -42,7 +42,11 @@ public class ElasticSearch {
 		if (client != null)
 			client.close();
 	}
-
+	
+	public void deleteAll(){
+		client.admin().indices().prepareDelete().execute().actionGet();
+	}
+	
 	public IndexResponse putIndex(Map<String, Object> indexMap, String indexName, String dataLocation) {
 		if(client == null){
 			connectToESNode(dataLocation);
