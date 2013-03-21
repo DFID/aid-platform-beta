@@ -2,108 +2,95 @@
 
 <!DOCTYPE html>
 
+<!--[if lt IE 7]>      <html class="ie6"> <![endif]-->
+<!--[if IE 7]>         <html class="ie7"> <![endif]-->
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--> <html>         <!--<![endif]-->
+
   <head>
     <meta charset="utf-8">
     <title>Aid Information Platform</title>
-    <!-- prototype -->
-    
-    <script src="admin/assets/admin/alpha/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-    
-    
-    <!-- /prototype -->
-    <script src="admin/assets/admin/alpha/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-    <script src="admin/assets/admin/alpha/javascripts/jquery-ui-1.10.2.custom.js" type="text/javascript"></script>
-    <script src="admin/assets/admin/alpha/javascripts/filters.js" type="text/javascript"></script>
-    <script src="admin/assets/admin/alpha/javascripts/jquery.expander.min.js" type="text/javascript"></script>
-    <script src="admin/assets/admin/alpha/javascripts/jquery.showmore.js" type="text/javascript"></script>
-    <script src="admin/assets/admin/alpha/javascripts/d3.v3.min.js" type="text/javascript"></script>
-    <link type="text/css" rel="stylesheet" media="screen" href="admin/assets/admin/alpha/stylesheets/jquery-ui-1.10.2.custom.css">
-    <link type="text/css" rel="stylesheet" media="screen" href="admin/assets/admin/alpha/stylesheets/application.css">
-    <link type="text/css" rel="stylesheet" media="all" href="admin/assets/admin/alpha/stylesheets/fonts.css">
-    <link href="admin/assets/admin/alpha/stylesheets/main.css" media="all" rel="stylesheet" type="text/css">
+    <!--[if IE 8]>
+    <script type="text/javascript">
+      (function(){if(window.opera){return;}
+      setTimeout(function(){var a=document,g,b={families:(g=
+      ["nta"]),urls:["/stylesheets/stylesheets/fonts-ie8.css]},
+      c="javascripts/webfont-debug.js,d="script",
+      e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
+      ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h--;a.documentElement
+      .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
+      })()
+    </script>
+    <![endif]-->
+    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css"><!--<![endif]-->
+
+
+    <script src="http://localhost:4567/javascripts/jquery-base.js" type="text/javascript"></script>
+    <!--[if lt IE 9]>
+    <script src="http://localhost:4567/javascripts/ie-compat.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css">
+
+    <script src="/javascripts/jquery.js" type="text/javascript"></script>   
+    <script src="/javascripts/searchFilters.js" type="text/javascript"></script>
+
   </head>
-  <body class="citizen mainstream">
-    <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visuallyhidden">Skip to main content</a>
-    <header role="banner" class="group" id="global-header">
-      <div class="header-global group">
-        <h1><a href="/" title="Go to the homepage">Department for International Development</a></h1>
-      </div>
-    </header>
-    <div id="whitehall-wrapper">
-        <div id="content">
-
-        </div>
-        <div id="page">
-            <div class="inner-block">
-                <div class="disclaimer">
-                    <div class="inner group">
-                        This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
-                    </div>
-                </div>
-                @partials.header("DEPARTMENT FOR INTERNATIONAL DEVELOPMENT") { Search Results }
-                @partials.search(query)
-                <div id="info" style="margin-top: 2px"></div>
-                <div id="filters" style="float:left;margin-top: 15px;width: 28%;">
-                <div name="status"><h1>Status</h1></div>
-                <div name="organizations"><h1>Organization</h1></div>
-                <div name="sectors"><h1>Sectors</h1></div>
-                <div name="countries"><h1>Countries</h1></div>
-                <div name="regions"><h1>Regions</h1></div>
-                <div name="budget"><h1>Budget</h1></div>
-                
-                <p>
-                <label for="amount">Volume:</label>
-                <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;" />
-                </p>
-                <div id="slider-vertical" style="height: 200px;"></div>
-                
-
-            </div>
-                @for(i <- 0 to results.size -1) {
-                		<div class="search-result" style="float: right;width: 70%;">
-                		<input type="hidden" name="status" value="@results(i).get("status")">
-                		<input type="hidden" name="organizations" value="@results(i).get("organizations")">
-                		<input type="hidden" name="countries" value="@results(i).get("countries")">
-                		<input type="hidden" name="sectors" value="@results(i).get("sectors")">
-                		<input type="hidden" name="regions" value="@results(i).get("regions")">
-                		<input type="hidden" name="budget" value="@results(i).get("budget")">
-                			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title")<small>[@results(i).get("id")]</small></a></h3>
-                			<p class="budget">Budget: <em>@results(i).get("formatedBudget")</em></p> 
-                			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>
-                			<p class="description">@results(i).get("description")</p>
-                		</div>
-                	
-                	}
-            </div>
-        </div>
+  <body>
+    <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visually-hidden">Skip to main content</a>
+    @partials.header()
+    <div class="page-wrapper">
+    	<div class="row">
+    		<div class="twelve columns">
+    			<div class="disclaimer">
+    				@partials.disclaimer()
+    			</div>
+    		</div>
+    	</div>
+    	<div class="row" id="page-title">
+    		@partials.pageTitle()
+    	</div>
+        <div class="row">
+        	@partials.search(query)
+    	</div>            
+   
+        <div class="row">
+         <div class="twelve columns">
+        	@partials.filters()
+        	<div class="testResults" style="float: right; width: 70%; ">
+        	<em>Showing <span name="afterFilteringAmount"></span> @results.size results</em>
+        	@for(i <- 0 to results.size -1) {
+        		<div class="search-result">
+            		<input type="hidden" name="status" value="@results(i).get("status")">
+            		<input type="hidden" name="organizations" value="@results(i).get("organizations")">
+            		<input type="hidden" name="countries" value="@results(i).get("countries")">
+            		<input type="hidden" name="sectors" value="@results(i).get("sectors")">
+            		<input type="hidden" name="regions" value="@results(i).get("regions")">
+            		<input type="hidden" name="budget" value="@results(i).get("budget")">
+        			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title")&nbsp;<small>[@results(i).get("id")]</small></a></h3>
+        			<p class="budget">Budget: <em>@results(i).get("formatedBudget")</em></p> 
+        			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>
+        			<p class="description">@results(i).get("description")</p>
+        		</div>
+        	}
+        	</div>
+         </div>
+    	</div> 
     </div><!--end wrapper-->
-
-    <div class="disclaimer" id="disclaimer">
-       <div class="inner group">
-          This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://www.dfid.gov.uk">dfid.gov.uk</a>
-      </div>
-    </div>
-
-    <footer class="group" id="footer" role="contentinfo">
-      <div class="inner group">
-        <div class="colophon-and-help">
-          <nav class="help">
-            <ul>
-              <li><a href="/help">Help</a></li>
-              <li><a href="/help/cookies">Cookies</a></li>
-            </ul>
-          </nav>
-          <div class="colophon">
-            <p>Much of the information on this website is available for reuse under the <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/" rel="license">Open Government Licence</a></p>
-          </div>
-        </div>
-        <div class="copyright">
-          <p>&copy; Crown Copyright</p>
-        </div>
-      </div>
-    </footer>
-    <script type="text/javascript" src="http://uk1.siteimprove.com/js/siteanalyze_advanced.js"></script>
-    <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+    <div class="disclaimer">
+    	<div class="row">
+			@partials.disclaimer()
+		</div>
+	</div>
+    @partials.footer()
+    <script src="http://uk1.siteimprove.com/js/siteanalyze_advanced.js" type="text/javascript" ></script>
+    <script src="https://loader.engage.gsfn.us/loader.js" type="text/javascript" ></script>
+    <script type="text/javascript" src="https://d2omfglnd8fp1f.cloudfront.net/assets/widget_common/lib/gsfnXD-39c450cffd67ae826846ba09ecea0c4a.js" ></script>
+    <script type="text/javascript" src="https://d79yqnsk0j0g9.cloudfront.net/assets/widget_common/vendor/jquery-2fb84f7357042b2d55977e7f2b008766.js" ></script>
+    <script type="text/javascript" src="https://d2tyksh53t7ls4.cloudfront.net/assets/widget_common/lib/jqModal-d9bfcc8fcbecdbd4f4156f2ff4a717f3.js" ></script>
+    <script type="text/javascript" src="https://d2tyksh53t7ls4.cloudfront.net/assets/widget_common/vendor/json2-a204230dc42448a09771dd71de059c67.js" ></script>
   </body>
 </html>
 
