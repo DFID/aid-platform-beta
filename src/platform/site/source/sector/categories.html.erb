@@ -14,7 +14,8 @@ title: Aid Information Platform
         <div class="breadcrumb clr-fix">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li>Aid by Sector</li>
+                <li><a href="/sector">Aid by Sector</a></li>
+                <li><%= sector['sectorName'] %></li>
             </ul>
         </div>
     </div>
@@ -27,23 +28,22 @@ title: Aid Information Platform
         <h2 class="section-group-title">Sector Breakdown</h2>
         <div class="row">
             <div class="four columns summary">
-                <p>DFID breakdown of Primary sector showing percentage spend and buget spend across all projects for current financial year </p>
+                <p><%= sector['sectorName'] %></p>
             </div>
             <div class="eight columns">
                 <ul class="sector-list">
-                    <% (high_level_sectors_structure || []).each do |sector| %>
+                    <% (sector_categories_structure(sector['_id']) || []).each do |category| %>
                         <li>
-                            <a href="/sector/<%=sector[:code]%>/categories"><%=sector[:name]%></a>
+                            <a href="/sector/<%=sector['_id']%>/categories/<%=category[:code]%>/sectors"><%=category[:name]%></a>
                             <div class="progress eight">
-                                <em><%=format_percentage sector[:percentage]%></em>
-                                <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
-                                <span>£<%=format_round_m sector[:budget] || 0.0 %></span>                                
+                                <em><%=format_percentage category[:percentage]%></em>
+                                <span class="meter" style="width: <%=format_percentage category[:cellWidth]%>"></span>
+                                <span>£<%=format_round_m category[:budget] || 0.0 %></span>                                
                             </div>
                         </li>
                     <% end %>
                 </ul>
             </div>
         </div>
-
     </div>
 </div>

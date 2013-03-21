@@ -9,6 +9,10 @@ module Formatters
     "#{(v/1000000).round(2)} million"
   end
 
+  def format_round_m(v)
+    "#{(v/1000000).round(1)}m"
+  end
+
   def format_billion_stg(v)
     "&pound;#{(v/1000000000).round(2)}bn"
   end
