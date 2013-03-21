@@ -6,6 +6,7 @@ require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
 require "helpers/codelists"
 require "helpers/lookups"
+require "helpers/sector_helpers"
 require "middleman-smusher"
 
 #------------------------------------------------------------------------------
@@ -51,6 +52,7 @@ ignore "/projects/partners.html"
   proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
+
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
@@ -175,6 +177,16 @@ end
 end
 
 #------------------------------------------------------------------------------
+# GENERATE SECTOR HIERARCHIES
+#------------------------------------------------------------------------------
+@cms_db['sector-hierarchies'].aggregate([{ "$group" => { "_id"  => "$highLevelCode", "name" => {"$first" => "$highLevelName"} } }]).each do |sector|
+
+  code = sector['_id']
+  proxy "/sector/#{code}/categories/index.html", '/sector/categories.html', :locals => { :sector => sector }
+
+end
+
+#------------------------------------------------------------------------------
 # DEFINE HELPERS - Import from modules to avoid bloat
 #------------------------------------------------------------------------------
 helpers do
@@ -185,7 +197,8 @@ helpers do
   include Lookups
   include ProjectHelpers
   include CodeLists
-  
+  include SectorHelpers
+
 end
 
 #------------------------------------------------------------------------------
