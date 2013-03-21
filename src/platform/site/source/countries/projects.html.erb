@@ -6,11 +6,17 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
+            <span>Aid Information Platform</span>
             <h1>
-                <span>Aid platform</span>
-                <%= country['name'] %>
-                <span><a href="/index.html">Home </a></span>
+                <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
             </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/location/country/index.html">Aid by Location</a></li>
+                <li><%= country['name'] %></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -26,7 +32,7 @@ title: Aid Information Platform
                     <a href="/projects/<%=project['iatiId']%>">
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small></a>
                     </h3>
-                <p class="budget">Budget: <em>£<%=project['totalBudget']%></em></p>
+                <p class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></p>
                 <p class="budget" style="margin-top:-3px;">Status: <em><%= activity_status project['status']%></em></p>
                 <p class="description"><%=project['description']%></p>
             </div>

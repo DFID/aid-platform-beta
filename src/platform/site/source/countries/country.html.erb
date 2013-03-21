@@ -2,24 +2,31 @@
 title: Aid Information Platform
 ---
 
-<header id="page-title" class="row">
+<div id="page-title" class="row">
     <div class="twelve columns">
-        <img id="page-title-logo" src="/images/ukaid_logo.gif" alt="UK aid from the British people">
-        <p style="margin-top:20px;">AID PLATFORM</p>
-        <h1>
-            <a href="/countries/<%= country['code'] %>"><img src="/images/flags/<%= country['code'].downcase%>.png" /></a>
-            <%= country['name'] %>
-        </h1>
-        <span id="sectionFooter"><a href="/index.html">Home </a> > <a href="#"> <%= country['name'] %> </a></span>
-  </div>
-</header>
-
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <span>Aid Information Platform</span>
+            <h1>
+                <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
+            </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/location/country/index.html">Aid by Location</a></li>
+                <li><%= country['name'] %></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'], :project_count => projects.size } %>
 
 <div class="row">
-    <div class="twelve columns">
+    <div class="twelve columns summary">
+        <h2 class="visually-hidden">Summary</h2>
         <div class="description"><%= markdown_to_html country['description'] %></div>
         <script type="text/javascript">
             $('div.description').expander({
@@ -37,11 +44,11 @@ title: Aid Information Platform
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
-                <span><strong>£<%= stats['totalBudget'] %></strong></span>
+                <span><strong><%= number_to_currency(stats['totalBudget'], :unit=>"£", :precision => 0) %></strong></span>
             </li>
             <li class="fact-item">
                 % of DFID budget
-                <span><strong><%= (stats['totalBudget']/dfid_total_budget * 100) %>%</strong></span>
+                <span><strong><%= (stats['totalBudget']/(dfid_total_budget.nonzero? || 1) * 100).round(2) || "&nbsp;" %>%</strong></span>
             </li>
             <li class="fact-item">
                 Active Projects
@@ -50,16 +57,16 @@ title: Aid Information Platform
 
                 <li class="fact-item">
                     Population (source: <a href="http://data.worldbank.org/country">World Bank</a>):
-                    <span><strong><%= country['population'] || "&nbsp;" %></strong></span>
+                    <span><strong><%= format_round_million country['population'].to_f || "&nbsp;" %></strong></span>
                 </li>
                 <li class="fact-item">
                     Life expectancy at birth (source: <a href="http://data.worldbank.org/country">World Bank</a>):
-                    <span><strong><%= country['lifeExpectancy'] || "&nbsp;"%></strong></span>
+                    <span><strong><%= country['lifeExpectancy'].to_f.round(0) || "&nbsp;"%></strong></span>
                 </li>
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country">World Bank</a>):
                     <span><strong><%= country['incomeLevel'] || "&nbsp;" %></strong></span>
-                </li>
+                </li>   
 
         </ul>
     </div>
@@ -104,6 +111,8 @@ title: Aid Information Platform
     </div>
     <div class="six columns">
          <h3 class="info-notice">Project budget total by year</h3>
+         <div id="budget-year-chart" style="height: 250px;" class="standard">
+        </div>
     </div>
 </div>
 
@@ -114,7 +123,11 @@ title: Aid Information Platform
  <script>
  
      (function(){
-     
+        var budgets = <%= ([["Year", "Budget"]]) + (country_project_budgets country['code'])%>
+        ;
+
+        charts.bar("#budget-year-chart", budgets, ".2s", null, null, ["#2B6367"]);
+
         var sectors = <%= (sector_groups country['code']).to_json %>
         charts.donut("#sectorChart", sectors, function(d) { 
           return d.total; 

@@ -2,17 +2,19 @@
     <div class="twelve columns">
         <div class="tab-bar-container">
             <div class="row">
-                <div id="tab-links">
-                    <a href="http://projects.dfid.gov.uk/iati/Country/<%= code %>">IATI Data Set</a>
-                    <form action="/fraud" method="GET" >
-                        <input type="submit" value="Report Fraud" class="button serious"/>
-                    </form>
+                <div class="button-row">
+                    <span>
+                        <a href="http://projects.dfid.gov.uk/iati/Country/<%= code %>" class=" ">IATI Data Set</a>
+                        <a href="/fraud" class="button serious">Report Fraud</a>
+                    </span>
                 </div>
+
                 <div class="projects-nav">
                     <nav>
                         <ul class="tab-bar">
                             <li <%= active=="summary" ? "class='active'" : ""%>><a href="/countries/<%= code %>">Summary</a></li>
                             <li <%= active=="projects" ? "class='active'" : ""%>><a href="/countries/<%= code %>/projects">All Projects (<%=project_count%>)</a></li>
+                            <li <%= active=="results" ? "class='active'" : ""%>><a href="/countries/<%= code %>/results">Results</a></li>
                         </ul>
                     </nav>
                 </div>       

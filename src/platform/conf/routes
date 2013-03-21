@@ -17,3 +17,4 @@ GET     /access/activities          @controllers.Activities.index
 GET     /access/activities/:id      @controllers.Activities.view(id: String)
 
 ->      /admin                      admin.Routes
+->	    /search			            search.Routes

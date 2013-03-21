@@ -43,7 +43,13 @@ object ApplicationBuild extends Build {
 
     libraryDependencies ++= Dependencies.base ++ Dependencies.neo4j ++ Seq(
       // Application Dependencies
+      "com.typesafe" %  "config"             % "1.0.0",
+      "org.neo4j"    %  "neo4j-kernel"       % "1.8.1",
+      "org.neo4j"    %  "neo4j-lucene-index" % "1.8.1",
+      "org.neo4j"    %  "neo4j-cypher"       % "1.8.1",
+      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
       "com.typesafe" %  "config"             % "1.0.0"
+
     )
   )
 
@@ -67,6 +73,18 @@ object ApplicationBuild extends Build {
     )
   ).dependsOn(common).aggregate(common)
 
+  lazy val search = play.Project(
+    appName + "-search", appVersion, Dependencies.base, path = file("modules/search")
+    ).settings(
+    resolvers ++= Seq("Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"),
+    libraryDependencies ++= Seq(
+	      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
+	      "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
+        "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
+	  )
+  ).dependsOn(common).aggregate(common)
+
+
   lazy val admin = play.Project(
     appName + "-admin", appVersion, Dependencies.base, path = file("modules/admin")
   ).aggregate(
@@ -80,9 +98,10 @@ object ApplicationBuild extends Build {
       "jp.t2v" %% "stackable-controller" % "0.2"
     )
   ).dependsOn(
-    common, admin
+    common, admin, search
   ).aggregate(
-    common, admin
+    common, admin, search
   )
 
 }
+

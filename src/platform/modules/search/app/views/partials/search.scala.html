@@ -1,0 +1,11 @@
+@(query: String = "", label: String = "Search Projects", compact: Boolean = false)
+
+<div id="search-bar" class="@("compact".when(compact))">
+	<form name="input" action="" method="POST">
+        <label for="query">
+            @label
+            <input id="query" name="query"  type="text" placeholder="e.g. location, sector, organisation or keyword" value="@query">
+        </label>
+        <input type="submit" value="Search" class="button big"/>
+	</from>
+</div>

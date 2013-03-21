@@ -5,8 +5,12 @@ module Formatters
     "&pound;#{v/1000000}M"
   end 
 
+  def format_round_million(v)
+    "#{(v/1000000).round(2)} million"
+  end
+
   def format_billion_stg(v)
-    "&pound;#{v/1000000000}bn"
+    "&pound;#{(v/1000000000).round(2)}bn"
   end
 
   def markdown_to_html(md)
@@ -23,7 +27,15 @@ module Formatters
   end
 
   def format_date(d)
-    # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
-    Time.at(d/1000.0).strftime("%d %b %Y")
+    if (d > 0)
+        # formats date in miliseconds as '%d %b %Y', eg. "11 Mar 2008"
+        Time.at(d/1000.0).strftime("%d %b %Y")
+    else
+        ""
+    end
+  end
+
+  def format_percentage(v)
+    "%.2f" % v + "%"
   end
 end

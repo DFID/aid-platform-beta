@@ -3,7 +3,7 @@ package uk.gov.dfid.loader
 import org.joda.time.DateTime
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.api.DefaultDB
-import reactivemongo.bson.{BSONInteger, BSONLong, BSONString, BSONDocument}
+import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
@@ -13,6 +13,12 @@ import uk.gov.dfid.common.models.Project
 import concurrent.Await
 import concurrent.duration._
 import uk.gov.dfid.common.DataLoadAuditor
+import org.joda.time.format.DateTimeFormat
+import reactivemongo.bson.BSONString
+import reactivemongo.bson.BSONLong
+import uk.gov.dfid.loader.Implicits
+import reactivemongo.bson.BSONInteger
+import reactivemongo.api.DefaultDB
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -86,8 +92,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       s"""
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`recipient-country`]-c,
-        | n-[:sector]-s
+        |       n-[:`reporting-org`]-o,
+        |       n-[:sector]-s
         | WHERE n.hierarchy=2
+        | AND   o.ref = "GB-1"
         | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
         | ORDER BY total DESC
        """.stripMargin).toSeq.foreach { row =>
@@ -113,6 +121,48 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       auditor.success("Country sectors rolled up")
   }
 
+  def rollupCountryProjectBudgets = {
+    auditor.info("Dropping project budgets collection")
+    // drop the collection and start up
+    Await.ready(db.collection("project-budgets").drop, Duration.Inf)
+    auditor.info("Project budgets dropped")
+
+    auditor.info("Rolling up country project budgets")
+    val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
+
+    val projectBudgets = db.collection("project-budgets")
+    engine.execute(
+      s"""
+      |  START b=node:entities(type="budget")
+      |  MATCH b-[:budget]-component-[:`related-activity`]-proj,
+      |  component-[:`reporting-org`]-org,
+      |  b-[:value]-v
+      |  WHERE proj.type=1
+      |  AND org.ref = "GB-1"
+      |  RETURN proj.ref as projectId, v.value as value, v.`value-date` as date
+       """.stripMargin).toSeq.foreach { row =>
+      try {
+        auditor.info("Adding project budgets...")
+        val id = row("projectId").asInstanceOf[String]
+        val value = row("value").asInstanceOf[Long].toInt
+        val date = row("date").asInstanceOf[String]
+
+        auditor.info("Adding")
+
+        projectBudgets.insert(
+          BSONDocument(
+                       "id" -> BSONString(id),
+                       "value" -> BSONInteger(value),
+                       "date" -> BSONString(date)
+          )
+        )
+      } catch {
+        case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
+      }
+    }
+    auditor.success("Project budgets rolled up for countries")
+  }
+
   def rollupProjectBudgets = {
     auditor.info("Rolling up Project Budgets")
 
@@ -125,7 +175,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       BSONDocument("$set" -> BSONDocument(
         "totalBudget" -> BSONLong(0),
         "currentFYBudget" -> BSONLong(0),
-        "projectSpend" -> BSONLong(0)
+        "totalProjectSpend" -> BSONLong(0)
       )
     ), multi = true), Duration Inf)
 
@@ -170,8 +220,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | WHERE  project.type = 1
         | AND    org.ref      = "GB-1"
         | AND    (type.`code` = 'D' OR type.`code` = 'E')
-        | AND	   date.`iso-date` >= "$start"
-        | AND	   date.`iso-date` <= "$end"
         | RETURN
         | distinct project.ref as id,
         | sum(value.value)     as spend
@@ -185,7 +233,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "projectSpend" -> BSONLong(spend)
+          "totalProjectSpend" -> BSONLong(spend)
         )),
         upsert = false, multi = false
       )

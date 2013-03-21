@@ -2,10 +2,19 @@
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
+            <span>Aid Information Platform</span>
             <h1>
-                <span>AID PLATFORM</span>
-                <%= project['title'] %><span>[<%= project['iatiId'] %>]</span>
+                <img src="/images/flags/<%= project['recipient'].downcase %>.png" alt="<%= project['recipient']%>">
+                <%= project['title'] %> 
+                <small>[<%= project['iatiId'] %>]</small>
             </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/countries/<%= project['recipient']%>/index.html"><%= project['recipient'] %></a></li>
+                <li title="<%= project['title'] %>"><%= project['title'] %></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -17,9 +26,6 @@
         <div class="tab-bar-container">
             <div class="row">
                 <div id="tab-links">
-                    <% if is_dfid_project project['iatiId'] then %>
-                    <a href="http://projects.dfid.gov.uk/iati/Project/<%= project['iatiId'][5, project['iatiId'].length] %>">IATI Data Set</a>
-                    <% end %>
                     <form action="/fraud" method="GET" >
                         <input type="submit" value="Report Fraud" class="button serious"/>
                     </form>

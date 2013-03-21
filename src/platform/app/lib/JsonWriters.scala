@@ -6,6 +6,7 @@ import play.api.libs.json.JsString
 import play.api.libs.json.JsBoolean
 import play.api.libs.json.JsNumber
 import collection.JavaConversions._
+import uk.gov.dfid.loader.Implicits._
 
 object JsonWriters {
 

@@ -83,8 +83,76 @@ module ProjectHelpers
     def choose_better_date(actual, planned)
         # determines project actual start/end date - use actual date, planned date as a fallback
         unless actual.nil? || actual == ''
+            return (Time.at(actual).to_f * 1000.0).to_i
+        end
+
+        unless planned.nil? || planned == ''
             return (Time.at(planned).to_f * 1000.0).to_i
         end
-        return (Time.at(actual).to_f * 1000.0).to_i
+
+        return 0
+    end
+
+    def project_budgets(projectId)
+        project_budgets = @cms_db['project-budgets'].find({
+              'id' => projectId
+            }).to_a
+        graph = []
+        graph + project_budgets.inject({}) { |results, budget| 
+          fy = financial_year_formatter budget['date']
+          results[fy] = (results[fy] || 0) + budget['value']
+          results
+        }.map { |fy, budget| [fy, budget] }.inject({}) { |graph, group|
+          graph[group.first] = (graph[group.first] || 0) + group.last
+          graph
+        }.map { |fy, budget| [fy, budget] }.sort
+    end
+
+    def project_budget_per_fy(projectId)
+        # aggregates the project budgets and budgets spend per financial years for given project
+        spends = @cms_db['transactions'].find({
+            "project" => projectId,
+            "$or"     => [{ "type" => "C"}, {"type" => "D"}]
+        }).map { |t| {
+            "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
+            "value" => t['value']
+        }}.group_by { |year| year["fy"] }.map do |fy, v|
+            total = v.map { |year| year["value"] }.inject(:+)
+            {'fy' => fy, 'value' => total}
+        end.map { |year| {
+            year['fy'] => year['value']
+        }}.reduce(Hash.new, :merge)
+
+        @cms_db['project-budgets'].find({
+            "id"    => projectId,
+            "value" => { "$gt" => 0 }
+        }).sort({
+            "date" => 1
+        }).map { |budget| [ financial_year_formatter(budget['date']),
+                            budget['value'],
+                            spends[financial_year_formatter(budget['date'])] || 0 ]
+        }
+    end
+
+    def project_sector_groups(projectId)
+    	projectData = @cms_db['projects'].find({
+    		"iatiId" => projectId
+    	})
+    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups']
+    	if sectorGroups.any? then
+	    	sectorGroups = sectorGroups.group_by { |s| 
+	    		s['code'] }.map do |code, sectors| { 
+	    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+)
+	    	} end.sort_by{ |sg| -sg["budget"]}
+	    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
+
+	    	sectorGroups.map { |sg| {
+	    		:sector => sg['name'],
+	    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
+	    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
+			}}
+		else
+			return sectorGroups
+		end
     end
 end
