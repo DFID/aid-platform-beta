@@ -23,6 +23,10 @@ title: Aid Information Platform
 <%= partial "partials/search-bar" %>
 
 <div class="row">
+    <script type="text/javascript">
+        var test = '<%= level_1_sectors %>';
+    </script>
+
     <div class="twelve columns content">
         <h2 class="section-group-title">Sector Breakdown</h2>
         <div class="row">
@@ -31,18 +35,16 @@ title: Aid Information Platform
             </div>
             <div class="eight columns">
                 <ul class="sector-list">
-                    <li>
-                        <a href="#">Agriculture</a>
-                        <div class="progress eight"><em>9%</em><span class="meter" style="width: 45%"></span><span>£33.7m</span></div>
-                    </li>
-                    <li>
-                        <a href="#">Business</a>
-                        <div class="progress eight"><em>2%</em><span class="meter" style="width: 10%"></span><span>£7.7m</span></div>
-                    </li>
-                    <li>
-                        <a href="#">Disaster</a>
-                        <div class="progress eight"><em>7%</em><span class="meter" style="width: 35%"></span><span>£24.8m</span></div>
-                    </li>
+                    <% (level_1_sectors || []).each do |sector| %>
+                        <li>
+                            <a href="#"><%=sector[:name]%></a>
+                            <div class="progress eight">
+                                <em><%=format_percentage sector[:percentage]%></em>
+                                <span class="meter" style="width: <%=format_percentage sector[:percentage]%>"></span>
+                                <span>£<%=format_round_million sector[:budget] || 0.00 %></span>                                
+                            </div>
+                        </li>
+                    <% end %>
                 </ul>
             </div>
         </div>
