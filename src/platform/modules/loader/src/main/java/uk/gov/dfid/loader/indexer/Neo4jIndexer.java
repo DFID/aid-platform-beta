@@ -52,27 +52,27 @@ public class Neo4jIndexer {
 			StringBuilder sbSubs = new StringBuilder();
 			for (String sub : ib.getSubProjects()) {
 				sbSubs.append(sub);
-				sbSubs.append(" ");
+				sbSubs.append("#");
 			}
 			StringBuilder sbOrgganization = new StringBuilder();
 			for (String org : ib.getOrganizations()) {
 				sbOrgganization.append(org);
-				sbOrgganization.append(" ");
+				sbOrgganization.append("#");
 			}
 			StringBuilder sbCountry = new StringBuilder();
 			for (String country : ib.getCountry()) {
 				sbCountry.append(country);
-				sbCountry.append(" ");
+				sbCountry.append("#");
 			}
 			StringBuilder sbSector = new StringBuilder();
 			for (String sector : ib.getSector()) {
 				sbSector.append(sector);
-				sbSector.append(" ");
+				sbSector.append("#");
 			}
 			StringBuilder sbRegion = new StringBuilder();
 			for (String region : ib.getRegion()) {
 				sbRegion.append(region);
-				sbRegion.append(" ");
+				sbRegion.append("#");
 			}
 			
 			forES.put("id", ib.getIatiId());
@@ -80,7 +80,8 @@ public class Neo4jIndexer {
 			forES.put("description", ib.getDescription());
 			forES.put("status", ib.getStatus());
 			forES.put("budget",  ib.getBudget());
-			forES.put("formatedBudget",  NumberFormat.getCurrencyInstance(Locale.UK).format(ib.getBudget()));
+			String formated = NumberFormat.getCurrencyInstance(Locale.UK).format(ib.getBudget());
+			forES.put("formatedBudget",  formated.substring(0, formated.length()-3));
 			forES.put("organizations", sbOrgganization.toString());
 			forES.put("subActivities", sbSubs.toString());
 			forES.put("countries", sbCountry.toString());

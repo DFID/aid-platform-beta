@@ -150,7 +150,7 @@ function sortFilters(){
 }
 
 function splitAndAssign(string, outputArray){
-    var splited = string.split(';')
+    var splited = string.split('#')
       $.each(splited, function(i,val){
           if( val.length > 0){ 
             if($.inArray(val, outputArray)==-1){
