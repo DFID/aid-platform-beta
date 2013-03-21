@@ -80,7 +80,7 @@ public class Neo4jIndexer {
 			forES.put("description", ib.getDescription());
 			forES.put("status", ib.getStatus());
 			forES.put("budget",  ib.getBudget());
-			forES.put("formatedBudget",  NumberFormat.getCurrencyInstance(Locale.UK).format(ib.getBudget()));
+			forES.put("formatedBudget",  NumberFormat.getCurrencyInstance(Locale.UK).format(ib.getBudget()).substring(0, formated.length()-3));
 			forES.put("organizations", sbOrgganization.toString());
 			forES.put("subActivities", sbSubs.toString());
 			forES.put("countries", sbCountry.toString());
