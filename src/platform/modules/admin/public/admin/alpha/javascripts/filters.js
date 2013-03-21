@@ -17,7 +17,7 @@ function budgetInRange(budget){
     } else if(budgetMin.val() == ""){ // max empty
         inRange = budget < budgetMax.val();
     } else { // both filled
-        inRange = budgetMin.val() < budget && budget < budgetMax.val();d
+        inRange = budgetMin.val() < budget && budget < budgetMax.val();
     } 
     return inRange;
 }
