@@ -135,10 +135,13 @@ module ProjectHelpers
     end
 
     def project_sector_groups(projectId)
-    	projectData = @cms_db['projects'].find({
-    		"iatiId" => projectId
-    	})
-    	sectorGroups = (projectData.first || { 'sectorGroups' => [] })['sectorGroups']
+    	sectorGroups = @cms_db['project-sector-budgets'].find({
+    		"projectIatiId" => projectId
+    	}).map { |s| {
+            "name"   => s['sectorName'],
+            "code"   => s['sectorCode'],
+            "budget" => s['sectorBudget']
+        }}
     	if sectorGroups.any? then
 	    	sectorGroups = sectorGroups.group_by { |s| 
 	    		s['code'] }.map do |code, sectors| { 

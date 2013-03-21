@@ -146,18 +146,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
   def collectProjectSectorGroups = {
 
-    val projects = db.collection("projects")
-    // set default values for all the projects
-    projects.update(
-      BSONDocument(),
-      BSONDocument("$set" -> BSONDocument(
-        "sectorGroups" -> BSONArray()
-      )), multi = true
-    )
-
+    val projectSectorBudgets = db.collection("project-sector-budgets")
+    auditor.info("Getting project sector groups")
     try {
-      auditor.info("Getting project sector groups")
-
       engine.execute(
         """
           | START  n=node:entities(type="iati-activity")
@@ -182,17 +173,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Double  => v.toLong
         }
 
-        projects.update(
-          BSONDocument("iatiId" -> BSONString(id)),
-          BSONDocument(            
-            "$push" -> BSONDocument(
-              "sectorGroups" -> BSONDocument(
-                "name"   -> BSONString(name),
-                "code"   -> BSONLong(code),
-                "budget" -> BSONLong(total)
-              )
-            )
-          ), upsert = false, multi = false
+        projectSectorBudgets.insert(
+          BSONDocument(
+            "projectIatiId" -> BSONString(id),
+            "sectorName"    -> BSONString(name),
+            "sectorCode"    -> BSONLong(code),
+            "sectorBudget"  -> BSONLong(total)
+          )
         )
       }
       auditor.success("Collected project sector groups")

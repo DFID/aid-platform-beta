@@ -1,0 +1,42 @@
+---
+title: Aid Information Platform
+---
+
+<div id="page-title" class="row">
+    <div class="twelve columns">
+        <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+        <div>
+            <span>Aid Information Platform</span>
+            <h1>
+                Aid by Sector
+            </h1>
+        </div>
+        <div class="breadcrumb clr-fix">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="/sector">Aid by Sector</a></li>
+                <li><a href="/sector/<%= sector['sectorCode'] %>"><%= sector['sectorName'] %></a></li>
+                <li><%= sector['categoryName'] %></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<%= partial "partials/search-bar" %>
+
+<div class="row">
+    <div class="twelve columns content">
+        <h2 class="section-group-title">Sector Breakdown</h2>
+        <div class="row">
+            <div class="four columns summary">
+                <p><%= sector['categoryName'] %></p>
+            </div>
+            <div class="eight columns">
+                <ul class="sector-list">
+
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
