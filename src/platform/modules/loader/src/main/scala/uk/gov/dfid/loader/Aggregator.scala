@@ -56,9 +56,9 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val id          = projectNode.getPropertySafe[String]("iati-identifier").get
 
         val projectType = id match {
+          case i if (globalProjects.exists(_.equals(i)))      => "global"
           case i if (countryProjects.exists(_._1.equals(i)))  => "country"
           case i if (regionalProjects.exists(_._1.equals(i))) => "regional"
-          case i if (globalProjects.exists(_.equals(i)))      => "global"
           case _ => "undefined"
         }
 
