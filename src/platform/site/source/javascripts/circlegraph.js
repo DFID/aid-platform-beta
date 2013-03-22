@@ -8,7 +8,7 @@ CircleGraph = function (container) {
     var circleRadius = 0.13 * this.width;
     var verticalShift = 0.05 * this.width;
 
-    this.drawCentralCircle(circleRadius, verticalShift, labels);
+    this.drawCentralCircle(circleRadius, verticalShift, labels, "/global/projects");
   }
 
   this.drawRegionalProjectsGraph = function(labels, regionsData) {
@@ -70,7 +70,7 @@ CircleGraph = function (container) {
 
   
 
-  this.drawCentralCircle = function(r, shiftY, labels) {
+  this.drawCentralCircle = function(r, shiftY, labels, location) {
 
     var circleShiftX = this.width / 2 - r;
     var circleShiftY = this.height / 2 - r - shiftY; // shiftY - additional shift, when circle is not centered on Y axis
@@ -83,13 +83,16 @@ CircleGraph = function (container) {
                 .append("g")
                 .attr("transform", "translate(" + circleShiftX + ", " + circleShiftY + ")");
 
-    g.append("circle")
+    var circle = g.append("circle")
         .style("fill", "#008270")
         .style("opacity", "0.7")
         .attr("r", r)
         .attr("cx", r)
         .attr("cy", r);
-    g.append("text")
+
+
+
+    var text = g.append("text")
         .attr("text-anchor", "middle")
         .attr("fill", "#FFF")            
         .attr("transform", "translate(" + r + ", " + r + ")")
@@ -104,6 +107,15 @@ CircleGraph = function (container) {
            .attr("x", "0")
            .attr("dy", "1em")
            .style("font-size", amountTextSize + "px");
+
+    if(location) {
+      circle.on("click", function(){
+        window.location = location;
+      }).style("cursor", "hand")
+      text.on("click", function(){
+        window.location = location;
+      }).style("cursor", "hand")
+    }
   }
 
   this.drawOuterCentralCircle = function(radius) {
