@@ -46,6 +46,7 @@ public class Neo4jIndexer {
 
 	private static void indexToElasticSearch(Map<String, IndexBean> elementsToindex, String elasticSearchNodeLocation) {
 		ElasticSearch es = new ElasticSearch();
+		es.deleteAll();
 		for (IndexBean ib : elementsToindex.values()) {
 			Map<String, Object> forES = new HashMap<String, Object>();
 
