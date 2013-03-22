@@ -15,6 +15,8 @@ title: Aid Information Platform
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/sector">Aid by Sector</a></li>
+                <li><a href="/sector/<%=sector['highLevelCode']%>"><%=sector['highLevelName']%></a></li>
+                <li><a href="/sector/<%=sector['highLevelCode']%>/categories/<%=sector['categoryCode']%>"><%=sector['categoryName']%></a></li>
                 <li><%= sector['sectorName'] %></li>
             </ul>
         </div>
@@ -28,22 +30,23 @@ title: Aid Information Platform
         <h2 class="section-group-title">Sector Breakdown</h2>
         <div class="row">
             <div class="four columns summary">
-                <p><%= sector['sectorName'] %></p>
+                <p><%= sector['sectorDesc'] %></p>
             </div>
             <div class="eight columns">
                 <ul class="sector-list">
-                    <% (sector_categories_structure(sector['_id']) || []).each do |category| %>
+                    <% (sector_projects(sector['sectorCode']) || []).each do |project| %>
                         <li>
-                            <a href="/sector/<%=sector['_id']%>/categories/<%=category[:code]%>"><%=category[:name]%></a>
+                            <a href="/projects/<%=project[:code]%>"><%=project[:name]%></a>
                             <div class="progress eight">
-                                <em><%=format_percentage category[:percentage]%></em>
-                                <span class="meter" style="width: <%=format_percentage category[:cellWidth]%>"></span>
-                                <span>£<%=format_round_m category[:budget] || 0.0 %></span>                                
+                                <em><%=format_percentage project[:percentage]%></em>
+                                <span class="meter" style="width: <%=format_percentage project[:cellWidth]%>"></span>
+                                <span>£<%=format_round_m project[:budget] || 0.0 %></span>                                
                             </div>
                         </li>
                     <% end %>
                 </ul>
             </div>
         </div>
+
     </div>
 </div>
