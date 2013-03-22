@@ -76,6 +76,7 @@ module ProjectHelpers
         # aggregates budgets of the dfid regional projects grouping them by regions
         @cms_db['regions'].find().map { |region| {
             :region => region['name'],
+            :code   => region['code'],
             :budget => dfid_region_projects_budget(region['code']) || 0
         }}.to_json
     end
