@@ -51,6 +51,20 @@ ignore "/projects/partners.html"
   proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
+
+#------------------------------------------------------------------------------
+# GENERATE REGION PROJECT LIST
+#------------------------------------------------------------------------------
+@cms_db['regions'].find({}).each do |region|
+  projects = @cms_db['projects'].find({"projectType" => "regional", "recipient" => region['code']}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+  proxy "/regions/#{region['code']}/projects/index.html", "/projectList.html", :locals => {:projects => projects}
+end
+
+#------------------------------------------------------------------------------
+# GENERATE GLOBAL PROJECT LIST
+#------------------------------------------------------------------------------
+  projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+  proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects}
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
