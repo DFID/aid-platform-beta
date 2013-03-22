@@ -27,8 +27,9 @@ ignore "/projects/summary.html"
 ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
-ignore "sector/categories.html"
-ignore "sector/sectors.html"
+ignore "/sector/categories.html"
+ignore "/sector/sectors.html"
+ignore "/sector/projects.html"
 
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
@@ -200,6 +201,14 @@ end
   sectorCode   = sector['sectorCode']
   proxy "/sector/#{sectorCode}/categories/#{categoryCode}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
 
+end
+
+@cms_db['sector-hierarchies'].find({}).to_a.each do |sector|
+  highLevelCode = sector['highLevelCode']
+  categoryCode  = sector['categoryCode']
+  sectorCode    = sector['sectorCode']
+  
+  proxy "/sector/#{highLevelCode}/categories/#{categoryCode}/projects/#{sectorCode}/index.html", 'sector/projects.html', :locals => { :sector => sector }  
 end
 
 #------------------------------------------------------------------------------
