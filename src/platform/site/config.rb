@@ -55,7 +55,6 @@ ignore "sector/sectors.html"
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
-<<<<<<< HEAD
 #------------------------------------------------------------------------------
 # GENERATE REGION PROJECT LIST
 #------------------------------------------------------------------------------
@@ -69,8 +68,8 @@ end
 #------------------------------------------------------------------------------
   projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
   proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects}
-=======
->>>>>>> master
+
+
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
