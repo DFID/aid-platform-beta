@@ -45,6 +45,14 @@ CircleGraph = function (container) {
       x = outerCircleRadius * Math.cos(angle) + this.width / 2 + 0.13*innerCircleRadius;
       y = outerCircleRadius * Math.sin(angle) + this.height / 2 ;//- 0.2*innerCircleRadius;
       p.position(x, y);
+
+      (function(){
+        var code = p.getData().code;
+        $(p.getElement()).click(function(){
+          window.location= "/regions/" + code + "/projects";
+        })
+      })()
+
       angle += increase;
     }
   }
@@ -118,6 +126,7 @@ CircleGraph = function (container) {
 
 SateliteCircle = function (container, selector, data, w, h, r) {
 
+  this.data = data;
   this.position = function( x, y ) {
     this.elm.style.left = (x - w / 2) + 'px';
     this.elm.style.top = (y - h / 2) + 'px';
@@ -126,6 +135,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
   };
   
   this.elm = document.createElement('div');
+  this.elm.style.cursor = 'hand';
   this.elm.style.position = 'absolute';  
   this.elm.id = selector;
   this.elm.style.width = w + 'px';
@@ -142,6 +152,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
   g.append("circle")
       .style("fill", "#008270")
       .style("opacity", "0.7")
+      .style("cursor", "hand")
       .attr("r", r)
       .attr("cx", w / 2)
       .attr("cy", r);
@@ -154,6 +165,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
       .attr("transform", "translate(" +  (w / 2) + ", " + 1.2 * r + ")")
       .style("font-size", textSize + "px")
       .style("line-height", "1.1em")
+      .style("cursor", "hand")
       .append("tspan")
          .text(format_million_stg(data.budget));
   }
@@ -168,6 +180,14 @@ SateliteCircle = function (container, selector, data, w, h, r) {
          .attr("x", "0")
          .attr("dy", "0");
 };
+
+SateliteCircle.prototype.getElement = function(){
+  return this.elm;
+}
+
+SateliteCircle.prototype.getData = function(){
+  return this.data;
+}
 
 format_million_stg = function(amt) {
   return '\u00A3' + Math.floor(amt / 1000000) + 'm';
