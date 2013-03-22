@@ -6,6 +6,7 @@ require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
 require "helpers/codelists"
 require "helpers/lookups"
+require "helpers/sector_helpers"
 require "middleman-smusher"
 
 #------------------------------------------------------------------------------
@@ -26,6 +27,8 @@ ignore "/projects/summary.html"
 ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
+ignore "sector/categories.html"
+ignore "sector/sectors.html"
 
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
@@ -47,11 +50,12 @@ ignore "/projects/partners.html"
         } 
       }])
   
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats   => stats, :projects => projects }
-  proxy "/countries/#{country['code']}/results/index.html",   "/countries/results.html", :locals => { :country => country, :projects => projects, :results => results }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats    => stats,    :projects => projects }
+  proxy "/countries/#{country['code']}/results/index.html",  "/countries/results.html",  :locals => { :country => country, :projects => projects, :results  => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
 
+<<<<<<< HEAD
 #------------------------------------------------------------------------------
 # GENERATE REGION PROJECT LIST
 #------------------------------------------------------------------------------
@@ -65,6 +69,8 @@ end
 #------------------------------------------------------------------------------
   projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
   proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects}
+=======
+>>>>>>> master
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
 #------------------------------------------------------------------------------
@@ -189,6 +195,30 @@ end
 end
 
 #------------------------------------------------------------------------------
+# GENERATE SECTOR HIERARCHIES
+#------------------------------------------------------------------------------
+@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+    "_id"  => "$highLevelCode", 
+    "sectorName" => {"$first" => "$highLevelName"} } }]).each do |sector|
+
+  sectorCode = sector['_id']
+  proxy "/sector/#{sectorCode}/index.html", '/sector/categories.html', :locals => { :sector => sector }
+
+end
+
+@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+    "_id"          => "$categoryCode", 
+    "sectorCode"   => {"$first" => "$highLevelCode"}, 
+    "sectorName"   => {"$first" => "$highLevelName"}, 
+    "categoryName" => {"$first" => "$categoryName"} } }]).each do |sector|
+
+  categoryCode = sector['_id']
+  sectorCode   = sector['sectorCode']
+  proxy "/sector/#{sectorCode}/categories/#{categoryCode}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
+
+end
+
+#------------------------------------------------------------------------------
 # DEFINE HELPERS - Import from modules to avoid bloat
 #------------------------------------------------------------------------------
 helpers do
@@ -199,7 +229,8 @@ helpers do
   include Lookups
   include ProjectHelpers
   include CodeLists
-  
+  include SectorHelpers
+
 end
 
 #------------------------------------------------------------------------------

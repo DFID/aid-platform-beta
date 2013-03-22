@@ -42,7 +42,11 @@ public class ElasticSearch {
 		if (client != null)
 			client.close();
 	}
-
+	
+	public void deleteAll(){
+		client.admin().indices().prepareDelete().execute().actionGet();
+	}
+	
 	public IndexResponse putIndex(Map<String, Object> indexMap, String indexName, String dataLocation) {
 		if(client == null){
 			connectToESNode(dataLocation);
@@ -65,7 +69,7 @@ public class ElasticSearch {
 		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 		
 		SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.queryString(search)).setSize(300).execute()
+				.setQuery(QueryBuilders.queryString(search).defaultOperator(org.elasticsearch.index.query.QueryStringQueryBuilder.Operator.AND)).setSize(300).execute()
 				.actionGet();
 		SearchHit[] hits = response.getHits().getHits();
 		
