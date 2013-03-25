@@ -4,8 +4,7 @@ getHiddenFieldsValues();
 sortFilters();
 addCheckboxesFilters();
 setOnChange();
-
-
+budgetFilteringSetUp();
 });
 
 function budgetInRange(budget){
@@ -17,7 +16,7 @@ function budgetInRange(budget){
     } else if(budgetMin.val() == ""){ // max empty
         inRange = budget < budgetMax.val();
     } else { // both filled
-        inRange = budgetMin.val() < budget && budget < budgetMax.val();
+        inRange = budgetMin.val() < budget && budget < budgetMax.val();d
     } 
     return inRange;
 }
@@ -32,20 +31,60 @@ function hasTrue(array){
     }
 }
 
-function setOnChange(){
+function budgetFilteringSetUp() {
 var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
-$('input[type=checkbox]').change(function() {
+var max = 0;
+$( "input[name=budget][type='hidden']" ).each(function(i, input){
+    if(max < input.value){
+      max = +(input.value);
+    } 
+});
 
-if(!$('input[type=checkbox]').is(':checked')){
+$( "#slider-vertical" ).slider({
+orientation: "horizontal",
+range: "min",
+min: 0,
+max: max,
+step : (Math.round(max / 100) * 100)/100,
+value: max,
+slide: function( event, ui ) {
+$( "#amount" ).html( ("£"+ui.value).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") );
+},
+change: function( event, ui ) {
+  if(!$('input[type=checkbox]').is(':checked')){
+    $(".search-result").each(function(i, div){
+        if($(this).children("input[name='budget']").val() > ui.value){
+        $(this).hide();
+        } else {
+        $(this).show();
+        }
+    });
+  }else{
+    filter(divsToCheck);
+  }
+  displayResultsAmount();
+  }
+});
+$( "#amount" ).html( ("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") );
+}
+
+
+
+
+function filter(divsToCheck){
+
+if(!$('input[type=checkbox]').is(':checked')&&($('#slider-vertical').slider("option", "value") == $('#slider-vertical').slider("option", "max"))) {
     $('.search-result').css("display", "inline");
     displayResultsAmount();
     return false;
 }
 
 divsToCheck.each(function(i, div){
+
             var anythingFound = false;
             var hasStatus = new Array();
             var isStatusGroupActive = false;
+            var budget = 0;
             $('input:checked[name=status]').each(function(i, checkboxess){
                 anythingFound = true;
                 isStatusGroupActive = true;
@@ -109,8 +148,12 @@ divsToCheck.each(function(i, div){
             } 
             if(isRegionsGroupActive){
                 show.push(hasTrue(hasRegions));
+            }
+
+            if(+($(div).children('input[name="budget"]').val()) > +($('#slider-vertical').slider("option", "value"))){
+                show.push(false);
             } 
-             
+
             if($.inArray(false, show)!= -1){
                 $(div).css("display", "none");
                 } else {
@@ -121,14 +164,19 @@ divsToCheck.each(function(i, div){
                 $('.search-result').css("display", "none"); //show none cuz nothing found
             }
         });
-
 displayResultsAmount();
+}
 
-});
+function setOnChange(){
+  var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+  $('input[type=checkbox]').change(function() {
+    filter(divsToCheck);
+  });
 }
  
+
 function displayResultsAmount(){
-  $('span[name=afterFilteringAmount]').html(($(".search-result").length - $("div:hidden").length) + " of ");
+  $('span[name=afterFilteringAmount]').html(($(".search-result").length - $(".search-result:hidden").length) + " of ");
 }
 
 var Status = new Array();
