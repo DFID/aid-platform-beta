@@ -93,16 +93,12 @@ title: Aid Information Platform
 
                 var bounds = new google.maps.LatLngBounds(southwestBound, northEastBound);
                 bounds.extend(mapCenterPoint);
-                bounds.extend(northEastBound);
-                bounds.extend(southwestBound);
 
                 var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP };
                 var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
 
                 map.fitBounds(bounds);
                 map.panToBounds(bounds);
-
-                console.log(geocode);
             }).fail(function() { console.log( "error" ); });
         </script>
 
