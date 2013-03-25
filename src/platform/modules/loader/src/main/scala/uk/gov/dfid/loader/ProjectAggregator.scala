@@ -242,12 +242,12 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       // now we need to sum up the project budgets and spend.  this is not specific
       // to dfid itself
       val (totalBudget, totalSpend) = engine.execute(
-        """
+        s"""
           | START  funded=node:entities(type="iati-activity")
           | MATCH  funded-[:budget]-budget-[:value]-budget_value,
           |        funded-[:transaction]-transaction-[:value]-transaction_value,
           |        transaction-[:`transaction-type`]-type
-          | WHERE  funded.`iati-identifier` = 'GB-CHC-1064413-GPAF-INN-001-DIFD2'
+          | WHERE  funded.`iati-identifier` = '$funded'
           | AND    (type.`code` = 'D' OR type.`code` = 'E')
           | RETURN SUM(budget_value.value) as totalBudget,
           |        SUM(transaction_value.value) as totalSpend
@@ -265,6 +265,20 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         totalBudget -> totalSpend
       }.getOrElse(0L -> 0L)
 
+      // then we need to get the dates as well
+      val dates = engine.execute(
+        s"""
+          | START  n=node:entities(type="iati-activity")
+          | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
+          | WHERE  n.`iati-identifier` = '$funded'
+          | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
+        """.stripMargin).toSeq.map { row =>
+
+        val dateType = row("type").asInstanceOf[String]
+        val date     = DateTime.parse(row("date").asInstanceOf[String], format)
+
+        dateType -> BSONDateTime(date.getMillis)
+      }
 
       db.collection("funded-projects").insert(
         BSONDocument(
@@ -276,7 +290,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "funds"       -> BSONLong(funds),
           "totalBudget" -> BSONLong(totalBudget),
           "totalSpend"  -> BSONLong(totalSpend)
-        )
+        ).append(dates: _*)
       )
     }
 

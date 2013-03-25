@@ -24,8 +24,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
   def load = {
     future {
-      // val neo4j      = manager.restart(true)
-      val neo4j      = manager.get
+      val neo4j      = manager.restart(true)
       val sources    = mongodb.collection("iati-datasources")
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
@@ -34,7 +33,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       auditor.info("Loading data")
 
-      //validateAndMap(sources, neo4j)
+      validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
       aggregator.rollupCountryProjectBudgets
