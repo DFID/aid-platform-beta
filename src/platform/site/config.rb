@@ -151,10 +151,16 @@ end
 
   # format the project model to suit the project templates
   project = {
-    'iatiId'      => funded_project['funded'],
-    'title'       => funded_project['title'],
-    'description' => funded_project['description'],
-    'funds'       => funded_project['funds']
+    'iatiId'            => funded_project['funded'],
+    'title'             => funded_project['title'],
+    'description'       => funded_project['description'],
+    'funds'             => funded_project['funds'],
+    'totalBudget'       => funded_project['totalBudget'],    
+    'totalProjectSpend' => funded_project['totalSpend'],
+    'end-actual'        => funded_project['end-actual'],
+    'end-planned'       => funded_project['end-planned'],
+    'start-actual'      => funded_project['start-actual'],
+    'start-planned'     => funded_project['start-planned']
   }
 
   # get the other funded projects
