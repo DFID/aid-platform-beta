@@ -205,8 +205,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       )
     }
 
-    auditor.info("Summing up Project Budget spend")
-
     engine.execute(
       s"""
         | START  txn = node:entities(type="transaction")
