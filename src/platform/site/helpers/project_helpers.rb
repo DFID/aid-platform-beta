@@ -64,7 +64,7 @@ module ProjectHelpers
                 :country =>  @cms_db['countries'].find({ "code" => country['_id'] }).first['name'],
                 :id => country['_id'],
                 :projects => @cms_db['projects'].find({ "recipient" => country['_id'], "projectType" => "country"}).count(),
-                :budget => country['total'],
+                :budget => @cms_db['country-stats'].find({"code" => country['_id']}).first['totalBudget'],
                 :flag => '/images/flags/' + country['_id'].downcase + '.png'
             }
         }}.inject({}) { |obj, entry| 
