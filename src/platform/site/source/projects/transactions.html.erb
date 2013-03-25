@@ -6,7 +6,7 @@ title: Aid Information Platform
 
 <div class="row">
   <div class="twelve columns transactions">
-    <h3 class="section-group-title">Budgets by financial year</h3>
+    <h3 class="section-group-title">Budgets by financial year <span style="float:right;"><%= number_to_currency((total_project_budget project['iatiId']), :unit=>"£", :precision =>0) %></span></h3>
     <table class="transactions-table" style="width:100%">
       <tbody>
         <% (project_budgets project['iatiId']).each do |project_budget| %>
