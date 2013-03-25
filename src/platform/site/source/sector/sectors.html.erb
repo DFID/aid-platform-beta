@@ -13,7 +13,7 @@ title: Aid Information Platform
         </div>
         <div class="breadcrumb clr-fix">
             <ul>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/sector">Aid by Sector</a></li>
                 <li><a href="/sector/<%= sector['sectorCode'] %>"><%= sector['sectorName'] %></a></li>
                 <li><%= sector['categoryName'] %></li>
@@ -33,13 +33,13 @@ title: Aid Information Platform
             </div>
             <div class="eight columns">
                 <ul class="sector-list">
-                    <% (sectors_structure(sector['_id']) || []).each do |sector| %>
+                    <% (sectors_structure(sector['_id']) || []).each do |s| %>
                         <li>
-                            <a href="#"><%=sector[:name]%></a>
+                            <a href="/sector/<%=sector['sectorCode']%>/categories/<%=sector['_id']%>/projects/<%=s[:code]%>"><%=s[:name]%></a>
                             <div class="progress eight">
-                                <em><%=format_percentage sector[:percentage]%></em>
-                                <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
-                                <span>£<%=format_round_m sector[:budget] || 0.0 %></span>                                
+                                <em><%=format_percentage s[:percentage]%></em>
+                                <span class="meter" style="width: <%=format_percentage s[:cellWidth]%>"></span>
+                                <span>£<%=format_round_m s[:budget] || 0.0 %></span>                                
                             </div>
                         </li>
                     <% end %>

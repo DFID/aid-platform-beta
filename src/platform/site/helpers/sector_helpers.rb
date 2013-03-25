@@ -56,7 +56,21 @@ module SectorHelpers
 		calculate_hierarchy_structure(sectors)
 	end
 
-	def calculate_hierarchy_structure(sectors)	
+	def sector_projects(sectorCode)
+		projects = @cms_db['project-sector-budgets'].aggregate([{ 
+			"$match" => { "sectorCode" => sectorCode}                  
+		}, {
+			"$group" => { "_id" => "$projectIatiId", "name" => {"$first" => "$projectName"}, "totalBudget" => {"$sum" => "$sectorBudget"}}
+		}]).map { |p| {
+			:code 	=> p['_id'],
+			:name 	=> p['name'],
+			:budget => p['totalBudget']
+		}}
+			
+		calculate_hierarchy_structure(projects)
+	end
+
+	def calculate_hierarchy_structure(sectors)
 		totalSectorsBudget = Float(sectors.map { |s| s[:budget] }.inject(:+))
 		maxBudget = Float(sectors.max_by { |s| s[:budget] }[:budget])
 
@@ -83,5 +97,5 @@ module SectorHelpers
 			}
 		])
 		(result.first || { 'total' => 0 })['total']
-	end	
+	end
 end

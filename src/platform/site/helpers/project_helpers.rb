@@ -64,7 +64,7 @@ module ProjectHelpers
                 :country =>  @cms_db['countries'].find({ "code" => country['_id'] }).first['name'],
                 :id => country['_id'],
                 :projects => @cms_db['projects'].find({ "recipient" => country['_id'], "projectType" => "country"}).count(),
-                :budget => country['total'],
+                :budget => @cms_db['country-stats'].find({"code" => country['_id']}).first['totalBudget'],
                 :flag => '/images/flags/' + country['_id'].downcase + '.png'
             }
         }}.inject({}) { |obj, entry| 
@@ -76,6 +76,7 @@ module ProjectHelpers
         # aggregates budgets of the dfid regional projects grouping them by regions
         @cms_db['regions'].find().map { |region| {
             :region => region['name'],
+            :code   => region['code'],
             :budget => dfid_region_projects_budget(region['code']) || 0
         }}.to_json
     end
@@ -132,6 +133,23 @@ module ProjectHelpers
                             budget['value'],
                             spends[financial_year_formatter(budget['date'])] || 0 ]
         }
+    end
+
+    def total_project_budget(projectId)
+        # aggregates and sums the budgets for a given project
+        @cms_db['project-budgets'].aggregate([{
+                "$match" => {
+                    "id" => projectId
+                }
+            }, {
+                "$group" => { 
+                    "_id" => nil,
+                    "total" => {
+                        "$sum" => "$value"
+                    }
+                }
+            }]
+        ).first['total']
     end
 
     def project_sector_groups(projectId)

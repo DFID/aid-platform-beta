@@ -205,8 +205,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       )
     }
 
-    auditor.info("Summing up Project Budget spend")
-
     engine.execute(
       s"""
         | START  txn = node:entities(type="transaction")
@@ -353,7 +351,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       """.stripMargin).toSeq.map { row =>
       val id   = row("id").asInstanceOf[String]
       val code = row("code") match {
-        case null => "\\((\\w{2})\\)$".r.findFirstIn(row("region").asInstanceOf[String]).get
+        case null => "\\((\\w{2})\\)$".r.findFirstMatchIn(row("region").asInstanceOf[String]).get.group(1)
         case code => code.toString
       }
 

@@ -27,8 +27,9 @@ ignore "/projects/summary.html"
 ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
-ignore "sector/categories.html"
-ignore "sector/sectors.html"
+ignore "/sector/categories.html"
+ignore "/sector/sectors.html"
+ignore "/sector/projects.html"
 
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
@@ -54,6 +55,21 @@ ignore "sector/sectors.html"
   proxy "/countries/#{country['code']}/results/index.html",  "/countries/results.html",  :locals => { :country => country, :projects => projects, :results  => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects }
 end
+
+#------------------------------------------------------------------------------
+# GENERATE REGION PROJECT LIST
+#------------------------------------------------------------------------------
+@cms_db['regions'].find({}).each do |region|
+  projects = @cms_db['projects'].find({"projectType" => "regional", "recipient" => region['code']}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+  proxy "/regions/#{region['code']}/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => region['name']}
+end
+
+#------------------------------------------------------------------------------
+# GENERATE GLOBAL PROJECT LIST
+#------------------------------------------------------------------------------
+  projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+  proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
+
 
 #------------------------------------------------------------------------------
 # GENERATE PROJECTS
@@ -135,10 +151,16 @@ end
 
   # format the project model to suit the project templates
   project = {
-    'iatiId'      => funded_project['funded'],
-    'title'       => funded_project['title'],
-    'description' => funded_project['description'],
-    'funds'       => funded_project['funds']
+    'iatiId'            => funded_project['funded'],
+    'title'             => funded_project['title'],
+    'description'       => funded_project['description'],
+    'funds'             => funded_project['funds'],
+    'totalBudget'       => funded_project['totalBudget'],    
+    'totalProjectSpend' => funded_project['totalSpend'],
+    'end-actual'        => funded_project['end-actual'],
+    'end-planned'       => funded_project['end-planned'],
+    'start-actual'      => funded_project['start-actual'],
+    'start-planned'     => funded_project['start-planned']
   }
 
   # get the other funded projects
@@ -200,6 +222,14 @@ end
   sectorCode   = sector['sectorCode']
   proxy "/sector/#{sectorCode}/categories/#{categoryCode}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
 
+end
+
+@cms_db['sector-hierarchies'].find({}).to_a.each do |sector|
+  highLevelCode = sector['highLevelCode']
+  categoryCode  = sector['categoryCode']
+  sectorCode    = sector['sectorCode']
+  
+  proxy "/sector/#{highLevelCode}/categories/#{categoryCode}/projects/#{sectorCode}/index.html", 'sector/projects.html', :locals => { :sector => sector }  
 end
 
 #------------------------------------------------------------------------------
