@@ -32,6 +32,10 @@ class DataLoadAuditor @Inject()(db: DefaultDB) extends Auditor {
   def warn(msg: String)    = insert("warn", msg)
 
   private def insert(msgType: String, msg: String) = {
+
+    // we println here
+    println(s"$msgType: $msg")
+
     audits.insert(
       BSONDocument(
         "type"    -> BSONString(msgType),
