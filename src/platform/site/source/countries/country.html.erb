@@ -73,36 +73,14 @@ title: Aid Information Platform
 
     <div class="six columns">
         <div id="countryMap" class="countryMap"></div>
+
+        <input type="hidden" id="countryName" value="<%= country['name'] %>">
+        <input type="hidden" id="countryCode" value="<%= country['code'] %>">
        
         <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-        <script type="text/javascript">
-            var countryCode = "<%= country['code'] %>";
-            var countryName = "<%= country['name'] %>";
-            var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + countryName + "&components=country:" + countryCode + "&sensor=false";
-            var geocode = '';
-            $.getJSON(url).done(function(response) { 
-                geocode = response.results[0];
+        <script src="/javascripts/countrymap.js" type="text/javascript"></script>
 
-                var northeast = geocode.geometry.viewport.northeast;
-                var southwest = geocode.geometry.viewport.southwest;
-                var mapCenter = geocode.geometry.location;
-
-                var northEastBound = new google.maps.LatLng(northeast.lat, northeast.lng);
-                var southwestBound = new google.maps.LatLng(southwest.lat, northeast.lng);
-                var mapCenterPoint = new google.maps.LatLng(mapCenter.lat, mapCenter.lng);
-
-                var bounds = new google.maps.LatLngBounds(southwestBound, northEastBound);
-                bounds.extend(mapCenterPoint);
-
-                var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP };
-                var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
-
-                map.fitBounds(bounds);
-                map.panToBounds(bounds);
-            }).fail(function() { console.log( "error" ); });
-        </script>
-
-        <div class="disclaimer grey">
+        <div id="countryMapDisclaimer" class="disclaimer grey">
             <p><strong>Disclaimer</strong>: Country borders do not necessarily reflect the UK Government's official position.</p>
         </div>
     </div>
