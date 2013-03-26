@@ -43,8 +43,13 @@ public class ElasticSearch {
 			client.close();
 	}
 	
-	public void deleteAll(){
-		client.admin().indices().prepareDelete().execute().actionGet();
+	public void deleteAll(String dataLocation){
+		if(client == null){
+			connectToESNode(dataLocation);
+			client.admin().indices().prepareDelete().execute().actionGet();
+		} else {
+			client.admin().indices().prepareDelete().execute().actionGet();
+		}
 	}
 	
 	public IndexResponse putIndex(Map<String, Object> indexMap, String indexName, String dataLocation) {
@@ -60,7 +65,7 @@ public class ElasticSearch {
 
 	public static List<Map<String, String>> search(String search, String dataLocation) {
 		if(client == null){
-			System.out.println("Launching ES client");
+			System.out.println("Launching ES client from: "+dataLocation);
 			connectToESNode(dataLocation);
 			System.out.println("ES client launched");
 		}
