@@ -72,18 +72,15 @@ title: Aid Information Platform
     </div>
 
     <div class="six columns">
-    <div id="countryMap" class="countryMap" >
-    </div>
+        <div id="countryMap" class="countryMap"></div>
+
+        <input type="hidden" id="countryName" value="<%= country['name'] %>">
         <input type="hidden" id="countryCode" value="<%= country['code'] %>">
-        
-        <link href="/stylesheets/leaflet.css" rel="stylesheet" />
-        <link href="/stylesheets/maps.css" rel="stylesheet" />
+       
+        <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="/javascripts/countrymap.js" type="text/javascript"></script>
 
-        <script src="/javascripts/leaflet/countryBounds.js" type="text/javascript"></script>
-        <script src="/javascripts/leaflet/leaflet.js" type="text/javascript"></script>
-        <script src="/javascripts/leaflet/countrymap.js" type="text/javascript"></script>
-
-        <div class="chart-disclaimer" style="margin-top:-11%;">
+        <div id="countryMapDisclaimer" class="disclaimer grey">
             <p><strong>Disclaimer</strong>: Country borders do not necessarily reflect the UK Government's official position.</p>
         </div>
     </div>
