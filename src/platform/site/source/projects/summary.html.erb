@@ -37,7 +37,7 @@ title: Aid Information Platform
         <div id="sector-breakdown" style="float:left;" class="donut"></div>
         <div id="sector-legend" style="float:left;">
             <table>
-                <% (project_sector_groups(project['iatiId']) || []).each do |sector| %>                
+                <% (project_sector_groups(project['iatiId'], is_funded_project) || []).each do |sector| %>                
                     <tr class="legend-item">
                         <td>
                             <span class="legend-color"></span>
@@ -61,7 +61,7 @@ title: Aid Information Platform
 
     <script type="text/javascript">
         (function(){
-            var sectors = <%= project_sector_groups(project['iatiId']).to_json %>;
+            var sectors = <%= project_sector_groups(project['iatiId'], is_funded_project).to_json %>;
             charts.donut("#sector-breakdown", sectors, function(d) { return d.budget; }, function(d){ return d.sector }, function(d){ return d.formatted });
             charts.donutLegend("#sector-legend", ".legend-color", 14, sectors, function(d){ return d.sector });
 

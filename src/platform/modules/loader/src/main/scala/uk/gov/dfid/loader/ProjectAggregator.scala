@@ -208,6 +208,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
        |        n-[:description]-d,
        |        n-[:title]-ttl,
        |        t-[:value]-v,
+       |        n-[:`activity-status`]-status,
        |        t-[:`provider-org`]-po
        | WHERE  o.role  = "Funding"
        | AND    o.ref   = "GB-1"
@@ -217,7 +218,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
        |        ttl.title                 as title       ,
        |        d.description             as description ,
        |        po.`provider-activity-id` as funding     ,
-       |        SUM(v.value)              as funds
+       |        SUM(v.value)              as funds       ,
+       |        status.code               as status
      """.stripMargin).toSeq.foreach { row =>
 
       val funded      = row("funded").asInstanceOf[String]
@@ -225,6 +227,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val title       = row("title").asInstanceOf[String]
       val description = row("description").asInstanceOf[String]
       val funding     = row("funding").asInstanceOf[String]
+      val status      = row("status").asInstanceOf[Long]
       val funds       = row("funds") match {
         case v: java.lang.Integer => v.toLong
         case v: java.lang.Long    => v.toLong
@@ -240,7 +243,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         """.stripMargin).toSeq.head("id").asInstanceOf[String]
 
       // now we need to sum up the project budgets and spend.  this is not specific
-      // to dfid itself
+      // to dfid itself.  While here we can also grab the status
       val (totalBudget, totalSpend) = engine.execute(
         s"""
           | START  funded=node:entities(type="iati-activity")
@@ -289,9 +292,50 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "description" -> BSONString(description),
           "funds"       -> BSONLong(funds),
           "totalBudget" -> BSONLong(totalBudget),
-          "totalSpend"  -> BSONLong(totalSpend)
+          "totalSpend"  -> BSONLong(totalSpend),
+          "status"      -> BSONLong(status)
         ).append(dates: _*)
       )
+
+      // ok now we need to work out the sector breakdown for the project
+      try {
+        engine.execute(
+          s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
+            | WHERE  n.`iati-identifier` = '$funded'
+            | RETURN s.code                                                as code,
+            |        s.sector?                                             as name,
+            |        COALESCE(s.percentage?, 100)                          as percentage,
+            |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          """.stripMargin).foreach { row =>
+
+          val name = row("name") match {
+            case null          => None
+            case value: String => Some(value)
+          }
+          val code        = row("code").asInstanceOf[Long]
+          val total       = row("total")  match {
+            case v: java.lang.Integer => v.toLong
+            case v: java.lang.Long    => v.toLong
+            case v: java.lang.Double  => v.toLong
+          }
+
+          db.collection("funded-project-sector-budgets").insert(
+            BSONDocument(
+              "projectIatiId" -> BSONString(funded),
+              "sectorCode"    -> BSONLong(code),
+              "sectorBudget"  -> BSONLong(total)
+            ).append(
+              Seq(
+                name.map("sectorName" -> BSONString(_))
+              ).flatten:_*
+            )
+          )
+        }
+      }catch{
+        case e: Throwable => println(e.getMessage); e.printStackTrace()
+      }
     }
 
     auditor.success("Collected Partner Projects")
