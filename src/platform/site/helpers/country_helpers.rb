@@ -100,4 +100,11 @@ module CountryHelpers
       }
     end
   end
+
+  def country_name(countryCode)
+    result = @cms_db['countries'].find({
+      'code' => countryCode
+    })
+    (result.first || { 'name' => '' })['name']
+  end
 end
