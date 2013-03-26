@@ -63,11 +63,18 @@ module SectorHelpers
 			"$group" => { "_id" => "$projectIatiId", "name" => {"$first" => "$projectName"}, "totalBudget" => {"$sum" => "$sectorBudget"}}
 		}]).map { |p| {
 			:code 	=> p['_id'],
-			:name 	=> p['name'],
+			:name 	=> retrieve_project_name(p['_id']),
 			:budget => p['totalBudget']
 		}}
 			
 		calculate_hierarchy_structure(projects)
+	end
+
+	def retrieve_project_name(projectIatiId)
+		result = @cms_db['projects'].find({
+			'iatiId' => projectIatiId
+		})
+		((result.first || { 'title' => projectIatiId })['title'])
 	end
 
 	def calculate_hierarchy_structure(sectors)
