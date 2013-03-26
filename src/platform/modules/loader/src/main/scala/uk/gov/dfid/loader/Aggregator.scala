@@ -140,18 +140,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       |  RETURN proj.ref as projectId, v.value as value, v.`value-date` as date
        """.stripMargin).toSeq.foreach { row =>
       try {
-        auditor.info("Adding project budgets...")
         val id = row("projectId").asInstanceOf[String]
         val value = row("value").asInstanceOf[Long].toInt
         val date = row("date").asInstanceOf[String]
 
-        auditor.info("Adding")
-
         projectBudgets.insert(
           BSONDocument(
-                       "id" -> BSONString(id),
-                       "value" -> BSONInteger(value),
-                       "date" -> BSONString(date)
+             "id" -> BSONString(id),
+             "value" -> BSONInteger(value),
+             "date" -> BSONString(date)
           )
         )
       } catch {
