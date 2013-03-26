@@ -42,11 +42,16 @@ public class ElasticSearch {
 		if (client != null)
 			client.close();
 	}
-
-	public void deleteAll(){
-		client.admin().indices().prepareDelete().execute().actionGet();
+	
+	public void deleteAll(String dataLocation){
+		if(client == null){
+			connectToESNode(dataLocation);
+			client.admin().indices().prepareDelete().execute().actionGet();
+		} else {
+			client.admin().indices().prepareDelete().execute().actionGet();
+		}
 	}
-
+	
 	public IndexResponse putIndex(Map<String, Object> indexMap, String indexName, String dataLocation) {
 		if(client == null){
 			connectToESNode(dataLocation);

@@ -57,7 +57,7 @@ $( "#amount" ).html( ("£"+min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("
 
 function filter(divsToCheck){
 
-if(!$('input[type=checkbox]').is(':checked')&&($('#slider-vertical').slider("option", "value") == $('#slider-vertical').slider("option", "max"))) {
+if(!$('input[type=checkbox]').is(':checked')&&($('#slider-vertical').slider("option", "values")[1] == $('#slider-vertical').slider("option", "max"))) {
     $('.search-result').css("display", "inline");
     displayResultsAmount();
     return false;
