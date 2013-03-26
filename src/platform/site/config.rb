@@ -84,7 +84,7 @@ end
     "$match" => {
       "project" => id
     }
-  },{
+  }, {
     "$group" => {
       "_id" => "$type",
       "total" => {
@@ -98,6 +98,10 @@ end
           "value"       => "$value",
         }
       }
+    }
+  }, {
+    "$sort" => {
+      "_id" => 1
     }
   }])
 

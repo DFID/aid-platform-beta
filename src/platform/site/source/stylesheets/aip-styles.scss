@@ -715,19 +715,6 @@ Sector breakdown
 .search-result p.description{ font-size: 1em; }
 
 /* -----------------------------------------
-   transactions styles
------------------------------------------------*/
-.transactions h3{
-	border-bottom: 1px solid $midGrey;
-	padding-bottom: 0.5em; 
-	margin-bottom: 0;
-	font-size: 1.5em
-}
-.transactions h3 span{
-	float: right;
-}
-
-/* -----------------------------------------
    transactions table styles
 -----------------------------------------------*/
 
@@ -763,7 +750,10 @@ Sector breakdown
 	width: 62.5%;
 	white-space: normal;
 }
-.transactions-table th:last-child,
+.transactions-table th:last-child {
+	text-align: right;
+	padding-right: 0;
+}
 .transactions-table td:last-child{
 	text-align: right;
 	padding-right: 0;
