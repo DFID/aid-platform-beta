@@ -24,7 +24,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
   def load = {
     future {
-      val neo4j      = manager.restart(true)
+      val neo4j      = manager.restart(false)
       val sources    = mongodb.collection("iati-datasources")
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
@@ -46,7 +46,6 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectProjectDetails
       projects.collectProjectSectorGroups
       Neo4jIndexer.index( scala.util.Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),  scala.util.Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ), neo4j);
-
 
       auditor.success("Loading process completed")
     }
