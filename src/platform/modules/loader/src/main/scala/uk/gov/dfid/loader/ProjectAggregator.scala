@@ -292,44 +292,62 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         ).append(dates: _*)
       )
 
-      // ok now we need to work out the sector breakdown for the project
-      try {
-        engine.execute(
-          s"""
-            | START  n=node:entities(type="iati-activity")
-            | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
-            | WHERE  n.`iati-identifier` = '$funded'
-            | RETURN s.code                                                as code,
-            |        s.sector?                                             as name,
-            |        COALESCE(s.percentage?, 100)                          as percentage,
-            |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
-          """.stripMargin).foreach { row =>
+      // put the project budgets in
+      engine.execute(
+        s"""
+          | START  b=node:entities(type="budget")
+          | MATCH  v-[:value]-b-[:budget]-n
+          | WHERE  n.`iati-identifier` = '$funded'
+          | RETURN v.value        as value,
+          |        v.`value-date` as date
+        """.stripMargin).foreach { row =>
 
-          val name = row("name") match {
-            case null          => None
-            case value: String => Some(value)
-          }
-          val code        = row("code").asInstanceOf[Long]
-          val total       = row("total")  match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-            case v: java.lang.Double  => v.toLong
-          }
+        val value = row("value").asInstanceOf[Long].toInt
+        val date = row("date").asInstanceOf[String]
 
-          db.collection("funded-project-sector-budgets").insert(
-            BSONDocument(
-              "projectIatiId" -> BSONString(funded),
-              "sectorCode"    -> BSONLong(code),
-              "sectorBudget"  -> BSONLong(total)
-            ).append(
-              Seq(
-                name.map("sectorName" -> BSONString(_))
-              ).flatten:_*
-            )
+        db.collection("project-budgets").insert(
+          BSONDocument(
+            "id"    -> BSONString(funded),
+            "value" -> BSONInteger(value),
+            "date"  -> BSONString(date)
           )
+        )
+      }
+
+      // ok now we need to work out the sector breakdown for the project
+      engine.execute(
+        s"""
+          | START  n=node:entities(type="iati-activity")
+          | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
+          | WHERE  n.`iati-identifier` = '$funded'
+          | RETURN s.code                                                as code,
+          |        s.sector?                                             as name,
+          |        COALESCE(s.percentage?, 100)                          as percentage,
+          |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+        """.stripMargin).foreach { row =>
+
+        val name = row("name") match {
+          case null          => None
+          case value: String => Some(value)
         }
-      }catch{
-        case e: Throwable => println(e.getMessage); e.printStackTrace()
+        val code        = row("code").asInstanceOf[Long]
+        val total       = row("total")  match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
+        }
+
+        db.collection("funded-project-sector-budgets").insert(
+          BSONDocument(
+            "projectIatiId" -> BSONString(funded),
+            "sectorCode"    -> BSONLong(code),
+            "sectorBudget"  -> BSONLong(total)
+          ).append(
+            Seq(
+              name.map("sectorName" -> BSONString(_))
+            ).flatten:_*
+          )
+        )
       }
     }
 
