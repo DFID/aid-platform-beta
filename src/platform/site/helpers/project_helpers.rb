@@ -1,4 +1,10 @@
+require "helpers/codelists"
+
 module ProjectHelpers
+
+    
+    include CodeLists
+
     def dfid_total_projects_budget(projectType)
         # aggregates a total budget of all the dfid projects for a given type (global, coutry, regional)
         dfid_projects_budget(projectType).first['total']
@@ -152,28 +158,35 @@ module ProjectHelpers
         ).first['total']
     end
 
-    def project_sector_groups(projectId)
-    	sectorGroups = @cms_db['project-sector-budgets'].find({
-    		"projectIatiId" => projectId
-    	}).map { |s| {
-            "name"   => s['sectorName'],
+    def project_sector_groups(projectId, funded_project)
+
+        collection = if funded_project then 
+            'funded-project-sector-budgets'
+        else 
+            'project-sector-budgets'
+        end
+        
+        sectorGroups = @cms_db[collection].find({
+            "projectIatiId" => projectId
+        }).map { |s| {
+            "name"   => s['sectorName'] || sector(s['sectorCode']),
             "code"   => s['sectorCode'],
             "budget" => s['sectorBudget']
         }}
-    	if sectorGroups.any? then
-	    	sectorGroups = sectorGroups.group_by { |s| 
-	    		s['code'] }.map do |code, sectors| { 
-	    		"code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+)
-	    	} end.sort_by{ |sg| -sg["budget"]}
-	    	sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
+        if sectorGroups.any? then
+            sectorGroups = sectorGroups.group_by { |s| 
+                s['code'] }.map do |code, sectors| { 
+                "code" => code, "name" => sectors[0]["name"], "budget" => sectors.map { |sec| sec["budget"] }.inject(:+)
+            } end.sort_by{ |sg| -sg["budget"]}
+            sectorsTotalBudget = Float(sectorGroups.map {|s| s["budget"]}.inject(:+))
 
-	    	sectorGroups.map { |sg| {
-	    		:sector => sg['name'],
-	    		:budget => sg['budget'] / sectorsTotalBudget * 100.0,
-	    		:formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
-			}}
-		else
-			return sectorGroups
-		end
+            sectorGroups.map { |sg| {
+                :sector => sg['name'],
+                :budget => sg['budget'] / sectorsTotalBudget * 100.0,
+                :formatted => format_percentage(sg['budget'] / sectorsTotalBudget * 100)
+            }}
+        else
+            return sectorGroups
+        end
     end
 end
