@@ -7,22 +7,6 @@ setOnChange();
 budgetFilteringSetUp();
 });
 
-function budgetInRange(budget){
-  var budgetMin = $('input[type=number][name=min]');
-  var budgetMax = $('input[type=number][name=max]');
-    var inRange = false;
-    if(budgetMax.val() == ""){ // min empty
-        inRange = budgetMin.val() < budget;
-    } else if(budgetMin.val() == ""){ // max empty
-        inRange = budget < budgetMax.val();
-    } else { // both filled
-        inRange = budgetMin.val() < budget && budget < budgetMax.val();d
-    } 
-    return inRange;
-}
-
-//console.log(budgetInRange());
-
 function hasTrue(array){
     if($.inArray(true, array)!= -1){
         return true;
@@ -34,29 +18,29 @@ function hasTrue(array){
 function budgetFilteringSetUp() {
 var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
 var max = 0;
+var min = 0;
 $( "input[name=budget][type='hidden']" ).each(function(i, input){
     if(max < input.value){
       max = +(input.value);
     } 
 });
-
 $( "#slider-vertical" ).slider({
 orientation: "horizontal",
-range: "min",
-min: 0,
+range: true,
+min: min,
 max: max,
 step : (Math.round(max / 100) * 100)/100,
-value: max,
+values: [min,max],
 slide: function( event, ui ) {
-$( "#amount" ).html( ("£"+ui.value).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") );
+$( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
 },
 change: function( event, ui ) {
   if(!$('input[type=checkbox]').is(':checked')){
     $(".search-result").each(function(i, div){
-        if($(this).children("input[name='budget']").val() > ui.value){
-        $(this).hide();
-        } else {
+       if($(this).children("input[name='budget']").val() <= ui.values[1] && $(this).children("input[name='budget']").val() >= ui.values[0]){
         $(this).show();
+        } else {
+        $(this).hide();
         }
     });
   }else{
@@ -65,7 +49,7 @@ change: function( event, ui ) {
   displayResultsAmount();
   }
 });
-$( "#amount" ).html( ("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") );
+$( "#amount" ).html( ("£"+min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
 }
 
 
@@ -150,7 +134,10 @@ divsToCheck.each(function(i, div){
                 show.push(hasTrue(hasRegions));
             }
 
-            if(+($(div).children('input[name="budget"]').val()) > +($('#slider-vertical').slider("option", "value"))){
+            var divBudget = +($(div).children('input[name="budget"]').val());
+            var min = +($('#slider-vertical').slider("option", "values")[0]);
+            var max = +($('#slider-vertical').slider("option", "values")[1]);
+            if(divBudget > max || divBudget < min) {
                 show.push(false);
             } 
 
