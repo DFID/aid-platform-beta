@@ -22,21 +22,24 @@
       })()
     </script>
     <![endif]-->
-    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css?1363858660"><!--<![endif]-->
+    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css"><!--<![endif]-->
 
 
-    <script src="http://localhost:4567/javascripts/jquery-base.js" type="text/javascript"></script>
+    <script src="/javascripts/jquery-base.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
-    <script src="http://localhost:4567/javascripts/ie-compat.js" type="text/javascript"></script>
+    <script src="/javascripts/ie-compat.js" type="text/javascript"></script>
     <![endif]-->
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css?1363858660">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css?1363858660">
-
-    <script src="/javascripts/jquery.js" type="text/javascript"></script>   
+    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css">
+	<link type="text/css" rel="stylesheet" href="/stylesheets/jquery-ui-1.10.2.custom.min.css" >
+	
+    <script src="/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>   
     <script src="/javascripts/searchFilters.js" type="text/javascript"></script>
-
+	<script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+	
+	
   </head>
   <body>
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visually-hidden">Skip to main content</a>
@@ -55,7 +58,6 @@
         <div class="row">
         	@partials.search(query)
     	</div>            
-   
         <div class="row">
          <div class="twelve columns">
         	@partials.filters()
@@ -85,13 +87,10 @@
 		</div>
 	</div>
     @partials.footer()
-	<span value="@numberOfEesultsFoundByES" style="display:none;" ></span>
+	<span name="countries" value="@numberOfEesultsFoundByES)" style="display:none;" ></span>
+    <span name="budget" value="" style="display:none;" ></span>
     <script src="http://uk1.siteimprove.com/js/siteanalyze_advanced.js" type="text/javascript" ></script>
     <script src="https://loader.engage.gsfn.us/loader.js" type="text/javascript" ></script>
-    <script type="text/javascript" src="https://d2omfglnd8fp1f.cloudfront.net/assets/widget_common/lib/gsfnXD-39c450cffd67ae826846ba09ecea0c4a.js" ></script>
-    <script type="text/javascript" src="https://d79yqnsk0j0g9.cloudfront.net/assets/widget_common/vendor/jquery-2fb84f7357042b2d55977e7f2b008766.js" ></script>
-    <script type="text/javascript" src="https://d2tyksh53t7ls4.cloudfront.net/assets/widget_common/lib/jqModal-d9bfcc8fcbecdbd4f4156f2ff4a717f3.js" ></script>
-    <script type="text/javascript" src="https://d2tyksh53t7ls4.cloudfront.net/assets/widget_common/vendor/json2-a204230dc42448a09771dd71de059c67.js" ></script>
   </body>
 </html>
 
