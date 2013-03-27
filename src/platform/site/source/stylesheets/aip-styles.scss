@@ -702,6 +702,9 @@ Sector breakdown
     text-overflow: ellipsis;
 }
 
+.countryMap {
+    height : 380px;
+}
 
 .search-result h3 small { font-size: 0.7em; }
 .search-result h3 { font-weight: normal; font-size: 1.75em; margin-bottom: 0.25em; }
@@ -710,19 +713,6 @@ Sector breakdown
 .search-result p.budget { margin-bottom:5px; }
 .search-result p{ font-size: 1.1em; line-height:1.5em; }
 .search-result p.description{ font-size: 1em; }
-
-/* -----------------------------------------
-   transactions styles
------------------------------------------------*/
-.transactions h3{
-	border-bottom: 1px solid $midGrey;
-	padding-bottom: 0.5em; 
-	margin-bottom: 0;
-	font-size: 1.5em
-}
-.transactions h3 span{
-	float: right;
-}
 
 /* -----------------------------------------
    transactions table styles
@@ -760,7 +750,10 @@ Sector breakdown
 	width: 62.5%;
 	white-space: normal;
 }
-.transactions-table th:last-child,
+.transactions-table th:last-child {
+	text-align: right;
+	padding-right: 0;
+}
 .transactions-table td:last-child{
 	text-align: right;
 	padding-right: 0;

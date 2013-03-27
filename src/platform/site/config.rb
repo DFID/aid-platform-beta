@@ -61,14 +61,14 @@ end
 #------------------------------------------------------------------------------
 @cms_db['regions'].find({}).each do |region|
   projects = @cms_db['projects'].find({"projectType" => "regional", "recipient" => region['code']}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-  proxy "/regions/#{region['code']}/projects/index.html", "/projectList.html", :locals => {:projects => projects}
+  proxy "/regions/#{region['code']}/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => region['name']}
 end
 
 #------------------------------------------------------------------------------
 # GENERATE GLOBAL PROJECT LIST
 #------------------------------------------------------------------------------
   projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-  proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects}
+  proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
 
 
 #------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ end
     "$match" => {
       "project" => id
     }
-  },{
+  }, {
     "$group" => {
       "_id" => "$type",
       "total" => {
@@ -98,6 +98,10 @@ end
           "value"       => "$value",
         }
       }
+    }
+  }, {
+    "$sort" => {
+      "_id" => 1
     }
   }])
 
@@ -151,10 +155,17 @@ end
 
   # format the project model to suit the project templates
   project = {
-    'iatiId'      => funded_project['funded'],
-    'title'       => funded_project['title'],
-    'description' => funded_project['description'],
-    'funds'       => funded_project['funds']
+    'iatiId'            => funded_project['funded'],
+    'title'             => funded_project['title'],
+    'description'       => funded_project['description'],
+    'funds'             => funded_project['funds'],
+    'totalBudget'       => funded_project['totalBudget'],    
+    'totalProjectSpend' => funded_project['totalSpend'],
+    'end-actual'        => funded_project['end-actual'],
+    'end-planned'       => funded_project['end-planned'],
+    'start-actual'      => funded_project['start-actual'],
+    'start-planned'     => funded_project['start-planned'],
+    'status'            => funded_project['status']
   }
 
   # get the other funded projects

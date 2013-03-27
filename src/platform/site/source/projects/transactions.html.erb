@@ -6,9 +6,13 @@ title: Aid Information Platform
 
 <div class="row">
   <div class="twelve columns transactions">
-    <h3 class="section-group-title">Budgets by financial year</h3>
+    <h3 class="section-group-title">Budget (current improved budget)<span style="float:right;"><%= number_to_currency((total_project_budget project['iatiId']), :unit=>"£", :precision =>0) %></span></h3>
     <table class="transactions-table" style="width:100%">
       <tbody>
+        <tr>
+          <th>Financial Year</th>
+          <th>Budget</th>
+        </tr>
         <% (project_budgets project['iatiId']).each do |project_budget| %>
           <tr>
             <td><%= project_budget[0] %></td>
@@ -22,9 +26,15 @@ title: Aid Information Platform
 <% transaction_groups.each do |transaction_group| %>
   <div class="row">
     <div class="twelve columns transactions">
-      <h3 class="section-group-title"><%= transaction_type transaction_group['_id']%> <span style="float:right"><%= number_to_currency(transaction_group["total"], :unit=>"£", :precision => 0)%></span></h3> 
+      <h3 class="section-group-title"><%= transaction_description transaction_group['_id']%> <span style="float:right"><%= number_to_currency(transaction_group["total"], :unit=>"£", :precision => 0)%></span></h3> 
       <table class="transactions-table" style="width:100%">
         <tbody>
+          <tr>
+            <th>Description</th>
+            <th width="15%">Project</th>
+            <th width="15%">Date</th>
+            <th width="15%" style="text-align:right;">Value</th>
+          </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
               <td><%=transaction['description']%></td>

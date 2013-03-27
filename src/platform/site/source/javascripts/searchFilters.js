@@ -4,25 +4,8 @@ getHiddenFieldsValues();
 sortFilters();
 addCheckboxesFilters();
 setOnChange();
-
-
+budgetFilteringSetUp();
 });
-
-function budgetInRange(budget){
-  var budgetMin = $('input[type=number][name=min]');
-  var budgetMax = $('input[type=number][name=max]');
-    var inRange = false;
-    if(budgetMax.val() == ""){ // min empty
-        inRange = budgetMin.val() < budget;
-    } else if(budgetMin.val() == ""){ // max empty
-        inRange = budget < budgetMax.val();
-    } else { // both filled
-        inRange = budgetMin.val() < budget && budget < budgetMax.val();
-    } 
-    return inRange;
-}
-
-//console.log(budgetInRange());
 
 function hasTrue(array){
     if($.inArray(true, array)!= -1){
@@ -32,20 +15,60 @@ function hasTrue(array){
     }
 }
 
-function setOnChange(){
+function budgetFilteringSetUp() {
 var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
-$('input[type=checkbox]').change(function() {
+var max = 0;
+var min = 0;
+$( "input[name=budget][type='hidden']" ).each(function(i, input){
+    if(max < input.value){
+      max = +(input.value);
+    } 
+});
+$( "#slider-vertical" ).slider({
+orientation: "horizontal",
+range: true,
+min: min,
+max: max,
+step : (Math.round(max / 100) * 100)/100,
+values: [min,max],
+slide: function( event, ui ) {
+$( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+},
+change: function( event, ui ) {
+  if(!$('input[type=checkbox]').is(':checked')){
+    $(".search-result").each(function(i, div){
+       if($(this).children("input[name='budget']").val() <= ui.values[1] && $(this).children("input[name='budget']").val() >= ui.values[0]){
+        $(this).show();
+        } else {
+        $(this).hide();
+        }
+    });
+  }else{
+    filter(divsToCheck);
+  }
+  displayResultsAmount();
+  }
+});
+$( "#amount" ).html( ("£"+min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+}
 
-if(!$('input[type=checkbox]').is(':checked')){
+
+
+
+function filter(divsToCheck){
+
+if(!$('input[type=checkbox]').is(':checked')&&($('#slider-vertical').slider("option", "values")[1] == $('#slider-vertical').slider("option", "max"))) {
     $('.search-result').css("display", "inline");
     displayResultsAmount();
     return false;
 }
 
 divsToCheck.each(function(i, div){
+
             var anythingFound = false;
             var hasStatus = new Array();
             var isStatusGroupActive = false;
+            var budget = 0;
             $('input:checked[name=status]').each(function(i, checkboxess){
                 anythingFound = true;
                 isStatusGroupActive = true;
@@ -109,8 +132,15 @@ divsToCheck.each(function(i, div){
             } 
             if(isRegionsGroupActive){
                 show.push(hasTrue(hasRegions));
+            }
+
+            var divBudget = +($(div).children('input[name="budget"]').val());
+            var min = +($('#slider-vertical').slider("option", "values")[0]);
+            var max = +($('#slider-vertical').slider("option", "values")[1]);
+            if(divBudget > max || divBudget < min) {
+                show.push(false);
             } 
-             
+
             if($.inArray(false, show)!= -1){
                 $(div).css("display", "none");
                 } else {
@@ -121,14 +151,19 @@ divsToCheck.each(function(i, div){
                 $('.search-result').css("display", "none"); //show none cuz nothing found
             }
         });
-
 displayResultsAmount();
+}
 
-});
+function setOnChange(){
+  var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+  $('input[type=checkbox]').change(function() {
+    filter(divsToCheck);
+  });
 }
  
+
 function displayResultsAmount(){
-  $('span[name=afterFilteringAmount]').html(($(".search-result").length - $("div:hidden").length) + " of ");
+  $('span[name=afterFilteringAmount]').html(($(".search-result").length - $(".search-result:hidden").length) + " of ");
 }
 
 var Status = new Array();

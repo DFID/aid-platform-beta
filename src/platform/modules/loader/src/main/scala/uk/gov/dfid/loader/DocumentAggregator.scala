@@ -6,10 +6,17 @@ import uk.gov.dfid.common.{Auditor, DataLoadAuditor}
 import reactivemongo.bson.{BSONArray, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import concurrent.ExecutionContext.Implicits.global
+import concurrent.Await
+import concurrent.duration.Duration
 
 class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def collectProjectDocuments = {
+
+    auditor.info("Dropping documents collection")
+    // drop the collection and start up
+    Await.ready(db.collection("documents").drop, Duration.Inf)
+    auditor.info("Documents collection dropped")
 
     auditor.info("Collecting Project Documents")
 
