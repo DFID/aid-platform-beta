@@ -53,3 +53,43 @@ AND   c.code="ET"
 RETURN s.code as sector, s.sector as name, COUNT(s) as total
 ORDER BY total DESC
 
+
+START     n=node:entities(type="iati-activity")
+MATCH     n-[:`budget`]-b-[:`value`]-v,
+          n-[:`sector`]-s
+WHERE     n.`iati-activity` = 'GB-CHC-1064413-GPAF-INN-001-DIFD2'
+RETURN    n.`iati-activity` as id, s.code as code, s.sector as name,
+          COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
+          (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+ORDER BY  id ASC, total DESC
+
+START  b=node:entities(type="budget")
+MATCH  v-[:value]-b-[:budget]-n
+WHERE  n.`iati-identifier` = 'GB-CHC-1064413-GPAF-INN-001-DIFD2'
+RETURN v.value        as value, 
+       v.`value-date` as date
+
+START  n=node:entities(type="iati-activity")
+MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
+WHERE  n.`iati-identifier` = 'GB-CHC-1064413-GPAF-INN-001-DIFD2'
+RETURN s.code as code,
+       s.sector? as name,
+       (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+
+
+START  b=node:entities(type="budget")
+MATCH  v-[:value]-b-[:budget]-n
+WHERE  n.`iati-identifier` = 'GB-4-91071'
+RETURN v.value        as value,
+       v.`value-date` as date
+
+START  activity = node:entities(type="iati-activity")
+MATCH  status-[:`activity-status`]-activity-[:`reporting-org`]-org,
+       activity-[?:title]-title,
+       activity-[?:description]-description
+WHERE  HAS(org.ref) AND org.ref IN ['GB-4']
+RETURN COALESCE(activity.title?, title.title)                   AS title,
+       COALESCE(activity.description?, description.description) AS description,
+       activity.`iati-identifier`                               AS id,
+       status.code                                              AS status
+
