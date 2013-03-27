@@ -145,8 +145,8 @@ public class Neo4jIndexer {
 			System.out.println("Getting data from activity realted nodes");
 			
 		try {
-			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 RETURN n.`iati-identifier`?, region.`recipient-region`?, sector.`sector`?, region.`recipient-country`?";
-			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2	RETURN a.ref as id, v.value as value";
+			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region,n-[:`reporting-org`]-org, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 AND org.ref=\"GB-1\" RETURN n.`iati-identifier`?, region.`recipient-region`?, sector.`sector`?, region.`recipient-country`?, sector.code?";
+			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";
 			ExecutionResult result = engine.execute(secondaryActivities);
 			ExecutionResult budgetsResults = engine.execute(budgets);
 			Iterator<Map<String, Object>> bit = budgetsResults.iterator();
@@ -158,13 +158,15 @@ public class Neo4jIndexer {
 				String region = (String) ((item.get("region.recipient-region?") == null) ? "" : item.get("region.recipient-region?"));
 				String country = (String) ((item.get("region.recipient-country?") == null) ? "" : item.get("region.recipient-country?"));
 				String sector = (String) item.get("sector.sector?");
+				Long sectorCode = (Long) item.get("sector.code?");
+				
 				
 				String primaryAcitivity = structure.get(id);
 				IndexBean indexBean = elementsToindex.get(primaryAcitivity);
 				if (indexBean != null) {
 					indexBean.getRegion().add(region);
 					indexBean.getCountry().add(country);
-					indexBean.getSector().add(sector);
+					indexBean.getSector().add(sectorCode.toString()+"@"+sector);
 					elementsToindex.put(primaryAcitivity, indexBean);
 				}
 			}
@@ -187,7 +189,7 @@ public class Neo4jIndexer {
 		System.out.println("Creating basic structure");
 		HashMap<String, IndexBean> elementsToindex = new HashMap<String, IndexBean>();
 
-		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org WHERE n.`hierarchy` = 1 RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`type`? ,n.`description`?";
+		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org, n-[:`reporting-org`]-o WHERE n.`hierarchy` = 1  AND o.ref=\"GB-1\" RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`type`? ,n.`description`?";
 		try{
 		ExecutionResult result = engine.execute(primaryActivities);
 		Iterator<Map<String, Object>> it = result.iterator();
