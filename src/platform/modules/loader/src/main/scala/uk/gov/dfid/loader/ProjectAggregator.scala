@@ -84,7 +84,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | AND    org.ref      = "GB-1"
         | RETURN project.ref                    as project,
         |        component.`iati-identifier`    as component,
-        |        COALESCE(txn.description?, "") as description,
+        |        COALESCE(txn.description?, component.title?, "") as description,
         |        value.value                    as value,
         |        date.`iso-date`                as date,
         |        type.code                      as type
