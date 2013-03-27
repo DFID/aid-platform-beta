@@ -143,7 +143,7 @@ module ProjectHelpers
 
     def total_project_budget(projectId)
         # aggregates and sums the budgets for a given project
-        @cms_db['project-budgets'].aggregate([{
+        result = @cms_db['project-budgets'].aggregate([{
                 "$match" => {
                     "id" => projectId
                 }
@@ -155,7 +155,8 @@ module ProjectHelpers
                     }
                 }
             }]
-        ).first['total']
+        )
+        (result.first || {'total' => 0})['total']
     end
 
     def project_sector_groups(projectId, funded_project)
