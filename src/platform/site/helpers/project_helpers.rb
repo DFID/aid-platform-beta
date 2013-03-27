@@ -156,18 +156,18 @@ module ProjectHelpers
                 }
             }]
         )
-        (result.first || {'total' => 0})['total']
+
+        if result.size > 0 then
+            result.first['total']
+        else 
+            0
+        end
+
+
     end
 
-    def project_sector_groups(projectId, funded_project)
-
-        collection = if funded_project then 
-            'funded-project-sector-budgets'
-        else 
-            'project-sector-budgets'
-        end
-        
-        sectorGroups = @cms_db[collection].find({
+    def project_sector_groups(projectId)        
+        sectorGroups = @cms_db['project-sector-budgets'].find({
             "projectIatiId" => projectId
         }).map { |s| {
             "name"   => s['sectorName'] || sector(s['sectorCode']),
