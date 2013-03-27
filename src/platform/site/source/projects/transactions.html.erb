@@ -37,7 +37,7 @@ title: Aid Information Platform
           </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
-              <td><%=transaction['description']%></td>
+              <td><%= transaction_description(transaction, transaction_group['_id']) %></td>
               <td width="15%"><%=transaction['component']%></td>
               <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
               <td width="15%" style="text-align:right;"><%= number_to_currency(transaction['value'], :unit=>"£", :precision => 0) %></td>

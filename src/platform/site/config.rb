@@ -96,6 +96,7 @@ end
           "component"   => "$component",
           "date"        => "$date",
           "value"       => "$value",
+          "title"       => "$title",
         }
       }
     }
