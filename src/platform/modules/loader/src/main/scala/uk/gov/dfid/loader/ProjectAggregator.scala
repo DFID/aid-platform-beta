@@ -239,29 +239,30 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       // now we need to sum up the project budgets and spend.  this is not specific
       // to dfid itself.  While here we can also grab the status
-      val (totalBudget, totalSpend) = engine.execute(
+      // now we need to sum up the project budgets and spend.
+      val totalBudget = engine.execute(
         s"""
-          | START  funded=node:entities(type="iati-activity")
-          | MATCH  funded-[:budget]-budget-[:value]-budget_value,
-          |        funded-[:transaction]-transaction-[:value]-transaction_value,
-          |        transaction-[:`transaction-type`]-type
-          | WHERE  funded.`iati-identifier` = '$funded'
-          | AND    (type.`code` = 'D' OR type.`code` = 'E')
-          | RETURN SUM(budget_value.value) as totalBudget,
-          |        SUM(transaction_value.value) as totalSpend
-        """.stripMargin).toSeq.headOption.map { row =>
-        val totalBudget = row("totalBudget") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-        }
+           | START  funded=node:entities(type="iati-activity")
+           | MATCH  funded-[:budget]-budget-[:value]-budget_value
+           | WHERE  funded.`iati-identifier` = '$funded'
+           | RETURN SUM(budget_value.value) as totalBudget
+        """.stripMargin).toSeq.head("totalBudget") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
 
-        val totalSpend = row("totalSpend") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-        }
-
-        totalBudget -> totalSpend
-      }.getOrElse(0L -> 0L)
+      val totalSpend = engine.execute(
+        s"""
+           | START  funded=node:entities(type="iati-activity")
+           | MATCH  funded-[:transaction]-transaction-[:value]-transaction_value,
+           | transaction-[:`transaction-type`]-type
+           | WHERE  funded.`iati-identifier` = '$funded'
+           | AND    (type.`code` = 'D' OR type.`code` = 'E')
+           | RETURN SUM(transaction_value.value) as totalSpend
+        """.stripMargin).toSeq.head("totalSpend") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
 
       // then we need to get the dates as well
       val dates = engine.execute(
@@ -337,7 +338,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Double  => v.toLong
         }
 
-        db.collection("funded-project-sector-budgets").insert(
+        db.collection("project-sector-budgets").insert(
           BSONDocument(
             "projectIatiId" -> BSONString(funded),
             "sectorCode"    -> BSONLong(code),
