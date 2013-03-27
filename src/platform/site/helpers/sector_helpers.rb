@@ -67,7 +67,11 @@ module SectorHelpers
 			:budget => p['totalBudget']
 		}}
 			
-		calculate_hierarchy_structure(projects)
+		if projects.any? then
+			calculate_hierarchy_structure(projects)
+		else
+			return projects
+		end	
 	end
 
 	def retrieve_project_name(projectIatiId)
