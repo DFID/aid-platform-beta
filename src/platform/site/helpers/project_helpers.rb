@@ -119,7 +119,7 @@ module ProjectHelpers
         # aggregates the project budgets and budgets spend per financial years for given project
         spends = @cms_db['transactions'].find({
             "project" => projectId,
-            "$or"     => [{ "type" => "C"}, {"type" => "D"}]
+            "$or"     => [{ "type" => "D"}, {"type" => "E"}]
         }).map { |t| {
             "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
             "value" => t['value']
@@ -143,7 +143,7 @@ module ProjectHelpers
 
     def total_project_budget(projectId)
         # aggregates and sums the budgets for a given project
-        @cms_db['project-budgets'].aggregate([{
+        result = @cms_db['project-budgets'].aggregate([{
                 "$match" => {
                     "id" => projectId
                 }
@@ -155,18 +155,19 @@ module ProjectHelpers
                     }
                 }
             }]
-        ).first['total']
+        )
+
+        if result.size > 0 then
+            result.first['total']
+        else 
+            0
+        end
+
+
     end
 
-    def project_sector_groups(projectId, funded_project)
-
-        collection = if funded_project then 
-            'funded-project-sector-budgets'
-        else 
-            'project-sector-budgets'
-        end
-        
-        sectorGroups = @cms_db[collection].find({
+    def project_sector_groups(projectId)        
+        sectorGroups = @cms_db['project-sector-budgets'].find({
             "projectIatiId" => projectId
         }).map { |s| {
             "name"   => s['sectorName'] || sector(s['sectorCode']),

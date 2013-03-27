@@ -13,6 +13,12 @@ module CodeLists
     "CG" => "Credit Guarantee"  
   }
 
+  @@transaction_descriptions = {
+    "C"  => "Commitment (obligation to provide funding)",            
+    "D"  => "Disbursement (fund transfer to implementing agency)",          
+    "E"  => "Expenditure (DFID project spend)"
+  }
+
   @@activity_statuses = {
     1 => "Pipeline/identification",
     2 => "Implementation",
@@ -221,6 +227,10 @@ module CodeLists
 
   def transaction_type(code)
     @@transaction_types[code]
+  end
+
+  def transaction_description(code)
+      @@transaction_descriptions[code]
   end
 
   def activity_status(code)
