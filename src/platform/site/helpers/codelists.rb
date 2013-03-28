@@ -16,7 +16,7 @@ module CodeLists
   @@transaction_titles = {
     "C"  => "Commitment (obligation to provide funding)",            
     "D"  => "Disbursement (fund transfer to implementing agency)",          
-    "E"  => "Expenditure (DFID project spend)"
+    "E"  => "Expenditure (project spend)"
   }
 
   @@activity_statuses = {
