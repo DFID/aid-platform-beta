@@ -25,6 +25,7 @@ title: Aid Information Platform
 <%= partial "partials/countries-tabs", :locals => { :active => "projects", :code => country['code'], :project_count => projects.size } %>
 
 <script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+<link type="text/css" rel="stylesheet" href="/stylesheets/jquery-ui-1.10.2.custom.min.css" >
 <script type="text/javascript" src="/javascripts/searchFilters.js"></script>
 
 <div class="row project-results">
@@ -32,6 +33,7 @@ title: Aid Information Platform
         <% projects.each do |project| %>
             <div class="search-result">
                 <input type="hidden" name="status" value="<%= activty_status(project['status']) %>">
+                <input type="hidden" name="budget" value="<%= project['totalBudget'] %>">
                 <h3>
                     <a href="/projects/<%=project['iatiId']%>">
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small>
@@ -54,7 +56,7 @@ title: Aid Information Platform
 
             <div name="budget"><h3>Budget</h3></div>
             <span id="amount" style="border: 0; font-weight: bold;"></span>
-            <div id="slider-vertical" style="height: 13px;width : 80%;"></div>
+            <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
         </div>
     </div>
 </div>
