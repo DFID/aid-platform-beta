@@ -20,6 +20,7 @@ require "middleman-smusher"
 #------------------------------------------------------------------------------
 # IGNORE TEMPLATES AND PARTIALS
 #------------------------------------------------------------------------------
+ignore "/projectList.html"
 ignore "/countries/country.html"
 ignore "/countries/projects.html"
 ignore "/countries/results.html"
@@ -96,6 +97,7 @@ end
           "component"   => "$component",
           "date"        => "$date",
           "value"       => "$value",
+          "title"       => "$title",
         }
       }
     }

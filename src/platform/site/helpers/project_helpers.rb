@@ -119,7 +119,7 @@ module ProjectHelpers
         # aggregates the project budgets and budgets spend per financial years for given project
         spends = @cms_db['transactions'].find({
             "project" => projectId,
-            "$or"     => [{ "type" => "C"}, {"type" => "D"}]
+            "$or"     => [{ "type" => "D"}, {"type" => "E"}]
         }).map { |t| {
             "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
             "value" => t['value']
@@ -188,6 +188,16 @@ module ProjectHelpers
             }}
         else
             return sectorGroups
+        end
+    end
+
+    def transaction_description(transaction, transactionType)
+        if(transactionType == "C")
+           transaction['title'] + " (" + transaction['component'] + ")"
+        elsif(transactionType == "D")
+           transaction['description'] + ". " + transaction['title']
+        else
+           transaction['description']
         end
     end
 end

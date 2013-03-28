@@ -22,17 +22,17 @@
       })()
     </script>
     <![endif]-->
-    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css?1363858660"><!--<![endif]-->
+    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css"><!--<![endif]-->
 
 
     <script src="/javascripts/jquery-base.js" type="text/javascript"></script>
     <!--[if lt IE 9]>
-    <script src="http://localhost:4567/javascripts/ie-compat.js" type="text/javascript"></script>
+    <script src="/javascripts/ie-compat.js" type="text/javascript"></script>
     <![endif]-->
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css?1363858660">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css?1363858660">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css">
 	<link type="text/css" rel="stylesheet" href="/stylesheets/jquery-ui-1.10.2.custom.min.css" >
 	
     <script src="/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>   
@@ -60,6 +60,18 @@
     	</div>            
         <div class="row">
          <div class="twelve columns">
+         @if(results.isEmpty){
+        	 <div class="search-result">  
+        	 <p style="padding-top:.33em"> Your search - <em>@query</em> - did not match any documents.  </p> 
+        	 <p style="margin-top:1em">Suggestions:</p> 
+        	 <ul style="margin:0 0 2em;margin-left:1.3em">
+        	 <li>Make sure all words are spelled correctly.</li>
+        	 <li>Try different keywords.</li>
+        	 <li>Try more general keywords.</li>
+        	 <li>Try fewer keywords.</li>
+        	 </ul> 
+        	 </div>
+         }else{
         	@partials.filters()
         	<div class="testResults" style="float: right; width: 70%; ">
         	<em>Showing <span name="afterFilteringAmount"></span> <span name="numberofResults" value="@results.size">@results.size</span> results</em>
@@ -91,6 +103,7 @@
         			 </script>
         		}
         	}
+         }
         	</div>
          </div>
     	</div> 

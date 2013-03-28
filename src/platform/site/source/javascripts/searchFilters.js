@@ -1,9 +1,12 @@
 $(document).ready(function(){
+
   getHiddenFieldsValues();
   sortFilters();
   addCheckboxesFilters();
   setOnChange();
   budgetFilteringSetUp();
+  setSectorGroupFilterClickable();
+
 });
 
 function hasTrue(array){
@@ -163,10 +166,11 @@ function displayResultsAmount(){
 }
 
 var Status = new Array();
-var Sectors = new Array();
 var Countries = new Array();
 var Regions = new Array();
 var Organizations = new Array();
+var Sectors = new Array();
+var SectorGroups = new Array();
 
 function unique(array){
     return $.grep(array,function(el,index){
@@ -199,6 +203,51 @@ function splitAndAssign(string, outputArray){
       });
 }
 
+function getSectorGroup(sectorGroupId){
+    if(sectorGroupId == "111") {return "Education, Level Unspecified";}
+    else if(sectorGroupId == "112") { return "Basic Education";}
+    else if(sectorGroupId == "113") { return "Secondary Education";}
+    else if(sectorGroupId == "114") { return "Post-secondary Education";}
+    else if(sectorGroupId == "121") { return "Health, General";}
+    else if(sectorGroupId == "122") { return "Basic Health";}
+    else if(sectorGroupId == "130") { return "Population Policies/programmes And Reproductive Health";}
+    else if(sectorGroupId == "140") { return "Water And Sanitation";}
+    else if(sectorGroupId == "151") { return "Government And Civil Society, General";}
+    else if(sectorGroupId == "152") { return "Conflict Prevention And Resolution, Peace And Security";}
+    else if(sectorGroupId == "160") { return "Other Social Infrastructure And Services";}
+    else if(sectorGroupId == "210") { return "Transport And Storage";}
+    else if(sectorGroupId == "220") { return "Communication";}
+    else if(sectorGroupId == "230") { return "Energy Generation And Supply";}
+    else if(sectorGroupId == "240") { return "Banking And Financial Services";}
+    else if(sectorGroupId == "250") { return "Business And Other Services";}
+    else if(sectorGroupId == "311") { return "Agriculture";}
+    else if(sectorGroupId == "312") { return "Forestry";}
+    else if(sectorGroupId == "313") { return "Fishing";}
+    else if(sectorGroupId == "321") { return "Industry";}
+    else if(sectorGroupId == "322") { return "Mineral Resources And Mining";}
+    else if(sectorGroupId == "323") { return "Construction";}
+    else if(sectorGroupId == "331") { return "Trade Policy And Regulations And Trade-related Adjustment";}
+    else if(sectorGroupId == "332") { return "Tourism";}
+    else if(sectorGroupId == "410") { return "General Environmental Protection";}
+    else if(sectorGroupId == "430") { return "Other Multisector";}
+    else if(sectorGroupId == "510") { return "General Budget Support";}
+    else if(sectorGroupId == "520") { return "Developmental Food Aid/food Security Assistance";}
+    else if(sectorGroupId == "530") { return "Other Commodity Assistance";}
+    else if(sectorGroupId == "600") { return "Action Relating To Debt";}
+    else if(sectorGroupId == "720") { return "Emergency Response";}
+    else if(sectorGroupId == "730") { return "Reconstruction Relief And Rehabilitation";}
+    else if(sectorGroupId == "740") { return "Disaster Prevention And Preparedness";}
+    else if(sectorGroupId == "910") { return "Administrative Costs Of Donors";}
+    else if(sectorGroupId == "920") { return "Support To Non-Governmental Organisations (NGOS)";}
+    else if(sectorGroupId == "930") { return "Refugees In Donor Countries";}
+    else if(sectorGroupId == "998") { return "Unallocated/Unspecified";}
+    else { return "Ungrouped"}
+}
+
+function getGroupFromCode(code){
+  return code.substring(0,3)
+}
+
 function getHiddenFieldsValues(){
     $(".search-result input[name=status]").each(function() {
     splitAndAssign($(this).attr("value"),Status)
@@ -223,19 +272,42 @@ function getHiddenFieldsValues(){
 
 function addCheckboxesFilters(){
     $.each( Status, function( key, value ) {
-    $("div[name=status]").append("&nbsp;<input type='checkbox' name='status' value='"+value+"'>&nbsp;"+value+"<br>")
+    $("div[name=status]").append("&nbsp;<input type='checkbox' name='status' value='"+value+"'>&nbsp;"+value+"</input><br>")
     });
+
     $.each( Sectors, function( key, value ) {
-    $("div[name=sectors]").append("&nbsp;<input type='checkbox' name='sectors'  value='"+value+"'>&nbsp;"+value+"<br>")
+    var splited = value.split('@');
+    var sectorGroupName = getSectorGroup(getGroupFromCode(splited[0]));
+    if($("div[name=sectorGroup][group='"+sectorGroupName+"']").length > 0 ){
+      $("div[name=sectorGroup][group='"+sectorGroupName+"']").append("&nbsp;<input type='checkbox' name='sectors'  value='"+splited[1]+"'><span >&nbsp;"+splited[1]+"</span></input><br>")
+    }else{
+      $("div[name=sectors]").append("&nbsp;<br><div name='sectorGroup' group='"+sectorGroupName+"'><span style='font-size: 1.1em;' name='sectorGroupClickable'>&nbsp;"+sectorGroupName+"</span><br></div>");
+      $("div[name=sectorGroup][group='"+sectorGroupName+"']").append("&nbsp;<input type='checkbox' name='sectors'  value='"+splited[1]+"'><span >&nbsp;"+splited[1]+"</span></input><br>")
+    }
     });
+    $("div[name=sectorGroup]").children(':not(span[name=sectorGroupClickable])').hide();
+
     $.each( Countries, function( key, value ) {
-    $("div[name=countries]").append("&nbsp;<input type='checkbox' name='countries' value='"+value+"'>&nbsp;"+value+"<br>")
+    $("div[name=countries]").append("&nbsp;<input type='checkbox' name='countries' value='"+value+"'>&nbsp;"+value+"</input><br>");
     });
+
     $.each( Regions, function( key, value ) {
-    $("div[name=regions]").append("&nbsp;<input type='checkbox' name='regions'  value='"+value+"'>&nbsp;"+value+"<br>")
+    $("div[name=regions]").append("&nbsp;<input type='checkbox' name='regions'  value='"+value+"'>&nbsp;"+value+"</input><br>");
     });
+
     $.each( Organizations, function( key, value ) {
-    $("div[name=organizations]").append("&nbsp;<input type='checkbox' name='organizations'  value='"+value+"'>&nbsp;"+value+"<br>")
+    $("div[name=organizations]").append("&nbsp;<input type='checkbox' name='organizations'  value='"+value+"'>&nbsp;"+value+"</input><br>");
     });
 }
 
+function setSectorGroupFilterClickable(){
+  $("span[name=sectorGroupClickable]").each(function(i, span){
+    $(span).click(function(){
+      if($(this).parent().children(':not(span[name=sectorGroupClickable])').is(":visible")){
+        $(this).parent().children(':not(span[name=sectorGroupClickable])').hide();
+      } else {
+        $(this).parent().children(':not(span[name=sectorGroupClickable])').show();
+      }
+    });
+  });
+}
