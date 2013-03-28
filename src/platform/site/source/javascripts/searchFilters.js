@@ -1,10 +1,9 @@
 $(document).ready(function(){
-
-getHiddenFieldsValues();
-sortFilters();
-addCheckboxesFilters();
-setOnChange();
-budgetFilteringSetUp();
+  getHiddenFieldsValues();
+  sortFilters();
+  addCheckboxesFilters();
+  setOnChange();
+  budgetFilteringSetUp();
 });
 
 function hasTrue(array){
@@ -16,44 +15,41 @@ function hasTrue(array){
 }
 
 function budgetFilteringSetUp() {
-var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
-var max = 0;
-var min = 0;
-$( "input[name=budget][type='hidden']" ).each(function(i, input){
-    if(max < input.value){
-      max = +(input.value);
-    } 
-});
-$( "#slider-vertical" ).slider({
-orientation: "horizontal",
-range: true,
-min: min,
-max: max,
-step : (Math.round(max / 100) * 100)/100,
-values: [min,max],
-slide: function( event, ui ) {
-$( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
-},
-change: function( event, ui ) {
-  if(!$('input[type=checkbox]').is(':checked')){
-    $(".search-result").each(function(i, div){
-       if($(this).children("input[name='budget']").val() <= ui.values[1] && $(this).children("input[name='budget']").val() >= ui.values[0]){
-        $(this).show();
-        } else {
-        $(this).hide();
-        }
-    });
-  }else{
-    filter(divsToCheck);
-  }
-  displayResultsAmount();
-  }
-});
-$( "#amount" ).html( ("£"+min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+  var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+  var max = 0;
+  var min = 0;
+  $( "input[name=budget][type='hidden']" ).each(function(i, input){
+      if(max < input.value){
+        max = +(input.value);
+      } 
+  });
+  $( "#slider-vertical" ).slider({
+  orientation: "horizontal",
+  range: true,
+  min: min,
+  max: max,
+  step : (Math.round(max / 100) * 100)/100,
+  values: [min,max],
+  slide: function( event, ui ) {
+  $( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+  },
+  change: function( event, ui ) {
+    if(!$('input[type=checkbox]').is(':checked')){
+      $(".search-result").each(function(i, div){
+         if($(this).children("input[name='budget']").val() <= ui.values[1] && $(this).children("input[name='budget']").val() >= ui.values[0]){
+          $(this).show();
+          } else {
+          $(this).hide();
+          }
+      });
+    }else{
+      filter(divsToCheck);
+    }
+    displayResultsAmount();
+    }
+  });
+  $( "#amount" ).html( ("£"+min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
 }
-
-
-
 
 function filter(divsToCheck){
 
