@@ -13,14 +13,18 @@ title: Aid Information Platform
               <tr>
                 <td>
                     <a href="<%=document['url']%>">
-                      <%= document['title'] %>
+                      <%= document['title'].gsub(/\.[^.]*$/, '') %>
                     </a>
                 </td>
-                <td><%= document['format'] %></td>
+                <td><%= mime_type document['format'] %></td>
                 <td>
                   <% document['categories'].each do |category| %>
                     <span class="category">
-                      <%=category%>
+                      <% if(category.equal?(document['categories'].last)) %>
+                        <%= category %>
+                      <% else %>
+                        <%= category + " |" %>
+                      <% end %>
                     </span>
                   <% end %>
                 </td>
