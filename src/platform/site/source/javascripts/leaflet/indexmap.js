@@ -48,7 +48,7 @@
         "       </div>" +
         "       <div class='six columns'>" +
         "           <div class='stat'>" +
-        "              <h3>No. of active projects</h3>" +
+        "              <h3>Number of projects</h3>" +
         "              <p>" + countryData.projects + "</p>"  +
         "          </div>" +
         "       </div>"  +
