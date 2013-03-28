@@ -6,12 +6,12 @@ title: Aid Information Platform
 
 <div class="row">
   <div class="twelve columns transactions">
-    <h3 class="section-group-title">Budget (current improved budget)<span style="float:right;"><%= number_to_currency((total_project_budget project['iatiId']), :unit=>"£", :precision =>0) %></span></h3>
+    <h3 class="section-group-title">Budget (current approved budget)<span style="float:right;"><%= number_to_currency((total_project_budget project['iatiId']), :unit=>"£", :precision =>0) %></span></h3>
     <table class="transactions-table" style="width:100%">
       <tbody>
         <tr>
           <th>Financial Year</th>
-          <th>Budget</th>
+          <th>Value</th>
         </tr>
         <% (project_budgets project['iatiId']).each do |project_budget| %>
           <tr>
@@ -30,8 +30,12 @@ title: Aid Information Platform
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
-            <th>Description</th>
-            <th width="15%">Project</th>
+            <th><% if(transaction_group['_id'] == 'C') %>
+             <%= "Activity Description" %>
+             <% else %>
+             <%= "Description" %>
+             <% end %></th>
+            <th width="15%">Activity</th>
             <th width="15%">Date</th>
             <th width="15%" style="text-align:right;">Value</th>
           </tr>
