@@ -13,10 +13,17 @@ module CodeLists
     "CG" => "Credit Guarantee"  
   }
 
+  @@mime_types = {
+    "application/msword" => "Word",
+    "application/vnd.ms-excel" => "Excel",
+    "application/octet-stream" => "Binary file",
+    "application/pdf" => "PDF"
+  }
+
   @@transaction_titles = {
     "C"  => "Commitment (obligation to provide funding)",            
     "D"  => "Disbursement (fund transfer to implementing agency)",          
-    "E"  => "Expenditure (DFID project spend)"
+    "E"  => "Expenditure (project spend)"
   }
 
   @@activity_statuses = {
@@ -235,6 +242,10 @@ module CodeLists
 
   def activity_status(code)
     @@activity_statuses[code]
+  end
+
+  def mime_type(code)
+    @@mime_types[code]
   end
 
   def sector(code)
