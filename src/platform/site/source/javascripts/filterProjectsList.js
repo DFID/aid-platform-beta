@@ -92,27 +92,7 @@ function filter(divsToCheck) {
         hasSectors.push(true);
       }
     });
-     
-    var hasCountries = new Array(); 
-    var isCountriesGroupActive = false;
-    $('input:checked[name=countries]').each(function(i, checkboxess){
-      anythingFound = true;
-      isCountriesGroupActive = true;
-      if($(div).children('input[value*="'+checkboxess.value+'"][name="countries"]').length > 0){
-          hasCountries.push(true);
-      }
-    });
-     
-    var hasRegions = new Array(); 
-    var isRegionsGroupActive = false;
-    $('input:checked[name=regions]').each(function(i, checkboxess) {
-      anythingFound = true;
-      isRegionsGroupActive = true;
-      if ($(div).children('input[value*="'+checkboxess.value+'"][name="regions"]').length > 0) {
-        hasRegions.push(true);
-      }
-    });
-     
+         
     var show = new Array();
     if(isStatusGroupActive){
       show.push(hasTrue(hasStatus));
@@ -124,14 +104,6 @@ function filter(divsToCheck) {
 
     if(isSectorsGroupActive){
       show.push(hasTrue(hasSectors));
-    }
-
-    if(isCountriesGroupActive){
-      show.push(hasTrue(hasCountries));
-    }
-
-    if(isRegionsGroupActive){
-      show.push(hasTrue(hasRegions));
     }
 
     var divBudget = +($(div).children('input[name="budget"]').val());
@@ -219,18 +191,18 @@ function getHiddenFieldsValues(){
 
 function addCheckboxesFilters() {
   $.each( Status, function( key, value ) {
-    $("div[name=status]").append(createInputCheckbox(value));
+    $("div[name=status]").append(createInputCheckbox('status', value));
   });
 
   $.each( Sectors, function( key, value ) {
-    $("div[name=sectors]").append(createInputCheckbox(value));
+    $("div[name=sectors]").append(createInputCheckbox('sectors', value));
   });
 
   $.each( Organizations, function( key, value ) {
-    $("div[name=organizations]").append(createInputCheckbox(value));
+    $("div[name=organizations]").append(createInputCheckbox('organizations', value));
   });
 }
 
-function createInputCheckbox(value) {
-  return "&nbsp;<input type='checkbox' name='status' value='"+value+"'>&nbsp;"+value+"</input><br>";
+function createInputCheckbox(name, value) {
+  return "&nbsp;<input type='checkbox' name='"+name+"' value='"+value+"'>&nbsp;"+value+"</input><br>";
 }
