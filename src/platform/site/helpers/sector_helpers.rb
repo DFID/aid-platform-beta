@@ -109,4 +109,14 @@ module SectorHelpers
 		])
 		(result.first || { 'total' => 0 })['total']
 	end
+
+	def retrieve_high_level_sector_names(projectIatiId)
+		sectorCodes = @cms_db['project-sector-budgets'].find({
+			"projectIatiId" => projectIatiId
+		}).map { |s| s['sectorCode'] }.to_a
+
+		sectorNames = @cms_db['sector-hierarchies'].find({
+			"sectorCode" => {"$in" => sectorCodes}
+		}).map { |s| s['highLevelName'] }.to_a.uniq.join('#')
+	end
 end
