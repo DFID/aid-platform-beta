@@ -117,9 +117,15 @@ module ProjectHelpers
 
     def project_budget_per_fy(projectId)
         # aggregates the project budgets and budgets spend per financial years for given project
+        startDate = Time.utc(financial_year-3,04,01)
+        endDate = Time.utc(financial_year+2,03,31)
         spends = @cms_db['transactions'].find({
             "project" => projectId,
-            "$or"     => [{ "type" => "D"}, {"type" => "E"}]
+            "$or"     => [{ "type" => "D"}, {"type" => "E"}],
+            'date' => {
+                '$gte' => startDate,
+                '$lte' => endDate
+          }
         }).map { |t| {
             "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
             "value" => t['value']
@@ -132,7 +138,11 @@ module ProjectHelpers
 
         @cms_db['project-budgets'].find({
             "id"    => projectId,
-            "value" => { "$gt" => 0 }
+            "value" => { "$gt" => 0 },
+            'date' => {
+                        '$gte' => "#{(financial_year-3)}-04-01",
+                        '$lte' => "#{(financial_year+2)}-03-31"
+                    } 
         }).sort({
             "date" => 1
         }).map { |budget| [ financial_year_formatter(budget['date']),
