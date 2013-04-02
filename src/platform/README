@@ -2,3 +2,17 @@ This is your new Play 2.1 application
 =====================================
 
 This file will be packaged with your application, when using `play dist`.
+
+
+
+http://www.aidstream.org/public/files/xml/vfan-activities.xml       - INVALID
+http://www.aidstream.org/public/files/xml/buildafrica-ug.xml        - INVALID
+http://aidstream.org/public/files/xml/adrauk-activities.xml         - INVALID
+http://www.aidstream.org/public/files/xml/ai_1064413-activities.xml - INVALID
+
+http://www.aidstream.org/public/files/xml/tbalert-in.xml                  - VALID
+http://aidstream.org/public/files/xml/sossaheluk-activities.xml           - VALID
+
+http://aidstream.org/public/files/xml/ri-uk-activities.xml                - VALID
+http://www.aidstream.org/public/files/xml/pont-activities.xml             - VALID
+http://aidstream.org/public/files/xml/opportunity-international-uk-mz.xml - VALID

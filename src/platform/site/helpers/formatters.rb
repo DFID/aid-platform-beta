@@ -26,7 +26,7 @@ module Formatters
     if(now.month < 4)
       "#{now.year-1}/#{now.year}"
     else
-      "#{now.year}/#{now.year +1}"
+      "#{now.year}/#{now.year + 1}"
     end
   end
 
