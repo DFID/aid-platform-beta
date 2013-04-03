@@ -15,16 +15,25 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import uk.gov.dfid.common.search.ElasticSearch;
 import uk.gov.dfid.loader.indexer.helper.Organization;
 import uk.gov.dfid.loader.indexer.helper.Country;
+import uk.gov.dfid.loader.util.Sectors;
 
 public class Neo4jIndexer {
+
+    private static Sectors sectorsHelper;
+
 	/**
-	 * Indexing neo4jDatabse, if grpaphDB is not provided - creating new one, and shutting down, when done 
-	 * 
+	 * Indexing neo4jDatabse, if grpaphDB is not provided - creating new one, and shutting down, when done
+	 *
 	 * @param databaseLocation - optional
 	 * @param elasticSearchNodeLocation
 	 * @param graphDb - optional
 	 */
-	public static void index(String databaseLocation, String elasticSearchNodeLocation, GraphDatabaseService graphDb) {
+	public static void index(
+            String databaseLocation,
+            String elasticSearchNodeLocation,
+            GraphDatabaseService graphDb,
+            Sectors sectors) {
+        sectorsHelper = sectors;
 		Long counter = System.currentTimeMillis();
 		boolean isGraphDBprovided = true;
 		if(graphDb == null){
@@ -39,9 +48,9 @@ public class Neo4jIndexer {
 			es.deleteAll(elasticSearchNodeLocation);
 			indexDfidSpecificDataToElasticSearch(es,structure,elasticSearchNodeLocation);
 			indexCountrySugestionsDataToElasticSearch(es,budgetsForCountries,elasticSearchNodeLocation);
-			
+
 			System.out.println("Done in : "	+ (System.currentTimeMillis() - counter));
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(!isGraphDBprovided) graphDb.shutdown();
@@ -49,7 +58,7 @@ public class Neo4jIndexer {
 		if(!isGraphDBprovided) graphDb.shutdown();
 	}
 
-	
+
 	private static void indexCountrySugestionsDataToElasticSearch(ElasticSearch es,Map<String,Country> elementsToindex, String elasticSearchNodeLocation) {
 		System.out.println("Getting sugestions");
 		for (String element : elementsToindex.keySet()) {
@@ -61,7 +70,7 @@ public class Neo4jIndexer {
 			es.putIndex(forES, "aid" ,elasticSearchNodeLocation);
 		}
 	}
-	
+
 	private static void indexDfidSpecificDataToElasticSearch(ElasticSearch es, Map<String, IndexBean> elementsToindex, String elasticSearchNodeLocation) {
 		for (IndexBean ib : elementsToindex.values()) {
 			Map<String, Object> forES = new HashMap<String, Object>();
@@ -91,7 +100,7 @@ public class Neo4jIndexer {
 				sbRegion.append(region);
 				sbRegion.append("#");
 			}
-			
+
 			forES.put("id", ib.getIatiId());
 			forES.put("title", ib.getTitle());
 			forES.put("description", ib.getDescription());
@@ -106,9 +115,9 @@ public class Neo4jIndexer {
 			forES.put("regions", sbRegion.toString());
 			es.putIndex(forES, "aid" ,elasticSearchNodeLocation);
 		}
-		
+
 	}
-	
+
 	private static Map<String,Country> getBudgetsForCountries(ExecutionEngine engine) {
 		System.out.println("Getting budgets for countries");
 		Map<String,Country> countries = new HashMap<String,Country>();
@@ -140,10 +149,10 @@ public class Neo4jIndexer {
 		}
 		return countries;
 	}
-	
+
 	private static void aquireDataFromRealatedActivityNodes(Map<String, String> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
 			System.out.println("Getting data from activity realted nodes");
-			
+
 		try {
 			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region,n-[:`reporting-org`]-org, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 AND org.ref=\"GB-1\" RETURN n.`iati-identifier`?, region.`recipient-region`?, sector.`sector`?, region.`recipient-country`?, sector.code?";
 			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";
@@ -151,26 +160,29 @@ public class Neo4jIndexer {
 			ExecutionResult budgetsResults = engine.execute(budgets);
 			Iterator<Map<String, Object>> bit = budgetsResults.iterator();
 			Iterator<Map<String, Object>> it = result.iterator();
-		
+
 			while (it.hasNext()) {
+
+
 				Map<String, Object> item = it.next();
 				String id = (String) item.get("n.iati-identifier?");
 				String region = (String) ((item.get("region.recipient-region?") == null) ? "" : item.get("region.recipient-region?"));
 				String country = (String) ((item.get("region.recipient-country?") == null) ? "" : item.get("region.recipient-country?"));
 				String sector = (String) item.get("sector.sector?");
 				Long sectorCode = (Long) item.get("sector.code?");
-				
-				
+
+                final String highLevelSector = sectorsHelper.getHighLevelSector(sectorCode);
+
 				String primaryAcitivity = structure.get(id);
 				IndexBean indexBean = elementsToindex.get(primaryAcitivity);
 				if (indexBean != null) {
 					indexBean.getRegion().add(region);
 					indexBean.getCountry().add(country);
-					indexBean.getSector().add(sectorCode.toString()+"@"+sector);
+					indexBean.getSector().add(highLevelSector);
 					elementsToindex.put(primaryAcitivity, indexBean);
 				}
 			}
-			
+
 			while (bit.hasNext()) {
 				Map<String, Object> item = bit.next();
 				Long budget = (Long) item.get("value");
@@ -183,8 +195,8 @@ public class Neo4jIndexer {
 			e.printStackTrace();
 		}
 	}
-	 
-	
+
+
 	private static Map<String, IndexBean> createBasicIndexStructureBasedOnHierarchy(ExecutionEngine engine) {
 		System.out.println("Creating basic structure");
 		HashMap<String, IndexBean> elementsToindex = new HashMap<String, IndexBean>();
@@ -198,11 +210,11 @@ public class Neo4jIndexer {
 		while (it.hasNext()) {
 			Map<String, Object> item = it.next();
 			if(item.get("r.ref?") == null || item.get("n.iati-identifier?") == null || item.get("n.title?") == null || item.get("x.activity-status?")==null){
-				// in case is not what we are looking for (eg wrong data in xml during import) 
+				// in case is not what we are looking for (eg wrong data in xml during import)
 				System.out.println("Wrong node, not indexing: "+item);
 				continue;
 			}
-			
+
 			String ref = (String) item.get("r.ref?");
 			String id = (String) item.get("n.iati-identifier?");
 
@@ -234,7 +246,7 @@ public class Neo4jIndexer {
 			indexBean.setRegion(new HashSet<String>());
 			indexBean.setSector(new HashSet<String>());
 			indexBean.setBudget(0l);
-			
+
 			HashSet<String> references = hierarhyRelations.get(id);
 			if (references != null) {
 				references.add(ref);
@@ -246,16 +258,16 @@ public class Neo4jIndexer {
 			elementsToindex.put(id, indexBean);
 			hierarhyRelations.put(id, references);
 		}
-		
+
 		aquireDataFromRealatedActivityNodes(reverseRelatedActivietes(hierarhyRelations), elementsToindex, engine);
-		
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return elementsToindex;
 	}
-	
+
 	private static Map<String, String> reverseRelatedActivietes(
 			Map<String, HashSet<String>> hierarhyRelations) {
 		Map<String, String> secondaryActivities = new HashMap<String, String>();
