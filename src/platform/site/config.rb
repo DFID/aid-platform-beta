@@ -98,6 +98,7 @@ end
           "date"        => "$date",
           "value"       => "$value",
           "title"       => "$title",
+          "receiver-org" => "$receiver-org",
         }
       }
     }
