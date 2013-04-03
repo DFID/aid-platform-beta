@@ -4,6 +4,7 @@ import reactivemongo.api.{DefaultCollection, DefaultDB}
 import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import uk.gov.dfid.loader.indexer._
+import util.Sectors
 import xml.XML
 import java.net.URL
 import concurrent.ExecutionContext.Implicits.global
@@ -15,6 +16,7 @@ import uk.gov.dfid.common.api.ProjectsApi
 import org.neo4j.graphdb.GraphDatabaseService
 import uk.gov.dfid.common.DataLoadAuditor
 import concurrent.duration.Duration
+import scala.util.Properties
 
 trait DataLoader {
   def load: Future[Unit]
@@ -25,7 +27,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
   def load = {
     future {
       val neo4j      = manager.restart(true)
-      //val neo4j      = manager.get
+      // val neo4j      = manager.get
       val sources    = mongodb.collection("iati-datasources")
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
@@ -49,7 +51,14 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectProjectSectorGroups
       other.collectOtherOrganisationProjects
       other.collectTransactions
-      Neo4jIndexer.index( scala.util.Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),  scala.util.Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ), neo4j);
+
+      val sectorHelper = new Sectors(mongodb)
+
+      Neo4jIndexer.index(
+        Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),
+        Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ),
+        neo4j,
+        sectorHelper)
 
       auditor.success("Loading process completed")
     }

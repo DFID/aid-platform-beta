@@ -9,6 +9,8 @@ rm -rf build && mkdir build
 # move into build folder and clone current build repo
 git clone git@github.com:DFID/aid-platform-site.git build/
 
+rm -rf build/*
+
 # generate site with middleman
 bundle install
 bundle exec middleman build --clean --verbose

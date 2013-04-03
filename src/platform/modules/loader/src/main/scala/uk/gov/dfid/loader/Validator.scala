@@ -2,7 +2,7 @@ package uk.gov.dfid.loader
 
 import javax.xml.validation.SchemaFactory
 import javax.xml.transform.stream.StreamSource
-import util.Try
+import scala.util.Try
 import java.io.InputStream
 
 /**
