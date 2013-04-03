@@ -35,14 +35,24 @@ title: Aid Information Platform
              <% else %>
              <%= "Description" %>
              <% end %></th>
-            <th width="15%">Activity</th>
+            <th width="15%"> <% if (transaction_group['_id'] == 'D' || transaction_group['_id'] == 'E') %>
+              <%= "Receiving Org" %>
+              <% else %>
+              <%= "Activity" %>
+              <% end %></th>
             <th width="15%">Date</th>
             <th width="15%" style="text-align:right;">Value</th>
           </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
               <td><%= transaction_description(transaction, transaction_group['_id']) %></td>
-              <td width="15%"><%=transaction['component']%></td>
+              <td width="15%">
+                <% if (transaction_group['_id'] == 'D' || transaction_group['_id'] == 'E') %>
+                  <%= transaction['receiver-org'] %>
+                <% else %>
+                   <%=transaction['component']%>
+                <% end %>
+              </td>
               <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
               <td width="15%" style="text-align:right;"><%= number_to_currency(transaction['value'], :unit=>"£", :precision => 0) %></td>
             </tr>

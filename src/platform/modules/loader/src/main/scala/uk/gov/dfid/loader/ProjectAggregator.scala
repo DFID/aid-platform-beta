@@ -36,11 +36,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | MATCH n-[:transaction]-txn,
         |       txn-[:value]-value,
         |       txn-[:`transaction-date`]-date,
-        |       txn-[:`transaction-type`]-type
+        |       txn-[:`transaction-type`]-type,
+        |       txn-[r?:`receiver-org`]-receiver
         | $whereClause
         | RETURN n.`iati-identifier`            as id,
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,
+        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
         |        date.`iso-date`                as date,
         |        type.code                      as type
       """.stripMargin).foreach { row =>
@@ -49,18 +51,20 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val value       = row("value").asInstanceOf[Long]
       val date        = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction = row("type").asInstanceOf[String]
+      val receiver    = row("receiver-org").asInstanceOf[String]
       val component   = ""
       val description = row("description").asInstanceOf[String]
 
       println(s"inserting: $project $value $description")
       db.collection("transactions").insert(
         BSONDocument(
-          "project"     -> BSONString(project),
-          "component"   -> BSONString(component),
-          "description" -> BSONString(description),
-          "value"       -> BSONLong(value),
-          "date"        -> BSONDateTime(date.getMillis),
-          "type"        -> BSONString(transaction)
+          "project"       -> BSONString(project),
+          "component"     -> BSONString(component),
+          "description"   -> BSONString(description),
+          "receiver-org"  -> BSONString(receiver),
+          "value"         -> BSONLong(value),
+          "date"          -> BSONDateTime(date.getMillis),
+          "type"          -> BSONString(transaction)
         )
       )
     }
@@ -79,13 +83,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        component-[:`reporting-org`]-org,
         |        txn-[:value]-value,
         |        txn-[:`transaction-date`]-date,
-        |        txn-[:`transaction-type`]-type
+        |        txn-[:`transaction-type`]-type,
+        |        txn-[r?:`receiver-org`]-receiver
         | WHERE  project.type = 1
         | AND    org.ref      = "GB-1"
         | RETURN project.ref                    as project,
         |        component.`iati-identifier`    as component,
         |        COALESCE(txn.description?, "") as description,
         |        COALESCE(component.title?, "") as title,
+        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
         |        value.value                    as value,
         |        date.`iso-date`                as date,
         |        type.code                      as type
@@ -97,17 +103,19 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val transaction = row("type").asInstanceOf[String]
       val component   = row("component").asInstanceOf[String]
       val description = row("description").asInstanceOf[String]
+      val receiver    = row("receiver-org").asInstanceOf[String]
       val title       = row("title").asInstanceOf[String]
 
       db.collection("transactions").insert(
         BSONDocument(
-          "project"     -> BSONString(project),
-          "component"   -> BSONString(component),
-          "description" -> BSONString(description),
-          "title"       -> BSONString(title),
-          "value"       -> BSONLong(value),
-          "date"        -> BSONDateTime(date.getMillis),
-          "type"        -> BSONString(transaction)
+          "project"       -> BSONString(project),
+          "component"     -> BSONString(component),
+          "description"   -> BSONString(description),
+          "receiver-org"  -> BSONString(receiver),
+          "title"         -> BSONString(title),
+          "value"         -> BSONLong(value),
+          "date"          -> BSONDateTime(date.getMillis),
+          "type"          -> BSONString(transaction)
         )
       )
     }
