@@ -74,7 +74,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       // validate the data source
       val url     = source.getAs[BSONString]("url").map(_.value).get
-      
+
       // validation throws uncontrollable errors
       try{
         val ele     = XML.load(url)
@@ -84,6 +84,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
         if (!valid) {
           auditor.warn(s"Invalid source at $url")
+        } else {
+          auditor.info(s"Valid source at $url")
         }
 
         valid

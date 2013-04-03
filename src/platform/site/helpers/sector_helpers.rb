@@ -56,24 +56,6 @@ module SectorHelpers
 		calculate_hierarchy_structure(sectors)
 	end
 
-	def sector_projects(sectorCode)
-		projects = @cms_db['project-sector-budgets'].aggregate([{ 
-			"$match" => { "sectorCode" => sectorCode}                  
-		}, {
-			"$group" => { "_id" => "$projectIatiId", "name" => {"$first" => "$projectName"}, "totalBudget" => {"$sum" => "$sectorBudget"}}
-		}]).map { |p| {
-			:code 	=> p['_id'],
-			:name 	=> retrieve_project_name(p['_id']),
-			:budget => p['totalBudget']
-		}}
-			
-		if projects.any? then
-			calculate_hierarchy_structure(projects)
-		else
-			return projects
-		end	
-	end
-
 	def retrieve_project_name(projectIatiId)
 		result = @cms_db['projects'].find({
 			'iatiId' => projectIatiId

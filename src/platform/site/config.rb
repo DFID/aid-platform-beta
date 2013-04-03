@@ -210,20 +210,25 @@ end
 #------------------------------------------------------------------------------
 # GENERATE SECTOR HIERARCHIES
 #------------------------------------------------------------------------------
-@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+@cms_db['sector-hierarchies'].aggregate([{ 
+  "$group" => { 
     "_id"  => "$highLevelCode", 
-    "sectorName" => {"$first" => "$highLevelName"} } }]).each do |sector|
-
-  sectorCode = sector['_id']
-  proxy "/sector/#{sectorCode}/index.html", '/sector/categories.html', :locals => { :sector => sector }
-
+    "sectorName" => {
+      "$first" => "$highLevelName"
+    } 
+  } 
+}]).each do |sector|
+  proxy "/sector/#{sector['_id']}/index.html", '/sector/categories.html', :locals => { :sector => sector }
 end
 
-@cms_db['sector-hierarchies'].aggregate([{ "$group" => { 
+@cms_db['sector-hierarchies'].aggregate([{ 
+  "$group" => { 
     "_id"          => "$categoryCode", 
     "sectorCode"   => {"$first" => "$highLevelCode"}, 
     "sectorName"   => {"$first" => "$highLevelName"}, 
-    "categoryName" => {"$first" => "$categoryName"} } }]).each do |sector|
+    "categoryName" => {"$first" => "$categoryName"} 
+  } 
+}]).each do |sector|
 
   categoryCode = sector['_id']
   sectorCode   = sector['sectorCode']
@@ -232,11 +237,24 @@ end
 end
 
 @cms_db['sector-hierarchies'].find({}).to_a.each do |sector|
+
   highLevelCode = sector['highLevelCode']
   categoryCode  = sector['categoryCode']
   sectorCode    = sector['sectorCode']
   
-  proxy "/sector/#{highLevelCode}/categories/#{categoryCode}/projects/#{sectorCode}/index.html", 'sector/projects.html', :locals => { :sector => sector }  
+  projectIds = @cms_db['project-sector-budgets'].find({
+    "sectorCode" => sectorCode
+  }).map { |project| 
+    project['projectIatiId'] 
+  }
+
+  projects = @cms_db['projects'].find({
+    "iatiId" => {
+      "$in" => projectIds
+    }
+  })
+
+  proxy "/sector/#{highLevelCode}/categories/#{categoryCode}/projects/#{sectorCode}/index.html", 'sector/projects.html', :locals => { :sector => sector, :projects => projects }  
 end
 
 #------------------------------------------------------------------------------

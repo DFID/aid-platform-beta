@@ -26,27 +26,17 @@ title: Aid Information Platform
 <%= partial "partials/search-bar" %>
 
 <div class="row">
-    <div class="twelve columns content">
-        <h2 class="section-group-title">Sector Breakdown</h2>
-        <div class="row">
-            <div class="four columns summary">
-                <p><%= sector['sectorDesc'] %></p>
+    <div class="twelve columns">
+        <% projects.each do |project| %>
+            <div class="search-result">
+                <h3>
+                    <a href="/projects/<%=project['iatiId']%>">
+                        <%=project['title']%> <small>[<%=project['iatiId']%>]</small></a>
+                    </h3>
+                <p class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></p>
+                <p class="budget" style="margin-top:-3px;">Status: <em><%= activity_status project['status']%></em></p>
+                <p class="description"><%=project['description']%></p>
             </div>
-            <div class="eight columns">
-                <ul class="sector-list">
-                    <% (sector_projects(sector['sectorCode']) || []).each do |project| %>
-                        <li>
-                            <a href="/projects/<%=project[:code]%>"><%=project[:name]%></a>
-                            <div class="progress eight">
-                                <em><%=format_percentage project[:percentage]%></em>
-                                <span class="meter" style="width: <%=format_percentage project[:cellWidth]%>"></span>
-                                <span>£<%=format_round_m project[:budget] || 0.0 %></span>                                
-                            </div>
-                        </li>
-                    <% end %>
-                </ul>
-            </div>
-        </div>
-
+        <% end %>
     </div>
 </div>
