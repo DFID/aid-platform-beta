@@ -1,6 +1,6 @@
 package uk.gov.dfid.loader
 
-import util.Try
+import scala.util.Try
 import org.neo4j.tooling.GlobalGraphOperations
 import org.neo4j.graphdb.{NotFoundException, GraphDatabaseService}
 import collection.JavaConversions._
