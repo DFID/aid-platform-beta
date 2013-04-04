@@ -164,7 +164,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
   g.append("circle")
       .style("fill", "#008270")
       .style("opacity", "0.7")
-      .style("cursor", "hand")
+      .style("cursor", "pointer")
       .attr("r", r)
       .attr("cx", w / 2)
       .attr("cy", r);
@@ -177,7 +177,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
       .attr("transform", "translate(" +  (w / 2) + ", " + 1.2 * r + ")")
       .style("font-size", textSize + "px")
       .style("line-height", "1.1em")
-      .style("cursor", "hand")
+      .style("cursor", "pointer")
       .append("tspan")
          .text(format_million_stg(data.budget));
   }
