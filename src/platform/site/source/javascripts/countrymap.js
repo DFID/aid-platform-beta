@@ -2,8 +2,22 @@
 
     var countryName = $("#countryName").val();
     var countryCode = $("#countryCode").val();
+    var projectType = $("#projectType").val();
 
-    if (countryName && countryCode) {  
+    if (projectType == "global") {
+
+        var point = new google.maps.LatLng(0,0);
+        var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP, zoom: 1  };
+        var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
+
+        setTimeout(function(){
+            google.maps.event.trigger(map, "resize");
+            map.setZoom(map.getZoom());
+        }, 200)
+
+        map.setCenter(point);
+
+    } else if (countryName && countryCode) {  
 
         var point = new google.maps.LatLng(
             countryBounds[countryCode][0], 
