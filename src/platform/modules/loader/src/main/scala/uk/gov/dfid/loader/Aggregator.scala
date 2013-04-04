@@ -8,7 +8,7 @@ import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
 import uk.gov.dfid.common.api.Api
 import uk.gov.dfid.common.models.Project
-import concurrent.Await
+import concurrent.{Future, Await}
 import concurrent.duration._
 import uk.gov.dfid.common.DataLoadAuditor
 import org.joda.time.format.DateTimeFormat
@@ -17,6 +17,7 @@ import reactivemongo.bson.BSONLong
 import uk.gov.dfid.loader.Implicits._
 import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
+import reactivemongo.api.indexes.{IndexType, Index}
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -25,11 +26,16 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
   def loadProjects = {
 
-    auditor.info("Loading Projects")
+      auditor.info("Loading Projects")
     auditor.info("Dropping current projects collection")
 
     // drop the collection and start up
     Await.ready(db.collection("projects").drop, Duration.Inf)
+
+    // create an index.  this will prevent iati ids being duped.
+    Await.ready(db.collection("projects").indexesManager.create(
+      Index("iatiId" -> IndexType.Ascending :: Nil, unique = true)
+    ), Duration.Inf)
 
     auditor.success("Current projects collection dropped")
 
@@ -67,7 +73,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         }
 
         val project = Project(None, id, title, description, projectType, recipient, status, None)
-        Await.ready(projects.insert(project), 10 seconds)
+        Await.ready(projects.insert(project), Duration.Inf)
       }
 
       auditor.success("All projects loaded")
