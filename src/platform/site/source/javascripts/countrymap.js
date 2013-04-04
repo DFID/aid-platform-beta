@@ -1,21 +1,5 @@
 (function(global, undefined){
 
-    function createMap(northEastBound, southwestBound, mapCenterPoint) {
-        var bounds = new google.maps.LatLngBounds(southwestBound, northEastBound);
-
-        if (mapCenterPoint) {
-           bounds.extend(mapCenterPoint);
-        }
-
-        var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP,  };
-        var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
-
-        setTimeout('google.maps.event.trigger(map, "resize");map.setZoom(map.getZoom());', 200);
-
-        map.fitBounds(bounds);
-        map.panToBounds(bounds);
-    }
-
     var countryName = $("#countryName").val();
     var countryCode = $("#countryCode").val();
 
@@ -49,7 +33,7 @@
             google.maps.event.trigger(map, "resize");
             map.setZoom(map.getZoom());
         }, 200)
-        
+
         map.fitBounds(bounds);
         map.panToBounds(bounds);
     } else {
