@@ -13,7 +13,6 @@ import org.neo4j.cypher.javacompat.ExecutionResult;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import uk.gov.dfid.common.search.ElasticSearch;
-import uk.gov.dfid.loader.indexer.helper.Organization;
 import uk.gov.dfid.loader.indexer.helper.Country;
 import uk.gov.dfid.loader.util.Sectors;
 
@@ -201,7 +200,7 @@ public class Neo4jIndexer {
 		System.out.println("Creating basic structure");
 		HashMap<String, IndexBean> elementsToindex = new HashMap<String, IndexBean>();
 
-		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org, n-[:`reporting-org`]-o WHERE n.`hierarchy` = 1  AND o.ref=\"GB-1\" RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`type`? ,n.`description`?";
+		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org, n-[:`reporting-org`]-o WHERE n.`hierarchy` = 1  AND o.ref=\"GB-1\" RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`participating-org`? ,n.`description`?";
 		try{
 		ExecutionResult result = engine.execute(primaryActivities);
 		Iterator<Map<String, Object>> it = result.iterator();
@@ -228,11 +227,10 @@ public class Neo4jIndexer {
 			indexBean.setStatus((String) item.get("x.activity-status?"));
 			if (indexBean.getOrganizations() == null) {
 				Set<String> orgs = new HashSet<String>();
-				orgs.add(Organization.resolveOrganizationCode((int) (long) item.get("org.type?")));
+				orgs.add((String) item.get("org.participating-org?"));
 				indexBean.setOrganizations(orgs);
 			} else {
-				indexBean.getOrganizations().add(
-						Organization.resolveOrganizationCode((int) (long) item.get("org.type?")));
+				indexBean.getOrganizations().add((String) item.get("org.participating-org?"));
 			}
 			if (indexBean.getSubProjects() == null) {
 				Set<String> subs = new HashSet<String>();
