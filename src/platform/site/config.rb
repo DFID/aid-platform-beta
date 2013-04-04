@@ -192,10 +192,11 @@ end
       },
       "transactions" => {
         "$addToSet" => {
-          "description" => "$description",
-          "component"   => "$component",
-          "date"        => "$date",
-          "value"       => "$value",
+          "description"   => "$description",
+          "component"     => "$component",
+          "date"          => "$date",
+          "value"         => "$value",
+          "provider-org"  => "$provider-org"
         }
       }
     }

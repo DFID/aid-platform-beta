@@ -37,12 +37,14 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |       txn-[:value]-value,
         |       txn-[:`transaction-date`]-date,
         |       txn-[:`transaction-type`]-type,
-        |       txn-[r?:`receiver-org`]-receiver
+        |       txn-[r?:`receiver-org`]-receiver,
+        |       txn-[p?:`provider-org`]-provider
         | $whereClause
         | RETURN n.`iati-identifier`            as id,
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
+        |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
         |        date.`iso-date`                as date,
         |        type.code                      as type
       """.stripMargin).foreach { row =>
@@ -52,6 +54,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val date        = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction = row("type").asInstanceOf[String]
       val receiver    = row("receiver-org").asInstanceOf[String]
+      val provider    = row("provider-org").asInstanceOf[String]
       val component   = ""
       val description = row("description").asInstanceOf[String]
 
@@ -62,6 +65,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "component"     -> BSONString(component),
           "description"   -> BSONString(description),
           "receiver-org"  -> BSONString(receiver),
+          "provider-org"  -> BSONString(provider),
           "value"         -> BSONLong(value),
           "date"          -> BSONDateTime(date.getMillis),
           "type"          -> BSONString(transaction)
