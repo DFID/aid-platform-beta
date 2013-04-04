@@ -206,6 +206,8 @@ module ProjectHelpers
            (transaction['title'] || "") + " (" + transaction['component'] + ")"
         elsif(transactionType == "D")
            transaction['description'] + ". " + (transaction['title'] || "")
+        elsif(transactionType == "IF")
+            transaction_title(transactionType)
         else
            transaction['description']
         end
