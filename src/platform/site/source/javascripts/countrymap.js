@@ -28,8 +28,11 @@
 
         var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP, zoom: 6  };
         var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
-        
-        setTimeout('google.maps.event.trigger(map, "resize");map.setZoom(map.getZoom());', 200);
+
+        setTimeout(function(){
+            google.maps.event.trigger(map, "resize");
+            map.setZoom(map.getZoom());
+        }, 200)
 
         map.setCenter(point);
 
@@ -42,8 +45,11 @@
         var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP,  };
         var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
 
-        setTimeout('google.maps.event.trigger(map, "resize");map.setZoom(map.getZoom());', 200);
-
+        setTimeout(function(){
+            google.maps.event.trigger(map, "resize");
+            map.setZoom(map.getZoom());
+        }, 200)
+        
         map.fitBounds(bounds);
         map.panToBounds(bounds);
     } else {
