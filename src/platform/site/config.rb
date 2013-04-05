@@ -81,6 +81,7 @@ end
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
+  associatedCountry   = @cms_db['countries'].find_one({'code' => project['recipient']}) || {"name" => ""}
   transaction_groups  = @cms_db['transactions'].aggregate([{
     "$match" => {
       "project" => id
@@ -108,12 +109,12 @@ end
     }
   }])
 
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :transaction_groups => transaction_groups }
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :associatedCountry => associatedCountry}
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents, :associatedCountry => associatedCountry }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :transaction_groups => transaction_groups, :associatedCountry => associatedCountry }
 
   if has_funded_projects then
-    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :associatedCountry => associatedCountry }
   end
 end
 

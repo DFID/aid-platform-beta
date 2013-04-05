@@ -2,7 +2,7 @@
 title: Aid Information Platform
 ---
 
-<%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true } %>
+<%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true, :associatedCountry => associatedCountry } %>
 <% if defined?(funding_project) then %>
   <div class="row">
       <div class="twelve columns">
