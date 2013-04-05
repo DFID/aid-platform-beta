@@ -6,14 +6,15 @@ import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONString
 
 case class Project(
-  id:          Option[BSONObjectID],
-  iatiId:      String,
-  title:       String,
-  description: String,
-  projectType: String,
-  recipient:   Option[String],
-  status:      Int,
-  budget:      Option[Long])
+  id:                Option[BSONObjectID],
+  iatiId:            String,
+  title:             String,
+  description:       String,
+  projectType:       String,
+  recipient:         Option[String],
+  status:            Int,
+  budget:            Option[Long],
+  participatingOrgs: List[String])
 
 object Project {
 
@@ -29,7 +30,15 @@ object Project {
         document.getAs[BSONString]("projectType").map(_.value).get,
         document.getAs[BSONString]("recipient").map(_.value),
         document.getAs[BSONInteger]("status").map(_.value).get,
-        document.getAs[BSONLong]("budget").map(_.value)
+        document.getAs[BSONLong]("budget").map(_.value),
+        document.getAs[BSONArray]("participatingOrgs").map { values =>
+          values.values.toList.flatMap { case value =>
+            value match {
+              case v: BSONString => Some(v.value)
+              case _ => None
+            }
+          }
+        }.getOrElse(List.empty)
       )
     }
   }
@@ -37,12 +46,13 @@ object Project {
   implicit object ProjectWriter extends BSONWriter[Project]{
     def toBSON(project: Project): BSONDocument = {
       BSONDocument(
-        "_id"         -> project.id.getOrElse(BSONObjectID.generate),
-        "iatiId"      -> BSONString(project.iatiId),
-        "title"       -> BSONString(project.title),
-        "description" -> BSONString(project.description),
-        "projectType" -> BSONString(project.projectType),
-        "status"      -> BSONInteger(project.status)
+        "_id"               -> project.id.getOrElse(BSONObjectID.generate),
+        "iatiId"            -> BSONString(project.iatiId),
+        "title"             -> BSONString(project.title),
+        "description"       -> BSONString(project.description),
+        "projectType"       -> BSONString(project.projectType),
+        "status"            -> BSONInteger(project.status),
+        "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*)
       ).append(Seq(
         project.budget.map(b => "budget" -> BSONLong(b)),
         project.recipient.map(r => "recipient" -> BSONString(r))

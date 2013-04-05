@@ -18,6 +18,7 @@ import uk.gov.dfid.loader.Implicits._
 import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.indexes.{IndexType, Index}
+import concurrent._
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -26,7 +27,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
   def loadProjects = {
 
-      auditor.info("Loading Projects")
+    auditor.info("Loading Projects")
     auditor.info("Dropping current projects collection")
 
     // drop the collection and start up
@@ -46,11 +47,11 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       engine.execute(
         """
           | START  n=node:entities(type="iati-activity")
-          | MATCH  n-[:`reporting-org`]-o,
+          | MATCH  p-[:`participating-org`]-n-[:`reporting-org`]-o,
           |        n-[:`activity-status`]-a
           | WHERE  n.hierarchy = 1
           | AND    o.ref = "GB-1"
-          | RETURN n, a.code as status
+          | RETURN n, a.code as status,  COLLECT(p.`participating-org`) as participating
         """.stripMargin).foreach { row =>
 
         val projectNode = row("n").asInstanceOf[Node]
@@ -58,6 +59,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val title       = projectNode.getPropertySafe[String]("title").get
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = projectNode.getPropertySafe[String]("iati-identifier").get
+        val projectOrgs = row("participating").asInstanceOf[List[String]]
 
         val projectType = id match {
           case i if (globalProjects.exists(_.equals(i)))      => "global"
@@ -72,7 +74,25 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           case _          => None
         }
 
-        val project = Project(None, id, title, description, projectType, recipient, status, None)
+        // we need to collect child activity orgs as well.
+        val componentOrgs = engine.execute(
+          s"""
+            |START  v=node:entities(type="iati-activity")
+            |MATCH  p-[:`participating-org`]-v-[:`related-activity`]-a
+            |WHERE  a.ref = '$id'
+            |AND    a.type=1
+            |RETURN p.`participating-org`? as org
+          """.stripMargin).toSeq.flatMap { case s =>
+          s("org") match {
+            case null      => None
+            case s: String => Some(s)
+            case _         => None
+          }
+        }
+
+        val project = Project(None, id, title, description, projectType,
+          recipient, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
+
         Await.ready(projects.insert(project), Duration.Inf)
       }
 
@@ -108,7 +128,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             val sector = row("sector").asInstanceOf[Long].toString
             val name = row("name").asInstanceOf[String]
             val total = row("total").asInstanceOf[Long].toInt
-
 
             sectorBreakdowns.insert(
               BSONDocument(

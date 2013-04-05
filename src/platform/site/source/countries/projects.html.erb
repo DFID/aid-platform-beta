@@ -32,9 +32,10 @@ title: Aid Information Platform
     <div class="nine columns push-three">
         <% projects.each do |project| %>
             <div class="search-result">
-                <input type="hidden" name="status" value="<%= activty_status(project['status']) %>">
-                <input type="hidden" name="budget" value="<%= project['totalBudget'] %>">
-                <input type="hidden" name="sectors" value="<%=retrieve_high_level_sector_names(project["iatiId"])%>">
+                <input type="hidden" name="status" value="<%= activty_status(project['status']) %>"/>
+                <input type="hidden" name="budget" value="<%= project['totalBudget'] %>"/>
+                <input type="hidden" name="sectors" value="<%=retrieve_high_level_sector_names(project["iatiId"])%>"/>
+                <input type="hidden" name="organizations" value="<%=project['participatingOrgs'].join('#')%>" />
                 <h3>
                     <a href="/projects/<%=project['iatiId']%>">
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small>
