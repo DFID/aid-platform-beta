@@ -18,7 +18,7 @@ CircleGraph = function (container) {
     var innerCircleRadius = 0.13 * this.width;
     var outerCircleRadius = 0.22 * this.width;
 
-    this.drawCentralCircle(innerCircleRadius, 0.2*innerCircleRadius, labels);
+    this.drawCentralCircle(innerCircleRadius, 0.2*innerCircleRadius, labels, "/regions");
 
     var maxBudget = d3.max(regionsData.regionalProjects.map(function(project) { return project.budget; }));
     var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
@@ -102,20 +102,21 @@ CircleGraph = function (container) {
         .append("tspan")
            .text(labels.header)
            .attr("x", "0")
-           .attr("dy", "-0.3em")
+           .attr("dy", "-0.3em").on("click", function(){
+              if(location) window.location = location;
+            }).style("cursor", "pointer")
         .append("tspan")
            .text(labels.amount)
            .attr("x", "0")
            .attr("dy", "1em")
-           .style("font-size", amountTextSize + "px");
+           .style("font-size", amountTextSize + "px").on("click", function(){
+              if(location) window.location = location;
+            }).style("cursor", "pointer");
 
     if(location) {
       circle.on("click", function(){
         window.location = location;
-      }).style("cursor", "hand")
-      text.on("click", function(){
-        window.location = location;
-      }).style("cursor", "hand")
+      }).style("cursor", "pointer")
     }
   }
 

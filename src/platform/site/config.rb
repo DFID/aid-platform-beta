@@ -65,11 +65,14 @@ end
   proxy "/regions/#{region['code']}/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => region['name']}
 end
 
+projects = @cms_db['projects'].find({"projectType" => "regional"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+proxy "/regions/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Regional"}
+
 #------------------------------------------------------------------------------
 # GENERATE GLOBAL PROJECT LIST
 #------------------------------------------------------------------------------
-  projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-  proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
+projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
+proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
 
 
 #------------------------------------------------------------------------------
