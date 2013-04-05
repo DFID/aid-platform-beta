@@ -86,6 +86,7 @@ CircleGraph = function (container) {
     var circle = g.append("circle")
         .style("fill", "#008270")
         .style("opacity", "0.7")
+        .style("cursor", "pointer")
         .attr("r", r)
         .attr("cx", r)
         .attr("cy", r);
@@ -147,7 +148,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
   };
   
   this.elm = document.createElement('div');
-  this.elm.style.cursor = 'hand';
+  this.elm.style.cursor = 'pointer';
   this.elm.style.position = 'absolute';  
   this.elm.id = selector;
   this.elm.style.width = w + 'px';
