@@ -213,4 +213,9 @@ module ProjectHelpers
            transaction['description']
         end
     end
+
+    def associated_country(projectCode)
+        country = @cms_db['countries'].find_one({'code' => projectCode}) || {"name" => ""} 
+        country['name']
+    end
 end
