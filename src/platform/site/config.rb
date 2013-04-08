@@ -199,7 +199,8 @@ end
           "component"     => "$component",
           "date"          => "$date",
           "value"         => "$value",
-          "provider-org"  => "$provider-org"
+          "provider-org"  => "$provider-org",
+          "provider-activity-id" => "$provider-activity-id"
         }
       }
     }
