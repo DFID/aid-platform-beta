@@ -45,30 +45,33 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        value.value                    as value,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
         |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
+        |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
         |        date.`iso-date`                as date,
         |        type.code                      as type
       """.stripMargin).foreach { row =>
 
-      val project     = row("id").asInstanceOf[String]
-      val value       = row("value").asInstanceOf[Long]
-      val date        = DateTime.parse(row("date").asInstanceOf[String], format)
-      val transaction = row("type").asInstanceOf[String]
-      val receiver    = row("receiver-org").asInstanceOf[String]
-      val provider    = row("provider-org").asInstanceOf[String]
-      val component   = ""
-      val description = row("description").asInstanceOf[String]
+      val project          = row("id").asInstanceOf[String]
+      val value            = row("value").asInstanceOf[Long]
+      val date             = DateTime.parse(row("date").asInstanceOf[String], format)
+      val transaction      = row("type").asInstanceOf[String]
+      val receiver         = row("receiver-org").asInstanceOf[String]
+      val provider         = row("provider-org").asInstanceOf[String]
+      val providerActivity = row("provider-activity-id").asInstanceOf[String]
+      val component        = ""
+      val description      = row("description").asInstanceOf[String]
 
       println(s"inserting: $project $value $description")
       db.collection("transactions").insert(
         BSONDocument(
-          "project"       -> BSONString(project),
-          "component"     -> BSONString(component),
-          "description"   -> BSONString(description),
-          "receiver-org"  -> BSONString(receiver),
-          "provider-org"  -> BSONString(provider),
-          "value"         -> BSONLong(value),
-          "date"          -> BSONDateTime(date.getMillis),
-          "type"          -> BSONString(transaction)
+          "project"                -> BSONString(project),
+          "component"              -> BSONString(component),
+          "description"            -> BSONString(description),
+          "receiver-org"           -> BSONString(receiver),
+          "provider-org"           -> BSONString(provider),
+          "provider-activity-id"   -> BSONString(providerActivity),
+          "value"                  -> BSONLong(value),
+          "date"                   -> BSONDateTime(date.getMillis),
+          "type"                   -> BSONString(transaction)
         )
       )
     }
