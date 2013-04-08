@@ -83,6 +83,7 @@
                 .attr("x", function(d, i) { return x1(elementNames[i]); })
                 .attr("y", function(d) { return y(d); })
                 .attr("height", function(d) { return height - y(d); })
+                .attr("title", function(d){ return d })
                 .style("fill", function(d, i) { return color(i); });
 
    }

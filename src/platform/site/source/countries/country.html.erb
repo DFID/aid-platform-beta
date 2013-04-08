@@ -120,7 +120,7 @@ title: Aid Information Platform
         var budgets = <%= ([["Year", "Budget"]]) + (country_project_budgets country['code'])%>
         ;
 
-        charts.bar("#budget-year-chart", budgets, ".2s", null, null, ["#2B6367"]);
+        charts.bar("#budget-year-chart", budgets, ".2s", null, null, ["#D8DCBF"]);
 
         var sectors = <%= (sector_groups country['code']).to_json %>
         charts.donut("#sectorChart", sectors, function(d) { 

@@ -66,9 +66,9 @@ module CountryHelpers
   def financial_year_formatter(dateStr)
     date = Date.parse dateStr
     if date.month < 4
-      "FY" + (date.year-1).to_s
+      "FY#{(date.year-1).to_s[2..3]}/#{date.year.to_s[2..3]}"
     else
-      "FY" + date.year.to_s
+      "FY#{date.year.to_s[2..3]}/#{(date.year+1).to_s[2..3]}"
     end
   end
 

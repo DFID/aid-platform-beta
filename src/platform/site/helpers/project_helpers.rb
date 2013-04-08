@@ -126,29 +126,40 @@ module ProjectHelpers
             'date' => {
                 '$gte' => startDate,
                 '$lte' => endDate
-          }
-        }).map { |t| {
-            "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
-            "value" => t['value']
-        }}.group_by { |year| year["fy"] }.map do |fy, v|
-            total = v.map { |year| year["value"] }.inject(:+)
-            {'fy' => fy, 'value' => total}
-        end.map { |year| {
-            year['fy'] => year['value']
-        }}.reduce(Hash.new, :merge)
+            }
+        }).map { |t| 
+            {
+                "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
+                "value" => t['value']
+            }
+        }.group_by { |year| 
+            year["fy"] 
+        }.map { |fy, v|
+            {
+                'fy' => fy, 
+                'value' => v.map { |year| year["value"] }.inject(:+)
+            }
+        }.map { |year| 
+            {
+                year['fy'] => year['value']
+            }
+        }.reduce(Hash.new, :merge)
 
         @cms_db['project-budgets'].find({
             "id"    => projectId,
             "value" => { "$gt" => 0 },
             'date' => {
-                        '$gte' => "#{(financial_year-3)}-04-01",
-                        '$lte' => "#{(financial_year+3)}-03-31"
-                    } 
-        }).sort({
-            "date" => 1
-        }).map { |budget| [ financial_year_formatter(budget['date']),
-                            budget['value'],
-                            spends[financial_year_formatter(budget['date'])] || 0 ]
+                '$gte' => "#{(financial_year-3)}-04-01",
+                '$lte' => "#{(financial_year+3)}-03-31"
+            } 
+        }).sort({ "date" => 1 }).group_by { |budget|
+            financial_year_formatter(budget['date'])
+        }.map { |fy, v|
+            [
+                fy, 
+                v.map { |year| year["value"] }.inject(:+),
+                spends[fy] || 0
+            ]
         }
     end
 
