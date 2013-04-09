@@ -36,19 +36,35 @@
 
     // creates the HTML for the popup when a country is clicked
     function getPopupHTML(countryData){
+        var date = new Date();
+        var currentFY = "";
+        if (date.getMonth() < 3)
+            currentFY = "FY" + (date.getFullYear() - 1) + "/" + date.getFullYear();
+        else 
+            currentFY = "FY" + date.getFullYear() + "/" + (date.getFullYear() + 1);
         return "" +
         "<div class='popup' style='min-width:350px;'>" +
         "   <h1><img class='flag' src='" + countryData.flag + "' /> " + countryData.country + "</h1>"  +
         "   <div class='row'>" +
         "       <div class='six columns'>" +
         "           <div class='stat'>" +
-        "               <h3>Country budget 2012/13</h3>" +
-        "               <p>\u00A3" + addCommas(countryData.budget) + "</p>"  +
+        "               <h3>Country budget " + currentFY + "</h3>" +
         "           </div>"  +
         "       </div>" +
         "       <div class='six columns'>" +
         "           <div class='stat'>" +
         "              <h3>Number of projects</h3>" +
+        "          </div>" +
+        "       </div>"  +
+        "   </div>" +
+        "   <div class='row'>" +
+        "       <div class='six columns'>" +
+        "           <div class='stat'>" +
+        "               <p>\u00A3" + addCommas(countryData.budget) + "</p>"  +
+        "           </div>"  +
+        "       </div>" +
+        "       <div class='six columns'>" +
+        "           <div class='stat'>" +
         "              <p>" + countryData.projects + "</p>"  +
         "          </div>" +
         "       </div>"  +
