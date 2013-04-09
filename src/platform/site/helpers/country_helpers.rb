@@ -39,8 +39,8 @@ module CountryHelpers
   
   def country_project_budgets(country_code)
     projects = @cms_db['projects'].find({"projectType" => "country", "recipient" => country_code})
-    startDate = "#{(financial_year-3)} 04-01"
-    endDate = "#{(financial_year+2)} 03-31"
+    startDate = "#{(financial_year-3)}-04-01"
+    endDate = "#{(financial_year+3)}-03-31"
 
     projects.inject([]) { |graph, project|
 
