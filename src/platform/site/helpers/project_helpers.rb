@@ -229,4 +229,8 @@ module ProjectHelpers
         country = @cms_db['countries'].find_one({'code' => projectCode}) || {"name" => ""} 
         country['name']
     end
+
+    def project_documents(projectCode)
+        @cms_db['documents'].find({ 'project' => projectCode}).count
+    end
 end
