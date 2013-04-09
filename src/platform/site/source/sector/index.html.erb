@@ -6,21 +6,20 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>Aid Information Platform</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li>Aid by Sector</li>
+                </ul>
+            </div>
             <h1>
                 Aid by Sector
             </h1>
         </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li>Aid by Sector</li>
-            </ul>
-        </div>
+
     </div>
 </div>
 
-<%= partial "partials/search-bar" %>
 
 <div class="row">
     <div class="twelve columns content">
@@ -37,7 +36,7 @@ title: Aid Information Platform
                             <div class="progress eight">
                                 <em><%=format_percentage sector[:percentage]%></em>
                                 <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
-                                <span>£<%=format_round_m sector[:budget] || 0.0 %></span>                                
+                                <span class="sector-value">&pound;<%=format_round_m sector[:budget] || 0.0 %></span>                                
                             </div>
                         </li>
                     <% end %>

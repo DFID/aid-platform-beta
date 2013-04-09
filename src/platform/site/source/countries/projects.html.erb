@@ -6,22 +6,20 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>Aid Information Platform</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/location/country/index.html">Aid by Location</a></li>
+                    <li><%= country['name'] %></li>
+                </ul>
+            </div>
             <h1>
                 <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
             </h1>
         </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/location/country/index.html">Aid by Location</a></li>
-                <li><%= country['name'] %></li>
-            </ul>
-        </div>
     </div>
 </div>
 
-<%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "projects", :code => country['code'], :project_count => projects.size } %>
 
 <script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
@@ -31,7 +29,7 @@ title: Aid Information Platform
 <div class="row project-results">
     <div class="nine columns push-three">
         <% projects.each do |project| %>
-            <div class="search-result">
+            <div id="search-results" class="search-result">
                 <input type="hidden" name="status" value="<%= activty_status(project['status']) %>"/>
                 <input type="hidden" name="budget" value="<%= project['totalBudget'] %>"/>
                 <input type="hidden" name="sectors" value="<%=retrieve_high_level_sector_names(project["iatiId"])%>"/>
@@ -41,8 +39,8 @@ title: Aid Information Platform
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small>
                     </a>
                 </h3>
-                <p class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></p>
-                <p class="budget" style="margin-top:-3px;">Status: <em><%= activity_status project['status']%></em></p>
+                <span class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></span>
+                <span>Status: <em><%= activity_status project['status']%></em></span>
                 <p class="description"><%=project['description']%></p>
             </div>
         <% end %>

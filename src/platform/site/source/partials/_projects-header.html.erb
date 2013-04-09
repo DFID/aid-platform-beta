@@ -2,33 +2,29 @@
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>[ADD THE NAME OF THE EXTENDING ORGANISATION HERE]</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/countries/<%= project['recipient']%>/index.html"><%= associated_country project['recipient'] || "" %></a></li>
+                    <li title="<%= project['title'] %>"><%= project['title'] %></li>
+                </ul>
+            </div>
             <h1>
-                <%= project['title'] %> 
-                <small>[<%= project['iatiId'] %>]</small>
+                <%= project['title'] %> <small>[<%= project['iatiId'] %>]</small>
             </h1>
-        </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/countries/<%= project['recipient']%>/index.html"><%= associated_country project['recipient'] || "" %></a></li>
-                <li title="<%= project['title'] %>"><%= project['title'] %></li>
-            </ul>
         </div>
     </div>
 </div>
-
-<%= partial "partials/search-bar" %>
 
 <div class="row">
     <div class="twelve columns">
         <div class="tab-bar-container">
             <div class="row">
-                <div id="tab-links">
+                <div class="button-row">
                     <a href="/api/access/activities/<%=project['iatiId'] %>">View Activity Data</a>
-                    <form action="/fraud" method="GET" >
-                        <input type="submit" value="Report Fraud" class="button serious"/>
-                    </form>
+                    <span>
+                        <a href="/fraud" class="button serious">Report Fraud</a>
+                    </span>
                 </div>
                 <div class="projects-nav">
                     <nav>

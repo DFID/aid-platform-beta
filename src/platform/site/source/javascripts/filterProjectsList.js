@@ -190,19 +190,27 @@ function getHiddenFieldsValues(){
 }
 
 function addCheckboxesFilters() {
+
+  $("div[name=status], div[name=sectors], div[name=organizations]").append("<ul></ul>") 
+
   $.each( Status, function( key, value ) {
-    $("div[name=status]").append(createInputCheckbox('status', value));
+    $("div[name=status] ul").append(createInputCheckbox('status', value));
   });
 
   $.each( Sectors, function( key, value ) {
-    $("div[name=sectors]").append(createInputCheckbox('sectors', value));
+    $("div[name=sectors] ul").append(createInputCheckbox('sectors', value));
   });
 
   $.each( Organizations, function( key, value ) {
-    $("div[name=organizations]").append(createInputCheckbox('organizations', value));
+    $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
   });
 }
 
 function createInputCheckbox(name, value) {
-  return "&nbsp;<input type='checkbox' name='"+name+"' value='"+value+"'>&nbsp;"+value+"</input><br>";
+  var uid = Math.floor(Math.random()*100000000) + "";
+  return "<li>" +
+    "<label title='"+ value + "' for='"+ uid +"' style='white-space:nowrap; text-overflow: ellipsis; overflow: hidden;'>" + 
+      "<input type='checkbox' name='"+name+"' id='"+ uid +"' value='"+value+"'/>" + value +
+    "</label>" +
+  "</li>";
 }

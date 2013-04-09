@@ -6,22 +6,20 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>Aid Information Platform</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/sector">Aid by Sector</a></li>
+                    <li><%= sector['sectorName'] %></li>
+                </ul>
+            </div>
             <h1>
                 Aid by Sector
             </h1>
         </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/sector">Aid by Sector</a></li>
-                <li><%= sector['sectorName'] %></li>
-            </ul>
-        </div>
     </div>
 </div>
 
-<%= partial "partials/search-bar" %>
 
 <div class="row">
     <div class="twelve columns content">

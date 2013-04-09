@@ -14,10 +14,10 @@ module CodeLists
   }
 
   @@mime_types = {
-    "application/msword" => "Word",
-    "application/vnd.ms-excel" => "Excel",
+    "application/msword" => "Word Document",
+    "application/vnd.ms-excel" => "Excel Spreadsheet",
     "application/octet-stream" => "Binary file",
-    "application/pdf" => "PDF"
+    "application/pdf" => "PDF Document"
   }
 
   @@transaction_titles = {

@@ -5,35 +5,37 @@ title: Aid Information Platform
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "documents", :has_funded_projects => has_funded_projects} %>
 
 <div class="row">
-    <div class="twelve columns">
-      <h3 class="section-group-title">Project Documents</h3>
-      <p>Documents are shown for a project if published after January 2011.</p>
-      <p>DFID aim to be as transparent as possible however, in some cases, we are unable to show all the documents that are associated with a project where there is a potential security risk.</p>
-      <!--Only show this table if there are documents to show, otherwise show alternative text-->
-      <table style="border:0;">
-        <tbody>
-            <% documents.each do |document| %>
-              <tr>
-                <td>
-                    <a href="<%=document['url']%>">
-                      <%= document['title'].gsub(/\.[^.]*$/, '') %>
-                    </a>
-                </td>
-                <td><%= mime_type document['format'] %></td>
-                <td>
-                  <% document['categories'].each do |category| %>
-                    <span class="category">
-                      <% if(category.equal?(document['categories'].last)) %>
-                        <%= category %>
-                      <% else %>
-                        <%= category + " |" %>
-                      <% end %>
-                    </span>
-                  <% end %>
-                </td>
-              </tr>
-            <% end %>
-        </tbody>
-      </table>
+    <div class="twelve columns summary">
+        <h2 class="visually-hidden">Documents</h2>
+        <p>DFID aim to be as transparent as possible however, in some cases, we are unable to show all the documents that are associated with a project where there is a potential security risk</p>
+
+        <table class="results-list">
+            <thead class="visually-hidden">
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Doc Type</th>
+                    <th scope="col">Categories</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% documents.each do |document| %>
+                  <tr class="result-list-row">
+                      <th scope="row"><a href="<%=document['url']%>"><%= document['title'].gsub(/\.[^.]*$/, '') %></a></th>
+                      <td scope="col"><%= mime_type document['format'] %></td>
+                      <td scope="col">
+                        <% document['categories'].each do |category| %>
+                          <span class="category">
+                            <% if(category.equal?(document['categories'].last)) %>
+                              <%= category %>
+                            <% else %>
+                              <%= category + " |" %>
+                            <% end %>
+                          </span>
+                        <% end %>
+                      </td>
+                  </tr>
+                <% end %>
+            </tbody>
+        </table>
     </div>
 </div>

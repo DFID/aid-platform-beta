@@ -4,61 +4,42 @@ title: Aid Information Platform
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true} %>
 <% if defined?(funding_project) then %>
+
   <div class="row">
-      <div class="twelve columns">
+      <div class="twelve columns results-info">
         <h3 class="section-group-title">Funding Project</h3>
-        <table style="border:0;">
-          <tbody>
-              <tr>
-                <td>
-                  <h4>DFID</h4>
-                </td>
-                <td width="60%">
-                  <h4>
-                    <a href="/projects/<%=funding_project['iatiId']%>">
-                      <%=funding_project['title']%>
-                    </a>
-                  </h4>
-                  <div class="description">
-                    <%=funding_project['description']%>
-                  </div>
-                </td>
-                <td style="text-align:right;">
-                  <h4><%= number_to_currency(project['funds'], :unit=>"£", :precision => 0) %></h4>
-                </td>
-              </tr>
-          </tbody>
-        </table>
+        <div class="row">
+            <div class="four columns summary">
+                <h4>DFID</h4>     
+            </div>
+            <div class="eight columns">
+                <ul>
+                    <li><a href="/projects/<%=funding_project['iatiId']%>"><%=funding_project['title']%></a><%=funding_project['description']%><span><%= number_to_currency(project['funds'], :unit=>"£", :precision => 0) %></span></li>
+                </ul> 
+            </div>
+        </div>
       </div>
   </div>
 <% end %>
 
 <div class="row">
-    <div class="twelve columns">
-      <h3 class="section-group-title">Partner Projects</h3>
-      <table style="border:0;">
-        <tbody>
-          <% funded_projects.each do |funded_project| %>
-            <tr>
-              <td>
-                <h4><%=funded_project['reporting']%></h4>
-              </td>
-              <td width="60%">
-                <h4>
-                  <a href="/projects/<%=funded_project['funded']%>">
-                    <%=funded_project['title']%>
-                  </a>
-                </h4>
-                <div class="description">
-                  <%=funded_project['description']%>
-                </div>
-              </td>
-              <td>
-                <h4><%= number_to_currency(funded_project['funds'], :unit=>"£", :precision => 0) %></h4>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+    <div class="twelve columns results-info">
+
+      <% if funded_projects.count > 0 then %>
+        <h3 class="section-group-title">Partner Projects</h3>
+      <% end %>
+
+      <% funded_projects.each do |funded_project| %>
+        <div class="row">
+            <div class="four columns summary">
+                <h4><%=funded_project['reporting']%></h4>     
+            </div>
+            <div class="eight columns">
+                <ul>
+                    <li><a href="/projects/<%=funded_project['funded']%>"><%=funded_project['title']%></a><%=funded_project['description']%><span><%= number_to_currency(funded_project['funds'], :unit=>"£", :precision => 0) %></span></li>
+                </ul> 
+            </div>
+        </div>
+      <% end %>
     </div>
 </div>

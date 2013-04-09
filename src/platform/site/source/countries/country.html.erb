@@ -6,22 +6,20 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>Aid Information Platform</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/location/country/index.html">Aid by Location</a></li>
+                    <li><%= country['name'] %></li>
+                </ul>
+            </div>
             <h1>
                 <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
             </h1>
         </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/location/country/index.html">Aid by Location</a></li>
-                <li><%= country['name'] %></li>
-            </ul>
-        </div>
     </div>
 </div>
 
-<%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "summary", :code => country['code'], :project_count => projects.size } %>
 
 <div class="row">
@@ -38,9 +36,9 @@ title: Aid Information Platform
     </div>
 </div>
 
-<div class="row">
+<div class="row row-summary">
     <div class="six columns">
-        <h3 class="info-notice">Key info</h3>
+        <h3>Key Info</h3>
         <ul class="info-list vertical">
             <li class="fact-item">
                 Country budget for <strong><%= current_financial_year %></strong>
@@ -56,15 +54,15 @@ title: Aid Information Platform
             </li>
 
                 <li class="fact-item">
-                    Population (source: <a href="http://data.worldbank.org/country">World Bank</a>):
+                    Population (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
                     <span><strong><%= format_round_million country['population'].to_f || "&nbsp;" %></strong></span>
                 </li>
                 <li class="fact-item">
-                    Life expectancy at birth (source: <a href="http://data.worldbank.org/country">World Bank</a>):
+                    Life expectancy at birth (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
                     <span><strong><%= country['lifeExpectancy'].to_f.round(0) || "&nbsp;"%></strong></span>
                 </li>
                 <li class="fact-item">
-                    Income level (source: <a href="http://data.worldbank.org/country">World Bank</a>):
+                    Income level (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
                     <span><strong><%= country['incomeLevel'] || "&nbsp;" %></strong></span>
                 </li>   
 
@@ -86,25 +84,28 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="six columns">
-         <h3 class="info-notice">Sector groups</h3>
-         <div id="sectorChart" style="float:left;"></div>
-            <div id="sectorLegend" style="float:left;">
-            <table>
-                <% (sector_groups country['code']).each do |sector| %>
-                    <tr class="legend-item">
-                        <td>
-                            <span class="legend-color"></span>
-                            <span class="truncate" style="width: 185px;" title="<%= sector['name'] %>"> <%= sector['name'] || "Other" %> </span>
-                        </td>
-                        <td><%= sector['total'] %></td>
-                    </tr>
-                <% end %>
-            </table>
-
-        </div>
+         <h3>Sector groups</h3>
+         <div class="row">
+            <div class="six columns">
+                <div id="sectorChart"></div>
+            </div>
+            <div class="six columns">
+                <div id="sectorLegend">
+                    <ul class="legend-list">
+                        <% (sector_groups country['code']).each do |sector| %>
+                            <li><span class="theme-1 legend-color"></span>
+                                <div title="<%=sector['name'] || "Other"%>" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%=sector['name'] || "Other"%></div>
+                                <em><%= sector['total'] %><span class="visually-hidden">projects</span></em>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
+            </div>
+         </div>
+         
     </div>
     <div class="six columns">
-         <h3 class="info-notice">Project budget total by year</h3>
+         <h3 >Project budget total by year</h3>
          <div id="budget-year-chart" style="height: 250px;" class="standard">
         </div>
     </div>

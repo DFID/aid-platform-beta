@@ -19,21 +19,38 @@ module CountryHelpers
   end
 
   def sector_groups(countryCode) 
-    firstSeven = @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1}).limit(7).to_a
-    others = @cms_db['sector-breakdowns'].aggregate([{ 
-      "$match" => {"country" => countryCode } 
-    }, { 
-      "$skip" => 7 
-    }, {
-     "$group" => {
-        "_id" => nil,
-        "total" => {
-         "$sum" => "$total"
-        } 
-      } 
-    }])
+    sectors = @cms_db['sector-breakdowns'].find({'country' => countryCode}).sort({'total' => -1}).to_a.map { |sector|
+      higher = @cms_db['sector-hierarchies'].find_one({ "sectorCode" => sector['sector'].to_i })       
+      higher = higher || {
+        "highLevelCode" => 0,
+        "highLevelName" => "Other"
+      }
 
-    firstSeven + others
+      {
+        "sector" => higher['highLevelCode'],
+        "name"   => higher['highLevelName'],
+        "total"  => sector['total']
+      }
+    }.select { |sector| 
+        sector['sector'] != 0 
+    }.group_by { |sector| 
+        sector['sector']
+    }.map { |sector, counts|
+      {
+        'sector' => sector,
+        'name'   => counts.first['name'],
+        'total'  => counts.map { |c| c['total'] }.inject(:+)
+      }
+    }.sort_by { |s| -s['total']}
+
+    if sectors.count > 5 then
+        sectors[0..4] << {
+            'name'  => "Other",
+            'total' => sectors[5..-1].map { |s| s['total'] }.inject(:+)
+        }
+    else
+        sectors
+    end
   end
 
   

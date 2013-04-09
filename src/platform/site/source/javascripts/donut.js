@@ -48,12 +48,13 @@
     }
 
     function donutLegend(elSelector, itSelector, size, data, paletteFn){
+
         d3.select(elSelector).selectAll(itSelector).data(data).insert("svg")
-            .attr("width", size)
-            .attr("height", size)
+            .attr("width", "100%")
+            .attr("height", "100%")
             .append("rect")
-                .attr("width", size)
-                .attr("height", size)
+                .attr("width", "100%")
+                .attr("height", "100%")
                 .style("fill", function(d) {
                     return colourFor(paletteFn(d));
                 });

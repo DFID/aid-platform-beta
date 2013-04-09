@@ -6,27 +6,25 @@ title: Aid Information Platform
     <div class="twelve columns">
         <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
         <div>
-            <span>Aid Information Platform</span>
+            <div class="breadcrumb">
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/location/country/index.html">Aid by Location</a></li>
+                    <li><%= country['name'] %></li>
+                </ul>
+            </div>
             <h1>
                 <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
             </h1>
         </div>
-        <div class="breadcrumb clr-fix">
-            <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/location/country/index.html">Aid by Location</a></li>
-                <li><%= country['name'] %></li>
-            </ul>
-        </div>
     </div>
 </div>
 
-<%= partial "partials/search-bar" %>
 <%= partial "partials/countries-tabs", :locals => { :active => "results", :code => country['code'], :project_count => projects.size } %>
 
 <div class="row">
     <div class="twelve columns content results-info">
-        <h2 class="section-group-title">What DFID has achieved</h2>
+        <h3 class="section-group-title">What DFID has achieved</h3>
         <% results.each do |result| %>
         <div class="row">
             <div class="four columns summary">
