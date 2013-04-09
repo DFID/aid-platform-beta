@@ -2,19 +2,19 @@ require "kramdown"
 
 module Formatters
   def format_million_stg(v)
-    "&pound;#{v/1000000}M"
+    "&pound;#{(v/1000000.0).round(2)}M"
   end 
 
   def format_round_million(v)
-    "#{(v/1000000).round(2)} million"
+    "#{(v/1000000.0).round(2)} million"
   end
 
   def format_round_m(v)
-    "#{(v/1000000).round(1)}m"
+    "#{(v/1000000.0).round(1)}m"
   end
 
   def format_billion_stg(v)
-    "&pound;#{(v/1000000000).round(2)}bn"
+    "&pound;#{(v/1000000000.0).round(2)}bn"
   end
 
   def markdown_to_html(md)
