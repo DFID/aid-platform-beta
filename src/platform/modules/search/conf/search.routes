@@ -3,4 +3,4 @@
 # ~~~~
 
 # Home page
-POST     /				            controllers.search.Application.search
+GET     /				            controllers.search.Application.search

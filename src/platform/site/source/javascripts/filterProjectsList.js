@@ -54,7 +54,7 @@ function budgetFilteringSetUp() {
 
 function filter(divsToCheck) {
   if( !$('input[type=checkbox]').is(':checked') && ($('#slider-vertical').slider("option", "values")[1] == $('#slider-vertical').slider("option", "max")) ) {
-    $('.search-result').css("display", "inline");
+    $('.search-result').show();
     displayResultsAmount();
     return false;
   }
@@ -92,6 +92,26 @@ function filter(divsToCheck) {
         hasSectors.push(true);
       }
     });
+
+    var hasCountry = [];
+    var isCountryGroupActive = false;
+    $('input:checked[name=countries]').each(function(i, checkboxes){
+      anythingFound = true;
+      isCountryGroupActive = true;
+      if ($(div).children('input[value*="' + checkboxes.value + '"][name="countries"]').length > 0) {
+        hasCountry.push(true);
+      }
+    });
+
+    var hasRegion = [];
+    var isRegionGroupActive = false;
+    $('input:checked[name=regions]').each(function(i, checkboxes){
+      anythingFound = true;
+      isRegionGroupActive = true;
+      if ($(div).children('input[value*="' + checkboxes.value + '"][name="regions"]').length > 0) {
+        hasRegion.push(true);
+      }
+    });
          
     var show = new Array();
     if(isStatusGroupActive){
@@ -106,6 +126,10 @@ function filter(divsToCheck) {
       show.push(hasTrue(hasSectors));
     }
 
+    if(isRegionGroupActive || isCountryGroupActive){
+      show.push(hasTrue(hasRegion) || hasTrue(hasCountry))
+    }
+
     var divBudget = +($(div).children('input[name="budget"]').val());
     var min = +($('#slider-vertical').slider("option", "values")[0]);
     var max = +($('#slider-vertical').slider("option", "values")[1]);
@@ -114,9 +138,9 @@ function filter(divsToCheck) {
     } 
 
     if ($.inArray(false, show)!= -1) {
-      $(div).css("display", "none");
+      $(div).hide();
     } else {
-      $(div).css("display", "inline");
+      $(div).show();
     }
 
     if(!anythingFound){
@@ -137,12 +161,12 @@ function displayResultsAmount(){
   $('span[name=afterFilteringAmount]').html(($(".search-result").length - $(".search-result:hidden").length) + " of ");
 }
 
-var Status = new Array();
-var Countries = new Array();
-var Regions = new Array();
-var Organizations = new Array();
-var Sectors = new Array();
-var SectorGroups = new Array();
+var Status = [];
+var Countries = [];
+var Regions = [];
+var Organizations = [];
+var Sectors = [];
+var SectorGroups = [];
 
 function unique(array){
   return $.grep(array,function(el,index) {
@@ -187,11 +211,19 @@ function getHiddenFieldsValues(){
   $(".search-result input[name=organizations]").each(function() {
     splitAndAssign($(this).attr("value"),Organizations)
   });
+
+  $(".search-result input[name=countries]").each(function() {
+    splitAndAssign($(this).attr("value"),Countries)
+  });
+
+  $(".search-result input[name=regions]").each(function() {
+    splitAndAssign($(this).attr("value"),Regions)
+  });
 }
 
 function addCheckboxesFilters() {
 
-  $("div[name=status], div[name=sectors], div[name=organizations]").append("<ul></ul>") 
+  $("div[name=status], div[name=sectors], div[name=organizations], div[name=regions], div[name=countries]").append("<ul></ul>") 
 
   $.each( Status, function( key, value ) {
     $("div[name=status] ul").append(createInputCheckbox('status', value));
@@ -203,6 +235,14 @@ function addCheckboxesFilters() {
 
   $.each( Organizations, function( key, value ) {
     $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
+  });
+
+  $.each( Countries, function( key, value ) {
+    $("div[name=countries] ul").append(createInputCheckbox('countries', value));
+  });
+
+  $.each( Regions, function( key, value ) {
+    $("div[name=regions] ul").append(createInputCheckbox('regions', value));
   });
 }
 

@@ -7,117 +7,187 @@
 <!--[if IE 8]>         <html class="ie8"> <![endif]-->
 <!--[if gt IE 8]><!--> <html>         <!--<![endif]-->
 
-  <head>
-    <meta charset="utf-8">
-    <title>Aid Information Platform</title>
-    <!--[if IE 8]>
-    <script type="text/javascript">
-      (function(){if(window.opera){return;}
-      setTimeout(function(){var a=document,g,b={families:(g=
-      ["nta"]),urls:["/stylesheets/fonts-ie8.css]},
-      c="javascripts/webfont-debug.js,d="script",
-      e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
-      ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h--;a.documentElement
-      .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
-      })()
-    </script>
-    <![endif]-->
-    <!--[if gte IE 9]><!--><link type="text/css" rel="stylesheet" media="screen" href="/stylesheets/fonts.css"><!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <title>Aid Information Platform</title>
 
 
-    <script src="/javascripts/jquery-base.js" type="text/javascript"></script>
-    <!--[if lt IE 9]>
-    <script src="/javascripts/ie-compat.js" type="text/javascript"></script>
-    <![endif]-->
+        <!--[if IE 8]>
+        <script type="text/javascript">
+            (function(){if(window.opera){return;}
+                setTimeout(function(){var a=document,g,b={families:(g=
+                        ["nta"]),urls:["/stylesheets/fonts-ie8.css]},
+                    c="javascripts/webfont-debug.js,d="script",
+                    e=a.createElement(d),f=a.getElementsByTagName(d)[0],h=g.length;WebFontConfig
+                        ={custom:b},e.src=c,f.parentNode.insertBefore(e,f);for(;h--;a.documentElement
+                        .className+=' wf-'+g[h].replace(/\s/g,'').toLowerCase()+'-n4-loading');},0)
+            })()
+        </script>
+        <![endif]-->
+        <!--[if gte IE 9]><!--><link href="/stylesheets/fonts.css?1365526785" media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->
 
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css">
-    <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css">
-	<link type="text/css" rel="stylesheet" href="/stylesheets/jquery-ui-1.10.2.custom.min.css" >
+        <link href="/stylesheets/foundation.css?1365526785" media="screen" rel="stylesheet" type="text/css" />
+        <link href="/stylesheets/aip-styles.css?1365526785" media="screen" rel="stylesheet" type="text/css" />
+        <link href="/stylesheets/graph-styles.css?1365526785" media="screen" rel="stylesheet" type="text/css" />
+        <link href="/stylesheets/main.css?1365526785" media="screen" rel="stylesheet" type="text/css" />
 
-    <script src="/javascripts/jquery-1.9.0.min.js" type="text/javascript"></script>
-    <script src="/javascripts/filterProjectsList.js" type="text/javascript"></script>
-	<script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="/stylesheets/foundation.css">
+        <link type="text/css" rel="stylesheet" href="/stylesheets/aip-styles.css">
+        <link type="text/css" rel="stylesheet" href="/stylesheets/jquery-ui-1.10.2.custom.min.css" >
+
+        <script src="/javascripts/jquery-base.js?1365526777" type="text/javascript"></script>
+        <!--[if lt IE 9]>
+        <script src="/javascripts/ie-compat.js?1365526764" type="text/javascript"></script>
+        <![endif]-->
+        <script src="/javascripts/d3.js?1365526781" type="text/javascript"></script>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1">
 
 
-  </head>
+        <script src="/javascripts/filterProjectsList.js" type="text/javascript"></script>
+        <script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+    </head>
   <body>
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visually-hidden">Skip to main content</a>
-    @partials.header()
+    <header role="banner" id="global-header">
+        <div class="row">
+            <div class="twelve columns">
+                <h2><a href="/" title="Go to the homepage">Aid Information Platform</a></h2>
+            </div>
+        </div>
+    </header>
     <div class="page-wrapper">
-    	<div class="row">
-    		<div class="twelve columns">
-    			<div class="disclaimer">
-    				@partials.disclaimer()
-    			</div>
-    		</div>
-    	</div>
-    	<div class="row" id="page-title">
-    		@partials.pageTitle()
-    	</div>
+        <div id="page-title" class="row">
+            <div class="twelve columns">
+                <img src="/images/ukaid_logo.gif" alt="UK aid from the British people">
+                <div>
+                    <div class="breadcrumb">
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li>Search Results</li>
+                        </ul>
+                    </div>
+                    <h1>
+                        Search Results
+                    </h1>
+                </div>
+            </div>
+        </div>
         <div class="row">
-        	@partials.search(query)
+            <div class="twelve columns">
+                <div id="search-bar">
+                    <form method="GET" action="/search">
+                        <label for="query">
+                            <h3>Search Projects</h3>
+                            <input type="text" value="@query" placeholder="e.g. location, sector, organisation or keyword" name="query" id="query"/>
+                        </label>
+                        <input type="submit" class="button" value="Search">
+                    </form>
+                </div>
+            </div>
     	</div>
-        <div class="row">
-         <div class="twelve columns">
-         @if(results.isEmpty){
-        	 <div class="search-result">
-        	 <p style="padding-top:.33em"> Your search - <em>@query</em> - did not match any documents.  </p>
-        	 <p style="margin-top:1em">Suggestions:</p>
-        	 <ul style="margin:0 0 2em;margin-left:1.3em">
-        	 <li>Make sure all words are spelled correctly.</li>
-        	 <li>Try different keywords.</li>
-        	 <li>Try more general keywords.</li>
-        	 <li>Try fewer keywords.</li>
-        	 </ul>
-        	 </div>
-         }else{
-        	@partials.filters()
-        	<div class="testResults" style="float: right; width: 70%; ">
-        	<em>Showing <span name="afterFilteringAmount"></span> <span name="numberofResults" value="@results.size">@results.size</span> results</em>
-        	<span name="sugestionSpan" style="display:none;"></span>
-        	@for(i <- 0 to results.size -1) {
-        		@if(!results(i).get("status").isEmpty){
-        		<div class="search-result">
-            		<input type="hidden" name="status" value="@results(i).get("status")">
-            		<input type="hidden" name="organizations" value="@results(i).get("organizations")">
-            		<input type="hidden" name="countries" value="@results(i).get("countries")">
-            		<input type="hidden" name="sectors" value="@results(i).get("sectors")">
-            		<input type="hidden" name="regions" value="@results(i).get("regions")">
-            		<input type="hidden" name="budget" value="@results(i).get("budget")">
-        			<h3><a href="/projects/@results(i).get("id")">@results(i).get("title")&nbsp;<small>[@results(i).get("id")]</small></a></h3>
-        			<p class="budget">Budget: <em>@results(i).get("formatedBudget")</em></p>
-        			<p class="budget" style="margin-top:-3px;">Status: <em>@results(i).get("status")</em></p>
-        			<p class="description">@results(i).get("description")</p>
-        		</div>
-        		} else {
-        			 <script>
-        			 $(function() {
-        				 $('span[name=numberofResults]').attr("value",$('span[name=numberofResults]').attr("value")-1)
-        				 $('span[name=numberofResults]').html($('span[name=numberofResults]').attr("value"));
-        				 $('span[name=sugestionSpan]').show();
-        				 var budget = "@results(i).get("countryBudget")".replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
-        				 $('span[name=sugestionSpan]').html("<br/><div class='suggested-country' style='background-color: #F0F0F0;font-size: 1.1em;margin: 20px 0;padding: 15px;'><p>Did you mean the <em>country <a href='/countries/@results(i).get("countryCode")'>@results(i).get("countryName")</a></em>?</p><p></p><h3><em>@results(i).get("countryName")</em></h3>Budget: <em>£"+budget+"</em><p></p></div>");
+        <div class="row project-results" >
+            <div class="nine columns push-three" id="search-results">
+                @if(results.isEmpty){
+                    <div class="search-result">
+                        <p style="padding-top:.33em"> Your search - <em>@query</em> - did not match any documents.  </p>
+                        <p style="margin-top:1em">Suggestions:</p>
+                        <ul style="margin:0 0 2em;margin-left:1.3em">
+                            <li>Make sure all words are spelled correctly.</li>
+                            <li>Try different keywords.</li>
+                            <li>Try more general keywords.</li>
+                            <li>Try fewer keywords.</li>
+                        </ul>
+                    </div>
+                } else {
+                    <p>
+                        Showing
+                        <span name="afterFilteringAmount" style="display:inline;"></span>
+                        <span name="numberofResults" value="@results.size" style="display:inline;">@results.size</span> results
+                    </p>
+                    <span name="sugestionSpan" style="display:none;"></span>
 
-        			 });
-        			 </script>
-        		}
-        	}
-         }
-        	</div>
-         </div>
-    	</div>
+                    @results.map { project =>
+
+                        @if(project.get("status").isEmpty){
+                            <script>
+                                $(function() {
+                                    $('span[name=numberofResults]').attr("value",$('span[name=numberofResults]').attr("value")-1)
+                                    $('span[name=numberofResults]').html($('span[name=numberofResults]').attr("value"));
+                                    $('span[name=sugestionSpan]').show();
+                                    var budget = "@project.get("countryBudget")".replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
+                                    $('span[name=sugestionSpan]').html("<div class='suggested-country' style='background-color: #F0F0F0;font-size: 1.1em;margin: 20px 0;padding: 15px;'><p>Did you mean the <em>country <a href='/countries/@project.get("countryCode")'>@project.get("countryName")</a></em>?</p><p></p><h3><em>@project.get("countryName")</em></h3>Budget: <em>£"+budget+"</em><p></p></div>");
+                                });
+                            </script>
+                        } else {
+                            <div class="search-result">
+                                <input type="hidden" name="status" value='@project.get("status")' />
+                                <input type="hidden" name="organizations" value='@project.get("organizations")' />
+                                <input type="hidden" name="countries" value='@project.get("countries")' />
+                                <input type="hidden" name="sectors" value='@project.get("sectors")' />
+                                <input type="hidden" name="regions" value='@project.get("regions")'/>
+                                <input type="hidden" name="budget" value='@project.get("budget")'/>
+
+                                <h3>
+                                    <a href='/projects/@project.get("id")'>
+                                        @project.get("title") <small>[@project.get("id")]</small>
+                                    </a>
+                                </h3>
+                                <span class="budget">Budget: <em> @project.get("formatedBudget")</em></span>
+                                <span>Status: <em>@project.get("status")</em></span>
+                                <p class="description">@project.get("description")</p>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+
+            <div class="three columns pull-nine">
+                @if(!results.isEmpty){
+                    <div id="filter">
+                        <h2 class="visually-hidden">Results Filter</h2>
+                        <div name="status"><h3>Status</h3></div>
+                        <div name="organizations"><h3>Organisations</h3></div>
+                        <div name="countries"><h3>Countries</h3></div>
+                        <div name="regions"><h3>Regions</h3></div>
+                        <div name="sectors"><h3>Sectors</h3></div>
+                        <div name="budget"><h3>Budget</h3></div>
+                        <span id="amount" style="border: 0; font-weight: bold;"></span>
+                        <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
+                    </div>
+                }
+            </div>
+        </div>
     </div><!--end wrapper-->
     <div class="disclaimer">
-    	<div class="row">
-			@partials.disclaimer()
-		</div>
-	</div>
-    @partials.footer()
-	<span name="countries" value="@numberOfEesultsFoundByES)" style="display:none;" ></span>
+        <div class="row">
+            <p>This is a <em>test website</em>, so may be inaccurate or misleading.  The official website remains <a href="http://gov.uk/dfid">gov.uk/dfid</a></p>
+        </div>
+    </div>
+    <footer role="contentinfo" id="footer">
+        <div class="row">
+            <div class="eight columns">
+                <nav>
+                    <ul class="twelve columns inline-list">
+                        <li><a href="/help">Help</a></li>
+                    </ul>
+                </nav>
+                <div class="row">
+                    <div class="twelve columns">
+                        <p>Much of the information on this website is available for reuse under the <a rel="license" href="http://www.nationalarchives.gov.uk/doc/open-government-licence/">Open Government Licence</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="four columns">
+                <div class="copyright">
+                    <a href="http://www.nationalarchives.gov.uk/information-management/our-services/crown-copyright.htm">&copy; Crown Copyright</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+	<span name="countries" value="@numberOfEesultsFoundByES" style="display:none;" ></span>
     <span name="budget" value="" style="display:none;" ></span>
     <script src="http://uk1.siteimprove.com/js/siteanalyze_advanced.js" type="text/javascript" ></script>
-    <script src="https://loader.engage.gsfn.us/loader.js" type="text/javascript" ></script>
   </body>
 </html>
 

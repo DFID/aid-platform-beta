@@ -1,7 +1,7 @@
 @(query: String = "", label: String = "Search Projects", compact: Boolean = false)
 <div class="twelve columns">
     <div id="search-bar">
-        <form method="POST" action="/search">
+        <form method="GET" action="/search">
             <label for="query">
                 <h3>Search Projects</h3>
                 <input type="text" value="@query" placeholder="e.g. location, sector, organisation or keyword" name="query" id="query">

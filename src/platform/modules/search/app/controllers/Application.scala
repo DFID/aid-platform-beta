@@ -8,9 +8,8 @@ import util.Properties
 
 object Application extends Controller {
 
-  def search = Action(parse.urlFormEncoded) { request =>
-
-    request.body("query").headOption.map { query =>
+  def search = Action { request =>
+    request.getQueryString("query").map { query =>
       val result = ElasticSearch.search(query, Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ))
       Ok(views.html.search(query, result.size , result.toList.map(_.toMap)))
     } getOrElse {
