@@ -25,11 +25,7 @@ title: Aid Information Platform
                       <td scope="col">
                         <% document['categories'].each do |category| %>
                           <span class="category">
-                            <% if(category.equal?(document['categories'].last)) %>
-                              <%= category %>
-                            <% else %>
-                              <%= category + " |" %>
-                            <% end %>
+                            <%=category%>
                           </span>
                         <% end %>
                       </td>

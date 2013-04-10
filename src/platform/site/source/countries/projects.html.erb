@@ -27,9 +27,9 @@ title: Aid Information Platform
 <script type="text/javascript" src="/javascripts/filterProjectsList.js"></script>
 
 <div class="row project-results">
-    <div class="nine columns push-three">
+    <div class="nine columns push-three" id="search-results">
         <% projects.each do |project| %>
-            <div id="search-results" class="search-result">
+            <div class="search-result">
                 <input type="hidden" name="status" value="<%= activty_status(project['status']) %>"/>
                 <input type="hidden" name="budget" value="<%= project['totalBudget'] %>"/>
                 <input type="hidden" name="sectors" value="<%=retrieve_high_level_sector_names(project["iatiId"])%>"/>
