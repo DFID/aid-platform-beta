@@ -10,7 +10,7 @@ module SectorHelpers
 				"sectorCodes" => {
 					"$addToSet" => "$sectorCode"
 				} 
-			} 
+			}
 		}]).map { |l| {
 			:code   => l['_id'],
 			:name   => l['name'],
@@ -67,7 +67,7 @@ module SectorHelpers
 		totalSectorsBudget = Float(sectors.map { |s| s[:budget] }.inject(:+))
 		maxBudget = Float(sectors.max_by { |s| s[:budget] }[:budget])
 
-		sectors.sort_by { |s| s[:code] }.map { |s| s.merge({
+		sectors.sort_by { |s| s[:name] }.map { |s| s.merge({
 			:percentage => s[:budget] / totalSectorsBudget * 100.0,
 			:cellWidth	=> s[:budget] / maxBudget * 60.0
 		})}.select { |s| s[:percentage] >= 0.01 }
