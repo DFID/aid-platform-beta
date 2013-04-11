@@ -116,51 +116,62 @@ module ProjectHelpers
     end
 
     def project_budget_per_fy(projectId)
-        # aggregates the project budgets and budgets spend per financial years for given project
-        startDate = Time.utc(financial_year-3,04,01)
-        endDate = Time.utc(financial_year+3,03,31)
+        # project all budgets into a suitable format
+        budgets = coerce_budget_vs_spend_items(
+            @cms_db['project-budgets'].find(
+                { "id" => projectId }, :sort => ['date', Mongo::DESCENDING]
+            ), "budget"
+        )
 
-        spends = @cms_db['transactions'].find({
-            "project" => projectId,
-            "$or"     => [{ "type" => "D"}, {"type" => "E"}],
-            'date' => {
-                '$gte' => startDate,
-                '$lte' => endDate
-            }
-        }).map { |t| 
-            {
-                "fy" => financial_year_formatter(t['date'].strftime("%Y-%m-%d")),
-                "value" => t['value']
-            }
-        }.group_by { |year| 
-            year["fy"] 
-        }.map { |fy, v|
-            {
-                'fy' => fy, 
-                'value' => v.map { |year| year["value"] }.inject(:+)
-            }
-        }.map { |year| 
-            {
-                year['fy'] => year['value']
-            }
-        }.reduce(Hash.new, :merge)
+        # project all spends into a suitable format
+        spends = coerce_budget_vs_spend_items(
+            @cms_db['transactions'].find({
+                "project" => projectId,
+                'type'    => {
+                    '$in' => ['D', 'E']
+                }
+            }), "spend"
+        )
 
-        @cms_db['project-budgets'].find({
-            "id"    => projectId,
-            "value" => { "$gt" => 0 },
-            'date' => {
-                '$gte' => "#{(financial_year-3)}-04-01",
-                '$lte' => "#{(financial_year+3)}-03-31"
-            } 
-        }).sort({ "date" => 1 }).group_by { |budget|
-            financial_year_formatter(budget['date'])
-        }.map { |fy, v|
+        # merge the series and sort by financial year
+        series = (spends + budgets).group_by { |item|
+            item['fy']
+        }.map { |fy, items|
+            # So we coerce this into a partially projected list of pairs
             [
-                fy, 
-                v.map { |year| year["value"] }.inject(:+),
-                spends[fy] || 0
+                fy,
+                (items.find { |b| b['type'] == 'budget' } || {'value' => 0})['value'],
+                (items.find { |b| b['type'] == 'spend' } || {'value' => 0})['value']
             ]
+        }.sort_by { |item| item.first }
+
+        # determine what range to show
+        current_financial_year = first_day_of_financial_year(DateTime.now)
+
+        # if range is 6 or less just show it
+        range = if series.size < 7 then
+          series
+        # if the last item in the list is less than or equal to 
+        # the current financial year get the last 6
+        elsif series.last.first <= current_financial_year
+          series.last(6)
+        # other wise show current FY - 3 years and cuurent FY + 3 years
+        else
+          index_of_now = series.index { |i| i[0] == current_financial_year }
+
+          if index_of_now.nil? then
+            series.last(6)
+          else
+            series[[index_of_now-3,0].max..index_of_now+2]
+          end
+        end
+
+        # finally convert the range into a label format
+        range.each { |item| 
+          item[0] = financial_year_formatter(item[0]) 
         }
+
+        range
     end
 
     def total_project_budget(projectId)
@@ -233,4 +244,35 @@ module ProjectHelpers
     def project_documents(projectCode)
         @cms_db['documents'].find({ 'project' => projectCode}).count
     end
+
+private
+
+    def first_day_of_financial_year(date_value)
+        if date_value.month > 3 then
+            Date.new(date_value.year, 4, 1)
+        else
+            Date.new(date_value.year - 1, 4, 1)
+        end
+    end 
+
+    def coerce_budget_vs_spend_items(cursor, type) 
+        cursor.to_a.group_by { |b| 
+            # we want to group them by the first day of 
+            # the financial year. This allows for calculations
+            date = if b['date'].kind_of?(String) then
+              Date.parse(b['date'])
+            else
+              b['date'].to_date
+            end
+            first_day_of_financial_year(date)
+        }.map { |fy, bs| 
+            # then we sum up all the values for that financial year
+            {
+                'type'  => type,
+                "fy"    => fy,
+                "value" => bs.inject(0) { |v, b| v + b['value'] },
+            }
+        }
+    end
+
 end
