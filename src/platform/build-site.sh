@@ -13,7 +13,7 @@ rm -rf build/*
 
 # generate site with middleman
 bundle install
-bundle exec middleman build --clean --verbose
+bundle exec 'middleman build --clean --verbose'
 
 # commit generated site
 cd build
