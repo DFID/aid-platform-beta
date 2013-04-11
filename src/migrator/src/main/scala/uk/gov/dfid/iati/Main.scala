@@ -125,6 +125,15 @@ object Main extends App  {
 
       println(s"Inserted ${code}:${name}")
     }
+
+    // Kosovo is a special case here as its relativley new.  We upsert if it doesn't exist
+    countries.update(
+      BSONDocument("code" -> BSONString("XK")),
+      BSONDocument("$set" -> BSONDocument(
+        "code" -> BSONString("XK"),
+        "name" -> BSONString("Kosovo")
+      )
+    ), upsert = true, multi = false)
   }
 
   private def loadCountryResults = {
