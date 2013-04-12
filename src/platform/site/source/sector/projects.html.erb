@@ -22,19 +22,4 @@ title: Aid Information Platform
     </div>
 </div>
 
-
-<div class="row">
-    <div class="twelve columns">
-        <% projects.each do |project| %>
-            <div class="search-result">
-                <h3>
-                    <a href="/projects/<%=project['iatiId']%>">
-                        <%=project['title']%> <small>[<%=project['iatiId']%>]</small></a>
-                    </h3>
-                <p class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></p>
-                <p class="budget" style="margin-top:-3px;">Status: <em><%= activity_status project['status']%></em></p>
-                <p class="description"><%=project['description']%></p>
-            </div>
-        <% end %>
-    </div>
-</div>
+<%= partial "partials/project_list", :locals => { :projects => projects.to_a } %>
