@@ -225,25 +225,45 @@ function addCheckboxesFilters() {
 
   $("div[name=status], div[name=sectors], div[name=organizations], div[name=regions], div[name=countries]").append("<ul></ul>") 
 
-  $.each( Status, function( key, value ) {
-    $("div[name=status] ul").append(createInputCheckbox('status', value));
-  });
+  if(Status.length < 2) {
+    $("div[name=status]").hide()
+  } else {
+    $.each( Status, function( key, value ) {
+      $("div[name=status] ul").append(createInputCheckbox('status', value));
+    });
+  }
 
-  $.each( Sectors, function( key, value ) {
-    $("div[name=sectors] ul").append(createInputCheckbox('sectors', value));
-  });
+  if(Sectors.length < 2) {
+    $("div[name=sectors]").hide()
+  }else{
+    $.each( Sectors, function( key, value ) {
+      $("div[name=sectors] ul").append(createInputCheckbox('sectors', value));
+    });
+  }
 
-  $.each( Organizations, function( key, value ) {
-    $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
-  });
+  if(Organizations.length < 2) {
+    $("div[name=organizations]").hide()
+  } else {
+    $.each( Organizations, function( key, value ) {
+      $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
+    });
+  }
 
-  $.each( Countries, function( key, value ) {
-    $("div[name=countries] ul").append(createInputCheckbox('countries', value));
-  });
+  if(Countries.length < 2) {
+    $("div[name=countries]").hide()
+  } else {
+    $.each( Countries, function( key, value ) {
+      $("div[name=countries] ul").append(createInputCheckbox('countries', value));
+    });
+  }
 
-  $.each( Regions, function( key, value ) {
-    $("div[name=regions] ul").append(createInputCheckbox('regions', value));
-  });
+  if(Regions.length < 2) {
+    $("div[name=regions]").hide()
+  } else {
+    $.each( Regions, function( key, value ) {
+      $("div[name=regions] ul").append(createInputCheckbox('regions', value));
+    });
+  }
 }
 
 function createInputCheckbox(name, value) {
