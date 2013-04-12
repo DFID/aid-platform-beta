@@ -63,6 +63,10 @@ module ProjectHelpers
                         "$sum" => "$currentFYBudget"
                     }
                 }
+            }, {
+                "$sort" => {
+                    "_id" => -1
+                }
             }]
         )
         result.map { |country| {
