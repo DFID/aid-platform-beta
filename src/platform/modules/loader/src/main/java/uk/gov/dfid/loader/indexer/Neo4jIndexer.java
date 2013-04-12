@@ -150,14 +150,32 @@ public class Neo4jIndexer {
 	}
 
 	private static void aquireDataFromRealatedActivityNodes(Map<String, String> structure, Map<String, IndexBean> elementsToindex, ExecutionEngine engine) {
-			System.out.println("Getting data from activity realted nodes");
+
+        System.out.println("Getting data from activity realted nodes");
 
 		try {
-			String secondaryActivities = "START n=node:entities(type=\"iati-activity\")	MATCH n-[:`recipient-country`|`recipient-region`]-region,n-[:`reporting-org`]-org, n-[:`sector`]-sector WHERE n.`hierarchy` = 2 AND org.ref=\"GB-1\" RETURN n.`iati-identifier`?, region.`recipient-region`?, sector.`sector`?, region.`recipient-country`?, sector.code?";
+            StringBuilder builder = new StringBuilder()
+                    .append("START  n=node:entities(type='iati-activity') ")
+                    .append("MATCH  n-[:`recipient-country`|`recipient-region`]-region,")
+                    .append("       n-[:`reporting-org`]-org, ")
+                    .append("       n-[:`participating-org`]-porg, ")
+                    .append("       n-[:`sector`]-sector ")
+                    .append("WHERE  n.`hierarchy` = 2 ")
+                    .append("AND    org.ref='GB-1' ")
+                    .append("RETURN n.`iati-identifier`?, ")
+                    .append("       region.`recipient-region`?, ")
+                    .append("       sector.`sector`?, ")
+                    .append("       region.`recipient-country`?, ")
+                    .append("       sector.code?, ")
+                    .append("       porg.`participating-org`? as participating");
+
+			String components = builder.toString();
 			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";
-			ExecutionResult result = engine.execute(secondaryActivities);
+
+            ExecutionResult result = engine.execute(components);
 			ExecutionResult budgetsResults = engine.execute(budgets);
-			Iterator<Map<String, Object>> bit = budgetsResults.iterator();
+
+            Iterator<Map<String, Object>> bit = budgetsResults.iterator();
 			Iterator<Map<String, Object>> it = result.iterator();
 
 			while (it.hasNext()) {
@@ -169,6 +187,7 @@ public class Neo4jIndexer {
 				String country = (String) ((item.get("region.recipient-country?") == null) ? "" : item.get("region.recipient-country?"));
 				String sector = (String) item.get("sector.sector?");
 				Long sectorCode = (Long) item.get("sector.code?");
+                String participating = (String) item.get("participating");
 
                 final String highLevelSector = sectorsHelper.getHighLevelSector(sectorCode);
 
@@ -178,6 +197,14 @@ public class Neo4jIndexer {
 					indexBean.getRegion().add(region);
 					indexBean.getCountry().add(country);
 					indexBean.getSector().add(highLevelSector);
+
+                    if(participating != null){
+                        Boolean alreadyAdded = indexBean.getOrganizations().contains(participating);
+                        if(!alreadyAdded){
+                            indexBean.getOrganizations().add(participating);
+                        }
+                    }
+
 					elementsToindex.put(primaryAcitivity, indexBean);
 				}
 			}
