@@ -80,8 +80,14 @@ module CountryHelpers
 
   end
 
-  def financial_year_formatter(dateStr)
-    date = Date.parse dateStr
+  def financial_year_formatter(d)
+
+    date = if(d.kind_of?(String)) then
+      Date.parse d
+    else
+      d
+    end
+
     if date.month < 4
       "FY#{(date.year-1).to_s[2..3]}/#{date.year.to_s[2..3]}"
     else

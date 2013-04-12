@@ -23,7 +23,7 @@ var regionBounds = {
 	'EF':{northeast: {lat:48.443778, lng:32.823715}, southwest: {lat:39.943436,lng:15.311508}},
 	'FA':{northeast: {lat:17.434511, lng:19.636688}, southwest: {lat:-6.446318,lng:-15.827179}},
 	'IB':{northeast: {lat:30.902225, lng:148.257751}, southwest: {lat:-14.689881,lng:77.242126}},
-	'LE':{northeast: {lat:-15.617747, lng:-5.185761}, southwest: {lat:-16.324093,lng:-6.298127}},
+	'LE':{northeast: {lat:28.304381, lng:37.236325}, southwest: {lat:-54.572062,lng:-133.271488}},
 	'OT':{northeast: {lat:-15.617747, lng:-5.185761}, southwest: {lat:-16.324093,lng:-6.298127}},
 	'SF':{northeast: {lat:31.353637, lng:56.324158}, southwest: {lat:-14.944785,lng:-15.306702}},
 	'SQ':{northeast: {lat:21.371244, lng:128.796844}, southwest: {lat:-2.460181,lng:93.508759}},
