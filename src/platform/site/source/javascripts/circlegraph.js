@@ -26,8 +26,8 @@ CircleGraph = function (container) {
     var sateliteContainerW = 0.17 * this.width;
     var sateliteContainerH = 0.10 * this.width;
 
-    var minSateliteCircleR = 0.10 * sateliteContainerH;
-    var maxSateliteCircleR = 0.20 * sateliteContainerH;
+    var minSateliteCircleR = 0.24 * sateliteContainerH;
+    var maxSateliteCircleR = 0.34 * sateliteContainerH;
 
     var scale = d3.scale.linear();
     scale.domain([minBudget, maxBudget]);
@@ -171,7 +171,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
       .attr("cx", w / 2)
       .attr("cy", r);
 
-  var textSize = 0.6 * r;
+  var textSize = 0.4 * r;
   if (textSize > 7) {    
     g.append("text")
       .attr("text-anchor", "middle")
@@ -204,5 +204,5 @@ SateliteCircle.prototype.getData = function(){
 }
 
 format_million_stg = function(amt) {
-  return '\u00A3' + Math.floor(amt / 1000000) + 'm';
+  return '\u00A3' + (amt / 1000000).toFixed(2) + 'm';
 }
