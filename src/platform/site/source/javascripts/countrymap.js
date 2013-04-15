@@ -6,7 +6,6 @@
 
     if (projectType == "global") {
 
-        alert("Asdads")
         var map = new L.Map('countryMap', {
             center: new L.LatLng(7.79,21.28), 
             zoom: 1
