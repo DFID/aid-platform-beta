@@ -6,50 +6,46 @@
 
     if (projectType == "global") {
 
-        var point = new google.maps.LatLng(0,0);
-        var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP, zoom: 1  };
-        var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
+        alert("Asdads")
+        var map = new L.Map('countryMap', {
+            center: new L.LatLng(7.79,21.28), 
+            zoom: 1
+        });
 
-        setTimeout(function(){
-            google.maps.event.trigger(map, "resize");
-            map.setZoom(map.getZoom());
-        }, 200)
+        map.addLayer(new L.Google('ROADMAP'));
 
-        map.setCenter(point);
+        global.map = map;
 
     } else if (countryName && countryCode) {  
 
-        var point = new google.maps.LatLng(
-            countryBounds[countryCode][0], 
-            countryBounds[countryCode][1]
-        );
+        var map = new L.Map('countryMap', {
+            center: new L.LatLng(countryBounds[countryCode][0], countryBounds[countryCode][1]), 
+            zoom: 6
+        });
+        map.addLayer(new L.Google('ROADMAP'));
 
-        var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP, zoom: 6  };
-        var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
+        // ugly exposure of a map to the global scope until
+        // this block get tidied
+        global.map = map;
 
-        setTimeout(function(){
-            google.maps.event.trigger(map, "resize");
-            map.setZoom(map.getZoom());
-        }, 200)
-
-        map.setCenter(point);
 
     } else if (countryCode) {
-        // this is a regional project
         var bounds = regionBounds[countryCode];
-        var northEastBound = new google.maps.LatLng(bounds.northeast.lat, bounds.northeast.lng);
-        var southwestBound = new google.maps.LatLng(bounds.southwest.lat, bounds.southwest.lng);
-        var bounds = new google.maps.LatLngBounds(southwestBound, northEastBound);
-        var mapOptions = { mapTypeId: google.maps.MapTypeId.ROADMAP,  };
-        var map =  new google.maps.Map(document.getElementById("countryMap"), mapOptions);
 
-        setTimeout(function(){
-            google.maps.event.trigger(map, "resize");
-            map.setZoom(map.getZoom());
-        }, 200)
+        var boundary = new L.LatLngBounds(
+            new L.LatLng(bounds.southwest.lat, bounds.southwest.lng),
+            new L.LatLng(bounds.northeast.lat, bounds.northeast.lng)
+        );
+        var map = new L.Map('countryMap', {
+            maxBounds: boundary
+        });
 
-        map.fitBounds(bounds);
-        map.panToBounds(bounds);
+        map.addLayer(new L.Google('ROADMAP'))
+
+        map.fitBounds(boundary);
+        map.panInsideBounds(boundary);
+
+        global.map = map;
     } else {
         $('#countryMap').hide();
         $('#countryMapDisclaimer').hide();
