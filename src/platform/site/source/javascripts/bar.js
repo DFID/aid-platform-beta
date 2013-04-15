@@ -82,7 +82,7 @@
                 .attr("width", x1.rangeBand())
                 .attr("x", function(d, i) { return x1(elementNames[i]); })
                 .attr("y", function(d) { return y(d); })
-                .attr("height", function(d) { return height - y(d); })
+                .attr("height", function(d) { return d3.max([height - y(d), 0]); })
                 .attr("title", function(d){ return d })
                 .style("fill", function(d, i) { return color(i); });
 
