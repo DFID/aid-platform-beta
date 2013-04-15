@@ -164,6 +164,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
   def collectProjectSectorGroups = {
 
+    Await.ready(db.collection("project-sector-budgets").drop, Duration.Inf)
+
     val projectSectorBudgets = db.collection("project-sector-budgets")
     auditor.info("Getting project sector groups")
     try {

@@ -26,6 +26,8 @@
     height : 380px;
 }
 
+.leaflet-popup-tip-container { display: none; }
+
 div.progress { border: none;}
 
 .transactions-table th { font-weight: bold!important; }
