@@ -372,4 +372,41 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     auditor.success("Collected Partner Projects")
   }
+
+  def collectProjectLocations = {
+
+    auditor.info("Collecting project locations")
+
+    // drop the collection as we will build is all from scratch here
+    Await.ready(db.collection("locations").drop, Duration.Inf)
+
+    engine.execute(
+      """
+        | START  location=node:entities(type='location')
+        | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates
+        | WHERE  org.ref='GB-1'
+        | RETURN project.`iati-identifier` as id,
+        |        location.name             as name,
+        |        coordinates.precision     as precision,
+        |        coordinates.longitude     as longitude,
+        |        coordinates.latitude      as latitude
+      """.stripMargin).foreach { row =>
+
+      val id        = row("id").asInstanceOf[String]
+      val name      = row("name").asInstanceOf[String]
+      val precision = row("precision").asInstanceOf[Long]
+      val longitude = row("longitude").asInstanceOf[Double]
+      val latitude  = row("latitude").asInstanceOf[Double]
+
+      db.collection("locations").insert(BSONDocument(
+        "id"        -> BSONString(id),
+        "name"      -> BSONString(name),
+        "precision" -> BSONLong(precision),
+        "longitude" -> BSONDouble(longitude),
+        "latitude"  -> BSONDouble(latitude)
+      ))
+    }
+
+    auditor.success("Collected all project locations")
+  }
 }

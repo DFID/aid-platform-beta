@@ -49,6 +49,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectPartnerTransactions
       projects.collectProjectDetails
       projects.collectProjectSectorGroups
+       projects.collectProjectLocations
       other.collectOtherOrganisationProjects
       other.collectTransactions
 
