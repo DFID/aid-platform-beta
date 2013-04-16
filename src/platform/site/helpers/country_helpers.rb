@@ -73,28 +73,28 @@ module CountryHelpers
     # determine what range to show
       current_financial_year = first_day_of_financial_year(DateTime.now)
 
-     # if range is 6 or less just show it
+    # if range is 6 or less just show it
       range = if project_budgets.size < 7 then
-          project_budgets
-        # if the last item in the list is less than or equal to 
-        # the current financial year get the last 6
-        elsif project_budgets.last.first <= current_financial_year
-          project_budgets.last(6)
-        # other wise show current FY - 3 years and cuurent FY + 3 years
-        else
-          index_of_now = project_budgets.index { |i| i[0] == current_financial_year }
+                project_budgets
+              # if the last item in the list is less than or equal to 
+              # the current financial year get the last 6
+              elsif project_budgets.last.first <= current_financial_year
+                project_budgets.last(6)
+              # other wise show current FY - 3 years and cuurent FY + 3 years
+              else
+                index_of_now = project_budgets.index { |i| i[0] == current_financial_year }
 
-          if index_of_now.nil? then
-            project_budgets.last(6)
-          else
-            project_budgets[[index_of_now-3,0].max..index_of_now+2]
-          end
-        end
+                if index_of_now.nil? then
+                  project_budgets.last(6)
+                else
+                  project_budgets[[index_of_now-3,0].max..index_of_now+2]
+                end
+              end
 
-        # finally convert the range into a label format
-        range.each { |item| 
-          item[0] = financial_year_formatter(item[0]) 
-        }
+              # finally convert the range into a label format
+              range.each { |item| 
+                item[0] = financial_year_formatter(item[0]) 
+              }
 
   end
 
