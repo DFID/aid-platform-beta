@@ -55,28 +55,46 @@ module CountryHelpers
 
   
   def country_project_budgets(country_code)
-    projects = @cms_db['projects'].find({"projectType" => "country", "recipient" => country_code})
-    startDate = "#{(financial_year-3)}-04-01"
-    endDate = "#{(financial_year+3)}-03-31"
+    projectCodes = @cms_db['projects'].find({
+      "projectType" => "country", "recipient" => country_code
+      }, :fields => ["iatiId"]).to_a.map{|b| b["iatiId"]}
 
-    projects.inject([]) { |graph, project|
+    project_budgets = @cms_db['project-budgets'].find({
+      "id" => {
+        "$in" => projectCodes
+      }
+    }).to_a.group_by{|b| first_day_of_financial_year Date.parse(b["date"])}.map{|date, budgets|
+      
+      summedBudgets = budgets.reduce(0) {|memo, budget| memo + budget["value"]}
+      [date, summedBudgets]
 
-      project_budgets = @cms_db['project-budgets'].find({
-          'id' => project['iatiId'],
-          'date' => {
-            '$gte' => startDate,
-            '$lte' => endDate
-          }}).to_a
+    }.sort
 
-      graph + project_budgets.inject({}) { |results, budget| 
-        fy = financial_year_formatter budget['date']
-        results[fy] = (results[fy] || 0) + budget['value']
-        results
-      }.map { |fy, budget| [fy, budget] }
-      }.inject({}) { |graph, group|
-        graph[group.first] = (graph[group.first] || 0) + group.last
-        graph
-      }.map { |fy, budget| [fy, budget] }.sort
+    # determine what range to show
+      current_financial_year = first_day_of_financial_year(DateTime.now)
+
+    # if range is 6 or less just show it
+      range = if project_budgets.size < 7 then
+                project_budgets
+              # if the last item in the list is less than or equal to 
+              # the current financial year get the last 6
+              elsif project_budgets.last.first <= current_financial_year
+                project_budgets.last(6)
+              # other wise show current FY - 3 years and cuurent FY + 3 years
+              else
+                index_of_now = project_budgets.index { |i| i[0] == current_financial_year }
+
+                if index_of_now.nil? then
+                  project_budgets.last(6)
+                else
+                  project_budgets[[index_of_now-3,0].max..index_of_now+2]
+                end
+              end
+
+              # finally convert the range into a label format
+              range.each { |item| 
+                item[0] = financial_year_formatter(item[0]) 
+              }
 
   end
 
@@ -130,4 +148,5 @@ module CountryHelpers
     })
     (result.first || { 'name' => '' })['name']
   end
+
 end
