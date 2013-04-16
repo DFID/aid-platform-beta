@@ -155,19 +155,19 @@ public class Neo4jIndexer {
 
 		try {
             StringBuilder builder = new StringBuilder()
-                    .append("START  n=node:entities(type='iati-activity') ")
-                    .append("MATCH  n-[:`recipient-country`|`recipient-region`]-region,")
-                    .append("       n-[:`reporting-org`]-org, ")
-                    .append("       n-[:`participating-org`]-porg, ")
-                    .append("       n-[:`sector`]-sector ")
-                    .append("WHERE  n.`hierarchy` = 2 ")
-                    .append("AND    org.ref='GB-1' ")
-                    .append("RETURN n.`iati-identifier`?, ")
-                    .append("       region.`recipient-region`?, ")
-                    .append("       sector.`sector`?, ")
-                    .append("       region.`recipient-country`?, ")
-                    .append("       sector.code?, ")
-                    .append("       porg.`participating-org`? as participating");
+                    .append(" START  n=node:entities(type='iati-activity')               ")
+                    .append(" MATCH  n-[:`recipient-country`|`recipient-region`]-region, ")
+                    .append("        n-[:`reporting-org`]-org,                           ")
+                    .append("        n-[:`participating-org`]-porg,                      ")
+                    .append("        n-[:`sector`]-sector                                ")
+                    .append(" WHERE  n.`hierarchy` = 2                                   ")
+                    .append(" AND    org.ref='GB-1'                                      ")
+                    .append(" RETURN n.`iati-identifier`?,                               ")
+                    .append("        region.`recipient-region`?,                         ")
+                    .append("        sector.`sector`?,                                   ")
+                    .append("        region.`recipient-country`?,                        ")
+                    .append("        sector.code?,                                       ")
+                    .append("        porg.`participating-org`? as participating          ");
 
 			String components = builder.toString();
 			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";

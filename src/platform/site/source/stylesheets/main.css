@@ -48,3 +48,20 @@ span.category {
   background-color: #999999;
   font-family: 'Helvetica Neue';
 }
+
+.leaflet-div-icon {
+    border: none!important;
+}
+
+.marker.cluster {
+    background-image: url(/images/mapmarker.png);
+    font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    height: 36px;
+    width: 18px;
+    border:none;
+    text-align:center;
+    font-size:1em;
+    line-height: 1.4em;
+    font-weight: bold;
+    color: #fff;
+}

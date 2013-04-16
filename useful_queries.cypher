@@ -1,3 +1,5 @@
+db['iati-datasources'].update({"url": "http://projects.dfid.gov.uk/iati/Country/BD"}, { "$set" : { "url": "https://dl.dropboxusercontent.com/u/10717892/DFID-Bangladesh-BD-withlocations.xml"} })
+
 
 // GET COUNTRY PROJECTS
 START n=node:entities(type="iati-activity")
