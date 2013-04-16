@@ -53,6 +53,10 @@ span.category {
     border: none!important;
 }
 
+.transactions-table td{
+  white-space: normal;
+}
+
 .marker.cluster {
     background-image: url(/images/mapmarker.png);
     font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
