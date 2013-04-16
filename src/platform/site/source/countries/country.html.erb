@@ -146,18 +146,7 @@ title: Aid Information Platform
 <script src="/javascripts/leaflet/leaflet.js"></script>
 <script src="/javascripts/leaflet/leaflet-googlemaps.js"></script>
 <script src="/javascripts/leaflet/leaflet.markercluster-src.js"></script>
-<script src="/javascripts/countrymap.js" type="text/javascript"></script>
-<script>
-    (function(map){
-        var locations = <%=locations.to_json%>
-
-        var markers = new L.MarkerClusterGroup({ spiderfyOnMaxZoom: false, showCoverageOnHover: false });
-
-        for(var i = 0; i < locations.length; i++){
-            var latlng = new L.LatLng(locations[i]['latitude'], locations[i]['longitude'])
-            markers.addLayer(new L.Marker(latlng, { title: locations[i]["name"] }));
-        }
-
-        map.addLayer(markers);
-    })(window.map)
+<script type="text/javascript">
+    var locations = <%=locations.to_json%>
 </script>
+<script src="/javascripts/countrymap.js" type="text/javascript"></script>
