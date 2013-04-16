@@ -42,7 +42,7 @@ public class ElasticSearch {
 		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
 
 		SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.queryString(search).defaultOperator(org.elasticsearch.index.query.QueryStringQueryBuilder.Operator.AND)).execute()
+				.setQuery(QueryBuilders.queryString(search).defaultOperator(org.elasticsearch.index.query.QueryStringQueryBuilder.Operator.AND)).setSize(999).execute()
 				.actionGet();
 		SearchHit[] hits = response.getHits().getHits();
 

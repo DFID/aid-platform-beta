@@ -14,6 +14,9 @@ object Application extends Controller {
         Ok(views.html.search("", 0 , List.empty))
       } else {
         val result = ElasticSearch.search(query, Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ))
+
+        println(result.size())
+
         val (projects, countries) = result.toList.map(_.toMap).partition(_.containsKey("id"))
 
         if(countries.isEmpty) {
