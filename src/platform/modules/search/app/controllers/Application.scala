@@ -14,7 +14,10 @@ object Application extends Controller {
         Ok(views.html.search("", 0 , List.empty))
       } else {
         val result = ElasticSearch.search(query, Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ))
-        Ok(views.html.search(query, result.size , result.toList.map(_.toMap)))
+        val (projects, countries) = result.toList.map(_.toMap).partition(_.containsKey("id"))
+        val country = countries.maxBy(_("countryBudget").asInstanceOf[Int])
+
+        Ok(views.html.search(query, projects.size , projects :+ country))
       }
     } getOrElse {
       Ok(views.html.search("", 0 , List.empty))

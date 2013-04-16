@@ -20,7 +20,6 @@ public class ElasticSearch {
 	private static Client client;
 	private static Node node;
 
-
 	public static void connectToESNode(String dataLocation) {
 
 		node = NodeBuilder
@@ -30,37 +29,6 @@ public class ElasticSearch {
 				.settings(ImmutableSettings.settingsBuilder().put("path.data", dataLocation)).node();
 		node.client().admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet();
 		client = node.client();
-
-	}
-
-	/**
-	 * Shut down all connections
-	 */
-	public void shutdown() {
-		if (node != null)
-			node.close();
-		if (client != null)
-			client.close();
-	}
-	
-	public void deleteAll(String dataLocation){
-		if(client == null){
-			connectToESNode(dataLocation);
-			client.admin().indices().prepareDelete().execute().actionGet();
-		} else {
-			client.admin().indices().prepareDelete().execute().actionGet();
-		}
-	}
-	
-	public IndexResponse putIndex(Map<String, Object> indexMap, String indexName, String dataLocation) {
-		if(client == null){
-			connectToESNode(dataLocation);
-		}
-		IndexRequest indexRequest = new IndexRequest(indexName);
-		indexRequest.type("index");
-		indexRequest.source(indexMap);
-		return client.index(indexRequest).actionGet();
-
 	}
 
 	public static List<Map<String, String>> search(String search, String dataLocation) {
@@ -69,20 +37,20 @@ public class ElasticSearch {
 			connectToESNode(dataLocation);
 			System.out.println("ES client launched");
 		}
-		
+
 		Long counter = System.currentTimeMillis();
 		List<Map<String, String>> results = new ArrayList<Map<String, String>>();
-		
+
 		SearchResponse response = client.prepareSearch()
-				.setQuery(QueryBuilders.queryString(search).defaultOperator(org.elasticsearch.index.query.QueryStringQueryBuilder.Operator.AND)).setSize(300).execute()
+				.setQuery(QueryBuilders.queryString(search).defaultOperator(org.elasticsearch.index.query.QueryStringQueryBuilder.Operator.AND)).execute()
 				.actionGet();
 		SearchHit[] hits = response.getHits().getHits();
-		
+
 		for (SearchHit hit : hits) {
 			Map<String, String> hitMap = (HashMap<String, String>)(Object)hit.getSource();
 			results.add(hitMap);
 		}
-		
+
 		System.out.println(new StringBuilder().append("Keyword '").append(search).append("'")
 				.append(" numer of results: ").append(results.size())
 				.append(", took (s): ").append( (System.currentTimeMillis() - counter)/(float)1000) );
