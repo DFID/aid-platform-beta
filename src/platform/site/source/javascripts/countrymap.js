@@ -57,7 +57,7 @@
                 var count = cluster.getChildCount();
                 var additional = ""
                 if(count > 99) {
-                    count = "...";
+                    count = "+";
                     additional = "large-value";
                 }
 
