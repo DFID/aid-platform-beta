@@ -29,7 +29,7 @@ title: Aid Information Platform
 </div>
 <div class="row">
     <div class="nine columns">
-            <form id="fraud-report">
+            <form id="fraud-report" name="fraud-report" onsubmit="return validateForm();">
               <fieldset>
                 <legend>Project Information <span>(mandatory)</span></legend>
 
@@ -38,7 +38,7 @@ title: Aid Information Platform
                       <label for="country" class="inline">Country</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <input type="text" id="country"  class="eight" />
+                      <input type="text" id="country" name="country" class="eight" />
                     </div>
                   </div>
                   <div class="row">
@@ -46,7 +46,7 @@ title: Aid Information Platform
                       <label for="project" class="inline">Project</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <input type="text" id="project" class="eight" />
+                      <input type="text" id="project" name="project" class="eight" />
                     </div>
                   </div>
                   <div class="row">
@@ -54,18 +54,18 @@ title: Aid Information Platform
                       <label for="description" class="inline">Description of concern</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <textarea id="description" class="eight"></textarea>
+                      <textarea id="description" name="description" class="eight"></textarea>
                     </div>
                   </div>
                   
-                <legend>Your contact details <span>(optional)</span></legend>
+                <legend>Your contact details</legend>
 
                   <div class="row">
                     <div class="four mobile-one columns">
                       <label for="name" class="inline">Name</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <input type="text" id="name" class="eight" />
+                      <input type="text" id="name" name="name" class="eight" />
                     </div>
                   </div>
                   <div class="row">
@@ -73,7 +73,7 @@ title: Aid Information Platform
                       <label for="email" class="inline">Email address</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <input type="text" id="email" class="eight" />
+                      <input type="text" id="email" name="email" class="eight" />
                     </div>
                   </div>
                   <div class="row">
@@ -81,47 +81,7 @@ title: Aid Information Platform
                       <label for="telno" class="inline">Telephone number</label>
                     </div>
                     <div class="eight mobile-three columns">
-                      <input type="text" id="telno" class="eight" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="four mobile-one columns">
-                      <label for="address1" class="inline">Address</label>
-                    </div>
-                    <div class="eight mobile-three columns">
-                      <input type="text" id="address1" class="eight" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="four mobile-one columns">
-                      <label for="address2" class="inline">Address 2</label>
-                    </div>
-                    <div class="eight mobile-three columns">
-                      <input type="text" id="address2" class="eight" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="four mobile-one columns">
-                      <label for="town-city" class="inline">Town/City</label>
-                    </div>
-                    <div class="eight mobile-three columns">
-                      <input type="text" id="town-city" class="eight" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="four mobile-one columns">
-                      <label for="county" class="inline">County</label>
-                    </div>
-                    <div class="eight mobile-three columns">
-                      <input type="text" id="county" class="eight" />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="four mobile-one columns">
-                      <label for="postcode" class="inline">Postcode</label>
-                    </div>
-                    <div class="eight mobile-three columns">
-                      <input type="text" id="postcode" class="eight" />
+                      <input type="text" id="telno" name="telno" class="eight" />
                     </div>
                   </div>
                   <div class="row">
@@ -134,3 +94,47 @@ title: Aid Information Platform
           </form>
       </div>
     </div>
+
+
+  <script language="JavaScript"> 
+
+    var MAX_LENGTH = 500;
+
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+      var regexS = "[\\?&]" + name + "=([^&#]*)";
+      var regex = new RegExp(regexS);
+      var results = regex.exec(window.location.search);
+      if(results == null)
+        return "";
+      else
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    function validateForm() {
+      var form=document.forms["fraud-report"];
+      var missingFields = "Please ensure the following criteria is met before submitting your form:\n";
+      var originalMessageSize = missingFields.length;
+
+      if (form["country"].value == "" && form["project"].value == "") {
+        missingFields += "You must provide a country or project name!\n";
+      } 
+
+      if (form["description"].value == "" || form["description"].value.length > MAX_LENGTH) {
+        missingFields += "You must provide a description that is less than or equal to 500 characters";
+      }
+
+      if (originalMessageSize != missingFields.length) {
+        alert(missingFields);
+        return false;
+      } 
+
+      return true;
+      
+    }
+
+
+    document.getElementById("country").value = getParameterByName("country");
+    document.getElementById("project").value = getParameterByName("project");
+    document.getElementById("description").value = getParameterByName("description");
+  </script>

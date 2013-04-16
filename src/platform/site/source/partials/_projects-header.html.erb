@@ -23,7 +23,8 @@
                 <div class="button-row">
                     <a href="/api/access/activities/<%=project['iatiId'] %>">View Activity Data</a>
                     <span>
-                        <a href="/fraud" class="button serious">Report Fraud</a>
+                        <% projectTitle = project['title'] + " [" + project['iatiId'] + "]"%>
+                        <a href="/fraud?project=<%= format_query_string(projectTitle) %>" class="button serious">Report Fraud</a>
                     </span>
                 </div>
                 <div class="projects-nav">

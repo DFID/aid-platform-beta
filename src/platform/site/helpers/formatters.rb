@@ -1,4 +1,6 @@
 require "kramdown"
+require 'uri'
+
 
 module Formatters
   def format_million_stg(v)
@@ -41,5 +43,9 @@ module Formatters
 
   def format_percentage(v)
     "%.2f" % v + "%"
+  end
+
+  def format_query_string(s)
+    URI.escape(s)
   end
 end

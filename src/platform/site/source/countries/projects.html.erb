@@ -20,7 +20,7 @@ title: Aid Information Platform
     </div>
 </div>
 
-<%= partial "partials/countries-tabs", :locals => { :active => "projects", :code => country['code'], :project_count => projects.size, :results_count => results.size } %>
+<%= partial "partials/countries-tabs", :locals => { :active => "projects", :country => country, :project_count => projects.size, :results_count => results.size } %>
 
 
 <%= partial "partials/project_list", :locals => { :projects => projects } %>
