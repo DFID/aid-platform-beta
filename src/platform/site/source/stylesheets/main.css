@@ -69,3 +69,11 @@ span.category {
     font-weight: bold;
     color: #fff;
 }
+
+.country-link {
+  font-size: 1.4em;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

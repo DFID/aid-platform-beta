@@ -3,6 +3,17 @@ require 'uri'
 
 
 module Formatters
+
+  # splits an array into the requisit number of columns
+  def to_columns(array, number_of_columns)
+    length = (array.length / number_of_columns).ceil
+    [
+      array[0, length], 
+      array[length, length], 
+      array[2 * length, length]
+    ]
+  end
+
   def format_million_stg(v)
     "&pound;#{(v/1000000.0).round(2)}M"
   end 
