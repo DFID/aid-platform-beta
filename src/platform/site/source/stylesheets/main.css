@@ -77,3 +77,8 @@ span.category {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.location-button {
+  font-size: 1.6em;
+  margin-top: 30px;
+}
