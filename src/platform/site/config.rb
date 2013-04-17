@@ -2,6 +2,7 @@ require "rubygems"
 require "json"
 require "helpers/formatters"
 require "helpers/country_helpers"
+require "helpers/region_helpers"
 require "helpers/frontpage_helpers"
 require "helpers/project_helpers"
 require "helpers/codelists"
@@ -282,6 +283,7 @@ helpers do
   include ProjectHelpers
   include CodeLists
   include SectorHelpers
+  include RegionHelpers
 
 end
 

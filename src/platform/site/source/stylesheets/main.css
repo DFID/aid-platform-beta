@@ -70,7 +70,7 @@ span.category {
     color: #fff;
 }
 
-.country-link {
+.country-link, .region-link {
   font-size: 1.4em;
   display: block;
   overflow: hidden;
