@@ -35,7 +35,7 @@ title: Aid Information Platform
 </div>
 <div class="row">
     <div class="nine columns">
-            <form id="feedback-form" name="feedback-form" onsubmit="return validateForm();">
+            <form id="feedback-form" name="feedback-form">
               <fieldset>
                 <legend>Details</legend>
                   <div class="row">
@@ -74,32 +74,21 @@ title: Aid Information Platform
     </div>
 
 
-  <script language="JavaScript"> 
+  <script type="text/javascript"> 
 
-    function validateForm() {
-      var form=document.forms["feedback-form"];
-      var missingFields = "Please ensure the following criteria is met before submitting your form:\n";
-      var originalMessageSize = missingFields.length;
+    $('#feedback-form').on('submit', function(){
+      var errors = []
 
-      if (form["name"].value == "") {
-        missingFields += "Please provide your name\n";
-      } 
+      if ($("#name").val() == "")        errors.push("  - Please provide your name");
+      if ($("#email").val() == "")       errors.push("  - Please provide your email address");
+      if ($("#description").val() == "") errors.push("  - Please provide some feedback");
 
-      if (form["email"].value == "") {
-        missingFields += "Please provide your email address\n";
-      }
-
-      if (form["description"].value == "") {
-        missingFields += "Please provide your description\n"
-      }
- 
-      if (originalMessageSize != missingFields.length) {
-        alert(missingFields);
+      if (errors.length > 0) {
+        errors.unshift("Please ensure the following criteria is met before submitting your form:")
+        alert(errors.join("\n"));
         return false;
       } 
 
       return true;
-      
-    }
-
+    });
   </script>

@@ -95,7 +95,8 @@ object ApplicationBuild extends Build {
 
   val api = play.Project(appName, appVersion, Dependencies.base).settings(
     libraryDependencies ++= Dependencies.neo4j ++ Seq(
-      "jp.t2v" %% "stackable-controller" % "0.2"
+      "jp.t2v"       %% "stackable-controller" % "0.2",
+      "com.typesafe" %% "play-plugins-mailer"  % "2.1.0"
     )
   ).dependsOn(
     common, admin, search

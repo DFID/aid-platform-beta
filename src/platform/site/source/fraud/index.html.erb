@@ -29,7 +29,7 @@ title: Aid Information Platform
 </div>
 <div class="row">
     <div class="nine columns">
-            <form id="fraud-report" name="fraud-report" onsubmit="return validateForm();">
+            <form id="fraud-report" name="fraud-report" >
               <fieldset>
                 <legend>Project Information <span>(mandatory)</span></legend>
 
@@ -95,46 +95,43 @@ title: Aid Information Platform
       </div>
     </div>
 
-
-  <script language="JavaScript"> 
-
+<script type="text/javascript">
+  (function(global, undefined){
     var MAX_LENGTH = 500;
 
     function getParameterByName(name) {
+      
       name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-      var regexS = "[\\?&]" + name + "=([^&#]*)";
-      var regex = new RegExp(regexS);
+
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
       var results = regex.exec(window.location.search);
-      if(results == null)
-        return "";
-      else
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
+      
+      return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
-    function validateForm() {
-      var form=document.forms["fraud-report"];
-      var missingFields = "Please ensure the following criteria is met before submitting your form:\n";
-      var originalMessageSize = missingFields.length;
+    $('#fraud-report').on('submit', function(){
+      var errors = []
 
-      if (form["country"].value == "" && form["project"].value == "") {
-        missingFields += "You must provide a country or project name!\n";
-      } 
-
-      if (form["description"].value == "" || form["description"].value.length > MAX_LENGTH) {
-        missingFields += "You must provide a description that is less than or equal to 500 characters";
+      if($('#country').val() == "" && $('#project').val() == "") {
+        errors.push("  - You must provide a country or project name!")
       }
 
-      if (originalMessageSize != missingFields.length) {
-        alert(missingFields);
+      var description = $("#description").val();
+      if (description == "" || description.length > MAX_LENGTH) {
+        errors.push("  - You must provide a description that is less than or equal to 500 characters");
+      }
+
+      if (errors.length > 0) {
+        errors.unshift("Please ensure the following criteria is met before submitting your form:")
+        alert(errors.join("\n"));
         return false;
       } 
 
       return true;
-      
-    }
+    });
 
-
-    document.getElementById("country").value = getParameterByName("country");
-    document.getElementById("project").value = getParameterByName("project");
-    document.getElementById("description").value = getParameterByName("description");
-  </script>
+    $("#country").val(getParameterByName("country"));
+    $("#project").val(getParameterByName("project"));
+    $("#description").val(getParameterByName("description"));
+  })(this)
+</script>
