@@ -79,6 +79,7 @@ object ApplicationBuild extends Build {
     resolvers ++= Seq("Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"),
     libraryDependencies ++= Seq(
 	      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
+        "com.spatial4j" % "spatial4j" % "0.3",
 	      "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
         "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
 	  )

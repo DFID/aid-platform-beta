@@ -46,6 +46,8 @@ class Dependencies extends ScalaModule {
 
      bind[Auditor].to[DataLoadAuditor]
      bind[ReadOnlyApi[AuditLog]].to[ReadOnlyDataLoaderAuditLogsApi]
+
+     bind[Mailer].to[MailerPluginBackedMailer]
    }
  }
 

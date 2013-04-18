@@ -7,11 +7,12 @@ import play.api.data.Forms._
 import play.api.data.Form
 import play.api.Play
 import play.api.Play.current
+import lib.Mailer
 
 /**
  * Reporter controller that is used to send email to the correct parties
  */
-class Reporter @Inject()() extends Controller {
+class Reporter @Inject()(mailer: Mailer) extends Controller {
 
   /**
    * Encapsulates all the data necessary to represent a case of fraud
@@ -83,13 +84,11 @@ class Reporter @Inject()() extends Controller {
     fraudForm.bindFromRequest.fold(
       errors => Redirect("/"),
       form => {
-        val mail = use[MailerPlugin].email
-        val to = Play.application.configuration.getString("address.fraud").getOrElse(throw new Exception("address.fraud not configured"))
+        val to = Play.application.configuration.getString("address.fraud")
+          .getOrElse(throw new Exception("address.fraud not configured"))
+        val subject = s"Report Fraud: ${form.country.getOrElse(form.project.getOrElse(""))}"
 
-        mail.setSubject(s"Report Fraud: ${form.country.getOrElse(form.project.getOrElse(""))}")
-        mail.addRecipient(to)
-        mail.addFrom(form.email.getOrElse(to))
-        mail.send(form.body)
+        mailer.send("aipbeta@dfid.gov.uk", to, subject, form.body)
 
         // redirect back to the main page of the site
         Redirect("/")
@@ -105,13 +104,8 @@ class Reporter @Inject()() extends Controller {
     feedbackForm.bindFromRequest.fold(
       errors => Redirect("/"),
       form => {
-        val mail = use[MailerPlugin].email
         val to = Play.application.configuration.getString("address.feedback").getOrElse(throw new Exception("address.feedback not configured"))
-
-        mail.setSubject(s"Aid Platform Feedback")
-        mail.addRecipient(to)
-        mail.addFrom(form.email)
-        mail.send(form.description)
+        mailer.send("aipbeta@dfid.gov.uk", to, "Aid Platform Feedback", form.description)
 
         // redirect back to the main page of the site
         Redirect("/")
