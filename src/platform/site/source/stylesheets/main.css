@@ -71,7 +71,6 @@ span.category {
 }
 
 .country-link, .region-link {
-  font-size: 1.4em;
   display: block;
   overflow: hidden;
   white-space: nowrap;
