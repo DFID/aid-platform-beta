@@ -2,8 +2,12 @@ module CountryHelpers
 
   # Groups all the countries by their alphabetical listing
   def country_list
+
+    # first get all the country codes we care about
+    relevant_country_codes = @cms_db['projects'].find({ 'projectType' => 'country' }, :fields => ['recipient']).to_a.map { |c| c['recipient'] }
+
     # first we get a list of all countries
-    all_countries = @cms_db['countries'].find({}).to_a
+    all_countries = @cms_db['countries'].find({'code' => { '$in' => relevant_country_codes }}).to_a
 
     # we convert the hash to an array and [LETTER, GROUPING] and 
     # sort it alphabetically

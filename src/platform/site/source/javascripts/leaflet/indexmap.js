@@ -163,7 +163,7 @@
 
     // creates a tile layer with the tiles hosted in mapbox
     L.tileLayer("http://aipalpha.dfid.gov.uk/v2/dfid/{z}/{x}/{y}.png", {
-                            minZoom: 1,
+                            minZoom: 2,
                             maxZoom: 4,
                             attribution: ''
                         }).addTo(map);

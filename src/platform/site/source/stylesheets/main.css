@@ -71,7 +71,6 @@ span.category {
 }
 
 .country-link, .region-link {
-  font-size: 1.4em;
   display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -81,4 +80,12 @@ span.category {
 .location-button {
   font-size: 1.6em;
   margin-top: 30px;
+}
+
+.cookies ul {
+  margin-left:30px;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  color: transparent!important;
 }

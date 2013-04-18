@@ -37,13 +37,11 @@ title: Aid Information Platform
   </div>
 </div>
 <div class="row">
-  <% to_columns(country_list, 3).each do |column| %>
-    <div class="four columns">
-      <% column.each do |country| %>
+  <div class="twelve columns">
+    <% country_list.each do |country| %>
         <p class="country-link">
           <a href="/countries/<%=country['code']%>"><%= country['name'] %></a>
         </p>
-      <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div> 
