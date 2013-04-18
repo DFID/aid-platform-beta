@@ -26,6 +26,8 @@
     height : 380px;
 }
 
+.negative { color: #f00; }
+
 .leaflet-popup-tip-container { display: none; }
 
 div.progress { border: none;}
