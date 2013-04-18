@@ -85,3 +85,7 @@ span.category {
 .cookies ul {
   margin-left:30px;
 }
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  color: transparent!important;
+}
