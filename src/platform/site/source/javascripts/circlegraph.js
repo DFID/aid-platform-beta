@@ -1,16 +1,6 @@
 
 CircleGraph = function (container) {
 
-  this.drawGlobalProjectsGraph = function(labels) {
-    this.clearContainer();
-
-    // calculate central circle's dimensions
-    var circleRadius = 0.13 * this.width;
-    var verticalShift = 0.05 * this.width;
-
-    this.drawCentralCircle(circleRadius, verticalShift, labels, "/global/projects");
-  }
-
   this.drawRegionalProjectsGraph = function(labels, regionsData) {
     this.clearContainer();
 
@@ -22,12 +12,24 @@ CircleGraph = function (container) {
 
     var maxBudget = d3.max(regionsData.regionalProjects.map(function(project) { return project.budget; }));
     var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
-      
-    var sateliteContainerW = 0.17 * this.width;
-    var sateliteContainerH = 0.10 * this.width;
 
-    var minSateliteCircleR = 0.24 * sateliteContainerH;
-    var maxSateliteCircleR = 0.34 * sateliteContainerH;
+    var sateliteContainerW;
+    var sateliteContainerH;
+    var minSateliteCircleR;
+    var maxSateliteCircleR;
+
+    if(regionsData.regionalProjects.length < 4) {
+      sateliteContainerW = 0.12 * this.width;
+      sateliteContainerH = 0.12 * this.width;
+      minSateliteCircleR = 0.24 * sateliteContainerH;
+      maxSateliteCircleR = 0.3 * sateliteContainerH;
+    } else {
+      sateliteContainerW = 0.12 * this.width;
+      sateliteContainerH = 0.12 * this.width;
+      minSateliteCircleR = 0.24 * sateliteContainerH;
+      maxSateliteCircleR = 0.34 * sateliteContainerH;
+    }
+
 
     var scale = d3.scale.linear();
     scale.domain([minBudget, maxBudget]);
@@ -171,7 +173,7 @@ SateliteCircle = function (container, selector, data, w, h, r) {
       .attr("cx", w / 2)
       .attr("cy", r);
 
-  var textSize = 0.4 * r;
+  var textSize = 0.35 * r;
   if (textSize > 7) {    
     g.append("text")
       .attr("text-anchor", "middle")

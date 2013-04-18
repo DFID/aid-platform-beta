@@ -1,4 +1,8 @@
+require "helpers/project_helpers"
+
 module RegionHelpers
+
+  include ProjectHelpers
 
   # returns an alphabetically sorted list of all regions
   def region_list
@@ -11,6 +15,10 @@ module RegionHelpers
 
     # sort them alphabetically (irrespective of case)
     all_regions.sort_by { |region| region['name'][0].upcase }
+  end
+
+  def global_list
+    dfid_global_projects.select { |region| region[:budget] > 0 }
   end
 
 end

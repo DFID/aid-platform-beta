@@ -1,5 +1,11 @@
 module CodeLists
 
+  @@global_recipients = {
+    "NS" => "Non Specific Country",
+    "ZZ" => "Multilateral Organisation",
+    "AC" => "Administrative/Capital"
+  }
+
   @@transaction_types = {
     "C"  => "Commitment",            
     "D"  => "Disbursement",          
@@ -251,6 +257,14 @@ module CodeLists
 
   def sector(code)
     @@sectors[code]
+  end
+
+  def global_recipients(code)
+    @@global_recipients[code]
+  end
+
+  def self.all_global_recipients
+    @@global_recipients
   end
 
 end
