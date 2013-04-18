@@ -5,11 +5,20 @@ title: Aid Information Platform
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "summary", :has_funded_projects => has_funded_projects} %>
 
 <div class="row">
+    <div class="twelve columns">
+        <% if(project['orgCode']) %>
+        <div id="disclaimer" class="disclaimer grey">
+            <p><strong>Disclaimer</strong>: The data for this page has been produced from IATI data published by <%= project['orgCode'] || "" %>. Please contact them if you have any questions about their data.</p>
+        </div>
+        <% end %>
+    </div>
+</div>
 
+
+<div class="row">
     <div class="twelve columns summary">
         <p class="project-description"><%= project['description'] %></p>
     </div>
-
 </div>
 
 <div class="row">
