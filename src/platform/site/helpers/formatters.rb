@@ -3,6 +3,7 @@ require 'uri'
 
 
 module Formatters
+
   def format_million_stg(v)
     "&pound;#{(v/1000000.0).round(2)}M"
   end 

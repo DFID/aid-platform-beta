@@ -27,7 +27,21 @@ title: Aid Information Platform
 	    <div class="disclaimer grey">    
 	        <p><em>Disclaimer: </em>Country borders do not necessarily reflect the UK Government's official position.</p>
 	    </div>
-
 	    <script src="/javascripts/leaflet/indexmap.js" type="text/javascript"></script>
     </div>
 </div>
+
+<div class="row">
+  <div class="twelve columns">
+    <h2 class="section-group-title">All Countries</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="twelve columns">
+    <% country_list.each do |country| %>
+        <p class="country-link">
+          <a href="/countries/<%=country['code']%>"><%= country['name'] %></a>
+        </p>
+    <% end %>
+  </div>
+</div> 

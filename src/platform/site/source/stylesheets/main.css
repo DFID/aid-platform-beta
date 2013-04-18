@@ -53,6 +53,10 @@ span.category {
     border: none!important;
 }
 
+.transactions-table td{
+  white-space: normal;
+}
+
 .marker.cluster {
     background-image: url(/images/mapmarker.png);
     font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
@@ -64,4 +68,24 @@ span.category {
     line-height: 1.4em;
     font-weight: bold;
     color: #fff;
+}
+
+.country-link, .region-link {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.location-button {
+  font-size: 1.6em;
+  margin-top: 30px;
+}
+
+.cookies ul {
+  margin-left:30px;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  color: transparent!important;
 }
