@@ -1,14 +1,14 @@
 
 CircleGraph = function (container) {
 
-  this.drawRegionalProjectsGraph = function(labels, regionsData) {
+  this.drawRegionalProjectsGraph = function(labels, regionsData, type) {
     this.clearContainer();
 
     // calculate central circle's dimensions
     var innerCircleRadius = 0.13 * this.width;
     var outerCircleRadius = 0.22 * this.width;
 
-    this.drawCentralCircle(innerCircleRadius, 0.2*innerCircleRadius, labels, "/regions");
+    this.drawCentralCircle(innerCircleRadius, 0.2*innerCircleRadius, labels, "/" + type);
 
     var maxBudget = d3.max(regionsData.regionalProjects.map(function(project) { return project.budget; }));
     var minBudget = d3.min(regionsData.regionalProjects.map(function(project) { return project.budget; }));
@@ -51,7 +51,7 @@ CircleGraph = function (container) {
       (function(){
         var code = p.getData().code;
         $(p.getElement()).click(function(){
-          window.location= "/regions/" + code + "/projects";
+          window.location= "/"+ type +"/" + code + "/projects";
         })
       })()
 

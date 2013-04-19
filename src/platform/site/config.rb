@@ -79,7 +79,7 @@ proxy "/regions/index.html", "/projectList.html", :locals => {:projects => proje
 # GENERATE GLOBAL PROJECT LIST
 #------------------------------------------------------------------------------
 projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
+proxy "/global/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
 
 CodeLists.all_global_recipients.map { |code, name|
 

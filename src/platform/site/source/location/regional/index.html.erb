@@ -30,11 +30,11 @@ title: Aid Information Platform
 
 	       	var container = $('#map');
 	        var graph = new CircleGraph(container);
-	        graph.drawRegionalProjectsGraph(labels, regionsData);
+	        graph.drawRegionalProjectsGraph(labels, regionsData, "regions");
 
 	        $(window).resize(function() {
 	        	if (container.width != graph.width) {
-	        		graph.drawRegionalProjectsGraph(labels, regionsData);
+	        		graph.drawRegionalProjectsGraph(labels, regionsData, "regions");
 	        	}	        	
 	        });
 	    </script>    
@@ -55,9 +55,7 @@ title: Aid Information Platform
 <div class="row">
   <div class="twelve columns">
   	<% region_list.each do |region| %>
-      <p class="region-link">
-        <a href="/regions/<%=region['code']%>/projects"><%= region['name'] %></a>
-      </p>
+      <a href="/regions/<%=region['code']%>/projects"><%= region['name'] %></a> ,
     <% end %>
   </div>
 </div>

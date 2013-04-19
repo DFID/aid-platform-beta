@@ -46,11 +46,11 @@ title: Aid Information Platform
 
           var container = $('#map');
           var graph = new CircleGraph(container);
-          graph.drawRegionalProjectsGraph(labels, regionsData);
+          graph.drawRegionalProjectsGraph(labels, regionsData, "global");
 
           $(window).resize(function() {
             if (container.width != graph.width) {
-              graph.drawRegionalProjectsGraph(labels, regionsData);
+              graph.drawRegionalProjectsGraph(labels, regionsData, "global");
             }           
           });
       </script>
@@ -71,9 +71,7 @@ title: Aid Information Platform
 <div class="row">
   <div class="twelve columns">
     <% global_list.each do |region| %>
-      <p class="region-link">
-        <a href="/global/<%=region[:code]%>/projects"><%= region[:region] %></a>
-      </p>
+      <a href="/global/<%=region[:code]%>/projects"><%= region[:region] %></a>,
     <% end %>
   </div>
 </div>
