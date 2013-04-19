@@ -77,7 +77,7 @@ CircleGraph = function (container) {
     var circleShiftX = this.width / 2 - r;
     var circleShiftY = this.height / 2 - r - shiftY; // shiftY - additional shift, when circle is not centered on Y axis
 
-    var headerTextSize = 0.14 * r;
+    var headerTextSize = 0.13 * r;
     var amountTextSize = 2 * headerTextSize;
 
     var g = d3.select(container.selector)
