@@ -79,7 +79,27 @@ proxy "/regions/index.html", "/projectList.html", :locals => {:projects => proje
 # GENERATE GLOBAL PROJECT LIST
 #------------------------------------------------------------------------------
 projects = @cms_db['projects'].find({"projectType" => "global"}, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-proxy "/global/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
+proxy "/global/index.html", "/projectList.html", :locals => {:projects => projects, :name => "Global"}
+
+CodeLists.all_global_recipients.map { |code, name|
+
+  budget = (@cms_db['projects'].aggregate([{
+    "$match" => {
+        'projectType' => 'global',
+        'recipient'   => code
+    },
+  }, {
+    "$group" => {
+        "_id" => nil,
+        "total" => { "$sum" => "$currentFYBudget" }
+    }
+  }]).first || { "total" => 0 })['total']
+
+  if budget > 0 then
+    projects = @cms_db['projects'].find({ 'projectType' => 'global', 'recipient' => code }).to_a
+    proxy "/global/#{code}/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => name}
+  end
+}
 
 
 #------------------------------------------------------------------------------

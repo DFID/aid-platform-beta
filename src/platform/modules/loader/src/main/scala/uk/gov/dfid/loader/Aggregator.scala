@@ -62,7 +62,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val projectOrgs = row("participating").asInstanceOf[List[String]]
 
         val projectType = id match {
-          case i if (globalProjects.exists(_.equals(i)))      => "global"
+          case i if (globalProjects.exists(_._1.equals(i)))   => "global"
           case i if (countryProjects.exists(_._1.equals(i)))  => "country"
           case i if (regionalProjects.exists(_._1.equals(i))) => "regional"
           case _ => "undefined"
@@ -71,6 +71,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val recipient = projectType match {
           case "country"  => countryProjects.find(_._1 == id).map(_._2)
           case "regional" => regionalProjects.find(_._1 == id).map(_._2)
+          case "global"   => globalProjects.find(_._1 == id).map(_._2)
           case _          => None
         }
 
@@ -391,7 +392,12 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         |    OR n.`recipient-region`! = "Non Specific Country (NS)"
         |    OR n.`recipient-region`! = "Multilateral Organisation (ZZ)")
         | AND   p.type=1
-        | RETURN DISTINCT(p.ref) as id
-      """.stripMargin).columnAs[String]("id").toSeq
+        | RETURN DISTINCT(p.ref) as id, n.`recipient-region`! as region
+      """.stripMargin).toSeq.map { row =>
+      val id     = row("id").asInstanceOf[String]
+      val region =  "\\((\\w{2})\\)$".r.findFirstMatchIn(row("region").asInstanceOf[String]).get.group(1)
+
+      id -> region
+    }
   }
 }

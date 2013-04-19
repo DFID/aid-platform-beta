@@ -8,13 +8,15 @@ import play.api.libs.iteratee.Enumerator
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONDocumentWriter
 import reactivemongo.bson.handlers.DefaultBSONHandlers.DefaultBSONReaderHandler
-import play.api.libs.json.JsArray
+import play.api.libs.json.{JsNumber, JsArray}
 import reactivemongo.bson.BSONBoolean
 import reactivemongo.bson.BSONString
 import play.api.Logger
 import traits.SourceSelector
 import reactivemongo.api.DefaultDB
 import com.google.inject.Inject
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelector {
 
@@ -74,23 +76,34 @@ class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelect
       BSONDocument("sourceType" -> BSONString(sourceType))
     ).toList.map(_.filter(_.active).map(_.url)).flatMap { list =>
 
-      val url = s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType&all_fields=1&limit=4000"
+      // drop the data sources first
+      Await.ready(datasources.remove(
+        BSONDocument("sourceType" -> BSONString(sourceType)),
+        firstMatchOnly = false
+      ), Duration.Inf)
 
-      WS.url(url).get.flatMap { response =>
-        val orgs = (response.json \ "results").as[JsArray].value.map { json =>
-          val url = (json \ "download_url").as[String]
-          val title = (json \ "title").as[String]
-          IatiDataSource(None, sourceType, title, url, list.contains(url))
-        }
+      // the iait registry will only ever return 999 elements and ignore the limit value
+      // we then need to bash it with more requests and page the entries
+      WS.url(s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType").get.map { result =>
+        val count = (result.json \ "count").as[JsNumber].value.toInt
+        val pages = (count/999.0).ceil.toInt
 
-        datasources.remove(
-          BSONDocument("sourceType" -> BSONString(sourceType)),
-          firstMatchOnly = false
-        ).flatMap { _ =>
-          datasources.insert(Enumerator(orgs: _*), orgs.size)
+        // define paging as a loopable array
+        0.to(pages-1).foreach { offsetWindow =>
+          val offset = offsetWindow * 999
+          val url = s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType&all_fields=1&limit=999&offset=$offset"
+
+          WS.url(url).get.flatMap { response =>
+            val orgs = (response.json \ "results").as[JsArray].value.map { json =>
+              val url = (json \ "download_url").as[String]
+              val title = (json \ "title").as[String]
+              IatiDataSource(None, sourceType, title, url, list.contains(url))
+            }
+
+            datasources.insert(Enumerator(orgs: _*), orgs.size)
+          }
         }
       }
     }
-
   }
 }

@@ -1,4 +1,5 @@
 require "helpers/codelists"
+require "helpers/lookups"
 
 module ProjectHelpers
 
@@ -89,6 +90,30 @@ module ProjectHelpers
             :code   => region['code'],
             :budget => dfid_region_projects_budget(region['code']) || 0
         }}.to_json
+    end
+
+    def dfid_global_projects
+        @@global_recipients.map { |code, name|
+            {
+                :code   => code,
+                :region => name,
+                :budget => (@cms_db['projects'].aggregate([{
+                    "$match" => {
+                        'projectType' => 'global',
+                        'recipient'   => code
+                    },
+                }, {
+                    "$group" => {
+                        "_id" => nil,
+                        "total" => { "$sum" => "$currentFYBudget" }
+                    }
+                }]).first || {"total" => 0})["total"]
+            }
+        }
+    end
+
+    def dfid_global_projects_data
+        dfid_global_projects.to_json
     end
 
     def choose_better_date(actual, planned)

@@ -1,10 +1,7 @@
 package controllers.search
 
 import play.api.mvc._
-import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 import uk.gov.dfid.es.ElasticSearch
-import util.Properties
 
 object Application extends Controller {
 
@@ -13,11 +10,7 @@ object Application extends Controller {
       if(query.trim.isEmpty) {
         Ok(views.html.search("", 0 , List.empty))
       } else {
-        val result = ElasticSearch.search(query, Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ))
-
-        println(result.size())
-
-        val (projects, countries) = result.toList.map(_.toMap).partition(_.containsKey("id"))
+        val (projects, countries) = ElasticSearch.search(query).partition(_.contains("id"))
 
         if(countries.isEmpty) {
           Ok(views.html.search(query, projects.size , projects))

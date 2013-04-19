@@ -56,10 +56,10 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val sectorHelper = new Sectors(mongodb)
 
       Neo4jIndexer.index(
-        Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),
-        Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ),
-        neo4j,
-        sectorHelper)
+       Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),
+       Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ),
+       neo4j,
+       sectorHelper)
 
       auditor.success("Loading process completed")
     }
