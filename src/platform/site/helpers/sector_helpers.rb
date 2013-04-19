@@ -79,6 +79,10 @@ module SectorHelpers
 				"$match" => {
 					"sectorCode" => {
 						"$in" => sectorCodes
+					},
+					"date" => {
+						"$gte" => "#{financial_year}-04-01",
+						"$lte" => "#{financial_year + 1}-03-31"
 					}
 				}
 			}, {

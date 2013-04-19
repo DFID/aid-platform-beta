@@ -181,7 +181,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | AND	   a.type = 1
           | RETURN a.ref as id, s.code as code, s.sector as name,
           |        COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
-          |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total,
+          |        v.`value-date` as date
           | ORDER BY id asc, total desc
         """.stripMargin).foreach { row =>
 
@@ -193,13 +194,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Long    => v.toLong
           case v: java.lang.Double  => v.toLong
         }
+        val date        = row("date").asInstanceOf[String]
 
         projectSectorBudgets.insert(
           BSONDocument(
             "projectIatiId" -> BSONString(id),
             "sectorName"    -> BSONString(name),
             "sectorCode"    -> BSONLong(code),
-            "sectorBudget"  -> BSONLong(total)
+            "sectorBudget"  -> BSONLong(total),
+            "date"          -> BSONString(date)
           )
         )
       }
