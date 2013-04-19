@@ -49,7 +49,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           | START  n=node:entities(type="iati-activity")
           | MATCH  p-[:`participating-org`]-n-[:`reporting-org`]-o,
           |        n-[:`activity-status`]-a
-          | WHERE  n.hierarchy = 1
+          | WHERE  n.hierarchy! = 1
           | AND    o.ref = "GB-1"
           | RETURN n, a.code as status,  COLLECT(p.`participating-org`) as participating
         """.stripMargin).foreach { row =>
@@ -113,35 +113,36 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     auditor.info("Rolling up country sector breakdown")
 
     val sectorBreakdowns = db.collection("sector-breakdowns")
+
     engine.execute(
       s"""
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`recipient-country`]-c,
         |       n-[:`reporting-org`]-o,
         |       n-[:sector]-s
-        | WHERE n.hierarchy=2
+        | WHERE n.hierarchy! = 2
         | AND   o.ref = "GB-1"
         | RETURN distinct c.code as country, s.code as sector, s.sector as name, COUNT(s) as total
         | ORDER BY total DESC
        """.stripMargin).toSeq.foreach { row =>
-          try {
-            val country = row("country").asInstanceOf[String]
-            val sector = row("sector").asInstanceOf[Long].toString
-            val name = row("name").asInstanceOf[String]
-            val total = row("total").asInstanceOf[Long].toInt
+        try {
+          val country = row("country").asInstanceOf[String]
+          val sector = row("sector").asInstanceOf[Long].toString
+          val name = row("name").asInstanceOf[String]
+          val total = row("total").asInstanceOf[Long].toInt
 
-            sectorBreakdowns.insert(
-              BSONDocument(
-                "country" -> BSONString(country),
-                "sector"  -> BSONString(sector),
-                "name"    -> BSONString(name),
-                "total"   -> BSONInteger(total)
-              )
+          sectorBreakdowns.insert(
+            BSONDocument(
+              "country" -> BSONString(country),
+              "sector"  -> BSONString(sector),
+              "name"    -> BSONString(name),
+              "total"   -> BSONInteger(total)
             )
-          } catch {
-              case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
-            }
+          )
+        } catch {
+          case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
         }
+      }
       auditor.success("Country sectors rolled up")
   }
 
@@ -207,7 +208,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | MATCH  n-[:`related-activity`]-a,
         |        n-[:budget]-b-[:value]-v
         | WHERE  a.type = 1
-        | AND    n.hierarchy = 2
+        | AND    n.hierarchy! = 2
         | RETURN a.ref as id, v.value as value, v.`value-date` as date
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
@@ -333,7 +334,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | MATCH  n-[:`recipient-country`]-a,
         |        n-[:`related-activity`]-p,
         |        n-[:`reporting-org`]-o
-        | WHERE  n.hierarchy=2
+        | WHERE  n.hierarchy! = 2
         | AND    p.type=1
         | AND    o.ref = "GB-1"
         | RETURN DISTINCT(p.ref) as id, a.code as recipient
@@ -348,7 +349,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | START n=node:entities(type="iati-activity")
         | MATCH n-[r?:`recipient-region`]-a,
         |       n-[:`related-activity`]-p
-        | WHERE n.hierarchy=2
+        | WHERE n.hierarchy! = 2
         | // Parent Activity must have a
         | AND   p.type=1
         | AND   (
@@ -387,7 +388,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       """
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`related-activity`]-p
-        | WHERE n.hierarchy=2
+        | WHERE n.hierarchy! = 2
         | AND  (n.`recipient-region`! = "Administrative/Capital (AC)"
         |    OR n.`recipient-region`! = "Non Specific Country (NS)"
         |    OR n.`recipient-region`! = "Multilateral Organisation (ZZ)")

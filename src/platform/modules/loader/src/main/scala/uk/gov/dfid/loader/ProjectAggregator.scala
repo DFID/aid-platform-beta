@@ -141,7 +141,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | MATCH n-[:`reporting-org`]-o,
         |       n-[:`activity-status`]-a,
         |       n-[:`activity-date`]-d
-        | WHERE n.hierarchy = 1
+        | WHERE n.hierarchy! = 1
         | AND   o.ref = "GB-1"
         | RETURN distinct(n.`iati-identifier`) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
       """.stripMargin).foreach { row =>
@@ -176,7 +176,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           |   	   n-[:`related-activity`]-a,
           |        n-[:`budget`]-b-[:`value`]-v,
           |        n-[:`sector`]-s
-          | WHERE  n.hierarchy = 2
+          | WHERE  n.hierarchy! = 2
           | AND    o.ref = "GB-1"
           | AND	   a.type = 1
           | RETURN a.ref as id, s.code as code, s.sector as name,
@@ -215,161 +215,165 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
 
-    engine.execute("""
-       | START  n=node:entities(type="iati-activity")
-       | MATCH  n-[:`participating-org`]-o,
-       |        n-[:`reporting-org`]-ro,
-       |        n-[:transaction]-t-[:`transaction-type`]-tt,
-       |        n-[:description]-d,
-       |        n-[:title]-ttl,
-       |        t-[:value]-v,
-       |        n-[:`activity-status`]-status,
-       |        t-[:`provider-org`]-po
-       | WHERE  o.role  = "Funding"
-       | AND    o.ref   = "GB-1"
-       | AND    tt.code = "IF"
-       | RETURN n.`iati-identifier`       as funded      ,
-       |        ro.`reporting-org`        as reporting   ,
-       |        ttl.title                 as title       ,
-       |        d.description             as description ,
-       |        po.`provider-activity-id` as funding     ,
-       |        SUM(v.value)              as funds       ,
-       |        status.code               as status
-     """.stripMargin).toSeq.foreach { row =>
+    try{
+      engine.execute("""
+         | START  n=node:entities(type="iati-activity")
+         | MATCH  n-[:`participating-org`]-o,
+         |        n-[:`reporting-org`]-ro,
+         |        n-[:transaction]-t-[:`transaction-type`]-tt,
+         |        n-[:description]-d,
+         |        n-[:title]-ttl,
+         |        t-[:value]-v,
+         |        n-[:`activity-status`]-status,
+         |        t-[:`provider-org`]-po
+         | WHERE  o.role  = "Funding"
+         | AND    o.ref!   = "GB-1"
+         | AND    tt.code = "IF"
+         | RETURN n.`iati-identifier`       as funded      ,
+         |        ro.`reporting-org`        as reporting   ,
+         |        ttl.title                 as title       ,
+         |        d.description             as description ,
+         |        po.`provider-activity-id` as funding     ,
+         |        SUM(v.value)              as funds       ,
+         |        status.code               as status
+       """.stripMargin).toSeq.foreach { row =>
 
-      val funded      = row("funded").asInstanceOf[String]
-      val reporting   = row("reporting").asInstanceOf[String]
-      val title       = row("title").asInstanceOf[String]
-      val description = row("description").asInstanceOf[String]
-      val funding     = row("funding").asInstanceOf[String]
-      val status      = row("status").asInstanceOf[Long]
-      val funds       = row("funds") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      val project = engine.execute(
-        s"""
-          | START  v=node:entities(type="iati-activity")
-          | MATCH  v-[:`related-activity`]-a
-          | WHERE  v.`iati-identifier` = '$funding'
-          | AND    a.type=1
-          | RETURN a.ref as id
-        """.stripMargin).toSeq.head("id").asInstanceOf[String]
-
-      // now we need to sum up the project budgets and spend.  this is not specific
-      // to dfid itself.  While here we can also grab the status
-      // now we need to sum up the project budgets and spend.
-      val totalBudget = engine.execute(
-        s"""
-           | START  funded=node:entities(type="iati-activity")
-           | MATCH  funded-[:budget]-budget-[:value]-budget_value
-           | WHERE  funded.`iati-identifier` = '$funded'
-           | RETURN SUM(budget_value.value) as totalBudget
-        """.stripMargin).toSeq.head("totalBudget") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      val totalSpend = engine.execute(
-        s"""
-           | START  funded=node:entities(type="iati-activity")
-           | MATCH  funded-[:transaction]-transaction-[:value]-transaction_value,
-           | transaction-[:`transaction-type`]-type
-           | WHERE  funded.`iati-identifier` = '$funded'
-           | AND    (type.`code` = 'D' OR type.`code` = 'E')
-           | RETURN SUM(transaction_value.value) as totalSpend
-        """.stripMargin).toSeq.head("totalSpend") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      // then we need to get the dates as well
-      val dates = engine.execute(
-        s"""
-          | START  n=node:entities(type="iati-activity")
-          | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
-          | WHERE  n.`iati-identifier` = '$funded'
-          | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
-        """.stripMargin).toSeq.map { row =>
-
-        val dateType = row("type").asInstanceOf[String]
-        val date     = DateTime.parse(row("date").asInstanceOf[String], format)
-
-        dateType -> BSONDateTime(date.getMillis)
-      }
-
-      db.collection("funded-projects").insert(
-        BSONDocument(
-          "funded"      -> BSONString(funded),
-          "funding"     -> BSONString(project),
-          "title"       -> BSONString(title),
-          "reporting"   -> BSONString(reporting),
-          "description" -> BSONString(description),
-          "funds"       -> BSONLong(funds),
-          "totalBudget" -> BSONLong(totalBudget),
-          "totalSpend"  -> BSONLong(totalSpend),
-          "status"      -> BSONLong(status)
-        ).append(dates: _*)
-      )
-
-      // put the project budgets in
-      engine.execute(
-        s"""
-          | START  b=node:entities(type="budget")
-          | MATCH  v-[:value]-b-[:budget]-n
-          | WHERE  n.`iati-identifier` = '$funded'
-          | RETURN v.value        as value,
-          |        v.`value-date` as date
-        """.stripMargin).foreach { row =>
-
-        val value = row("value").asInstanceOf[Long].toInt
-        val date = row("date").asInstanceOf[String]
-
-        db.collection("project-budgets").insert(
-          BSONDocument(
-            "id"    -> BSONString(funded),
-            "value" -> BSONInteger(value),
-            "date"  -> BSONString(date)
-          )
-        )
-      }
-
-      // ok now we need to work out the sector breakdown for the project
-      engine.execute(
-        s"""
-          | START  n=node:entities(type="iati-activity")
-          | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
-          | WHERE  n.`iati-identifier` = '$funded'
-          | RETURN s.code                                                as code,
-          |        s.sector?                                             as name,
-          |        COALESCE(s.percentage?, 100)                          as percentage,
-          |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
-        """.stripMargin).foreach { row =>
-
-        val name = row("name") match {
-          case null          => None
-          case value: String => Some(value)
-        }
-        val code        = row("code").asInstanceOf[Long]
-        val total       = row("total")  match {
+        val funded      = row("funded").asInstanceOf[String]
+        val reporting   = row("reporting").asInstanceOf[String]
+        val title       = row("title").asInstanceOf[String]
+        val description = row("description").asInstanceOf[String]
+        val funding     = row("funding").asInstanceOf[String]
+        val status      = row("status").asInstanceOf[Long]
+        val funds       = row("funds") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
         }
 
-        db.collection("project-sector-budgets").insert(
+        val project = engine.execute(
+          s"""
+            | START  v=node:entities(type="iati-activity")
+            | MATCH  v-[:`related-activity`]-a
+            | WHERE  v.`iati-identifier` = '$funding'
+            | AND    a.type=1
+            | RETURN a.ref as id
+          """.stripMargin).toSeq.head("id").asInstanceOf[String]
+
+        // now we need to sum up the project budgets and spend.  this is not specific
+        // to dfid itself.  While here we can also grab the status
+        // now we need to sum up the project budgets and spend.
+        val totalBudget = engine.execute(
+          s"""
+             | START  funded=node:entities(type="iati-activity")
+             | MATCH  funded-[:budget]-budget-[:value]-budget_value
+             | WHERE  funded.`iati-identifier` = '$funded'
+             | RETURN SUM(budget_value.value) as totalBudget
+          """.stripMargin).toSeq.head("totalBudget") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+        }
+
+        val totalSpend = engine.execute(
+          s"""
+             | START  funded=node:entities(type="iati-activity")
+             | MATCH  funded-[:transaction]-transaction-[:value]-transaction_value,
+             | transaction-[:`transaction-type`]-type
+             | WHERE  funded.`iati-identifier` = '$funded'
+             | AND    (type.`code` = 'D' OR type.`code` = 'E')
+             | RETURN SUM(transaction_value.value) as totalSpend
+          """.stripMargin).toSeq.head("totalSpend") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+        }
+
+        // then we need to get the dates as well
+        val dates = engine.execute(
+          s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
+            | WHERE  n.`iati-identifier` = '$funded'
+            | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
+          """.stripMargin).toSeq.map { row =>
+
+          val dateType = row("type").asInstanceOf[String]
+          val date     = DateTime.parse(row("date").asInstanceOf[String], format)
+
+          dateType -> BSONDateTime(date.getMillis)
+        }
+
+        db.collection("funded-projects").insert(
           BSONDocument(
-            "projectIatiId" -> BSONString(funded),
-            "sectorCode"    -> BSONLong(code),
-            "sectorBudget"  -> BSONLong(total)
-          ).append(
-            Seq(
-              name.map("sectorName" -> BSONString(_))
-            ).flatten:_*
-          )
+            "funded"      -> BSONString(funded),
+            "funding"     -> BSONString(project),
+            "title"       -> BSONString(title),
+            "reporting"   -> BSONString(reporting),
+            "description" -> BSONString(description),
+            "funds"       -> BSONLong(funds),
+            "totalBudget" -> BSONLong(totalBudget),
+            "totalSpend"  -> BSONLong(totalSpend),
+            "status"      -> BSONLong(status)
+          ).append(dates: _*)
         )
+
+        // put the project budgets in
+        engine.execute(
+          s"""
+            | START  b=node:entities(type="budget")
+            | MATCH  v-[:value]-b-[:budget]-n
+            | WHERE  n.`iati-identifier` = '$funded'
+            | RETURN v.value        as value,
+            |        v.`value-date` as date
+          """.stripMargin).foreach { row =>
+
+          val value = row("value").asInstanceOf[Long].toInt
+          val date = row("date").asInstanceOf[String]
+
+          db.collection("project-budgets").insert(
+            BSONDocument(
+              "id"    -> BSONString(funded),
+              "value" -> BSONInteger(value),
+              "date"  -> BSONString(date)
+            )
+          )
+        }
+
+        // ok now we need to work out the sector breakdown for the project
+        engine.execute(
+          s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
+            | WHERE  n.`iati-identifier` = '$funded'
+            | RETURN s.code                                                as code,
+            |        s.sector?                                             as name,
+            |        COALESCE(s.percentage?, 100)                          as percentage,
+            |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          """.stripMargin).foreach { row =>
+
+          val name = row("name") match {
+            case null          => None
+            case value: String => Some(value)
+          }
+          val code        = row("code").asInstanceOf[Long]
+          val total       = row("total")  match {
+            case v: java.lang.Integer => v.toLong
+            case v: java.lang.Long    => v.toLong
+            case v: java.lang.Double  => v.toLong
+          }
+
+          db.collection("project-sector-budgets").insert(
+            BSONDocument(
+              "projectIatiId" -> BSONString(funded),
+              "sectorCode"    -> BSONLong(code),
+              "sectorBudget"  -> BSONLong(total)
+            ).append(
+              Seq(
+                name.map("sectorName" -> BSONString(_))
+              ).flatten:_*
+            )
+          )
+        }
       }
+    }catch{
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
     auditor.success("Collected Partner Projects")
@@ -386,7 +390,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """
         | START  location=node:entities(type='location')
         | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates
-        | WHERE  org.ref='GB-1'
+        | WHERE  org.ref! ='GB-1'
         | RETURN project.`iati-identifier` as id,
         |        location.name             as name,
         |        coordinates.precision     as precision,
