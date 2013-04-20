@@ -1,6 +1,6 @@
 module FrontPageHelpers
   def what_we_do
-    @cms_db['whatwedo'].find({})
+    high_level_sectors_structure.sort_by {|s| -s[:budget]}.slice! 1, 5 || []
   end
 
   def what_we_achieve
