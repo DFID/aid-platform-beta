@@ -160,7 +160,7 @@ public class Neo4jIndexer {
                     .append("        n-[:`reporting-org`]-org,                           ")
                     .append("        n-[:`participating-org`]-porg,                      ")
                     .append("        n-[:`sector`]-sector                                ")
-                    .append(" WHERE  n.`hierarchy` = 2                                   ")
+                    .append(" WHERE  n.hierarchy! = 2                                    ")
                     .append(" AND    org.ref='GB-1'                                      ")
                     .append(" RETURN n.`iati-identifier`?,                               ")
                     .append("        region.`recipient-region`?,                         ")
@@ -170,7 +170,7 @@ public class Neo4jIndexer {
                     .append("        porg.`participating-org`? as participating          ");
 
 			String components = builder.toString();
-			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";
+			String budgets = "START n=node:entities(type=\"iati-activity\") MATCH  n-[:`related-activity`]-a, n-[:`reporting-org`]-org, n-[:budget]-b-[:value]-v WHERE  a.type = 1 AND n.hierarchy! = 2 AND org.ref=\"GB-1\" RETURN a.ref as id, v.value as value";
 
             ExecutionResult result = engine.execute(components);
 			ExecutionResult budgetsResults = engine.execute(budgets);
@@ -227,7 +227,7 @@ public class Neo4jIndexer {
 		System.out.println("Creating basic structure");
 		HashMap<String, IndexBean> elementsToindex = new HashMap<String, IndexBean>();
 
-		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org, n-[:`reporting-org`]-o WHERE n.`hierarchy` = 1  AND o.ref=\"GB-1\" RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`participating-org`? ,n.`description`?";
+		String primaryActivities = "START n=node:entities(type=\"iati-activity\") MATCH n-[:`related-activity`]->r, n-[:`activity-status`]->x, n-[:`participating-org`]->org, n-[:`reporting-org`]-o WHERE n.hierarchy! = 1  AND o.ref=\"GB-1\" RETURN  n.`iati-identifier`? ,r.`ref`?,n.`title`?, x.`activity-status`?, org.`participating-org`? ,n.`description`?";
 		try{
 		ExecutionResult result = engine.execute(primaryActivities);
 		Iterator<Map<String, Object>> it = result.iterator();
