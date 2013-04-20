@@ -72,11 +72,11 @@ layout: landing
     <div class="four columns" id="top-5-sectors">
         <h4>What we do</h4>
         <ol>
-          <% what_we_do.each do |entry| %>
-          <li>
-            <%= entry['title'] %> </a>
-            <em><span class="visually-hidden">Budget</span><%= entry['value'] %></em>
-          </li>
+          <% what_we_do.each do |sector| %>
+              <li>
+                    <a href="/sector/<%=sector[:code]%>"><%=sector[:name]%></a>
+                    <em>&pound;<%=format_round_m sector[:budget] || 0.0 %></em>
+                </li>
           <% end %>
         </ol>
         <p>Project budgets for each sector [<%= financial_year_formatter DateTime.now %>]</p>
