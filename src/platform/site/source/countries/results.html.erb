@@ -36,7 +36,7 @@ title: Aid Information Platform
             <div class="eight columns">
                 <ul>
                     <% result['countryResult'].each_with_index do |result_description, index| %>
-                    <li><%= result_description %><span><%= result['resultTotal'][index] %></span></li>
+                    <li><%= result_description %><span><%=number_with_delimiter(result['resultTotal'][index], :delimiter => ',') %></span></li>
                     <% end %>
                 </ul> 
             </div>
