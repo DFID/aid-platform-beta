@@ -1,7 +1,7 @@
 package controllers.search
 
 import play.api.mvc._
-import uk.gov.dfid.es.ElasticSearch
+import uk.gov.dfid.common.ElasticSearch
 
 object Application extends Controller {
 

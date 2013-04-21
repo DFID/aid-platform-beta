@@ -3,7 +3,6 @@ package uk.gov.dfid.loader
 import reactivemongo.api.{DefaultCollection, DefaultDB}
 import reactivemongo.bson.{BSONBoolean, BSONString, BSONDocument}
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
-import uk.gov.dfid.loader.indexer._
 import util.Sectors
 import xml.XML
 import java.net.URL
@@ -16,7 +15,6 @@ import uk.gov.dfid.common.api.ProjectsApi
 import org.neo4j.graphdb.GraphDatabaseService
 import uk.gov.dfid.common.DataLoadAuditor
 import concurrent.duration.Duration
-import scala.util.Properties
 
 trait DataLoader {
   def load: Future[Unit]
@@ -34,6 +32,11 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val documents  = new DocumentAggregator(engine, mongodb, auditor)
       val projects   = new ProjectAggregator(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
+      val sectors    = new Sectors(mongodb)
+      val indexer    = new Indexer(mongodb, engine, sectors)
+
+      // drop current audtis table.  Transient data ftw
+      auditor.drop
 
       auditor.info("Loading data")
 
@@ -53,13 +56,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       other.collectOtherOrganisationProjects
       other.collectTransactions
 
-      val sectorHelper = new Sectors(mongodb)
-
-      Neo4jIndexer.index(
-       Properties.envOrElse("DFID_DATA_PATH", "/dfid/neo4j" ),
-       Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" ),
-       neo4j,
-       sectorHelper)
+      indexer.index
 
       auditor.success("Loading process completed")
     }

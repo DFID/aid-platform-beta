@@ -1,10 +1,11 @@
-package uk.gov.dfid.es
+package uk.gov.dfid.common
 
 import org.elasticsearch.node.NodeBuilder
 import org.elasticsearch.common.settings.ImmutableSettings
 import scala.util.Properties
 import org.elasticsearch.index.query.{QueryStringQueryBuilder, QueryBuilders}
 import scala.collection.JavaConversions._
+import org.elasticsearch.action.index.IndexRequest
 
 object ElasticSearch {
 
@@ -21,5 +22,15 @@ object ElasticSearch {
     val response = client.prepareSearch().setQuery(query).setSize(999).execute.actionGet
 
     response.getHits.getHits.map(_.getSource.toMap).toList
+  }
+
+  def reset = {
+    node.client.admin().indices().prepareDelete().execute().actionGet()
+  }
+
+  def index(data: Map[String, Any], name: String) = {
+    val request = new IndexRequest(name, "index")
+    request.source(data)
+    node.client.index(request).actionGet()
   }
 }

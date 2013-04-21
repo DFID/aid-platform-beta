@@ -7,6 +7,8 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import java.util.Date
 import concurrent.ExecutionContext.Implicits.global
 import reactivemongo.core.commands.GetLastError
+import scala.concurrent.duration.Duration
+import scala.concurrent.Await
 
 
 trait Auditor {
@@ -31,6 +33,10 @@ class DataLoadAuditor @Inject()(db: DefaultDB) extends Auditor {
   def info(msg: String)    = insert("info", msg)
   def warn(msg: String)    = insert("warn", msg)
 
+  def drop {
+    Await.ready(audits.drop, Duration.Inf)
+  }
+
   private def insert(msgType: String, msg: String) = {
 
     // we println here
@@ -45,4 +51,6 @@ class DataLoadAuditor @Inject()(db: DefaultDB) extends Auditor {
       GetLastError(false, None, false)
     )
   }
+
+
 }

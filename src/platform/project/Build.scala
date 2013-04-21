@@ -8,6 +8,10 @@ object ApplicationBuild extends Build {
   val appName         = "platform"
   val appVersion      = "1.0-SNAPSHOT"
 
+  resolvers := Seq(
+    "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/"
+  )
+
   object Dependencies {
 
     val base = Seq(
@@ -20,13 +24,19 @@ object ApplicationBuild extends Build {
       "org.reactivemongo" %% "reactivemongo" % "0.8",
       "org.mindrot"       %  "jbcrypt"       % "0.3m",
       "joda-time"         %  "joda-time"     % "2.1",
-      "org.joda"          %  "joda-convert"  % "1.3"
+      "org.joda"          %  "joda-convert"  % "1.3",
+      "com.typesafe"      %  "config"        % "1.0.0"
     )
 
     val neo4j = Seq(
       "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04",
       "org.neo4j"    %  "neo4j-lucene-index" % "1.9.M04",
       "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04"
+    )
+
+    val elasticSearch = Seq(
+      "org.elasticsearch" % "elasticsearch" % "0.20.5",
+      "com.spatial4j"     % "spatial4j"     % "0.3"
     )
   }
 
@@ -36,21 +46,9 @@ object ApplicationBuild extends Build {
   ).settings(
     organization := "uk.gov.dfid.common",
     scalaVersion := "2.10.0",
-
-    resolvers ++= Seq(
-      "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/"
-    ),
-
-    libraryDependencies ++= Dependencies.base ++ Dependencies.neo4j ++ Seq(
-      // Application Dependencies
-      "com.typesafe" %  "config"             % "1.0.0",
-      "org.neo4j"    %  "neo4j-kernel"       % "1.8.1",
-      "org.neo4j"    %  "neo4j-lucene-index" % "1.8.1",
-      "org.neo4j"    %  "neo4j-cypher"       % "1.8.1",
-      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
-      "com.typesafe" %  "config"             % "1.0.0"
-
-    )
+    libraryDependencies ++= Dependencies.base
+      ++ Dependencies.neo4j
+      ++ Dependencies.elasticSearch
   )
 
   lazy val loader = Project(
@@ -60,29 +58,11 @@ object ApplicationBuild extends Build {
     // basic project settings
     name         := "Loader",
     scalaVersion := "2.10.0",
-
-    // Resolvers
-    resolvers ++= Seq(
-      "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
-    ),
-
-    // Dependencies
-    libraryDependencies ++= Dependencies.base ++ Dependencies.neo4j ++ Seq(
-      // Application Dependencies
-      "com.typesafe" %  "config"             % "1.0.0"
-    )
+    libraryDependencies ++= Dependencies.base ++ Dependencies.neo4j
   ).dependsOn(common).aggregate(common)
 
   lazy val search = play.Project(
-    appName + "-search", appVersion, Dependencies.base, path = file("modules/search")
-    ).settings(
-    resolvers ++= Seq("Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"),
-    libraryDependencies ++= Seq(
-	      "org.elasticsearch" % "elasticsearch"  % "0.20.5",
-        "com.spatial4j" % "spatial4j" % "0.3",
-	      "org.neo4j"    %  "neo4j-cypher"       % "1.9.M04",
-        "org.neo4j"    %  "neo4j-kernel"       % "1.9.M04"
-	  )
+    appName + "-search", appVersion, Dependencies.base ++ Dependencies.neo4j ++ Dependencies.elasticSearch, path = file("modules/search")
   ).dependsOn(common).aggregate(common)
 
 
