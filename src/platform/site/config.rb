@@ -124,11 +124,11 @@ CodeLists.all_global_recipients.map { |code, name|
       },
       "transactions" => {
         "$addToSet" => {
-          "description" => "$description",
-          "component"   => "$component",
-          "date"        => "$date",
-          "value"       => "$value",
-          "title"       => "$title",
+          "description"  => "$description",
+          "component"    => "$component",
+          "date"         => "$date",
+          "value"        => "$value",
+          "title"        => "$title",
           "receiver-org" => "$receiver-org",
         }
       }

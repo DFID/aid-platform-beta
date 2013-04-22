@@ -254,10 +254,12 @@ module ProjectHelpers
     end
 
     def transaction_description(transaction, transactionType)
-        if(transactionType == "IF")
+        if(transactionType == "C")
+            transaction['title'] || ""
+        elsif(transactionType == "IF")
             transaction_title(transactionType)
         else
-           transaction['description']
+            transaction['description']
         end
     end
 
