@@ -37,7 +37,6 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       // drop current audtis table.  Transient data ftw
       auditor.drop
-
       auditor.info("Loading data")
 
       validateAndMap(sources, neo4j)
@@ -56,7 +55,9 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       other.collectOtherOrganisationProjects
       other.collectTransactions
 
+      auditor.info("Indexing Data")
       indexer.index
+      auditor.success("Indexed Data")
 
       auditor.success("Loading process completed")
     }

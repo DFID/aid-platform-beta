@@ -1,20 +1,20 @@
 package uk.gov.dfid.loader.util
 
-object Statuses extends Map[Int, String] {
+object Statuses extends Map[Long, String] {
 
   private val inner = Map(
-    1 -> "Pipeline/identification",
-    2 -> "Implementation",
-    3 -> "Completion",
-    4 -> "Post-completion",
-    5 -> "Cancelled"
+    1L -> "Pipeline/identification",
+    2L -> "Implementation",
+    3L -> "Completion",
+    4L -> "Post-completion",
+    5L -> "Cancelled"
   )
 
-  def get(key: Int): Option[String] = inner.get(key)
+  def get(key: Long): Option[String] = inner.get(key)
 
-  def iterator: Iterator[(Int, String)] = inner.iterator
+  def iterator: Iterator[(Long, String)] = inner.iterator
 
-  def -(key: Int): Map[Int, String] = inner.-(key)
+  def -(key: Long): Map[Long, String] = inner.-(key)
 
-  def +[B1 >: String](kv: (Int, B1)): Map[Int, B1] = inner.+(kv)
+  def +[B1 >: String](kv: (Long, B1)): Map[Long, B1] = inner.+(kv)
 }

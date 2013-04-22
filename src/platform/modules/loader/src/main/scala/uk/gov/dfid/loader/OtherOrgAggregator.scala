@@ -15,10 +15,10 @@ import reactivemongo.bson.BSONDateTime
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONString
 import scala.Some
+import uk.gov.dfid.loader.util.OtherOrganisations
 
 class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor)  {
 
-  private val OTHER_ORGS = Seq("GB-4")
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
   def collectOtherOrganisationProjects = {
@@ -34,7 +34,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           | MATCH  status-[:`activity-status`]-activity-[:`reporting-org`]-org,
           | 	     activity-[?:title]-title,
           |        activity-[?:description]-description
-          | WHERE  HAS(org.ref) AND org.ref IN ${OTHER_ORGS.mkString("['","','","']")}
+          | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
           | RETURN COALESCE(activity.title?, title.title)                   AS title,
           |        COALESCE(activity.description?, description.description) AS description,
           |        activity.`iati-identifier`                               AS id,
@@ -179,7 +179,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
         |        txn-[:value]-value,
         |        txn-[:`transaction-date`]-date,
         |        txn-[:`transaction-type`]-type
-        | WHERE  HAS(org.ref) AND org.ref IN ${OTHER_ORGS.mkString("['","','","']")}
+        | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
         | RETURN project.`iati-identifier`      as project,
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,
