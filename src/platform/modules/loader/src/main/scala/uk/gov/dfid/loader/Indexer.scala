@@ -61,43 +61,39 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     }
   }
 
-  private def indexOtherOrganisationProjects {
+  private def indexOtherOrganisationProjects = {
     for(
       projects <- db.collection("other-org-projects").find(BSONDocument()).toList
     ) yield {
-      try{
-        projects.foreach { doc =>
-          val id = doc.getAs[BSONString]("iatiId").get.value
-          val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
-          val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+      projects.foreach { doc =>
+        val id = doc.getAs[BSONString]("iatiId").get.value
+        val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+        val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
 
-          // TODO: James Hughes 22 Apr 2012 - need to get a list of all participating orgs
-          // TODO: James Hughes 22 Apr 2012 - need to get a list of all countries
-          // TODO: James Hughes 22 Apr 2012 - need to get a list of all regions
-          // TODO: James Hughes 22 Apr 2012 - need to get a list of all sectors
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all participating orgs
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all countries
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all regions
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all sectors
 
-          val bean = Map(
-            "id"              -> id,
-            "title"           -> doc.getAs[BSONString]("title").get.value,
-            "description"     -> doc.getAs[BSONString]("description").get.value,
-            "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
-            "budget"          -> budget,
-            "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-            "organizations"   -> (doc.getAs[BSONString]("orgCode").get.value :: Nil).distinct.mkString("#"),
-            "countries"       -> Nil.mkString("#"),
-            "regions"         -> Nil.mkString("#"),
-            "sectors"         -> Nil.mkString("#")
-          )
+        val bean = Map(
+          "id"              -> id,
+          "title"           -> doc.getAs[BSONString]("title").get.value,
+          "description"     -> doc.getAs[BSONString]("description").get.value,
+          "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
+          "budget"          -> budget,
+          "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
+          "organizations"   -> (doc.getAs[BSONString]("orgCode").get.value :: Nil).distinct.mkString("#"),
+          "countries"       -> Nil.mkString("#"),
+          "regions"         -> Nil.mkString("#"),
+          "sectors"         -> Nil.mkString("#")
+        )
 
-          ElasticSearch.index(bean, "aid")
-        }
-      }  catch {
-        case e: Throwable => println(e.getMessage); e.printStackTrace()
+        ElasticSearch.index(bean, "aid")
       }
     }
   }
 
-  private def indexCountrySuggestions {
+  private def indexCountrySuggestions = {
     for (
       countries <- db.collection("countries").find(BSONDocument()).toList;
       stats <- db.collection("country-stats").find(BSONDocument(
@@ -123,18 +119,20 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     }
   }
 
-  private def indexDfidProjects {
+  private def indexDfidProjects = {
 
     // touching components here as it will perform the load into memory.
     // with a full dataset this might be pretty huge adn we should address
     // that ASAP
     components
 
+    val projects = Await.result(db.collection("projects").find(BSONDocument()).toList(), Duration.Inf)
+
     // loop over projects collection and index the values
-    for (
-      projects <- db.collection("projects").find(BSONDocument()).toList
-    ) yield {
-      projects.foreach { doc =>
+    projects.map { doc =>
+
+        try{
+
           val id = doc.getAs[BSONString]("iatiId").get.value
           val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
           val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
@@ -155,7 +153,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
             "id"              -> id,
             "title"           -> doc.getAs[BSONString]("title").get.value,
             "description"     -> doc.getAs[BSONString]("description").get.value,
-            "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
+            "status"          -> Statuses.get(doc.getAs[BSONInteger]("status").get.value).get,
             "budget"          -> budget,
             "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
             "organizations"   -> (organisations ::: component("organizations")).distinct.mkString("#"),
@@ -166,7 +164,11 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           )
 
           ElasticSearch.index(bean, "aid")
-      }
+
+        }catch {
+          case e: Throwable => println(e.getMessage); e.printStackTrace()
+        }
     }
+
   }
 }
