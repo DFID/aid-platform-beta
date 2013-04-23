@@ -61,6 +61,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val id          = projectNode.getPropertySafe[String]("iati-identifier").get
         val projectOrgs = row("participating").asInstanceOf[List[String]]
 
+
         val projectType = id match {
           case i if (globalProjects.exists(_._1.equals(i)))   => "global"
           case i if (countryProjects.exists(_._1.equals(i)))  => "country"
@@ -74,7 +75,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           case "global"   => globalProjects.find(_._1 == id).map(_._2)
           case _          => None
         }
-
+        
         // we need to collect child activity orgs as well.
         val componentOrgs = engine.execute(
           s"""
