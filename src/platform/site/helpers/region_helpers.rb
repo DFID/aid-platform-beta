@@ -14,11 +14,11 @@ module RegionHelpers
     all_regions = @cms_db['regions'].find({'code' => { '$in' => relevant_region_codes }})
 
     # sort them alphabetically (irrespective of case)
-    all_regions.sort_by { |region| region['name'][0].upcase }
+    all_regions.sort_by { |region| region['name'].upcase }
   end
 
   def global_list
-    dfid_global_projects.select { |region| region[:budget] > 0 }
+    dfid_global_projects.select { |region| region[:budget] > 0 }.sort_by { |region| region[:region].upcase}
   end
 
 end

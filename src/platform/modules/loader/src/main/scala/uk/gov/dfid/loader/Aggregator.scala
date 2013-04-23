@@ -75,7 +75,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           case "global"   => globalProjects.find(_._1 == id).map(_._2)
           case _          => None
         }
-        
+
         // we need to collect child activity orgs as well.
         val componentOrgs = engine.execute(
           s"""

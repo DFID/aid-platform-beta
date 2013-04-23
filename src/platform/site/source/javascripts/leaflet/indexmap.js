@@ -161,6 +161,7 @@
     // creates a new map and centers it somewhere in the indian ocean
     var map = L.map('map').setView([0, 60], 2);
 
+    // map.addLayer(new L.Google('ROADMAP'))
     // creates a tile layer with the tiles hosted in mapbox
     L.tileLayer("http://aipalpha.dfid.gov.uk/v2/dfid/{z}/{x}/{y}.png", {
                             minZoom: 2,

@@ -11,7 +11,7 @@ module CountryHelpers
 
     # we convert the hash to an array and [LETTER, GROUPING] and 
     # sort it alphabetically
-    all_countries.sort_by { |country| country['name'][0].upcase }
+    all_countries.sort_by { |country| country['name'].upcase }
   end
 
   def dfid_total_budget
