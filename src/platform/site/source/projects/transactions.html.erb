@@ -4,6 +4,9 @@ title: Aid Information Platform
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "transactions", :has_funded_projects => has_funded_projects} %>
 
+<%# ------------------------------------------------------------------------ %>
+<%#                       B U D G E T S   T A B L E                          %>
+<%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
     <h3 class="section-group-title">Budget
@@ -29,6 +32,9 @@ title: Aid Information Platform
   </div>
 </div>
 
+<%# ------------------------------------------------------------------------ %>
+<%#                 I N C O M I N G   F U N D S   T A B L E                  %>
+<%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'IF' }.each do |transaction_group| %>
@@ -57,6 +63,9 @@ title: Aid Information Platform
   </div>
 </div>
 
+<%# ------------------------------------------------------------------------ %>
+<%#                   C O M M I T M E N T S   T A B L E                      %>
+<%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'C' }.each do |transaction_group| %>
@@ -85,6 +94,9 @@ title: Aid Information Platform
   </div>
 </div>
 
+<%# ------------------------------------------------------------------------ %>
+<%#                  D I S B U R S E M E N T S   T A B L E                   %>
+<%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'D' }.each do |transaction_group| %>
@@ -94,6 +106,7 @@ title: Aid Information Platform
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
+            <th>Description</th>
             <th>Receiver Org</th>
             <th width="15%">Activity ID</th>
             <th width="15%">Date</th>
@@ -101,6 +114,7 @@ title: Aid Information Platform
           </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
+              <td><%= transaction['description'] %></td>
               <td><%= transaction['receiver-org'] %></td>
               <td><%= transaction['component'] %></td>
               <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
@@ -113,6 +127,9 @@ title: Aid Information Platform
   </div>
 </div>
 
+<%# ------------------------------------------------------------------------ %>
+<%#                    E X P E N D I T U R E   T A B L E                     %>
+<%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'E' }.each do |transaction_group| %>
@@ -122,13 +139,15 @@ title: Aid Information Platform
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
-            <th>Receiver Org</th>
+            <th>Description</th>
+            <th width="15%">Receiver Org</th>
             <th width="15%">Activity ID</th>
             <th width="15%">Date</th>
             <th width="15%" style="text-align:right;">Value</th>
           </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
+              <td><%= transaction['description'] %></td>
               <td><%= transaction['receiver-org'] %></td>
               <td><%= transaction['component'] %></td>              
               <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
