@@ -31,6 +31,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     indexDfidProjects
     indexCountrySuggestions
     indexOtherOrganisationProjects
+    indexPartnerProjects
   }
 
   private lazy val components = {
@@ -58,6 +59,40 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         "sectors"       -> row("countries").asInstanceOf[List[String]].distinct,
         "organizations" -> row("organizations").asInstanceOf[List[String]].distinct
       ))
+    }
+  }
+
+  private def indexPartnerProjects = {
+    for(
+      projects <- db.collection("funded-projects").find(BSONDocument()).toList
+    ) yield {
+
+      projects.foreach { doc =>
+        val funded = doc.getAs[BSONString]("funded").get.value
+        val funding = doc.getAs[BSONString]("funding").get.value
+        val budget = doc.getAs[BSONLong]("totalBudget").get.value
+        val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all countries
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all regions
+        // TODO: James Hughes 22 Apr 2012 - need to get a list of all sectors
+
+        val bean = Map(
+          "id"              -> funded,
+          "other"           -> funding,
+          "title"           -> doc.getAs[BSONString]("title").get.value,
+          "description"     -> doc.getAs[BSONString]("description").get.value,
+          "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
+          "budget"          -> budget,
+          "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
+          "organizations"   -> (doc.getAs[BSONString]("reporting").get.value :: Nil).distinct.mkString("#"),
+          "countries"       -> Nil.mkString("#"),
+          "regions"         -> Nil.mkString("#"),
+          "sectors"         -> Nil.mkString("#")
+        )
+
+        ElasticSearch.index(bean, "aid")
+      }
     }
   }
 
@@ -130,44 +165,37 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
 
     // loop over projects collection and index the values
     projects.map { doc =>
+        val id = doc.getAs[BSONString]("iatiId").get.value
+        val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+        val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+        val component = components(id)
 
-        try{
+        val organisations = doc.getAs[BSONArray]("participatingOrgs").map {
+          values =>
+            values.values.toList.flatMap {
+              case value =>
+                value match {
+                  case v: BSONString => Some(v.value)
+                  case _ => None
+                }
+            }
+        }.getOrElse(List.empty)
 
-          val id = doc.getAs[BSONString]("iatiId").get.value
-          val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
-          val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
-          val component = components(id)
+        val bean = Map(
+          "id"              -> id,
+          "title"           -> doc.getAs[BSONString]("title").get.value,
+          "description"     -> doc.getAs[BSONString]("description").get.value,
+          "status"          -> Statuses.get(doc.getAs[BSONInteger]("status").get.value).get,
+          "budget"          -> budget,
+          "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
+          "organizations"   -> (organisations ::: component("organizations")).distinct.mkString("#"),
+          "subActivities"   -> component("subActivities").mkString("#"),
+          "countries"       -> component("countries").mkString("#"),
+          "regions"         -> component("regions").mkString("#"),
+          "sectors"         -> component("sectors").mkString("#")
+        )
 
-          val organisations = doc.getAs[BSONArray]("participatingOrgs").map {
-            values =>
-              values.values.toList.flatMap {
-                case value =>
-                  value match {
-                    case v: BSONString => Some(v.value)
-                    case _ => None
-                  }
-              }
-          }.getOrElse(List.empty)
-
-          val bean = Map(
-            "id"              -> id,
-            "title"           -> doc.getAs[BSONString]("title").get.value,
-            "description"     -> doc.getAs[BSONString]("description").get.value,
-            "status"          -> Statuses.get(doc.getAs[BSONInteger]("status").get.value).get,
-            "budget"          -> budget,
-            "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-            "organizations"   -> (organisations ::: component("organizations")).distinct.mkString("#"),
-            "subActivities"   -> component("subActivities").mkString("#"),
-            "countries"       -> component("countries").mkString("#"),
-            "regions"         -> component("regions").mkString("#"),
-            "sectors"         -> component("sectors").mkString("#")
-          )
-
-          ElasticSearch.index(bean, "aid")
-
-        }catch {
-          case e: Throwable => println(e.getMessage); e.printStackTrace()
-        }
+        ElasticSearch.index(bean, "aid")
     }
 
   }
