@@ -59,13 +59,19 @@ module CountryHelpers
     }.sort_by { |s| -s['total']}
 
     if sectors.count > 5 then
-        sectors[0..4] << {
+        sectors = sectors[0..4] << {
             'name'  => "Other",
             'total' => sectors[5..-1].map { |s| s['total'] }.inject(:+)
         }
-    else
-        sectors
     end
+
+    total = sectors.map { |s| s['total'] }.inject(:+) + 0.0
+
+    sectors.each { |s| 
+      s['percentage'] = format_percentage(s['total'] / total * 100) 
+    }
+
+    sectors
   end
 
   

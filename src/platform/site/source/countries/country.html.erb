@@ -84,7 +84,7 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="six columns">
-         <h3>Sector groups</h3>
+         <h3>Sector groups as a percentage of country budget</h3>
          <div class="row">
             <div class="six columns">
                 <div id="sectorChart"></div>
@@ -95,7 +95,7 @@ title: Aid Information Platform
                         <% (sector_groups country['code']).each do |sector| %>
                             <li><span class="theme-1 legend-color"></span>
                                 <div title="<%=sector['name'] || "Other"%>" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%=sector['name'] || "Other"%></div>
-                                <em><%= sector['total'] %><span class="visually-hidden">projects</span></em>
+                                <em><%= sector['percentage'] %><span class="visually-hidden">projects</span></em>
                             </li>
                         <% end %>
                     </ul>
