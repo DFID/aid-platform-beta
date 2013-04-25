@@ -392,27 +392,31 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     engine.execute(
       """
         | START  location=node:entities(type='location')
-        | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates
+        | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates,
+        |        location-[:`location-type`]-type
         | WHERE  org.ref! ='GB-1'
         | RETURN project.`iati-identifier` as id,
         |        location.name             as name,
         |        coordinates.precision     as precision,
         |        coordinates.longitude     as longitude,
-        |        coordinates.latitude      as latitude
+        |        coordinates.latitude      as latitude,
+        |        type.code                 as type
       """.stripMargin).foreach { row =>
 
-      val id        = row("id").asInstanceOf[String]
-      val name      = row("name").asInstanceOf[String]
-      val precision = row("precision").asInstanceOf[Long]
-      val longitude = row("longitude").asInstanceOf[Double]
-      val latitude  = row("latitude").asInstanceOf[Double]
+      val id           = row("id").asInstanceOf[String]
+      val name         = row("name").asInstanceOf[String]
+      val precision    = row("precision").asInstanceOf[Long]
+      val longitude    = row("longitude").asInstanceOf[Double]
+      val latitude     = row("latitude").asInstanceOf[Double]
+      val locationType = row("type").asInstanceOf[String]
 
       db.collection("locations").insert(BSONDocument(
         "id"        -> BSONString(id),
         "name"      -> BSONString(name),
         "precision" -> BSONLong(precision),
         "longitude" -> BSONDouble(longitude),
-        "latitude"  -> BSONDouble(latitude)
+        "latitude"  -> BSONDouble(latitude),
+        "type"      -> BSONString(locationType)
       ))
     }
 

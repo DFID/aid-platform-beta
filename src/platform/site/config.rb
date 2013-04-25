@@ -43,7 +43,15 @@ ignore "/sector/projects.html"
     'id' =>  {
       '$in' => projects.map { |p| p['iatiId']}
     } 
-  }, :fields => ["name", "longitude", "latitude", "precision"]).to_a
+  }).to_a.map { |location|
+    {
+      "name"      => location['name'], 
+      "longitude" => location['longitude'], 
+      "latitude"  => location['latitude'], 
+      "precision" => CodeLists.geographical_precision(location['precision']), 
+      "type"      => CodeLists.location_type(location['type'])
+    }
+  }
   
   results = @cms_db['country-results'].aggregate([{ 
         "$match" => {"code" => country["code"]}

@@ -1,5 +1,24 @@
 (function(global, undefined){
 
+    function buildMarkerPopupHtml(location) {
+        return [
+            "<div class='location-popup'>",
+                "<div class='row'>", 
+                    "<div class='four columns location-label'> Name </div>", 
+                    "<div class='eight columns'>", location.name, "</div>",
+                "</div>",
+                 "<div class='row'>", 
+                    "<div class='four columns location-label'> Precision </div>", 
+                    "<div class='eight columns'>", location.precision, "</div>",
+                "</div>",
+                "<div class='row'>", 
+                    "<div class='four columns location-label'> Type </div>", 
+                    "<div class='eight columns'>", location["type"], "</div>",
+                "</div>",
+            "</div>"
+        ].join("")
+    }
+
     var countryName = $("#countryName").val();
     var countryCode = $("#countryCode").val();
     var projectType = $("#projectType").val();
@@ -48,6 +67,7 @@
         $('#countryMapDisclaimer').hide();
     }
 
+    // create the geopoints if any are defined
     if(map && global.locations) {
 
         var markers = new L.MarkerClusterGroup({ 
@@ -66,8 +86,12 @@
         });
 
         for(var i = 0; i < locations.length; i++){
-            var latlng = new L.LatLng(locations[i]['latitude'], locations[i]['longitude'])
-            markers.addLayer(new L.Marker(latlng, { title: locations[i]["name"] }));
+            var location = locations[i]
+            var latlng   = new L.LatLng(location.latitude, location.longitude)
+            var marker   = new L.Marker(latlng, { title: location.name });
+
+            marker.bindPopup(buildMarkerPopupHtml(location))
+            markers.addLayer(marker);
         }
 
         map.addLayer(markers);

@@ -91,3 +91,16 @@ span.category {
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
   color: transparent!important;
 }
+
+.leaflet-popup-content-wrapper {
+  padding-right: 0px!important;
+}
+
+.location-popup {
+  min-width: 200px;
+  width:100%;
+}
+
+.location-popup .location-label {
+  font-weight: bold;
+}

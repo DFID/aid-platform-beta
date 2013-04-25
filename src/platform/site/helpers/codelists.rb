@@ -1,5 +1,30 @@
 module CodeLists
 
+  @@location_type = {
+    "ADM1"  => "first-order administrative division",
+    "ADM2"  => "second-order administrative division",
+    "CNS"   => "concession area",
+    "FRM"   => "farm",
+    "PCL"   => "political entity (i.e. a country)",
+    "PPL"   => "populated place",
+    "PPLA"  => "seat of a first-order administrative division",
+    "PPLA2" => "seat of a second-order administrative division",
+    "PPLC"  => "capital of a political entity",
+    "RES"   => "reserve"
+  }
+
+  @@geographical_precision = {
+    1 => "Exact location",
+    2 => "Near exact location",
+    3 => "Second order administrative division",
+    4 => "First order administrative division",
+    5 => "Estimated coordinates",
+    6 => "Independent political entity",
+    7 => "Unclear - capital",
+    8 => "Local or national capital",
+    9 => "Unclear - country"
+  }
+
   @@global_recipients = {
     "NS" => "Non Specific Country",
     "ZZ" => "Multilateral Organisation",
@@ -259,12 +284,23 @@ module CodeLists
     @@sectors[code]
   end
 
+  def location_type(code)
+    @@location_type[code]
+  end
+
   def global_recipients(code)
     @@global_recipients[code]
+  end
+
+  def geographical_precision(code) 
+    @@geographical_precision[code]
   end
 
   def self.all_global_recipients
     @@global_recipients
   end
+
+  module_function :location_type
+  module_function :geographical_precision
 
 end
