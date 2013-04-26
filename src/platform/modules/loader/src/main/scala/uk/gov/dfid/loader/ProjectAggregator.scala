@@ -396,6 +396,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        location-[:`location-type`]-type
         | WHERE  org.ref! ='GB-1'
         | RETURN project.`iati-identifier` as id,
+        |        project.title             as title,
         |        location.name             as name,
         |        coordinates.precision     as precision,
         |        coordinates.longitude     as longitude,
@@ -404,6 +405,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val id           = row("id").asInstanceOf[String]
+      val title        = row("title").asInstanceOf[String]
       val name         = row("name").asInstanceOf[String]
       val precision    = row("precision").asInstanceOf[Long]
       val longitude    = row("longitude").asInstanceOf[Double]
@@ -412,6 +414,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       db.collection("locations").insert(BSONDocument(
         "id"        -> BSONString(id),
+        "title"     -> BSONString(title),
         "name"      -> BSONString(name),
         "precision" -> BSONLong(precision),
         "longitude" -> BSONDouble(longitude),

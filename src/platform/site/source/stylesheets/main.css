@@ -104,3 +104,12 @@ span.category {
 .location-popup .location-label {
   font-weight: bold;
 }
+
+.location-popup .row {
+  margin-bottom:5px;
+}
+
+.location-popup.large {
+  max-height: 350px;
+  overflow-y:scroll;  
+}

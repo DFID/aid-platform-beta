@@ -19,6 +19,27 @@
         ].join("")
     }
 
+    function buildClusterPopupHtml(locations) {
+        var items = [];
+        for(var i = 0; i < locations.length; i++) {
+            var location = locations[i];
+            items.push([
+                "<div class='row'>", 
+                    "<div class='five columns location-label'>", 
+                        "<a href='/projects/", location.id ,"'>", location.id, "</a>",
+                    "</div>", 
+                    "<div class='seven columns'>", location.title, "</div>",
+                "</div>"
+            ].join(""));
+        }
+
+        return [
+            "<div class='location-popup large'>",
+                items.join(""),
+            "</div>"
+        ].join("")
+    }
+
     var countryName = $("#countryName").val();
     var countryCode = $("#countryCode").val();
     var projectType = $("#projectType").val();
@@ -73,6 +94,7 @@
         var markers = new L.MarkerClusterGroup({ 
             spiderfyOnMaxZoom: false, 
             showCoverageOnHover: false,
+            singleMarkerMode: true,
             iconCreateFunction: function(cluster) {
                 var count = cluster.getChildCount();
                 var additional = ""
@@ -85,10 +107,29 @@
             } 
         });
 
+        markers.on('clusterclick', function (a) {
+         var atMax = a.target._zoom == a.target._maxZoom
+         if(atMax) {
+            var clusterLocations = [];
+            for(var i = 0; i < a.layer._markers.length; i++) {
+                clusterLocations.push(a.layer._markers[i].options.data)
+            }
+            
+            var html = buildClusterPopupHtml(clusterLocations)
+            var popup = L.popup()
+                         .setLatLng(a.layer._latlng)
+                         .setContent(html)
+                         .openOn(map);
+         }
+        });
+
         for(var i = 0; i < locations.length; i++){
             var location = locations[i]
             var latlng   = new L.LatLng(location.latitude, location.longitude)
-            var marker   = new L.Marker(latlng, { title: location.name });
+            var marker   = new L.Marker(latlng, { 
+                title: location.name, 
+                data:  location
+            });
 
             marker.bindPopup(buildMarkerPopupHtml(location))
             markers.addLayer(marker);

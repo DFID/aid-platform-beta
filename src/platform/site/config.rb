@@ -49,7 +49,9 @@ ignore "/sector/projects.html"
       "longitude" => location['longitude'], 
       "latitude"  => location['latitude'], 
       "precision" => CodeLists.geographical_precision(location['precision']), 
-      "type"      => CodeLists.location_type(location['type'])
+      "type"      => CodeLists.location_type(location['type']),
+      "id"        => location['id'],
+      "title"     => location['title']
     }
   }
   
