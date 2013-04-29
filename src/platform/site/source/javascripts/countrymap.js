@@ -131,7 +131,16 @@
                 data:  location
             });
 
-            marker.bindPopup(buildMarkerPopupHtml(location))
+            // mapType is a global variable that is used to
+            switch(mapType) {
+                case "country": 
+                    marker.bindPopup(buildClusterPopupHtml([location]))
+                    break;
+                case "project": 
+                    marker.bindPopup(buildMarkerPopupHtml(location))
+                    break;
+            }
+            
             markers.addLayer(marker);
         }
 
