@@ -121,7 +121,17 @@ CodeLists.all_global_recipients.map { |code, name|
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
-  locations           = @cms_db['locations'].find( { 'id' =>  id }, :fields => ["name", "longitude", "latitude", "precision"]).to_a
+  locations           = @cms_db['locations'].find( { 'id' =>  id }).to_a.map { |location|
+    {
+      "name"      => location['name'], 
+      "longitude" => location['longitude'], 
+      "latitude"  => location['latitude'], 
+      "precision" => CodeLists.geographical_precision(location['precision']), 
+      "type"      => CodeLists.location_type(location['type']),
+      "id"        => location['id'],
+      "title"     => location['title']
+    }
+  }
   transaction_groups  = @cms_db['transactions'].aggregate([{
     "$match" => {
       "project" => id
