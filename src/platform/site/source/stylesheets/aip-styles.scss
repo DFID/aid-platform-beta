@@ -167,8 +167,7 @@ $normal-plus: 1.25em;
 #search-bar #query {
   line-height: 1.2em;
   border-radius: 2px;
-  width: 40%;
-  min-width: 300px;
+  width: 100%;
   border: 1px solid #CCC;
   display: inline-block;
   margin: 0 ;
@@ -180,6 +179,12 @@ $normal-plus: 1.25em;
    padding: 5px 0;
 }
 @media screen and (max-width: 667px) {
+
+  /* hide the search at the top till we sort it out */
+  #global-header #search, .map {
+    display: none;
+  }
+
   #search-bar label h3 {
     display: block!important;
     margin: 0 0 10px;

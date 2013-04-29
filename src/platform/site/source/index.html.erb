@@ -10,16 +10,24 @@ layout: landing
     <div class="eight columns">
         <div id="search-bar">
             <form action="/search" method="GET">
-                <label for="query">
-                    <h3>Search Projects</h3>
-                    <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
-                </label>
-                <input type="submit" value="Search" class="button">
+                <div class="row">
+                    <div class="three columns">
+                        <label for="query">
+                            <h3>Search Projects</h3>
+                        </label>
+                    </div>
+                    <div class="six columns">
+                        <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+                    </div>
+                    <div class="three columns">
+                        <input type="submit" value="Search" class="button">
+                    </div>
+                </div>
             </form>
         </div>
     </div>
     <div class="two columns">
-        <img style="float:right; margin-top:20px;" src="/images/ukaid_logo.png" alt="UK aid from the British people">
+        <img style="margin-top:20px;" src="/images/ukaid_logo.png" alt="UK aid from the British people">
     </div>
 </div>
 
