@@ -33,7 +33,7 @@ title: Aid Information Platform
                     <% (sector_categories_structure(sector['_id']) || []).each do |category| %>
                         <li>
                             <a href="/sector/<%=sector['_id']%>/categories/<%=category[:code]%>"><%=category[:name]%></a>
-                            <div class="progress eight">
+                            <div class="progress">
                                 <em><%=format_percentage category[:percentage]%></em>
                                 <span class="meter" style="width: <%=format_percentage category[:cellWidth]%>"></span>
                                 <span>£<%=format_round_m category[:budget] || 0.0 %></span>                                
