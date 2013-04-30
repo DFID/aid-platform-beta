@@ -181,8 +181,28 @@ $normal-plus: 1.25em;
 @media screen and (max-width: 667px) {
 
   /* hide the search at the top till we sort it out */
-  #global-header #search, .map {
+  #global-header #search, .map, #countryMap, #countryMapDisclaimer {
     display: none;
+  }
+
+  .tab-bar li a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  a.api-link {
+    display: none;
+  }
+
+  .tab-bar-container .button-row span {
+    width: 100%;
+    padding-right: 65px;
+  }
+
+  .tab-bar-container .button-row span .button.serious {
+    width: 100%;
   }
 
   #search-bar label h3 {
