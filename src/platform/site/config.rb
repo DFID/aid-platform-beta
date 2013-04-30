@@ -159,9 +159,9 @@ CodeLists.all_global_recipients.map { |code, name|
     }
   }])
 
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :locations => locations }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :transaction_groups => transaction_groups }
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups }
 
   if has_funded_projects then
     proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
@@ -196,9 +196,9 @@ end
     }
   }])
 
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :locations => [] }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :transaction_groups => transaction_groups }
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [] }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups }
 
 end
 
@@ -219,7 +219,8 @@ end
     'end-planned'       => funded_project['end-planned'],
     'start-actual'      => funded_project['start-actual'],
     'start-planned'     => funded_project['start-planned'],
-    'status'            => funded_project['status']
+    'status'            => funded_project['status'],
+    'organisation'      => funded_project['organisation']
   }
 
   # get the other funded projects
@@ -254,10 +255,10 @@ end
     }
   }])
 
-  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :locations => [] }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :documents => documents  }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :transaction_groups => transaction_groups  }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :funded_projects => funded_projects, :funding_project => funding_project  }
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project  }
 
 end
 
@@ -315,7 +316,6 @@ end
 # DEFINE HELPERS - Import from modules to avoid bloat
 #------------------------------------------------------------------------------
 helpers do
-
   include Formatters
   include CountryHelpers
   include FrontPageHelpers
@@ -324,7 +324,6 @@ helpers do
   include CodeLists
   include SectorHelpers
   include RegionHelpers
-
 end
 
 #------------------------------------------------------------------------------
@@ -343,7 +342,4 @@ configure :build do
   activate :minify_css
   activate :minify_javascript
   activate :cache_buster
-  
-  # this takes time, be careful
-  # activate :smusher
 end

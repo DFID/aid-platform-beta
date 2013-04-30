@@ -117,3 +117,7 @@ span.category {
   max-height: 350px;
   overflow-y:scroll;  
 }
+
+#disclaimer {
+  margin-bottom:15px;
+}

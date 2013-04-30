@@ -305,15 +305,18 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
         db.collection("funded-projects").insert(
           BSONDocument(
-            "funded"      -> BSONString(funded),
-            "funding"     -> BSONString(project),
-            "title"       -> BSONString(title),
-            "reporting"   -> BSONString(reporting),
-            "description" -> BSONString(description),
-            "funds"       -> BSONLong(funds),
-            "totalBudget" -> BSONLong(totalBudget),
-            "totalSpend"  -> BSONLong(totalSpend),
-            "status"      -> BSONLong(status)
+            "funded"       -> BSONString(funded),
+            "funding"      -> BSONString(project),
+            "title"        -> BSONString(title),
+            "reporting"    -> BSONString(reporting),
+            // we also want to store the reporting org as the org field
+            // so we can use it in the diclaimer component
+            "organisation" -> BSONString(reporting),
+            "description"  -> BSONString(description),
+            "funds"        -> BSONLong(funds),
+            "totalBudget"  -> BSONLong(totalBudget),
+            "totalSpend"   -> BSONLong(totalSpend),
+            "status"       -> BSONLong(status)
           ).append(dates: _*)
         )
 

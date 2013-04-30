@@ -6,9 +6,9 @@ title: Aid Information Platform
 
 <div class="row">
     <div class="twelve columns">
-        <% if(project['orgCode']) %>
+        <% if(non_dfid_data) %>
         <div id="disclaimer" class="disclaimer grey">
-            <p><strong>Disclaimer</strong>: The data for this page has been produced from IATI data published by <%= project['orgCode'] || "" %>. Please contact them if you have any questions about their data.</p>
+            <p><strong>Disclaimer</strong>: The data for this page has been produced from IATI data published by <%= project['organisation'] || "" %>. Please contact them if you have any questions about their data.</p>
         </div>
         <% end %>
     </div>

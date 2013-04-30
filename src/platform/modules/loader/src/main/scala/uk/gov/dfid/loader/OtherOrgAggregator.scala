@@ -38,15 +38,15 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           | RETURN COALESCE(activity.title?, title.title)                   AS title,
           |        COALESCE(activity.description?, description.description) AS description,
           |        activity.`iati-identifier`                               AS id,
-          |        org.`reporting-org`                                      AS orgCode,
+          |        org.`reporting-org`                                      AS organisation,
           |        status.code                                              AS status
         """.stripMargin).foreach { row =>
 
-        val title       = row("title").asInstanceOf[String]
-        val description = row("description").asInstanceOf[String]
-        val id          = row("id").asInstanceOf[String]
-        val status      = row("status").asInstanceOf[Long]
-        val orgCode     = row("orgCode").asInstanceOf[String]
+        val title        = row("title").asInstanceOf[String]
+        val description  = row("description").asInstanceOf[String]
+        val id           = row("id").asInstanceOf[String]
+        val status       = row("status").asInstanceOf[Long]
+        val organisation = row("organisation").asInstanceOf[String]
 
         try{
           // now we need to sum up the project budgets and spend.
@@ -96,7 +96,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               "iatiId"            -> BSONString(id),
               "status"            -> BSONLong(status),
               "totalBudget"       -> BSONLong(totalBudget),
-              "orgCode"           -> BSONString(orgCode),
+              "organisation"      -> BSONString(organisation),
               "totalProjectSpend" -> BSONLong(totalSpend)
             ).append(dates:_*)
           )
