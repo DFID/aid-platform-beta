@@ -12,7 +12,7 @@ var regionBounds = {
 	679: {northeast: {lat: 28.5478351, lng: 101.1702717}, southwest: {lat: 9.6053198, lng: 92.171808}},
 	689: {northeast: {lat: 35.5043404, lng: 97.395555}, southwest: {lat: 6.747138899999999, lng: 68.1623859}},
 	789: {northeast: {lat: 53.56097399999999, lng: 141.0153597}, southwest: {lat: -10.9944991, lng: 73.4994136}},
-	798: {northeast: {lat: 81.669178, lng: -168.3545}, southwest: {lat: -12.9403, lng: 25.0159001}},
+	798: {northeast: {lat: 69.718107, lng: 145.69519}, southwest: {lat: -7.710992, lng: 24.581909}},
 	889: {northeast: {lat: 20.6584862, lng: -124.5410156}, southwest: {lat: -54.83376579999999, lng: 110.9510339}},
 	'AB':{northeast: {lat: 34.307144, lng:137.798767}, southwest: {lat:-10.314919,lng:59.136658}},
 	'BL':{northeast: {lat: 48.327039, lng: 30.956039}, southwest: {lat:39.89288,lng:13.487778}},

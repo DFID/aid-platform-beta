@@ -43,8 +43,6 @@
     var countryName = $("#countryName").val();
     var countryCode = $("#countryCode").val();
     var projectType = $("#projectType").val();
-
-
     var map;
 
     if (projectType == "global") {
@@ -74,9 +72,7 @@
             new L.LatLng(bounds.northeast.lat, bounds.northeast.lng)
         );
 
-        map = new L.Map('countryMap', {
-            maxBounds: boundary
-        });
+        map = new L.Map('countryMap');
 
         map.addLayer(new L.Google('ROADMAP'))
 
