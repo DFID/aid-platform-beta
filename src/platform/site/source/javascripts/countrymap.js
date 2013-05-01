@@ -56,29 +56,22 @@
 
 
     } else if (countryName && countryCode) {  
-
         map = new L.Map('countryMap', {
             center: new L.LatLng(countryBounds[countryCode][0], countryBounds[countryCode][1]), 
             zoom: 6
         });
         map.addLayer(new L.Google('ROADMAP'));
-
-
     } else if (countryCode) {
         var bounds = regionBounds[countryCode];
-
         var boundary = new L.LatLngBounds(
             new L.LatLng(bounds.southwest.lat, bounds.southwest.lng),
             new L.LatLng(bounds.northeast.lat, bounds.northeast.lng)
         );
 
         map = new L.Map('countryMap');
-
         map.addLayer(new L.Google('ROADMAP'))
-
         map.fitBounds(boundary);
         map.panInsideBounds(boundary);
-
     } else {
         $('#countryMap').hide();
         $('#countryMapDisclaimer').hide();
