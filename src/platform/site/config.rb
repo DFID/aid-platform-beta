@@ -273,6 +273,25 @@ end
     } 
   } 
 }]).each do |sector|
+
+  sectors = @cms_db['sector-hierarchies'].find({ 
+    "highLevelCode" => sector['_id'] 
+  }).map { |s| s["sectorCode"] }
+  
+  projectIds = @cms_db['project-sector-budgets'].find({
+    "sectorCode" => {
+      "$in" => sectors
+    }
+  }).map { |project| 
+    project['projectIatiId'] 
+  }
+
+  projects = @cms_db['projects'].find({
+    "iatiId" => {
+      "$in" => projectIds
+    }
+  })
+  proxy "/sector/#{sector['_id']}/projects/index.html", 'sector/projects.html', :locals => { :sector => sector, :projects => projects } 
   proxy "/sector/#{sector['_id']}/index.html", '/sector/categories.html', :locals => { :sector => sector }
 end
 
@@ -285,9 +304,27 @@ end
   } 
 }]).each do |sector|
 
-  categoryCode = sector['_id']
-  sectorCode   = sector['sectorCode']
-  proxy "/sector/#{sectorCode}/categories/#{categoryCode}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
+  sectors = @cms_db['sector-hierarchies'].find({ 
+    "categoryCode" => sector['_id'] 
+  }).map { |s| s["sectorCode"] }
+  
+  projectIds = @cms_db['project-sector-budgets'].find({
+    "sectorCode" => {
+      "$in" => sectors
+    }
+  }).map { |project| 
+    project['projectIatiId'] 
+  }
+
+  projects = @cms_db['projects'].find({
+    "iatiId" => {
+      "$in" => projectIds
+    }
+  })
+
+  proxy "/sector/#{sector['sectorCode']}/categories/#{sector['_id']}/projects/index.html", 'sector/projects.html', :locals => { :sector => sector, :projects => projects } 
+
+  proxy "/sector/#{sector['sectorCode']}/categories/#{sector['_id']}/index.html", '/sector/sectors.html', :locals => { :sector => sector }
 
 end
 
