@@ -38,21 +38,34 @@
             .rangeRoundBands([0, x0.rangeBand()]) // range = 0 to group size
             .domain(elementNames); // x sub labels (element in group)
 
+        var yDomain = [
+            d3.min(dataValues, function(d) { return d3.min(d.slice(1)); } ), 
+            d3.max(dataValues, function(d) { return d3.max(d.slice(1)); } )
+        ];
+
         // y axis scale
         var y = d3.scale.linear()
-            .range([height, 0])
-            .domain([0, d3.max(dataValues, function(d) { return d3.max(d.slice(1)); } )]);
+                        .range([height, 0])
+                        .domain(yDomain);
 
-        var xAxis = d3.svg.axis().scale(x0).orient("bottom").tickSize(0);
-        var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(yFormat)).ticks(5).tickSize( -width - margin.left - margin.right, 0);
+        var xAxis = d3.svg.axis()
+                          .scale(x0)
+                          .orient("bottom")
+                          .tickSize(0);
+        var yAxis = d3.svg.axis()
+                          .scale(y)
+                          .orient("left")
+                          .tickFormat(d3.format(yFormat))
+                          .ticks(5)
+                          .tickSize( -width - margin.left - margin.right, 0);
 
         // create svg
         var svg = d3.select(elSelector)
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg.append("g")
             .attr("class", "x axis")
@@ -81,8 +94,29 @@
             .enter().append("rect")
                 .attr("width", x1.rangeBand())
                 .attr("x", function(d, i) { return x1(elementNames[i]); })
-                .attr("y", function(d) { return y(d); })
-                .attr("height", function(d) { return d3.max([height - y(d), 0]); })
+                .attr("y", function(d) { 
+                    if(yDomain[0] < 0) {
+                        if(d > 0) {
+                          return y(d);
+                        } else {
+                          return y(0);
+                        }
+                    } else {
+                        return y(d);
+                    }
+                })
+                .attr("height", function(d) { 
+                    if(yDomain[0] < 0) {
+                        if(d > 0) {
+                            return y(0) - y(d);
+                        } else {
+                            return y(d) - y(0);
+                        }
+                    } else {
+                        return height - y(d);
+                    }
+
+                })
                 .attr("title", function(d){ return d })
                 .style("fill", function(d, i) { return color(i); });
 
