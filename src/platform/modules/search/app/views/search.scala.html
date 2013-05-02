@@ -76,12 +76,20 @@
         <div class="row">
             <div class="twelve columns">
                 <div id="search-bar">
-                    <form method="GET" action="/search">
-                        <label for="query">
-                            <h3>Search Projects</h3>
-                            <input type="text" value="@query" placeholder="e.g. location, sector, organisation or keyword" name="query" id="query"/>
-                        </label>
-                        <input type="submit" class="button" value="Search">
+                    <form action="/search" method="GET">
+                        <div class="row">
+                            <div class="three columns">
+                                <label for="query">
+                                    <h3>Search Projects</h3>
+                                </label>
+                            </div>
+                            <div class="six columns">
+                                <input id="query" name="query" type="text" placeholder="e.g. location, sector, organisation or keyword" value="">
+                            </div>
+                            <div class="three columns">
+                                <input type="submit" value="Search" class="button">
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -115,7 +123,7 @@
                                     $('span[name=numberofResults]').attr("value",$('span[name=numberofResults]').attr("value")-1)
                                     $('span[name=numberofResults]').html($('span[name=numberofResults]').attr("value"));
                                     $('span[name=sugestionSpan]').show();
-                                    var budget = "@project.get("countryBudget")".replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
+                                    var budget = '@project.get("countryBudget")'.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
                                     $('span[name=sugestionSpan]').html("<div class='suggested-country' style='background-color: #F0F0F0;font-size: 1.1em;margin: 20px 0;padding: 15px;'><p>Did you mean the <em>country <a href='/countries/@project.get("countryCode")'>@project.get("countryName")</a></em>?</p><p></p><h3><em>@project.get("countryName")</em></h3>Budget: <em>£"+budget+"</em><p></p></div>");
                                 });
                             </script>
@@ -133,7 +141,7 @@
                                         @project.get("title") <small>[@project.get("id")]</small>
                                     </a>
                                 </h3>
-                                <span class="budget">Budget: <em> @project.get("formatedBudget")</em></span>
+                                <span class="budget">Budget: <em> @project.get("formattedBudget")</em></span>
                                 <span>Status: <em>@project.get("status")</em></span>
                                 <p class="description">@project.get("description")</p>
                             </div>
