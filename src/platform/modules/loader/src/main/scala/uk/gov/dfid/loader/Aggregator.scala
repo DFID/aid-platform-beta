@@ -234,10 +234,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       s"""
         | START  txn = node:entities(type="transaction")
         | MATCH  project-[:`related-activity`]-component-[:transaction]-txn,
-        | component-[:`reporting-org`]-org,
-        | txn-[:value]-value,
-        | txn-[:`transaction-date`]-date,
-        | txn-[:`transaction-type`]-type
+        |        component-[:`reporting-org`]-org,
+        |        txn-[:value]-value,
+        |        txn-[:`transaction-date`]-date,
+        |        txn-[:`transaction-type`]-type
         | WHERE  project.type = 1
         | AND    org.ref      = "GB-1"
         | AND    (type.`code` = 'D' OR type.`code` = 'E')

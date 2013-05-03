@@ -39,7 +39,7 @@
             .domain(elementNames); // x sub labels (element in group)
 
         var yDomain = [
-            d3.min(dataValues, function(d) { return d3.min(d.slice(1)); } ), 
+            d3.min([0, d3.min(dataValues, function(d) { return d3.min(d.slice(1)); } )]), 
             d3.max(dataValues, function(d) { return d3.max(d.slice(1)); } )
         ];
 
