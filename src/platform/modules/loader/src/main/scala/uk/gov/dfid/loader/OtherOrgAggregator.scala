@@ -105,10 +105,11 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           engine.execute(
             s"""
             | START  b=node:entities(type="budget")
-            | MATCH  v-[:value]-b-[:budget]-n
+            | MATCH  v-[:value]-b-[:budget]-n,
+            |        b-[:`period-start`]-p
             | WHERE  n.`iati-identifier` = '$id'
-            | RETURN v.value        as value,
-            |        v.`value-date` as date
+            | RETURN v.value      as value,
+            |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
 
             val value = row("value").asInstanceOf[Long].toInt

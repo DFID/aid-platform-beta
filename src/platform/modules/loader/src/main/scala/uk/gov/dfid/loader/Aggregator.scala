@@ -159,13 +159,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     val projectBudgets = db.collection("project-budgets")
     engine.execute(
       s"""
-      |  START b=node:entities(type="budget")
-      |  MATCH b-[:budget]-component-[:`related-activity`]-proj,
-      |  component-[:`reporting-org`]-org,
-      |  b-[:value]-v
-      |  WHERE proj.type=1
-      |  AND org.ref = "GB-1"
-      |  RETURN proj.ref as projectId, v.value as value, v.`value-date` as date
+      |  START  b=node:entities(type="budget")
+      |  MATCH  v-[:value]-b-[:budget]-component-[:`related-activity`]-proj,
+      |         component-[:`reporting-org`]-org,
+      |         b-[:`period-start`]-period
+      |  WHERE  proj.type =1
+      |  AND    org.ref   = "GB-1"
+      |  RETURN proj.ref     as projectId,
+      |         v.value      as value,
+      |         p.`iso-date` as date
        """.stripMargin).toSeq.foreach { row =>
       try {
         val id = row("projectId").asInstanceOf[String]
@@ -207,10 +209,11 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       s"""
         | START  n=node:entities(type="iati-activity")
         | MATCH  n-[:`related-activity`]-a,
-        |        n-[:budget]-b-[:value]-v
+        |        n-[:budget]-b-[:value]-v,
+        |        b-[:`period-start`]-p
         | WHERE  a.type = 1
         | AND    n.hierarchy! = 2
-        | RETURN a.ref as id, v.value as value, v.`value-date` as date
+        | RETURN a.ref as id, v.value as value, p.`iso-date` as date
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
       val budget = row("value") match {
@@ -285,11 +288,12 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           | START  n=node:entities(type="iati-activity")
           | MATCH  n-[:`recipient-country`]-c,
           |        n-[:`reporting-org`]-org,
-          |        n-[:budget]-b-[:value]-v
+          |        n-[:budget]-b-[:value]-v,
+          |        b-[:`period-start`]-p
           | WHERE  org.ref="GB-1"
           | AND    c.code = "$code"
-          | AND    v.`value-date` >= "$start"
-          | AND    v.`value-date` <= "$end"
+          | AND    p.`iso-date` >= "$start"
+          | AND    p.`iso-date` <= "$end"
           | RETURN SUM(v.value) as value
         """.stripMargin
 

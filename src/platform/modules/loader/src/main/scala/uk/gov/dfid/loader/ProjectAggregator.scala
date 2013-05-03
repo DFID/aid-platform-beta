@@ -175,14 +175,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | MATCH  n-[:`reporting-org`]-o,
           |   	   n-[:`related-activity`]-a,
           |        n-[:`budget`]-b-[:`value`]-v,
-          |        n-[:`sector`]-s
+          |        n-[:`sector`]-s,
+          |        b-[:`period-start`]-p
           | WHERE  n.hierarchy! = 2
           | AND    o.ref = "GB-1"
           | AND	   a.type = 1
           | RETURN a.ref as id, s.code as code, s.sector as name,
           |        COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
           |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total,
-          |        v.`value-date` as date
+          |        p.`iso-date` as date
           | ORDER BY id asc, total desc
         """.stripMargin).foreach { row =>
 
@@ -324,10 +325,11 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         engine.execute(
           s"""
             | START  b=node:entities(type="budget")
-            | MATCH  v-[:value]-b-[:budget]-n
+            | MATCH  v-[:value]-b-[:budget]-n,
+            |        b-[:`period-start`]-p
             | WHERE  n.`iati-identifier` = '$funded'
             | RETURN v.value        as value,
-            |        v.`value-date` as date
+            |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
 
           val value = row("value").asInstanceOf[Long].toInt
