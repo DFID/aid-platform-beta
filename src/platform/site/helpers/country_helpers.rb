@@ -65,7 +65,7 @@ module CountryHelpers
         }
     end
 
-    total = sectors.map { |s| s['total'] }.inject(:+) + 0.0
+    total = (sectors.map { |s| s['total'] }.inject(:+) || 0) + 0.0
 
     sectors.each { |s| 
       s['percentage'] = format_percentage(s['total'] / total * 100) 
