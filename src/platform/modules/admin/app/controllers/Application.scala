@@ -8,6 +8,8 @@ import uk.gov.dfid.loader.DataLoader
 import uk.gov.dfid.common.api.ReadOnlyApi
 import uk.gov.dfid.common.models.AuditLog
 import concurrent.ExecutionContext.Implicits.global
+import org.mindrot.jbcrypt.BCrypt
+import play.api.Play
 
 class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val loader: DataLoader, val audits: ReadOnlyApi[AuditLog]) extends Controller with Secured {
 
@@ -19,13 +21,13 @@ class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val
     }
   }
 
-  def deploy = secured(() => deployer.deploy)
+  def deploy = secured(authroiseDeployment)(() => deployer.deploy)
 
-  def load = secured(() => loader.load)
+  def load = secured(authroiseDeployment)(() => loader.load)
 
-  private def secured(action: () => Unit) = {
+  private def secured(authenticate: String => Boolean)(action: () => Unit) = {
     SecuredAction(parse.urlFormEncoded) { user => request =>
-      request.body("password").headOption.map(auth.authenticate(_)) match {
+      request.body("password").headOption.map(authenticate) match {
         case Some(true) => {
           action()
           Redirect(routes.Application.index).flashing(
@@ -39,5 +41,9 @@ class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val
         )
       }
     }
+  }
+
+  private def authroiseDeployment(password: String) = {
+    BCrypt.checkpw(password, Play.current.configuration.getString("deployment.password").get)
   }
 }
