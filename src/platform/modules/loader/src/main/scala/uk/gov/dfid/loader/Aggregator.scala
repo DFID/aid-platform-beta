@@ -163,11 +163,11 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       |  MATCH  v-[:value]-b-[:budget]-component-[:`related-activity`]-proj,
       |         component-[:`reporting-org`]-org,
       |         b-[:`period-start`]-period
-      |  WHERE  proj.type =1
+      |  WHERE  proj.type = 1
       |  AND    org.ref   = "GB-1"
-      |  RETURN proj.ref     as projectId,
-      |         v.value      as value,
-      |         p.`iso-date` as date
+      |  RETURN proj.ref          as projectId,
+      |         v.value           as value,
+      |         period.`iso-date` as date
        """.stripMargin).toSeq.foreach { row =>
       try {
         val id = row("projectId").asInstanceOf[String]
