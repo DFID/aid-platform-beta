@@ -11,13 +11,7 @@ import concurrent.ExecutionContext.Implicits.global
 class FrontPage @Inject()(frontPage: FrontPageManagedContentApi) extends Controller with Secured {
 
   val form = Form(
-    tuple(
-      "whatwedo" -> list(
-        tuple(
-          "text" -> text,
-          "value" -> text
-        )
-      ),
+    single(
       "whatweachieve" -> list(
         tuple(
           "text" -> text,
@@ -30,12 +24,9 @@ class FrontPage @Inject()(frontPage: FrontPageManagedContentApi) extends Control
   def index = SecuredAction { user => request =>
     Async {
       for(
-        whatWeDo <- frontPage.getWhatWeDo;
         whatWeAchieve <- frontPage.getWhatWeAchieve
       ) yield {
-        Ok(views.html.admin.frontpage(
-          form.fill(whatWeDo, whatWeAchieve)
-        ))
+        Ok(views.html.admin.frontpage(form.fill(whatWeAchieve)))
       }
     }
   }
@@ -44,9 +35,7 @@ class FrontPage @Inject()(frontPage: FrontPageManagedContentApi) extends Control
     form.bindFromRequest.fold(
       errors => BadRequest(views.html.admin.frontpage(form)),
       elements => {
-        val (whatwedo, whatweachieve) = elements
-        frontPage.saveWhatWeDo(whatwedo)
-        frontPage.saveWhatWeAchieve(whatweachieve)
+        frontPage.saveWhatWeAchieve(elements)
         Redirect(routes.Application.index)
       }
     )

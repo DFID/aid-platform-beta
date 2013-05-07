@@ -10,14 +10,9 @@ import concurrent.ExecutionContext.Implicits.global
 
 class MongoBackedFrontPageManagedContentApi @Inject()(db: DefaultDB) extends FrontPageManagedContentApi {
 
-  private lazy val whatwedo = db.collection("whatwedo")
   private lazy val whatweachieve = db.collection("whatweachieve")
 
-  def getWhatWeDo = getTop5(whatwedo)
-
   def getWhatWeAchieve = getTop5(whatweachieve)
-
-  def saveWhatWeDo(entries: List[(String, String)]) = saveTop5(whatwedo, entries)
 
   def saveWhatWeAchieve(entries: List[(String, String)]) = saveTop5(whatweachieve, entries)
 
@@ -31,7 +26,6 @@ class MongoBackedFrontPageManagedContentApi @Inject()(db: DefaultDB) extends Fro
         )
       }
 
-      println(s"Inserting documents $top5")
       collection.insert(Enumerator.enumerate(top5), 5)
     }
   }
