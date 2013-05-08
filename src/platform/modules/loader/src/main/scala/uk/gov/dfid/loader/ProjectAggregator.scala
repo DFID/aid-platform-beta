@@ -57,14 +57,12 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val receiver         = row("receiver-org").asInstanceOf[String]
       val provider         = row("provider-org").asInstanceOf[String]
       val providerActivity = row("provider-activity-id").asInstanceOf[String]
-      val component        = ""
       val description      = row("description").asInstanceOf[String]
 
-      println(s"inserting: $project $value $description")
       db.collection("transactions").insert(
         BSONDocument(
           "project"                -> BSONString(project),
-          "component"              -> BSONString(component),
+          "component"              -> BSONString(""),
           "description"            -> BSONString(description),
           "receiver-org"           -> BSONString(receiver),
           "provider-org"           -> BSONString(provider),

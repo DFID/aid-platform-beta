@@ -52,20 +52,24 @@ title: UK Aid Information Platform
                 Active Projects
                 <span><strong><%= active_projects country['code'] || "&nbsp;" %></strong></span>
             </li>
-
+            <% if country['population'] then %>
                 <li class="fact-item">
                     Population (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
-                    <span><strong><%= format_round_million country['population'].to_f || "&nbsp;" %></strong></span>
+                    <span><strong><%= format_round_million country['population'].to_f%></strong></span>
                 </li>
+            <% end %>
+            <% if country['lifeExpectancy'] then %>
                 <li class="fact-item">
                     Life expectancy at birth (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
-                    <span><strong><%= country['lifeExpectancy'].to_f.round(0) || "&nbsp;"%></strong></span>
+                    <span><strong><%= country['lifeExpectancy'].to_f.round(0)%></strong></span>
                 </li>
+            <% end %>
+            <% if country['incomeLevel'] then %>
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
-                    <span><strong><%= country['incomeLevel'] || "&nbsp;" %></strong></span>
+                    <span><strong><%= country['incomeLevel']%></strong></span>
                 </li>   
-
+            <% end %>
         </ul>
     </div>
 

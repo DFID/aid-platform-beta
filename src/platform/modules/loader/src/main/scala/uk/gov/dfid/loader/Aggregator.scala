@@ -8,10 +8,8 @@ import org.neo4j.cypher.ExecutionEngine
 import org.neo4j.graphdb.Node
 import uk.gov.dfid.common.api.Api
 import uk.gov.dfid.common.models.Project
-import concurrent.{Future, Await}
 import concurrent.duration._
 import uk.gov.dfid.common.DataLoadAuditor
-import org.joda.time.format.DateTimeFormat
 import reactivemongo.bson.BSONString
 import reactivemongo.bson.BSONLong
 import uk.gov.dfid.loader.Implicits._
@@ -151,12 +149,12 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     auditor.info("Dropping project budgets collection")
     // drop the collection and start up
     Await.ready(db.collection("project-budgets").drop, Duration.Inf)
-    auditor.info("Project budgets dropped")
 
+    auditor.info("Project budgets dropped")
     auditor.info("Rolling up country project budgets")
-    val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
     val projectBudgets = db.collection("project-budgets")
+
     engine.execute(
       s"""
       |  START  b=node:entities(type="budget")
@@ -164,6 +162,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       |         component-[:`reporting-org`]-org,
       |         b-[:`period-start`]-period
       |  WHERE  proj.type = 1
+      |  AND    proj.ref  IN ${countryProjects.map(_._1).mkString("['", "','", "']")}
       |  AND    org.ref   = "GB-1"
       |  RETURN proj.ref          as projectId,
       |         v.value           as value,
