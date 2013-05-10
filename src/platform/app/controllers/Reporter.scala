@@ -36,11 +36,11 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
      * @return The body
      */
     def body =
-      (country.getOrElse(project.getOrElse("")) ::
+      (country.getOrElse("") :: project.getOrElse("") ::
           description ::
           name.getOrElse("") ::
           email.getOrElse("") ::
-          telno.getOrElse("") :: Nil).foldLeft("") { _ + "\n" + _ }
+          telno.getOrElse("") :: Nil).mkString("<p>","","</p>")
   }
 
   /**

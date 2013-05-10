@@ -20,6 +20,6 @@ class MailerPluginBackedMailer extends Mailer{
     mail.setSubject(subject)
     mail.addRecipient(to)
     mail.addFrom(from)
-    mail.send(body)
+    mail.sendHtml(body)
   }
 }
