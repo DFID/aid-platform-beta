@@ -162,7 +162,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       |         component-[:`reporting-org`]-org,
       |         b-[:`period-start`]-period
       |  WHERE  proj.type = 1
-      |  AND    proj.ref  IN ${countryProjects.map(_._1).mkString("['", "','", "']")}
       |  AND    org.ref   = "GB-1"
       |  RETURN proj.ref          as projectId,
       |         v.value           as value,
