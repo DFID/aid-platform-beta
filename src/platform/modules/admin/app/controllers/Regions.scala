@@ -9,8 +9,9 @@ import uk.gov.dfid.common.models.{Region, Country}
 import reactivemongo.bson.{BSONString, BSONDocument, BSONObjectID}
 import com.google.inject.Inject
 import concurrent.ExecutionContext.Implicits.global
+import controllers.traits.admin.Secured
 
-class Regions @Inject()(val api: Api[Region]) extends Controller {
+class Regions @Inject()(val api: Api[Region]) extends Controller with Secured  {
 
   val form = Form(
     mapping(
@@ -22,7 +23,7 @@ class Regions @Inject()(val api: Api[Region]) extends Controller {
   )
 
   // GET /regions
-  def index = Action {
+  def index = SecuredAction { user => request =>
     Async {
       api.all.map { regions =>
         Ok(views.html.admin.regions.index(regions))
@@ -31,12 +32,12 @@ class Regions @Inject()(val api: Api[Region]) extends Controller {
   }
 
   // GET /regions/new
-  def create = Action {
+  def create = SecuredAction { user => request =>
     Ok(views.html.admin.regions.view(None, form))
   }
 
   // POST /regions
-  def save = Action { implicit request =>
+  def save = SecuredAction { user => implicit request =>
     form.bindFromRequest.fold(
       errors => BadRequest(views.html.admin.regions.view(None, errors)),
       country => Async {
@@ -55,7 +56,7 @@ class Regions @Inject()(val api: Api[Region]) extends Controller {
   }
 
   // GET /regions/:id/edit
-  def edit(id: String) = Action {
+  def edit(id: String) = SecuredAction { user => request =>
     Async {
       api.get(id).map { maybeRegion =>
         maybeRegion.map { region =>
@@ -68,7 +69,7 @@ class Regions @Inject()(val api: Api[Region]) extends Controller {
   }
 
   // POST /regions/:id
-  def update(id: String) = Action { implicit request =>
+  def update(id: String) = SecuredAction { user => implicit request =>
     form.bindFromRequest.fold(
       errors => BadRequest(views.html.admin.regions.view(Some(id), errors)),
       country => {
@@ -79,7 +80,7 @@ class Regions @Inject()(val api: Api[Region]) extends Controller {
   }
 
   // POST /regions/:id/delete
-  def delete(id: String) = Action {
+  def delete(id: String) = SecuredAction { user => request =>
     api.delete(id)
     Redirect(routes.Regions.index)
   }
