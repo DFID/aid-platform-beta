@@ -15,13 +15,20 @@ rm -rf build/*
 bundle install
 bundle exec 'middleman build --clean --verbose'
 
+# if the DFID_STATIC_FILE_PATH variable is set then we can
+# deploy the site locally
+if [ "$DFID_STATIC_FILE_PATH" != "" ]; then
+    find $DFID_STATIC_FILE_PATH -mindepth 1 -delete
+    cp -fR ./build/* $DFID_STATIC_FILE_PATH
+fi
+
 # commit generated site
-cd build
-git add -A
-git commit -m "Automated Commit through build-site.sh"
-git push -f origin master
-cd ..
+# TODO 2013-05-14 James Hughes - Removed this as we are operating under in standalone mode
+# cd build
+# git add -A
+# git commit -m "Automated Commit through build-site.sh"
+# git push -f origin master
+# cd ..
 
 # remove the unnecessary build directory
 rm -rf build
-
