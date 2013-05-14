@@ -8,7 +8,7 @@ module ProjectHelpers
 
     def dfid_total_projects_budget(projectType)
         # aggregates a total budget of all the dfid projects for a given type (global, coutry, regional)
-        dfid_projects_budget(projectType).first['total']
+        (dfid_projects_budget(projectType).first || { 'total' => 0 })['total']
     end
 
     def dfid_projects_budget(projectType)
