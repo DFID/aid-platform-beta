@@ -2,6 +2,7 @@ package controllers.traits.admin
 
 import play.api.mvc._
 import controllers.admin.routes
+import scala.util.Random
 
 trait Secured {
 
@@ -11,13 +12,13 @@ trait Secured {
 
   def SecuredAction(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { user =>
-      Action(request => f(user)(request))
+      Action(request => f(user)(request).withSession(request.session + ("carthage" -> Random.nextString(20))))
     }
   }
 
   def SecuredAction[A](parser: BodyParser[A])(f: => String => Request[A] => Result) = {
     Security.Authenticated(username, onUnauthorized) { user =>
-      Action(parser)(request => f(user)(request))
+      Action(parser)(request => f(user)(request).withSession(request.session + ("carthage" -> Random.nextString(20))))
     }
   }
 }
