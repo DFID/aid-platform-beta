@@ -95,7 +95,7 @@ layout: landing
         <ol>
           <% what_we_achieve.each do |entry| %>
           <li>
-            <%= entry['title'] %>
+            <%=h entry['title'] %>
             <em><span class="visually-hidden">Budget</span><%=h entry['value'] %></em>
           </li>
           <% end %>
