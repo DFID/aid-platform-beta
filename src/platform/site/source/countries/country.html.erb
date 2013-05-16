@@ -14,7 +14,7 @@ title: UK Aid Tracker
                 </ul>
             </div>
             <h1>
-                <img src="/images/flags/<%= country['code'].downcase%>.png" alt=""><%= country['name'] %></small>
+                <img src="/images/flags/<%=h country['code'].downcase%>.png" alt=""><%=h country['name'] %></small>
             </h1>
         </div>
     </div>
@@ -25,7 +25,7 @@ title: UK Aid Tracker
 <div class="row">
     <div class="twelve columns summary">
         <h2 class="visually-hidden">Summary</h2>
-        <div class="description"><%= markdown_to_html country['description'] %></div>
+        <div class="description"><%= markdown_to_html(h country['description'])%></div>
         <script type="text/javascript">
             $('div.description').expander({
                 slicePoint    : 300,
@@ -67,7 +67,7 @@ title: UK Aid Tracker
             <% if country['incomeLevel'] then %>
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
-                    <span><strong><%= country['incomeLevel']%></strong></span>
+                    <span><strong><%=h country['incomeLevel']%></strong></span>
                 </li>   
             <% end %>
         </ul>
@@ -76,8 +76,8 @@ title: UK Aid Tracker
     <div class="six columns">
         <div id="countryMap" class="countryMap"></div>
 
-        <input type="hidden" id="countryName" value="<%= country['name'] %>">
-        <input type="hidden" id="countryCode" value="<%= country['code'] %>">
+        <input type="hidden" id="countryName" value="<%=h country['name'] %>">
+        <input type="hidden" id="countryCode" value="<%=h country['code'] %>">
        
         <div id="countryMapDisclaimer" class="disclaimer grey">
             <p><strong>Disclaimer</strong>: Country borders do not necessarily reflect the UK Government's official position.</p>
