@@ -32,7 +32,7 @@ class MongoBackedAuthenticator @Inject()(db: DefaultDB) extends Authenticator {
 
         // increment or reset the lockout
         users.update(
-          BSONDocument("_id" -> user.get("_id")),
+          BSONDocument("_id" -> user.get("_id").get),
           BSONDocument(
             "$set" -> BSONDocument(
               "retryCount" -> BSONInteger(if(valid) 0 else { lockout +1 })
