@@ -1,0 +1,13 @@
+#!/bin/sh
+
+USERNAME=$1
+
+if [[ (-z $USERNAME) ]]; then
+  echo "Usage: "
+  echo "        ./unlockuser <username>"
+  echo ""
+  echo "Unock a user account"
+  exit
+fi
+
+mongo dfid --eval "db.users.update({ 'username': '$USERNAME' }, { '\$set': { 'retryCount': 0 } })"

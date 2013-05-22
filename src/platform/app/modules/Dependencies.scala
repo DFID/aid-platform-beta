@@ -18,7 +18,7 @@ import org.neo4j.cypher.ExecutionEngine
 
 class Dependencies extends ScalaModule {
    def configure() {
-     bind[Authenticator].to[SimpleAuthenticator]
+     bind[Authenticator].to[MongoBackedAuthenticator]
      bind[SourceSelector].to[IatiDataSourceSelector]
      bind[Deployer].to[Deployinator]
 

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+USERNAME=$1
+ENCRYPTED_PASSWORD=$2
+
+if [[ (-z $USERNAME) || (-z $ENCRYPTED_PASSWORD) ]]; then
+  echo "Usage: "
+  echo "        ./createuser <username> <bcryptedpassword>"
+  echo ""
+  echo "Creates or resets a user"
+  exit
+fi
+
+mongo dfid --eval "db.users.remove({'username': '$USERNAME'}, 1);db.users.insert({'username': '$USERNAME', 'password': '$ENCRYPTED_PASSWORD', 'retryCount': 0})"

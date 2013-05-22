@@ -1,0 +1,15 @@
+#!/bin/sh
+
+VALUE=$1
+
+if [[ (-z $VALUE) ]]; then
+  echo "Usage: "
+  echo "        ./bcrypt <password>"
+  echo ""
+  echo "Apply bcrypt to a string and print the result"
+  exit
+fi
+
+cd ./bcryptor
+sbt "run $VALUE"
+cd ..

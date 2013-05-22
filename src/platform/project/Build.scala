@@ -67,7 +67,10 @@ object ApplicationBuild extends Build {
 
 
   lazy val admin = play.Project(
-    appName + "-admin", appVersion, Dependencies.base, path = file("modules/admin")
+    appName + "-admin", appVersion, Dependencies.base ++ Seq(
+      "jp.t2v" %% "play2.auth"      % "0.9",
+      "jp.t2v" %% "play2.auth.test" % "0.9" % "test"
+    ), path = file("modules/admin")
   ).aggregate(
     common, loader
   ).dependsOn(
@@ -76,7 +79,6 @@ object ApplicationBuild extends Build {
 
   val api = play.Project(appName, appVersion, Dependencies.base).settings(
     libraryDependencies ++= Dependencies.neo4j ++ Seq(
-      "jp.t2v"       %% "stackable-controller" % "0.2",
       "com.typesafe" %% "play-plugins-mailer"  % "2.1.0"
     )
   ).dependsOn(
