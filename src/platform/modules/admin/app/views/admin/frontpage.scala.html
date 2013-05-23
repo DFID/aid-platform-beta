@@ -29,10 +29,10 @@
                             @helper.repeat(frontpage("whatweachieve"), min = 5) { field =>
                             <tr>
                                 <td>
-                                    @helper.inputText(field("text"), 'class -> "span3")
+                                    @helper.inputText(field("text"), 'class -> "span3", 'autocomplete -> "off")
                                 </td>
                                 <td>
-                                    @helper.inputText(field("value"), 'class -> "span2")
+                                    @helper.inputText(field("value"), 'class -> "span2", 'autocomplete -> "off")
                                 </td>
                             </tr>
                             }
