@@ -54,9 +54,9 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
 
       memo + (row("parent").asInstanceOf[String] -> Map(
         "subActivities" -> row("ids").asInstanceOf[List[String]].distinct,
-        "countries"     -> row("sectors").asInstanceOf[List[Long]].map(sectors.getHighLevelSector(_)).distinct,
+        "countries"     -> row("countries").asInstanceOf[List[Long]].map(sectors.getHighLevelSector(_)).distinct,
         "regions"       -> row("regions").asInstanceOf[List[String]].distinct,
-        "sectors"       -> row("countries").asInstanceOf[List[String]].distinct,
+        "sectors"       -> row("sectors").asInstanceOf[List[String]].distinct,
         "organizations" -> row("organizations").asInstanceOf[List[String]].distinct
       ))
     }

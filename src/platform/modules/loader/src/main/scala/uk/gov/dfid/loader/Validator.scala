@@ -11,16 +11,18 @@ import java.io.InputStream
  */
 class Validator {
 
-  def validate(source: InputStream, version: String, sourceType: String): Boolean = {
+  def validate(source: InputStream, sourceType: String): Boolean = {
 
     val plural = sourceType match {
       case "organisation" => "organisations"
       case "activity"     => "activities"
     }
 
-    val xsd = s"http://iatistandard.org/downloads/$version/iati-$plural-schema.xsd"
-    val schema = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(new StreamSource(xsd))
+    Seq("1.02", "1.01").exists { version =>
+      val xsd = s"http://iatistandard.org/downloads/$version/iati-$plural-schema.xsd"
+      val schema = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(new StreamSource(xsd))
 
-    Try(schema.newValidator.validate(new StreamSource(source))).isSuccess
+      Try(schema.newValidator.validate(new StreamSource(source))).isSuccess
+    }
   }
  }
