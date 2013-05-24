@@ -85,9 +85,17 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       // validation throws uncontrollable errors
       try{
-        val ele     = XML.load(url)
-        val stream  = new URL(url).openStream
-        val valid = validator.validate(stream, source.getAs[BSONString]("sourceType").map(_.value).get)
+        val valid = Seq("1.02","1.01") exists { version =>
+          val stream  = new URL(url).openStream
+          val valid = validator.validate(stream, version, source.getAs[BSONString]("sourceType").map(_.value).get)
+
+          valid match {
+            case true => println(s"Valid for $version")
+            case false =>println(s"Invalid for $version")
+          }
+        
+          valid
+        }
 
         if (!valid) {
           auditor.warn(s"Invalid source at $url")
