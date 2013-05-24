@@ -44,19 +44,20 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
       engine.execute(
         """
-          | START  n=node:entities(type="iati-activity")
-          | MATCH  p-[:`participating-org`]-n-[:`reporting-org`]-o,
-          |        n-[:`activity-status`]-a
-          | WHERE  n.hierarchy! = 1
-          | AND    o.ref = "GB-1"
-          | RETURN n, a.code as status,  COLLECT(p.`participating-org`) as participating
+          |START  n=node:entities(type="iati-activity")
+          |MATCH  p-[:`participating-org`]-n-[:`reporting-org`]-o,
+          |       n-[?:`iati-identifier`]-id,
+          |       n-[:`activity-status`]-a
+          |WHERE  n.hierarchy! = 1
+          |AND    o.ref = "GB-1"
+          |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id, a.code as status,  COLLECT(p.`participating-org`) as participating
         """.stripMargin).foreach { row =>
 
         val projectNode = row("n").asInstanceOf[Node]
         val status      = row("status").asInstanceOf[Long].toInt
         val title       = projectNode.getPropertySafe[String]("title").get
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
-        val id          = projectNode.getPropertySafe[String]("iati-identifier").get
+        val id          = row("id").asInstanceOf[String]
         val projectOrgs = row("participating").asInstanceOf[List[String]]
 
 
@@ -98,7 +99,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
       auditor.success("All projects loaded")
     }catch{
-      case e: Throwable => auditor.error(s"Error loading projects: ${e.getMessage}")
+      case e: Throwable => e.printStackTrace(); auditor.error(s"Error loading projects: ${e.getMessage}")
     }
   }
 

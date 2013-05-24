@@ -28,7 +28,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     val projects = Await.result(results, Duration Inf)
     val whereClause = projects.map(
       _.getAs[BSONString]("funded").map(_.value).get
-    ).mkString("WHERE n.`iati-identifier` IN ['", "', '", "']")
+    ).mkString("WHERE n.`iati-identifier`? IN ['", "', '", "']")
 
     engine.execute(
       s"""
@@ -40,7 +40,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |       txn-[r?:`receiver-org`]-receiver,
         |       txn-[p?:`provider-org`]-provider
         | $whereClause
-        | RETURN n.`iati-identifier`            as id,
+        | RETURN n.`iati-identifier`?           as id,
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
@@ -93,7 +93,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | WHERE  project.type = 1
         | AND    org.ref      = "GB-1"
         | RETURN project.ref                    as project,
-        |        component.`iati-identifier`    as component,
+        |        component.`iati-identifier`?   as component,
         |        COALESCE(txn.description?, "") as description,
         |        COALESCE(component.title?, "") as title,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
@@ -141,7 +141,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |       n-[:`activity-date`]-d
         | WHERE n.hierarchy! = 1
         | AND   o.ref = "GB-1"
-        | RETURN distinct(n.`iati-identifier`) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
+        | RETURN distinct(n.`iati-identifier`?) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
       """.stripMargin).foreach { row =>
 
       val id       = row("id").asInstanceOf[String]
@@ -231,7 +231,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
          | WHERE  o.role  = "Funding"
          | AND    o.ref!   = "GB-1"
          | AND    tt.code = "IF"
-         | RETURN n.`iati-identifier`       as funded      ,
+         | RETURN n.`iati-identifier`?       as funded      ,
          |        ro.`reporting-org`        as reporting   ,
          |        ttl.title                 as title       ,
          |        d.description             as description ,
@@ -255,7 +255,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           s"""
             | START  v=node:entities(type="iati-activity")
             | MATCH  v-[:`related-activity`]-a
-            | WHERE  v.`iati-identifier` = '$funding'
+            | WHERE  v.`iati-identifier`? = '$funding'
             | AND    a.type=1
             | RETURN a.ref as id
           """.stripMargin).toSeq.head("id").asInstanceOf[String]
@@ -267,7 +267,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           s"""
              | START  funded=node:entities(type="iati-activity")
              | MATCH  funded-[:budget]-budget-[:value]-budget_value
-             | WHERE  funded.`iati-identifier` = '$funded'
+             | WHERE  funded.`iati-identifier`? = '$funded'
              | RETURN SUM(budget_value.value) as totalBudget
           """.stripMargin).toSeq.head("totalBudget") match {
           case v: java.lang.Integer => v.toLong
@@ -292,7 +292,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           s"""
             | START  n=node:entities(type="iati-activity")
             | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
-            | WHERE  n.`iati-identifier` = '$funded'
+            | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
           """.stripMargin).toSeq.map { row =>
 
@@ -325,7 +325,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | START  b=node:entities(type="budget")
             | MATCH  v-[:value]-b-[:budget]-n,
             |        b-[:`period-start`]-p
-            | WHERE  n.`iati-identifier` = '$funded'
+            | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN v.value        as value,
             |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
@@ -347,7 +347,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           s"""
             | START  n=node:entities(type="iati-activity")
             | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
-            | WHERE  n.`iati-identifier` = '$funded'
+            | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN s.code                                                as code,
             |        s.sector?                                             as name,
             |        COALESCE(s.percentage?, 100)                          as percentage,
@@ -398,7 +398,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates,
         |        location-[:`location-type`]-type
         | WHERE  org.ref! ='GB-1'
-        | RETURN project.`iati-identifier` as id,
+        | RETURN project.`iati-identifier`? as id,
         |        project.title             as title,
         |        location.name             as name,
         |        coordinates.precision     as precision,

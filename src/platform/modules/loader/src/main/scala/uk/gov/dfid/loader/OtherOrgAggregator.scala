@@ -33,13 +33,14 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           | START  activity = node:entities(type="iati-activity")
           | MATCH  status-[:`activity-status`]-activity-[:`reporting-org`]-org,
           | 	     activity-[?:title]-title,
-          |        activity-[?:description]-description
+          |        activity-[?:description]-description,
+          |        activity-[?:`iati-identifier`]-id
           | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
-          | RETURN COALESCE(activity.title?, title.title)                   AS title,
-          |        COALESCE(activity.description?, description.description) AS description,
-          |        activity.`iati-identifier`                               AS id,
-          |        org.`reporting-org`                                      AS organisation,
-          |        status.code                                              AS status
+          | RETURN COALESCE(activity.title?, title.title)                       AS title,
+          |        COALESCE(activity.description?, description.description)     AS description,
+          |        COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id,
+          |        org.`reporting-org`                                          AS organisation,
+          |        status.code                                                  AS status
         """.stripMargin).foreach { row =>
 
         val title        = row("title").asInstanceOf[String]
@@ -53,8 +54,9 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           val totalBudget = engine.execute(
             s"""
              | START  funded=node:entities(type="iati-activity")
-             | MATCH  funded-[:budget]-budget-[:value]-budget_value
-             | WHERE  funded.`iati-identifier` = '$id'
+             | MATCH  id-[r?:`iati-identifier`]-funded-[:budget]-budget-[:value]-budget_value
+             | WHERE  ((r is null)     AND (funded.`iati-identifier` = '$id'))
+             | OR     ((r is not null) AND (id.`iati-identifier` = '$id'))
              | RETURN SUM(budget_value.value) as totalBudget
           """.stripMargin).toSeq.head("totalBudget") match {
             case v: java.lang.Integer => v.toLong
@@ -64,9 +66,12 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           val totalSpend = engine.execute(
             s"""
              | START  funded=node:entities(type="iati-activity")
-             | MATCH  funded-[:transaction]-transaction-[:value]-transaction_value,
-             | transaction-[:`transaction-type`]-type
-             | WHERE  funded.`iati-identifier` = '$id'
+             | MATCH  id-[r?:`iati-identifier`]-funded-[:transaction]-transaction-[:value]-transaction_value,
+             |        transaction-[:`transaction-type`]-type
+             | WHERE  (
+             |             ((r is null)     AND (funded.`iati-identifier` = '$id'))
+             |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+             |        )
              | AND    (type.`code` = 'D' OR type.`code` = 'E')
              | RETURN SUM(transaction_value.value) as totalSpend
           """.stripMargin).toSeq.head("totalSpend") match {
@@ -78,8 +83,12 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           val dates = engine.execute(
             s"""
             | START  n=node:entities(type="iati-activity")
-            | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
-            | WHERE  n.`iati-identifier` = '$id'
+            | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a,
+            |        id-[r?:`iati-identifier`]-n
+            | WHERE  (
+            |             ((r is null)     AND (n.`iati-identifier` = '$id'))
+            |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+            |        )
             | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
           """.stripMargin).toSeq.map { row =>
 
@@ -105,9 +114,12 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           engine.execute(
             s"""
             | START  b=node:entities(type="budget")
-            | MATCH  v-[:value]-b-[:budget]-n,
+            | MATCH  v-[:value]-b-[:budget]-n-[r?:`iati-identifier`]-id,
             |        b-[:`period-start`]-p
-            | WHERE  n.`iati-identifier` = '$id'
+            | WHERE  (
+            |             ((r is null)     AND (n.`iati-identifier` = '$id'))
+            |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+            |        )
             | RETURN v.value      as value,
             |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
@@ -123,41 +135,6 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               )
             )
           }
-
-          // ok now we need to work out the sector breakdown for the project
-          // engine.execute(
-          //   s"""
-          //   | START  n=node:entities(type="iati-activity")
-          //   | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
-          //   | WHERE  n.`iati-identifier` = '$id'
-          //   | RETURN s.code                                                as code,
-          //   |        s.sector?                                             as name,
-          //   |        COALESCE(s.percentage?, 100)                          as percentage,
-          //   |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
-          // """.stripMargin).foreach { row =>
-          //   val name = row("name") match {
-          //     case null          => None
-          //     case value: String => Some(value)
-          //   }
-          //   val code        = row("code").asInstanceOf[Long]
-          //   val total       = row("total")  match {
-          //     case v: java.lang.Integer => v.toLong
-          //     case v: java.lang.Long    => v.toLong
-          //     case v: java.lang.Double  => v.toLong
-          //   }
-          //
-          //   db.collection("project-sector-budgets").insert(
-          //     BSONDocument(
-          //       "projectIatiId" -> BSONString(id),
-          //       "sectorCode"    -> BSONLong(code),
-          //       "sectorBudget"  -> BSONLong(total)
-          //     ).append(
-          //       Seq(
-          //         name.map("sectorName" -> BSONString(_))
-          //       ).flatten:_*
-          //     )
-          //   )
-          // }
         }catch{
           case e: Throwable => println(e.getMessage); e.printStackTrace()
         }
@@ -179,13 +156,14 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
         | MATCH  org-[:`reporting-org`]-project-[:transaction]-txn,
         |        txn-[:value]-value,
         |        txn-[:`transaction-date`]-date,
-        |        txn-[:`transaction-type`]-type
+        |        txn-[:`transaction-type`]-type,
+        |        project-[?:`iati-identifier`]-id
         | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
-        | RETURN project.`iati-identifier`      as project,
-        |        COALESCE(txn.description?, "") as description,
-        |        value.value                    as value,
-        |        date.`iso-date`                as date,
-        |        type.code                      as type
+        | RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as project,
+        |        COALESCE(txn.description?, "")                              as description,
+        |        value.value                                                 as value,
+        |        date.`iso-date`                                             as date,
+        |        type.code                                                   as type
       """.stripMargin).foreach { row =>
 
       val project     = row("project").asInstanceOf[String]

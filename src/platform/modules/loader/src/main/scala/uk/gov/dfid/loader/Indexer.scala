@@ -23,7 +23,6 @@ import scala.concurrent.duration.Duration
 class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors) {
 
   def index {
-
     // clear the elastic search
     ElasticSearch.reset
 
@@ -42,21 +41,22 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         |        component-[?:sector]-sector,
         |        component-[?:`recipient-region`]-region,
         |        component-[?:`recipient-country`]-country,
-        |        component-[:`participating-org`]-org
+        |        component-[:`participating-org`]-org,
+        |        component-[?:`iati-identifier`]-id
         | WHERE  project.type = 1
-        | RETURN COLLECT(component.`iati-identifier`) as ids,
-        |        project.ref                          as parent,
-        |        COLLECT(sector.code)                 as sectors,
-        |        COLLECT(region.`recipient-region`)   as regions,
-        |        COLLECT(country.`recipient-country`) as countries,
-        |        COLLECT(org.`participating-org`?)    as organizations
+        | RETURN COLLECT(DISTINCT(COALESCE(component.`iati-identifier`?, id.`iati-identifier`?))) as ids,
+        |        project.ref                                    as parent,
+        |        COLLECT(DISTINCT(sector.code))                 as sectors,
+        |        COLLECT(DISTINCT(region.`recipient-region`))   as regions,
+        |        COLLECT(DISTINCT(country.`recipient-country`)) as countries,
+        |        COLLECT(DISTINCT(org.`participating-org`?))    as organizations
       """.stripMargin).foldLeft(Map[String, Map[String, List[String]]]()) { (memo, row) =>
 
       memo + (row("parent").asInstanceOf[String] -> Map(
         "subActivities" -> row("ids").asInstanceOf[List[String]].distinct,
-        "countries"     -> row("countries").asInstanceOf[List[Long]].map(sectors.getHighLevelSector(_)).distinct,
+        "sectors"       -> row("sectors").asInstanceOf[List[Long]].map(sectors.getHighLevelSector(_)).distinct,
         "regions"       -> row("regions").asInstanceOf[List[String]].distinct,
-        "sectors"       -> row("sectors").asInstanceOf[List[String]].distinct,
+        "countries"     -> row("countries").asInstanceOf[List[String]].distinct,
         "organizations" -> row("organizations").asInstanceOf[List[String]].distinct
       ))
     }
