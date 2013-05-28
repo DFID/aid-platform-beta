@@ -93,7 +93,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
             case true => println(s"Valid for $version")
             case false =>println(s"Invalid for $version")
           }
-        
+
           valid
         }
 
