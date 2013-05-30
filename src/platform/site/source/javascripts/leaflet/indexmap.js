@@ -44,7 +44,7 @@
             currentFY = "FY" + date.getFullYear() + "/" + (date.getFullYear() + 1);
         return "" +
         "<div class='popup' style='min-width:350px;'>" +
-        "   <h1><img class='flag' src='" + countryData.flag + "' /> " + countryData.country + "</h1>"  +
+        "   <h1><img class='flag' alt='Country Flag' src='" + countryData.flag + "' /> " + countryData.country + "</h1>"  +
         "   <div class='row'>" +
         "       <div class='six columns'>" +
         "           <div class='stat'>" +

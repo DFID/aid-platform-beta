@@ -68,7 +68,7 @@ $normal-plus: 1.25em;
   select:focus {
   outline: 3px solid #ffbf47;
   }
-  #nav-entry h2 a:hover {
+  #nav-entry p a:hover {
     text-decoration: none;
   }
 }
@@ -308,22 +308,22 @@ Sector breakdown
 #nav-entry {
   margin-bottom: 30px;
 }
-#nav-entry h2 {
+#nav-entry p {
   margin: 0;
 }
-#nav-entry h2 a{
+#nav-entry p a{
   color: #000;
   text-transform: uppercase;
-  font-size: 0.8em;
-  margin-bottom: 0;
+  font-size: 2.2em;
+  margin-bottom: 0px;
 }
-#nav-entry h2 a:focus{
+#nav-entry p a:focus{
   outline: 3px solid $yellow;
   background: none;
   z-index:1000;
   display: block;
 }
-#nav-entry h2 a small{
+#nav-entry p a small{
   font-size: 50%;
   display: block;
   font-weight: normal;
@@ -339,11 +339,11 @@ Sector breakdown
   position: relative;
   display: block;
   width: 8em;
-  height: 2em;
-  margin-top: -2.25em ;
+  height: 2.5em;
+  margin-top: -2.9em ;
   background-color: #FFF;
 }
-#nav-entry h2:hover{
+#nav-entry p:hover{
   outline: 3px solid $yellow;
 }
 @media screen and (min-width: 421px) and (max-width: 767px) {
@@ -367,7 +367,7 @@ Sector breakdown
     width: 100%;
     background: none;
   }
-  #nav-entry h2 {
+  #nav-entry p {
     margin: 0;
   }
   #nav-entry .col a{
