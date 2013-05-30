@@ -9,7 +9,7 @@ title: UK Aid Tracker
     <div class="twelve columns map">
         <div id="map" class="static-background"></div>
 
-	    <div class="disclaimer grey">    
+	    <div class="disclaimer grey">
 	        <p><em>Disclaimer: </em>Country borders do not necessarily reflect the UK Government's official position.</p>
 	    </div>
 
@@ -27,7 +27,7 @@ title: UK Aid Tracker
 	        $(window).resize(function() {
 	        	if (container.width != graph.width) {
 	        		graph.drawGlobalProjectsGraph(labels);
-	        	}	        	
+	        	}
 	        });
 	    </script>
       <script type="text/javascript">
@@ -51,7 +51,7 @@ title: UK Aid Tracker
           $(window).resize(function() {
             if (container.width != graph.width) {
               graph.drawRegionalProjectsGraph(labels, regionsData, "global");
-            }           
+            }
           });
       </script>
     </div>
@@ -59,7 +59,7 @@ title: UK Aid Tracker
 
 <div class="row">
   <div class="twelve columns">
-  	<a class="button location-button" href="/global/projects" style="width:100%;">View All Global Projects</a>
+  	<a class="button location-button" href="/global" style="width:100%;">View All Global Projects</a>
   </div>
 </div>
 
@@ -71,7 +71,7 @@ title: UK Aid Tracker
 <div class="row">
   <div class="twelve columns">
     <% global_list.each do |region| %>
-      <a href="/global/<%=region[:code]%>/projects"><%= region[:region] %></a> | 
+      <a href="/global/<%=region[:code]%>/projects"><%= region[:region] %></a> |
     <% end %>
   </div>
 </div>
