@@ -92,16 +92,22 @@ class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelect
         0.to(pages-1).foreach { offsetWindow =>
           val offset = offsetWindow * 999
           val url = s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType&all_fields=1&limit=999&offset=$offset"
+          val response = Await.result(WS.url(url).get, Duration Inf)
+          val results = (response.json \ "results").as[JsArray].value
+          val orgs = results.flatMap { json =>
 
-          WS.url(url).get.flatMap { response =>
-            val orgs = (response.json \ "results").as[JsArray].value.map { json =>
-              val url = (json \ "download_url").as[String]
-              val title = (json \ "title").as[String]
-              IatiDataSource(None, sourceType, title, url, list.contains(url))
+            val downloadUrl = (json \ "download_url").asOpt[String]
+            val title = (json \ "title").as[String]
+
+            if(downloadUrl.isEmpty) {
+              None
+            } else {
+              Some(IatiDataSource(None, sourceType, title, downloadUrl.get, list.contains(url)))
             }
-
-            datasources.insert(Enumerator(orgs: _*), orgs.size)
           }
+
+          datasources.insert(Enumerator(orgs: _*), orgs.size)
+
         }
       }
     }
