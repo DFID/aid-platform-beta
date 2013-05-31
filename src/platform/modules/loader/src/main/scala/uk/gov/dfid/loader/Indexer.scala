@@ -16,6 +16,7 @@ import uk.gov.dfid.common.ElasticSearch
 import concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import java.io.FileWriter
 
 /**
  * Performs indexing of elastic search data against the aggregated data
@@ -27,9 +28,13 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     ElasticSearch.reset
 
     // perform the various indexing activities
+    println("Indexing DFID Projects")
     indexDfidProjects
+    println("Indexing Country Suggestions")
     indexCountrySuggestions
+    println("Indexing Other Org Projects")
     indexOtherOrganisationProjects
+    println("Indexing Partner Projects")
     indexPartnerProjects
   }
 
@@ -100,7 +105,9 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     for(
       projects <- db.collection("other-org-projects").find(BSONDocument()).toList
     ) yield {
+      println(s"Found: $projects")
       projects.foreach { doc =>
+
         val id = doc.getAs[BSONString]("iatiId").get.value
         val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
         val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
@@ -117,7 +124,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-          "organizations"   -> (doc.getAs[BSONString]("orgCode").get.value :: Nil).distinct.mkString("#"),
+          "organizations"   -> (doc.getAs[BSONString]("organisation").get.value :: Nil).distinct.mkString("#"),
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#")
@@ -197,6 +204,5 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
 
         ElasticSearch.index(bean, "aid")
     }
-
   }
 }

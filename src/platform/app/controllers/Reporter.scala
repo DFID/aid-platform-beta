@@ -40,7 +40,7 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
           description ::
           name.getOrElse("") ::
           email.getOrElse("") ::
-          telno.getOrElse("") :: Nil).mkString("<p>","","</p>")
+          telno.getOrElse("") :: Nil).mkString("<p>","</p><p>","</p>")
   }
 
   /**
