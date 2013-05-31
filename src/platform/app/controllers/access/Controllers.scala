@@ -38,7 +38,7 @@ object ActivityQueryBuilder {
   def page(query: StringBuilder, start: Long, limit: Long) = {
     (new StringBuilder(query.toString) ++= s"""
         | RETURN   node
-        | ORDER BY node.`iati-identifier`
+        | ORDER BY node.`iati-identifier`?
         | SKIP     $start
         | LIMIT    $limit
       """.stripMargin).toString

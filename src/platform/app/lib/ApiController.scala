@@ -24,7 +24,7 @@ trait ApiController { self: Controller =>
     engine.execute(
       s"""
         | START    node = node:entities(type="$entity")
-        | WHERE    node.`$property` = '$id'
+        | WHERE    node.`$property`! = '$id'
         | RETURN   node
       """.stripMargin).columnAs[Node]("node").toSeq.headOption
   }
