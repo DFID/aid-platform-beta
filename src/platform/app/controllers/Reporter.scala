@@ -88,7 +88,7 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
           .getOrElse(throw new Exception("address.fraud not configured"))
         val subject = s"Report Fraud: ${form.country.getOrElse(form.project.getOrElse(""))}"
 
-        mailer.send("fraud@dfid.gov.uk", to, subject, form.body)
+        mailer.send("ukaidtracker-feedback@dfid.gov.uk", to, subject, form.body)
 
         // redirect back to the main page of the site
         Redirect("/")

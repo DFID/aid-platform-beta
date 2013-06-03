@@ -43,100 +43,105 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
           |        status.code                                                  AS status
         """.stripMargin).foreach { row =>
 
-        val title        = row("title").asInstanceOf[String]
-        val description  = row("description").asInstanceOf[String]
+        val title        = Option(row("title").asInstanceOf[String]).getOrElse("")
+        val description  = Option(row("description").asInstanceOf[String]).getOrElse("")
         val id           = row("id").asInstanceOf[String]
         val status       = row("status").asInstanceOf[Long]
         val organisation = row("organisation").asInstanceOf[String]
 
-        try{
-          // now we need to sum up the project budgets and spend.
-          val totalBudget = engine.execute(
-            s"""
-             | START  funded=node:entities(type="iati-activity")
-             | MATCH  id-[r?:`iati-identifier`]-funded-[:budget]-budget-[:value]-budget_value
-             | WHERE  ((r is null)     AND (funded.`iati-identifier` = '$id'))
-             | OR     ((r is not null) AND (id.`iati-identifier` = '$id'))
-             | RETURN SUM(budget_value.value) as totalBudget
-          """.stripMargin).toSeq.head("totalBudget") match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-          }
+        // some data generation results in bad data being spat out.  If there is no IATI ID
+        // then we are going to ignore this.
+        if(id != null) {
 
-          val totalSpend = engine.execute(
-            s"""
-             | START  funded=node:entities(type="iati-activity")
-             | MATCH  id-[r?:`iati-identifier`]-funded-[:transaction]-transaction-[:value]-transaction_value,
-             |        transaction-[:`transaction-type`]-type
-             | WHERE  (
-             |             ((r is null)     AND (funded.`iati-identifier` = '$id'))
-             |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-             |        )
-             | AND    (type.`code` = 'D' OR type.`code` = 'E')
-             | RETURN SUM(transaction_value.value) as totalSpend
-          """.stripMargin).toSeq.head("totalSpend") match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-          }
+          try{
+            // now we need to sum up the project budgets and spend.
+            val totalBudget = engine.execute(
+              s"""
+               | START  funded=node:entities(type="iati-activity")
+               | MATCH  id-[r?:`iati-identifier`]-funded-[:budget]-budget-[:value]-budget_value
+               | WHERE  ((r is null)     AND (funded.`iati-identifier` = '$id'))
+               | OR     ((r is not null) AND (id.`iati-identifier` = '$id'))
+               | RETURN SUM(budget_value.value) as totalBudget
+            """.stripMargin).toSeq.head("totalBudget") match {
+              case v: java.lang.Integer => v.toLong
+              case v: java.lang.Long    => v.toLong
+            }
 
-          // then we need to get the dates as well
-          val dates = engine.execute(
-            s"""
-            | START  n=node:entities(type="iati-activity")
-            | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a,
-            |        id-[r?:`iati-identifier`]-n
-            | WHERE  (
-            |             ((r is null)     AND (n.`iati-identifier` = '$id'))
-            |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-            |        )
-            | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
-          """.stripMargin).toSeq.map { row =>
+            val totalSpend = engine.execute(
+              s"""
+               | START  funded=node:entities(type="iati-activity")
+               | MATCH  id-[r?:`iati-identifier`]-funded-[:transaction]-transaction-[:value]-transaction_value,
+               |        transaction-[:`transaction-type`]-type
+               | WHERE  (
+               |             ((r is null)     AND (funded.`iati-identifier` = '$id'))
+               |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+               |        )
+               | AND    (type.`code` = 'D' OR type.`code` = 'E')
+               | RETURN SUM(transaction_value.value) as totalSpend
+            """.stripMargin).toSeq.head("totalSpend") match {
+              case v: java.lang.Integer => v.toLong
+              case v: java.lang.Long    => v.toLong
+            }
 
-            val dateType = row("type").asInstanceOf[String]
-            val date     = DateTime.parse(row("date").asInstanceOf[String], format)
+            // then we need to get the dates as well
+            val dates = engine.execute(
+              s"""
+              | START  n=node:entities(type="iati-activity")
+              | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a,
+              |        id-[r?:`iati-identifier`]-n
+              | WHERE  (
+              |             ((r is null)     AND (n.`iati-identifier` = '$id'))
+              |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+              |        )
+              | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
+            """.stripMargin).toSeq.map { row =>
 
-            dateType -> BSONDateTime(date.getMillis)
-          }
+              val dateType = row("type").asInstanceOf[String]
+              val date     = DateTime.parse(row("date").asInstanceOf[String], format)
 
-          db.collection("other-org-projects").insert(
-            BSONDocument(
-              "title"             -> BSONString(title),
-              "description"       -> BSONString(description),
-              "iatiId"            -> BSONString(id),
-              "status"            -> BSONLong(status),
-              "totalBudget"       -> BSONLong(totalBudget),
-              "organisation"      -> BSONString(organisation),
-              "totalProjectSpend" -> BSONLong(totalSpend)
-            ).append(dates:_*)
-          )
+              dateType -> BSONDateTime(date.getMillis)
+            }
 
-          // put the project budgets in
-          engine.execute(
-            s"""
-            | START  b=node:entities(type="budget")
-            | MATCH  v-[:value]-b-[:budget]-n-[r?:`iati-identifier`]-id,
-            |        b-[:`period-start`]-p
-            | WHERE  (
-            |             ((r is null)     AND (n.`iati-identifier` = '$id'))
-            |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-            |        )
-            | RETURN v.value      as value,
-            |        p.`iso-date` as date
-          """.stripMargin).foreach { row =>
-
-            val value = row("value").asInstanceOf[Long].toInt
-            val date = row("date").asInstanceOf[String]
-
-            db.collection("project-budgets").insert(
+            db.collection("other-org-projects").insert(
               BSONDocument(
-                "id"    -> BSONString(id),
-                "value" -> BSONInteger(value),
-                "date"  -> BSONString(date)
-              )
+                "title"             -> BSONString(title),
+                "description"       -> BSONString(description),
+                "iatiId"            -> BSONString(id),
+                "status"            -> BSONLong(status),
+                "totalBudget"       -> BSONLong(totalBudget),
+                "organisation"      -> BSONString(organisation),
+                "totalProjectSpend" -> BSONLong(totalSpend)
+              ).append(dates:_*)
             )
+
+            // put the project budgets in
+            engine.execute(
+              s"""
+              | START  b=node:entities(type="budget")
+              | MATCH  v-[:value]-b-[:budget]-n-[r?:`iati-identifier`]-id,
+              |        b-[:`period-start`]-p
+              | WHERE  (
+              |             ((r is null)     AND (n.`iati-identifier` = '$id'))
+              |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
+              |        )
+              | RETURN v.value      as value,
+              |        p.`iso-date` as date
+            """.stripMargin).foreach { row =>
+
+              val value = row("value").asInstanceOf[Long].toInt
+              val date = row("date").asInstanceOf[String]
+
+              db.collection("project-budgets").insert(
+                BSONDocument(
+                  "id"    -> BSONString(id),
+                  "value" -> BSONInteger(value),
+                  "date"  -> BSONString(date)
+                )
+              )
+            }
+          }catch{
+            case e: Throwable => println(e.getMessage); e.printStackTrace()
           }
-        }catch{
-          case e: Throwable => println(e.getMessage); e.printStackTrace()
         }
       }
   } catch {
