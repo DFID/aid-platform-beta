@@ -22,6 +22,13 @@
     text-overflow: ellipsis;
 }
 
+#feedback-banner {
+  background-color:#ADD8E6;position:relative;z-index:0;
+  border: 1px solid #a1acb2;
+  width:100%;
+  padding-top:20px;
+}
+
 .countryMap {
     height : 380px;
 }
