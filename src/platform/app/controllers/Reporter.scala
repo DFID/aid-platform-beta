@@ -90,7 +90,7 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
           .getOrElse(throw new Exception("address.fraud not configured"))
         val subject = s"Report Fraud: ${form.country.getOrElse(form.project.getOrElse(""))}"
 
-        mailer.send("ukaidtracker-feedback@dfid.gov.uk", to, subject, form.body)
+        mailer.send("DevTracker-feedback@dfid.gov.uk", to, subject, form.body)
 
         // redirect back to the main page of the site
         Redirect("/")
@@ -107,7 +107,7 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
       errors => Redirect("/"),
       form => {
         val to = Play.application.configuration.getString("address.feedback").getOrElse(throw new Exception("address.feedback not configured"))
-        mailer.send("ukaidtracker-feedback@dfid.gov.uk", to, "Aid Platform Feedback", form.body)
+        mailer.send("DevTracker-feedback@dfid.gov.uk", to, "Aid Platform Feedback", form.body)
 
         // redirect back to the main page of the site
         Redirect("/")
