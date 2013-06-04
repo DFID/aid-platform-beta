@@ -55,7 +55,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
         val projectNode = row("n").asInstanceOf[Node]
         val status      = row("status").asInstanceOf[Long].toInt
-        val title       = projectNode.getPropertySafe[String]("title").get
+        val title       = projectNode.getProperty("title").toString
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
         val projectOrgs = row("participating").asInstanceOf[List[String]]

@@ -111,6 +111,22 @@ class MapperSpec extends Specification with Mockito {
       there was three(db).createNode
       there was one(child2).setProperty("code", "C")
     }
+
+    "ignore the xml:lang attribute" in {
+      // arragne
+      val db = mockDb
+      val node = mock[Node]
+
+      db.createNode returns node
+
+      // act
+      new Mapper(db, auditor).map(<parent><value xml:lang="en">8100000000</value></parent>)
+
+      // assert
+      there was one(db).createNode
+      there was one(node).setProperty("label", "parent")
+      there was one(node).setProperty("value", 8100000000L)
+    }
   }
 
   def mockDb = {

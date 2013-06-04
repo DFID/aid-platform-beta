@@ -33,10 +33,10 @@ object Implicits {
      */
     def getPropertySafe[T](name: String): Option[T] = {
       try{
-      n.getProperty(name) match {
-        case null => None
-        case prop => Some(prop.asInstanceOf[T])
-      }
+        n.getProperty(name) match {
+          case null => None
+          case prop => Some(prop.asInstanceOf[T])
+        }
       } catch{
         // if the property isn't found we can just return a none
         case e: NotFoundException => None
