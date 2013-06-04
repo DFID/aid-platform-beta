@@ -49,7 +49,9 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
    * @param name The name of the submtter
    * @param email The email address of the submitter.
    */
-  case class FeedbackForm(description: String, name: String, email: String)
+  case class FeedbackForm(description: String, name: String, email: String) {
+    def body = (name :: email :: description :: Nil).mkString("<p>","</p><p>","</p>")
+  }
 
   /**
    * Provides a mapping between a request and the FraudForm case class
@@ -105,7 +107,7 @@ class Reporter @Inject()(mailer: Mailer) extends Controller {
       errors => Redirect("/"),
       form => {
         val to = Play.application.configuration.getString("address.feedback").getOrElse(throw new Exception("address.feedback not configured"))
-        mailer.send("ukaidtracker-feedback@dfid.gov.uk", to, "Aid Platform Feedback", form.description)
+        mailer.send("ukaidtracker-feedback@dfid.gov.uk", to, "Aid Platform Feedback", form.body)
 
         // redirect back to the main page of the site
         Redirect("/")
