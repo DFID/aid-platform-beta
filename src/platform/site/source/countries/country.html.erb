@@ -99,7 +99,8 @@ title: Development Tracker
                     <ul class="legend-list">
                         <% (sector_groups country['code']).each do |sector| %>
                             <li><span class="theme-1 legend-color"></span>
-                                <div title="<%=sector['name'] || "Other"%>" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%=sector['name'] || "Other"%></div>
+                                <div title="<%=sector['name'] || "Other"%>" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+                                <%=sector['name'] || "Other"%></div>
                                 <em><%= sector['percentage'] %><span class="visually-hidden">projects</span></em>
                             </li>
                         <% end %>
@@ -129,13 +130,13 @@ title: Development Tracker
         charts.bar("#budget-year-chart", budgets, ".2s", null, null, ["#D8DCBF"]);
 
         var sectors = <%= (sector_groups country['code']).to_json %>
-        charts.donut("#sectorChart", sectors, function(d) { 
-          return d.total; 
-        }, function(d){ 
-          return d.name 
-        }, function(d) { 
-          return d.total + "%"; 
-        });
+                charts.donut("#sectorChart", sectors, function(d) {
+                  return d.total;
+                }, function(d){
+                  return  d.name
+                }, function(d) {
+                  return d.percentage;
+                });
 
         charts.donutLegend("#sectorLegend", ".legend-color", 14, sectors, function(d){ return d.name });
      
