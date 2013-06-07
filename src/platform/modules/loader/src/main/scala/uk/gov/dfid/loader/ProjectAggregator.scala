@@ -224,16 +224,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
          |        n-[:`reporting-org`]-ro,
          |        n-[:transaction]-t-[:`transaction-type`]-tt,
          |        n-[:description]-d,
-         |        n-[:title]-ttl,
          |        t-[:value]-v,
          |        n-[:`activity-status`]-status,
          |        t-[:`provider-org`]-po
          | WHERE  o.role  = "Funding"
          | AND    o.ref!   = "GB-1"
          | AND    tt.code = "IF"
-         | RETURN n.`iati-identifier`?       as funded      ,
+         | RETURN n.`iati-identifier`?      as funded      ,
          |        ro.`reporting-org`        as reporting   ,
-         |        ttl.title                 as title       ,
+         |        n.title                   as title       ,
          |        d.description             as description ,
          |        po.`provider-activity-id` as funding     ,
          |        SUM(v.value)              as funds       ,
