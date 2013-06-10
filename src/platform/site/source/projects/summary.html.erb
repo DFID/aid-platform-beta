@@ -29,8 +29,20 @@ title: Development Tracker
             <div id="funding-progress" style="height: 150px;" class="progress"></div>
             <h3 >Status - <%= activity_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress"></div>
+            <% if (!project['implementingOrgs'].nil? && !project['implementingOrgs'].empty?)  %>
+
             <h3>Implementing Organisation(s)</h3>
-            <div id="implementing-organisations"><%= project['implementingOrgs'] %></div>
+            <div id="implementing-organisations">
+                <ul>
+                    <% project['implementingOrgs'].each do |implementingOrgs| %>
+                    <li>
+                       <%= implementingOrgs %>
+                    </li>
+                    <% end %>
+                </ul>
+            </div>
+
+            <% end %>
     </div>
 
 

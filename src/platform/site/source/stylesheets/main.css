@@ -128,3 +128,10 @@ span.category {
 #disclaimer {
   margin-bottom:15px;
 }
+
+#implementing-organisations ul
+{
+    list-style-type:none;
+    padding:0px;
+    margin:0px;}
+
