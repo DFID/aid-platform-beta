@@ -50,7 +50,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           |       n-[:`activity-status`]-a
           |WHERE  n.hierarchy! = 1
           |AND    o.ref = "GB-1"
-          |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id, a.code as status,  COLLECT(p.`participating-org`) as participating
+          |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id,
+          |       a.code as status,
+          |       COLLECT(p) as participating
+          |
         """.stripMargin).foreach { row =>
 
         val projectNode = row("n").asInstanceOf[Node]
@@ -58,7 +61,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val title       = projectNode.getProperty("title").toString
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
-        val projectOrgs = row("participating").asInstanceOf[List[String]]
+        val projectOrgs = row("participating").asInstanceOf[List[Node]]
+
 
 
         val projectType = id match {
@@ -82,17 +86,26 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             |MATCH  p-[:`participating-org`]-v-[:`related-activity`]-a
             |WHERE  a.ref = '$id'
             |AND    a.type=1
-            |RETURN p.`participating-org`? as org
-          """.stripMargin).toSeq.flatMap { case s =>
-          s("org") match {
-            case null      => None
-            case s: String => Some(s)
-            case _         => None
+            |RETURN p as org
+          """.stripMargin).map { s =>
+          s("org").asInstanceOf[Node]
+        }
+
+        val orgs = (projectOrgs ++ componentOrgs).toList
+
+        val participatingOrgs = orgs.flatMap { case org =>
+          org.getPropertySafe[String]("participating-org")
+        }
+
+        val implementingOrgs = orgs.flatMap { case org =>
+          org.getPropertySafe[String]("role") match  {
+            case Some("Implementing") => org.getPropertySafe[String]("participating-org")
+            case _                    => None
           }
         }
 
         val project = Project(None, id, title, description, projectType,
-          recipient, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
+          recipient, status, None, participatingOrgs.distinct.sorted,implementingOrgs.distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
