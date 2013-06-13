@@ -144,6 +144,7 @@ CodeLists.all_global_recipients.map { |code, name|
       },
       "transactions" => {
         "$addToSet" => {
+          "_id"          => "$_id",
           "description"  => "$description",
           "component"    => "$component",
           "date"         => "$date",
