@@ -58,7 +58,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val title       = projectNode.getProperty("title").toString
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
-        val projectOrgs = row("participating").asInstanceOf[List[String]]
+        val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
 
 
         val projectType = id match {
@@ -89,7 +89,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             case s: String => Some(s)
             case _         => None
           }
-        }
+        }.filterNot(_ == "UNITED KINGDOM")
 
         val project = Project(None, id, title, description, projectType,
           recipient, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)

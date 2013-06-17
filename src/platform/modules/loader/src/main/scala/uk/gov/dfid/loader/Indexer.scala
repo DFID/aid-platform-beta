@@ -16,7 +16,6 @@ import uk.gov.dfid.common.ElasticSearch
 import concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import java.io.FileWriter
 
 /**
  * Performs indexing of elastic search data against the aggregated data
@@ -62,7 +61,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         "sectors"       -> row("sectors").asInstanceOf[List[Long]].map(sectors.getHighLevelSector(_)).distinct,
         "regions"       -> row("regions").asInstanceOf[List[String]].distinct,
         "countries"     -> row("countries").asInstanceOf[List[String]].distinct,
-        "organizations" -> row("organizations").asInstanceOf[List[String]].distinct
+        "organizations" -> row("organizations").asInstanceOf[List[String]].distinct.filterNot(_ == "UNITED KINGDOM")
       ))
     }
   }
@@ -90,7 +89,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-          "organizations"   -> (doc.getAs[BSONString]("reporting").get.value :: Nil).distinct.mkString("#"),
+          "organizations"   -> (doc.getAs[BSONString]("reporting").get.value :: Nil).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#")
@@ -124,7 +123,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-          "organizations"   -> (doc.getAs[BSONString]("organisation").get.value :: Nil).distinct.mkString("#"),
+          "organizations"   -> (doc.getAs[BSONString]("organisation").get.value :: Nil).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#")
@@ -195,7 +194,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "status"          -> Statuses.get(doc.getAs[BSONInteger]("status").get.value).get,
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
-          "organizations"   -> (organisations ::: component("organizations")).distinct.mkString("#"),
+          "organizations"   -> (organisations ::: component("organizations")).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
           "subActivities"   -> component("subActivities").mkString("#"),
           "countries"       -> component("countries").mkString("#"),
           "regions"         -> component("regions").mkString("#"),
