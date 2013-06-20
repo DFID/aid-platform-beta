@@ -12,6 +12,7 @@ case class Project(
   description:       String,
   projectType:       String,
   recipient:         Option[String],
+  allRecipients:     List[String],
   status:            Int,
   budget:            Option[Long],
   participatingOrgs: List[String])
@@ -29,6 +30,14 @@ object Project {
         document.getAs[BSONString]("description").map(_.value).get,
         document.getAs[BSONString]("projectType").map(_.value).get,
         document.getAs[BSONString]("recipient").map(_.value),
+        document.getAs[BSONArray]("allRecipients").map { values =>
+          values.values.toList.flatMap { case value =>
+            value match {
+              case v: BSONString => Some(v.value)
+              case _ => None
+            }
+          }
+        }.getOrElse(List.empty),
         document.getAs[BSONInteger]("status").map(_.value).get,
         document.getAs[BSONLong]("budget").map(_.value),
         document.getAs[BSONArray]("participatingOrgs").map { values =>
@@ -52,6 +61,7 @@ object Project {
         "description"       -> BSONString(project.description),
         "projectType"       -> BSONString(project.projectType),
         "status"            -> BSONInteger(project.status),
+        "allRecipients"     -> BSONArray(project.allRecipients.map(BSONString(_)): _*),
         "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*)
       ).append(Seq(
         project.budget.map(b => "budget" -> BSONLong(b)),

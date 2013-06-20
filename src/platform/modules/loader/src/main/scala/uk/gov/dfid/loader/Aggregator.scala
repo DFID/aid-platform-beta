@@ -91,8 +91,19 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           }
         }.filterNot(_ == "UNITED KINGDOM")
 
+      val allRecipients = engine.execute(
+        s"""
+            START  n=node:entities(type="iati-activity")
+            MATCH  rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
+                   rc-[?:`recipient-country`]-n
+            WHERE  r.ref = '$id'
+            AND    r.type = 1
+            RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, "")),
+                   COALESCE(rc.`label`, rr.`label`, "") as rec
+         """).asInstanceOf[List[String]]
+
         val project = Project(None, id, title, description, projectType,
-          recipient, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
+          recipient,allRecipients.distinct.sorted, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
