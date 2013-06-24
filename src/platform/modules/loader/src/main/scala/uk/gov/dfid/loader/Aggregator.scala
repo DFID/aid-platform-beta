@@ -98,12 +98,11 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
                    rc-[?:`recipient-country`]-n
             WHERE  r.ref = '$id'
             AND    r.type = 1
-            RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, "")),
-                   COALESCE(rc.`label`, rr.`label`, "") as rec
-         """).asInstanceOf[List[String]]
+            RETURN COALESCE(rc.`label`, rr.`label`, "")
+         """.stripMargin).toList
 
         val project = Project(None, id, title, description, projectType,
-          recipient,allRecipients.distinct.sorted, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
+          recipient,allRecipients.asInstanceOf[List[String]], status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
