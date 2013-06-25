@@ -91,23 +91,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           }
         }.filterNot(_ == "UNITED KINGDOM")
 
-      /*val allRecipients = engine.execute(
-        s"""
-            START  n=node:entities(type="iati-activity")
-            MATCH  rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
-                   rc-[?:`recipient-country`]-n
-            WHERE  r.ref = '$id'
-            AND    r.type = 1
-            RETURN COALESCE(rc.`label`, rr.`label`, "")
-         """.stripMargin).toList*/
-
         val allRecipients = engine.execute(
           s""" START n=node:entities(type="iati-activity")
                MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
                      rc-[?:`recipient-country`]-n
                WHERE r.ref = '$id'
                AND r.type = 1
-               RETURN COALESCE(rc.`recipient-country`, rr.`recipient-region`, "") as recipient """.stripMargin).flatMap { row => Some(row("recipient").asInstanceOf[String]) }.toList
+               RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, "")) as recipient
+              """.stripMargin).flatMap {
+                row => Some(row("recipient").asInstanceOf[String]) }.toList
 
 
         val project = Project(None, id, title, description, projectType,
