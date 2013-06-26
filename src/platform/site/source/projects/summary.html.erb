@@ -25,7 +25,7 @@ title: Development Tracker
 
     <div class="six columns">
 
-            <%if project['allRecipients'].length > 0 %>
+            <%if project['allRecipients'].reject { |c| c.empty?} && project['allRecipients'].length > 0 %>
 
                 <%if project['projectType']=='country'%>
                     <%if project['allRecipients'].length == 1 %>
@@ -44,9 +44,11 @@ title: Development Tracker
                 <div class="country-region-listing">
                     <ul >
                         <% (project['allRecipients']).each do |rec| %>
-                            <li >
-                                <%= rec %>
-                            </li>
+                            <%if rec != ""%>
+                                <li >
+                                    <%= rec %>
+                                </li>
+                            <%end%>
                         <% end %>
                     </ul>
                 </div>
