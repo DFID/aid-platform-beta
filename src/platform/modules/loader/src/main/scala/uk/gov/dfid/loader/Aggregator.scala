@@ -93,7 +93,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
         // recipients will come back as a code OT or as a special region "Overseas Territories (OT)"
         // these need handled correctly
-        val allRecipients = engine.execute(
+        /*val allRecipients = engine.execute(
           s""" START n=node:entities(type="iati-activity")
           MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
                 rc-[?:`recipient-country`]-n
@@ -105,8 +105,25 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             """\((\w{2})\)$""".r
               .findFirstMatchIn(recipient)
               .map(_.group(1))
-              .orElse(Some(recipient)) }.toList
+              .orElse(Some(recipient)) }.toList */
 
+        val allRecipients = engine.execute(
+          s""" START n=node:entities(type="iati-activity")
+          MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
+                rc-[?:`recipient-country`]-n
+          WHERE r.ref = '$id'
+          AND r.type = 1
+          RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
+          """.stripMargin).flatMap{row =>
+          var recipient = row("recipient").asInstanceOf[String]
+          if(recipient.contains("(") && recipient.trim.endsWith(")"))
+          {
+            recipient=recipient.substring(0,recipient.indexOf("(")).trim
+          }
+          """\((\w{2})\)$""".r
+            .findFirstMatchIn(recipient)
+            .map(_.group(1))
+            .orElse(Some(recipient)) }.toList
 
 
         val project = Project(None, id, title, description, projectType,
