@@ -91,22 +91,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           }
         }.filterNot(_ == "UNITED KINGDOM")
 
-        // recipients will come back as a code OT or as a special region "Overseas Territories (OT)"
-        // these need handled correctly
-        /*val allRecipients = engine.execute(
-          s""" START n=node:entities(type="iati-activity")
-          MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
-                rc-[?:`recipient-country`]-n
-          WHERE r.ref = '$id'
-          AND r.type = 1
-          RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
-          """.stripMargin).flatMap{row =>
-          val recipient = row("recipient").asInstanceOf[String]
-            """\((\w{2})\)$""".r
-              .findFirstMatchIn(recipient)
-              .map(_.group(1))
-              .orElse(Some(recipient)) }.toList */
-
         val allRecipients = engine.execute(
           s""" START n=node:entities(type="iati-activity")
           MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
