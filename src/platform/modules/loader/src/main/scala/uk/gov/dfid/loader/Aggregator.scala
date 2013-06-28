@@ -98,16 +98,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           WHERE r.ref = '$id'
           AND r.type = 1
           RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
-          """.stripMargin).flatMap{row =>
-          var recipient = row("recipient").asInstanceOf[String]
-          if(recipient.contains("(") && recipient.trim.endsWith(")"))
-          {
-            recipient=recipient.substring(0,recipient.indexOf("(")).trim
-          }
-          """\((\w{2})\)$""".r
-            .findFirstMatchIn(recipient)
-            .map(_.group(1))
-            .orElse(Some(recipient)) }.toList
+          """.stripMargin).map{row =>
+
+          val recipient = row("recipient").asInstanceOf[String]
+
+          if(recipient.contains("(") && recipient.trim.endsWith(")")) {
+            recipient.substring(0,recipient.indexOf("(")).trim
+          } else {
+            recipient
+          }}.toList
 
 
         val project = Project(None, id, title, description, projectType,
