@@ -230,6 +230,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
          | WHERE  o.role  = "Funding"
          | AND    o.ref!   = "GB-1"
          | AND    tt.code = "IF"
+         | AND    HAS(po.`provider-activity-id`)
          | RETURN n.`iati-identifier`?      as funded      ,
          |        ro.`reporting-org`        as reporting   ,
          |        n.title                   as title       ,

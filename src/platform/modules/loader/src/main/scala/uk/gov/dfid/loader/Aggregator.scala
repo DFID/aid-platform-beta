@@ -406,7 +406,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
   }
 
   private lazy val  globalProjects = {
-    engine.execute(
+    val dfidGlobalProjects = engine.execute(
       """
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`related-activity`]-p
@@ -422,5 +422,31 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
       id -> region
     }
+
+    val trulyGlobalProjects = engine.execute(
+      """
+        | START n=node:entities(type="iati-activity")
+        | MATCH r-[:`reporting-org`]-n-[:`recipient-country`]-rc,
+        |       p-[:`related-activity`]-n
+        | WHERE n.hierarchy! = 2
+        | AND   p.type = 1
+        | AND   r.ref = "GB-1"
+        | RETURN DISTINCT(p.ref) as id, COUNT(DISTINCT(rc.code)) as count
+      """.stripMargin).toSeq.flatMap { case row =>
+
+      val id = row("id").asInstanceOf[String]
+      val count = row("count") match {
+        case v: java.lang.Integer => v.toLong
+        case v: java.lang.Long    => v.toLong
+      }
+
+      if(count > 1) {
+        Some(id -> "NS")
+      } else {
+        None
+      }
+    }
+
+    dfidGlobalProjects ++ trulyGlobalProjects
   }
 }
