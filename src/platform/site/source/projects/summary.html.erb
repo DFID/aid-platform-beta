@@ -26,31 +26,9 @@ title: Development Tracker
     <div class="six columns">
 
             <%if project['allRecipients'].reject { |c| c.empty?} && project['allRecipients'].length > 0 %>
-
-                <%if project['projectType']=='country'%>
-                    <%if project['allRecipients'].length == 1 %>
-                        <h3 >Benefiting country</h3>
-                    <% else %>
-                        <h3 >Benefiting countries</h3>
-                    <% end %>
-                <% else %>
-                    <%if project['allRecipients'].length == 1 %>
-                        <h3 >Benefiting region</h3>
-                    <% else %>
-                        <h3 >Benefiting regions</h3>
-                    <% end %>
-                <% end %>
-
-                <div class="country-region-listing">
-                    <ul >
-                        <% (project['allRecipients']).each do |rec| %>
-                            <%if rec != ""%>
-                                <li >
-                                     <%=rec%>
-                                </li>
-                            <%end%>
-                        <% end %>
-                    </ul>
+                <h3 >Benefitting country/region</h3>
+                <div>
+                    <%= project['allRecipients'].join(", ") %>
                 </div>
             <%end%>
 
