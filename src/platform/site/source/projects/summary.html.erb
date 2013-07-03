@@ -19,7 +19,7 @@ title: Development Tracker
     <div class="twelve columns summary">
         <p class="project-description"><%= project['description'] %></p>
 
-    <%if project['allRecipients'].length > 0 %>
+    <%if !project['allRecipients'].nil? && project['allRecipients'].length > 0 %>
         <p>
             <b>Benefitting country/region</b>:
                 <%= project['allRecipients'].join(", ") %>
