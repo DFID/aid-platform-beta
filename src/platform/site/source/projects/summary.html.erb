@@ -18,42 +18,20 @@ title: Development Tracker
 <div class="row">
     <div class="twelve columns summary">
         <p class="project-description"><%= project['description'] %></p>
+
+    <%if project['allRecipients'].length > 0 %>
+        <p>
+            <b>Benefitting country/region</b>:
+                <%= project['allRecipients'].join(", ") %>
+        </p>
+    <%end%>
     </div>
+
 </div>
 
 <div class="row">
 
     <div class="six columns">
-
-            <%if project['allRecipients'].reject { |c| c.empty?} && project['allRecipients'].length > 0 %>
-
-                <%if project['projectType']=='country'%>
-                    <%if project['allRecipients'].length == 1 %>
-                        <h3 >Benefiting country</h3>
-                    <% else %>
-                        <h3 >Benefiting countries</h3>
-                    <% end %>
-                <% else %>
-                    <%if project['allRecipients'].length == 1 %>
-                        <h3 >Benefiting region</h3>
-                    <% else %>
-                        <h3 >Benefiting regions</h3>
-                    <% end %>
-                <% end %>
-
-                <div class="country-region-listing">
-                    <ul >
-                        <% (project['allRecipients']).each do |rec| %>
-                            <%if rec != ""%>
-                                <li >
-                                     <%=rec%>
-                                </li>
-                            <%end%>
-                        <% end %>
-                    </ul>
-                </div>
-            <%end%>
-
             <h3 >Funding</h3>
             <div id="funding-progress" style="height: 150px;" class="progress"></div>
             <h3 >Status - <%= activity_status(project['status']) %></h3>
