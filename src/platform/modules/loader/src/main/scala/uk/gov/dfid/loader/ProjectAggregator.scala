@@ -411,8 +411,14 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val title        = row("title").asInstanceOf[String]
       val name         = row("name").asInstanceOf[String]
       val precision    = row("precision").asInstanceOf[Long]
-      val longitude    = row("longitude").asInstanceOf[Double]
-      val latitude     = row("latitude").asInstanceOf[Double]
+      val longitude    = row("longitude") match {
+        case l: java.lang.Double => l.toDouble
+        case l: java.lang.Long   => l.toDouble
+      }
+      val latitude     = row("latitude") match {
+        case l: java.lang.Double => l.toDouble
+        case l: java.lang.Long   => l.toDouble
+      }
       val locationType = row("type").asInstanceOf[String]
 
       db.collection("locations").insert(BSONDocument(
@@ -425,6 +431,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         "type"      -> BSONString(locationType)
       ))
     }
+
 
     auditor.success("Collected all project locations")
   }
