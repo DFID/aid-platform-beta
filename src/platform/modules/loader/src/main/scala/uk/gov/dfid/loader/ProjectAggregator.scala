@@ -251,6 +251,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Long    => v.toLong
         }
 
+        println(s"$funding, $funded")
+
         val project = engine.execute(
           s"""
             | START  v=node:entities(type="iati-activity")
@@ -258,7 +260,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | WHERE  v.`iati-identifier`? = '$funding'
             | AND    a.type=1
             | RETURN a.ref as id
-          """.stripMargin).toSeq.head("id").asInstanceOf[String]
+          """.stripMargin).toSeq
+             .headOption
+             .map(_("id")
+             .asInstanceOf[String])
+             .getOrElse(funding)
+
+        println(s"USed: $project")
 
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
