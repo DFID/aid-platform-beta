@@ -143,6 +143,13 @@
                                 </h3>
                                 <span class="budget">Budget: <em> @project.get("formattedBudget")</em></span>
                                 <span>Status: <em>@project.get("status")</em></span>
+                                <span>Reporting Org:
+                                    @if(project.get("organizations").isEmpty){
+                                        <em>"Department for International Development"</em>
+                                    }else{
+                                        <em>@project.get("organizations")<em>
+                                    }
+                                </span>
                                 <p class="description">@project.get("description")</p>
                             </div>
                         }
