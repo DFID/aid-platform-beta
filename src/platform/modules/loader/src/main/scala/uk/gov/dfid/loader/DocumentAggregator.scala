@@ -26,7 +26,7 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
         |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id
         |RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as id,
         |       doc.title!                                                  as title,
-        |       doc.format                                                  as format,
+        |       COALESCE(doc.format?, "text/plain")                         as format,
         |       doc.url                                                     as url,
         |       COLLECT(COALESCE(category.category?, ""))                   as categories
       """.stripMargin).foreach { row =>
