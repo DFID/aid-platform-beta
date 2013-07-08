@@ -36,7 +36,22 @@ title: Development Tracker
             <div id="funding-progress" style="height: 150px;" class="progress"></div>
             <h3 >Status - <%= activity_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress"></div>
+            <% if (!project['implementingOrgs'].nil? && !project['implementingOrgs'].empty?)  %>
+
+            <h3>Implementing Organisation(s)</h3>
+            <div id="implementing-organisations">
+                <ul>
+                    <% project['implementingOrgs'].each do |implementingOrgs| %>
+                    <li>
+                       <%= implementingOrgs %>
+                    </li>
+                    <% end %>
+                </ul>
+            </div>
+
+            <% end %>
     </div>
+
 
     <div class="six columns" role="presentation">
         <div id="countryMap" class="countryMap"></div>
@@ -68,6 +83,7 @@ title: Development Tracker
 
 </div>
 
+
 <div class="row">
     <div class="six columns">
         <h3>Sector groups as a percentage of project budget</h3>
@@ -89,6 +105,7 @@ title: Development Tracker
             </div>
         </div>
     </div>
+
     <div class="six columns">
         <h3 >Project budget vs actual spend</h3>
         <div id="budget-plan-spend-legend">
