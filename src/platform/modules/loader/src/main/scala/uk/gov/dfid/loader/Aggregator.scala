@@ -50,7 +50,10 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           |       n-[:`activity-status`]-a
           |WHERE  n.hierarchy! = 1
           |AND    o.ref = "GB-1"
-          |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id, a.code as status,  COLLECT(p.`participating-org`) as participating
+          |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id,
+          |       a.code as status,
+          |       COLLECT(p) as participating
+          |
         """.stripMargin).foreach { row =>
 
         val projectNode = row("n").asInstanceOf[Node]
@@ -58,7 +61,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val title       = projectNode.getProperty("title").toString
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
-        val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
+        val projectOrgs = row("participating").asInstanceOf[List[Node]]
+
 
 
         val projectType = id match {
@@ -84,23 +88,32 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             |MATCH  p-[:`participating-org`]-v-[:`related-activity`]-a
             |WHERE  a.ref = '$id'
             |AND    a.type=1
-            |RETURN p.`participating-org`? as org
-          """.stripMargin).toSeq.flatMap { case s =>
-          s("org") match {
-            case null      => None
-            case s: String => Some(s)
-            case _         => None
+            |RETURN p as org
+          """.stripMargin).map { s =>
+          s("org").asInstanceOf[Node]
+        }
+
+        val orgs = (projectOrgs ++ componentOrgs).toList
+
+        val participatingOrgs = orgs.flatMap { case org =>
+          org.getPropertySafe[String]("participating-org")
+        }
+
+        val implementingOrgs = orgs.flatMap { case org =>
+          org.getPropertySafe[String]("role") match  {
+            case Some("Implementing") => org.getPropertySafe[String]("participating-org")
+            case _                    => None
           }
-        }.filterNot(_ == "UNITED KINGDOM")
+        }
 
         val allRecipients = engine.execute(
-          s""" START n=node:entities(type="iati-activity")
-          MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
-                rc-[?:`recipient-country`]-n
-          WHERE r.ref = '$id'
-          AND r.type = 1
-          RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
-          """.stripMargin).map{row =>
+           s""" START n=node:entities(type="iati-activity")
+                MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
+                 rc-[?:`recipient-country`]-n
+                WHERE r.ref = '$id'
+                AND r.type = 1
+                RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
+               """.stripMargin).map{row =>
 
           val recipient = row("recipient").asInstanceOf[String]
 
@@ -112,7 +125,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
 
         val project = Project(None, id, title, description, projectType, reportingOrg,
-          recipient,allRecipients.distinct, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
+          recipient,allRecipients.distinct, status, None, (projectOrgs ++ componentOrgs).asInstanceOf[List[String]], implementingOrgs.distinct.sorted)
+
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
@@ -408,7 +422,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
   }
 
   private lazy val  globalProjects = {
-    val dfidGlobalProjects = engine.execute(
+    engine.execute(
       """
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`related-activity`]-p
@@ -424,31 +438,5 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
       id -> region
     }
-
-    val trulyGlobalProjects = engine.execute(
-      """
-        | START n=node:entities(type="iati-activity")
-        | MATCH r-[:`reporting-org`]-n-[:`recipient-country`]-rc,
-        |       p-[:`related-activity`]-n
-        | WHERE n.hierarchy! = 2
-        | AND   p.type = 1
-        | AND   r.ref = "GB-1"
-        | RETURN DISTINCT(p.ref) as id, COUNT(DISTINCT(rc.code)) as count
-      """.stripMargin).toSeq.flatMap { case row =>
-
-      val id = row("id").asInstanceOf[String]
-      val count = row("count") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
-
-      if(count > 1) {
-        Some(id -> "NS")
-      } else {
-        None
-      }
-    }
-
-    dfidGlobalProjects ++ trulyGlobalProjects
   }
 }
