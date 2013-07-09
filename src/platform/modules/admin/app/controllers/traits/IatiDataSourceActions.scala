@@ -34,10 +34,18 @@ trait IatiDataSourceActions { this : Controller with Secured =>
   def refresh = SecuredAction { user => request =>
     Async {
       sources.load(sourceType).map { _ =>
-        Redirect(routes.OrganisationSources.index).flashing(
-          "message" -> s"${sourceType.capitalize} Sources refreshed",
-          "type"    -> "info"
-        )
+        if(sourceType == "organisation") {
+          Redirect(routes.OrganisationSources.index).flashing(
+            "message" -> s"${sourceType.capitalize} Sources refreshed",
+            "type"    -> "info"
+          )
+        }
+        else {
+          Redirect(routes.ActivitySources.index).flashing(
+            "message" -> s"${sourceType.capitalize} Sources refreshed",
+            "type"    -> "info"
+          )
+        }
       }
     }
   }

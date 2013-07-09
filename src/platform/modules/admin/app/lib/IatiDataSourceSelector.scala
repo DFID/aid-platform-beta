@@ -102,7 +102,7 @@ class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelect
             if(downloadUrl.isEmpty) {
               None
             } else {
-              Some(IatiDataSource(None, sourceType, title, downloadUrl.get, list.contains(url)))
+              Some(IatiDataSource(None, sourceType, title, downloadUrl.get, list.contains(downloadUrl.get)))
             }
           }
 
