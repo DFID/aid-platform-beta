@@ -12,10 +12,11 @@ case class Project(
   description:       String,
   projectType:       String,
   recipient:         Option[String],
-  allRecipients:     List[String],
   status:            Int,
   budget:            Option[Long],
-  participatingOrgs: List[String])
+  participatingOrgs: List[String],
+  implementingOrgs: List[String]
+  )
 
 object Project {
 
@@ -30,7 +31,9 @@ object Project {
         document.getAs[BSONString]("description").map(_.value).get,
         document.getAs[BSONString]("projectType").map(_.value).get,
         document.getAs[BSONString]("recipient").map(_.value),
-        document.getAs[BSONArray]("allRecipients").map { values =>
+        document.getAs[BSONInteger]("status").map(_.value).get,
+        document.getAs[BSONLong]("budget").map(_.value),
+        document.getAs[BSONArray]("participatingOrgs").map { values =>
           values.values.toList.flatMap { case value =>
             value match {
               case v: BSONString => Some(v.value)
@@ -38,9 +41,7 @@ object Project {
             }
           }
         }.getOrElse(List.empty),
-        document.getAs[BSONInteger]("status").map(_.value).get,
-        document.getAs[BSONLong]("budget").map(_.value),
-        document.getAs[BSONArray]("participatingOrgs").map { values =>
+        document.getAs[BSONArray]("implementingOrgs").map { values =>
           values.values.toList.flatMap { case value =>
             value match {
               case v: BSONString => Some(v.value)
@@ -61,8 +62,8 @@ object Project {
         "description"       -> BSONString(project.description),
         "projectType"       -> BSONString(project.projectType),
         "status"            -> BSONInteger(project.status),
-        "allRecipients"     -> BSONArray(project.allRecipients.map(BSONString(_)): _*),
-        "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*)
+        "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*),
+        "implementingOrgs"  -> BSONArray(project.implementingOrgs.map(BSONString(_)): _*)
       ).append(Seq(
         project.budget.map(b => "budget" -> BSONLong(b)),
         project.recipient.map(r => "recipient" -> BSONString(r))
