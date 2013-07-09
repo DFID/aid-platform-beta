@@ -68,6 +68,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           case _ => "undefined"
         }
 
+        val reportingOrg = "Department for International Development"
+
         val recipient = projectType match {
           case "country"  => countryProjects.find(_._1 == id).map(_._2)
           case "regional" => regionalProjects.find(_._1 == id).map(_._2)
@@ -109,7 +111,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           }}.toList
 
 
-        val project = Project(None, id, title, description, projectType,
+        val project = Project(None, id, title, description, projectType, reportingOrg,
           recipient,allRecipients.distinct, status, None, (projectOrgs ++ componentOrgs).distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)

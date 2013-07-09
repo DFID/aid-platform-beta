@@ -11,6 +11,7 @@ case class Project(
   title:             String,
   description:       String,
   projectType:       String,
+  reportingOrg:      String,
   recipient:         Option[String],
   allRecipients:     List[String],
   status:            Int,
@@ -29,6 +30,7 @@ object Project {
         document.getAs[BSONString]("title").map(_.value).get,
         document.getAs[BSONString]("description").map(_.value).get,
         document.getAs[BSONString]("projectType").map(_.value).get,
+        document.getAs[BSONString]("reportingOrg").map(_.value).get,
         document.getAs[BSONString]("recipient").map(_.value),
         document.getAs[BSONArray]("allRecipients").map { values =>
           values.values.toList.flatMap { case value =>
@@ -60,6 +62,7 @@ object Project {
         "title"             -> BSONString(project.title),
         "description"       -> BSONString(project.description),
         "projectType"       -> BSONString(project.projectType),
+        "reportingOrg"       -> BSONString(project.reportingOrg),
         "status"            -> BSONInteger(project.status),
         "allRecipients"     -> BSONArray(project.allRecipients.map(BSONString(_)): _*),
         "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*)
