@@ -42,14 +42,12 @@ title: Development Tracker
             <![endif]-->
             <h3 >Status - <%= activity_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress"></div>
-<<<<<<< HEAD
             <!--[if lte IE 8]>
                 <div>
                      <p><strong>Start Date:</strong> <%= format_date(choose_better_date(project['start-actual'], project['start-planned'])) %></p>
                      <p><strong>End Date:</strong> <%= format_date(choose_better_date(project['end-actual'], project['end-planned'])) %> </p>
                 </div>
             <![endif]-->
-=======
             <% if (!project['implementingOrgs'].nil? && !project['implementingOrgs'].empty?)  %>
 
             <h3>Implementing Organisation(s)</h3>
@@ -64,7 +62,6 @@ title: Development Tracker
             </div>
 
             <% end %>
->>>>>>> 6b5594aacb3b60b4ceeec74cce4cf4f38a2ad659
     </div>
 
 
