@@ -124,10 +124,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             recipient
           }}.toList
 
-
         val project = Project(None, id, title, description, projectType, reportingOrg,
-          recipient,allRecipients, status, None, orgs.asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM"), implementingOrgs.distinct.sorted)
-
+          recipient,allRecipients, status, None, participatingOrgs.distinct.sorted.filterNot(_ == "UNITED KINGDOM"), implementingOrgs.distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
