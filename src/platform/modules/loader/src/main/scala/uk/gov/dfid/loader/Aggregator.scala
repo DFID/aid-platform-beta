@@ -62,6 +62,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
         val projectOrgs = row("participating").asInstanceOf[List[Node]]
+        //val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
 
 
 
@@ -125,7 +126,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
 
         val project = Project(None, id, title, description, projectType, reportingOrg,
-          recipient,allRecipients.distinct, status, None, (projectOrgs ++ componentOrgs).asInstanceOf[List[String]], implementingOrgs.distinct.sorted)
+          recipient,allRecipients, status, None, orgs.asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM"), implementingOrgs.distinct.sorted)
 
 
         Await.ready(projects.insert(project), Duration.Inf)
