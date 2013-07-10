@@ -92,7 +92,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "organizations"   -> (doc.getAs[BSONString]("reporting").get.value :: Nil).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
-          "sectors"         -> Nil.mkString("#")
+          "sectors"         -> Nil.mkString("#"),
+          "reporting"       -> doc.getAs[BSONString]("reporting").get.value
         )
 
         ElasticSearch.index(bean, "aid")
@@ -126,7 +127,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "organizations"   -> (doc.getAs[BSONString]("organisation").get.value :: Nil).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
-          "sectors"         -> Nil.mkString("#")
+          "sectors"         -> Nil.mkString("#"),
+          "reporting"       -> doc.getAs[BSONString]("organisation").get.value
         )
 
         ElasticSearch.index(bean, "aid")
@@ -198,7 +200,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "subActivities"   -> component("subActivities").mkString("#"),
           "countries"       -> component("countries").mkString("#"),
           "regions"         -> component("regions").mkString("#"),
-          "sectors"         -> component("sectors").mkString("#")
+          "sectors"         -> component("sectors").mkString("#"),
+          "reporting"       -> "Department for International Development"
         )
 
         ElasticSearch.index(bean, "aid")
