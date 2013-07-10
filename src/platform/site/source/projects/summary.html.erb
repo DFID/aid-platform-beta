@@ -34,12 +34,14 @@ title: Development Tracker
     <div class="six columns">
             <h3 >Funding</h3>
             <div id="funding-progress" style="height: 150px;" class="progress"></div>
+
             <!--[if lte IE 8]>
                <div>
                     <p><strong>Budget spend to date:</strong> <%= number_to_currency(project['totalProjectSpend'], :unit=>"£", :precision => 0) || 0.00 %></p>
                     <p><strong>Project budget:</strong> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) || 0.00 %> </p>
                </div>
             <![endif]-->
+
             <h3 >Status - <%= activity_status(project['status']) %></h3>
             <div id="time-progress" style="height: 150px;" class="progress"></div>
 
@@ -63,7 +65,6 @@ title: Development Tracker
                     </ul>
                 </div>
             <% end %>
-
     </div>
 
 

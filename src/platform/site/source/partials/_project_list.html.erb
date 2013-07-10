@@ -31,7 +31,7 @@
                 </h3>
                 <span class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></span>
                 <span>Status: <em><%= activity_status project['status']%></em></span>
-                <span>Reporting Org: <em><%= activity_status project['reportingOrg']%></em></span>
+                <span>Reporting Org: <em><%= project['reportingOrg']%></em></span>
                 <p class="description"><%=project['description']%></p>
             </div>
         <% end %>
