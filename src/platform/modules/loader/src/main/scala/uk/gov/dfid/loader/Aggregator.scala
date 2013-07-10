@@ -62,6 +62,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val description = projectNode.getPropertySafe[String]("description").getOrElse("")
         val id          = row("id").asInstanceOf[String]
         val projectOrgs = row("participating").asInstanceOf[List[Node]]
+        //val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
 
 
 
@@ -71,6 +72,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           case i if (regionalProjects.exists(_._1.equals(i))) => "regional"
           case _ => "undefined"
         }
+
+        val reportingOrg = "Department for International Development"
 
         val recipient = projectType match {
           case "country"  => countryProjects.find(_._1 == id).map(_._2)
@@ -104,8 +107,25 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           }
         }
 
-        val project = Project(None, id, title, description, projectType,
-          recipient, status, None, participatingOrgs.distinct.sorted,implementingOrgs.distinct.sorted)
+        val allRecipients = engine.execute(
+           s""" START n=node:entities(type="iati-activity")
+                MATCH rr-[?:`recipient-region`]-n-[:`related-activity`]-r,
+                 rc-[?:`recipient-country`]-n
+                WHERE r.ref = '$id'
+                AND r.type = 1
+                RETURN DISTINCT(COALESCE(rc.`recipient-country`, rr.`recipient-region`, n.`recipient-region`!, "")) as recipient
+               """.stripMargin).map{row =>
+
+          val recipient = row("recipient").asInstanceOf[String]
+
+          if(recipient.contains("(") && recipient.trim.endsWith(")")) {
+            recipient.substring(0,recipient.indexOf("(")).trim
+          } else {
+            recipient
+          }}.toList
+
+        val project = Project(None, id, title, description, projectType, reportingOrg,
+          recipient,allRecipients, status, None, participatingOrgs.distinct.sorted.filterNot(_ == "UNITED KINGDOM"), implementingOrgs.distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
       }
