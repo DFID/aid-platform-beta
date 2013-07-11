@@ -129,9 +129,22 @@ span.category {
   margin-bottom:15px;
 }
 
+
 #implementing-organisations ul
 {
     list-style-type:none;
     padding:0px;
     margin:0px;}
+
+.ie7 #map_container{
+    display: none;
+}
+
+.download-link {
+    padding-top:40px;
+    width:100%;
+    float:right;
+    text-align:right;
+}
+
 
