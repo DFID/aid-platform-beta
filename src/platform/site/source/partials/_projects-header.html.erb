@@ -24,7 +24,6 @@
         <div class="tab-bar-container">
             <div class="row">
                 <div class="button-row">
-                    <a class="api-link" href="/api/access/activities/<%=project['iatiId'] %>">View Activity Data</a>
                     <span>
                         <% projectTitle = project['title'] + " [" + project['iatiId'] + "]"%>
                         <a href="/fraud?project=<%= format_query_string(projectTitle) %>" class="button serious">Report Fraud</a>
