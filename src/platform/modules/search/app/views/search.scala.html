@@ -11,7 +11,6 @@
         <meta charset="utf-8">
         <title>Development Tracker</title>
 
-
         <!--[if IE 8]>
         <script type="text/javascript">
             (function(){if(window.opera){return;}
@@ -49,6 +48,68 @@
     </head>
   <body>
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visually-hidden">Skip to main content</a>
+    <script type="text/javascript">
+        $("document").ready(function (){
+
+            $('#sortProjBudgAsc').click(function(e){
+                sortByBudget('asc');
+                e.preventDefault();
+            });
+
+            $('#sortProjBudgDsc').click(function(e){
+                sortByBudget('dsc');
+                e.preventDefault();
+            });
+
+            $('#sortProjTitleAsc').click(function(e){
+                sortByTitle('asc');
+                e.preventDefault();
+            });
+
+            $('#sortProjTitleDsc').click(function(e){
+                sortByTitle('dsc');
+                e.preventDefault();
+            });
+        });
+
+        function sortByBudget(order){
+
+            var containerDiv = $('#search-results');
+            var childResultDivs = containerDiv.children('.search-result').get();
+
+            childResultDivs.sort(function (a, b){
+                var compA = new Number( $(a).find('.sort-budget').val());
+                var compB = new Number( $(b).find('.sort-budget').val());
+
+                if(order=='asc')
+                    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+                else
+                    return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+            })
+
+            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        }
+
+       function sortByTitle(order){
+
+            var containerDiv = $('#search-results');
+            var childResultDivs = containerDiv.children('.search-result').get();
+
+            childResultDivs.sort(function (a, b){
+
+                var compA = $(a).find('.sort-title').val().toString();
+                var compB = $(b).find('.sort-title').val().toString();
+
+                if(order=='asc')
+                    return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
+                else
+                    return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
+            })
+
+            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        }
+
+    </script>
     <header role="banner" id="global-header">
         <div class="row">
             <div class="twelve columns">
@@ -90,10 +151,38 @@
                                 <input type="submit" value="Search" class="button">
                             </div>
                         </div>
+                        <br/>
+                        @if(!results.isEmpty){
+                            <div class="row" id="sortResult">
+                                <div class="twelve columns">
+                                    <div class="three columns" >
+
+                                    </div>
+                                    <div class="six columns" style="text-align:left;float:left">
+                                        <div >
+                                            <b>Sort results by:</b>
+                                             &nbsp;
+                                            <b>Title</b>
+                                            <button id="sortProjTitleAsc" style="cursor:pointer" >U</button>
+                                            <button id="sortProjTitleDsc" style="cursor:pointer">D</button>
+                                             &nbsp;
+                                            <b>Budget</b>
+                                            <button id="sortProjBudgAsc" style="cursor:pointer">U</button>
+                                            <button id="sortProjBudgDsc" style="cursor:pointer">D</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="three columns" >
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </form>
                 </div>
             </div>
     	</div>
+
         <div class="row project-results" >
             <div class="nine columns push-three" id="search-results">
                 @if(results.isEmpty){
@@ -134,7 +223,8 @@
                                 <input type="hidden" name="countries" value='@project.get("countries")' />
                                 <input type="hidden" name="sectors" value='@project.get("sectors")' />
                                 <input type="hidden" name="regions" value='@project.get("regions")'/>
-                                <input type="hidden" name="budget" value='@project.get("budget")'/>
+                                <input type="hidden" name="budget" value='@project.get("budget")' class="sort-budget"/>
+                                <input type="hidden" name="title" value='@project.get("title")' class="sort-title"/>
 
                                 <h3>
                                     <a href='/projects/@project.get("id")'>
