@@ -31,6 +31,10 @@
     <![endif]-->
     <%= javascript_include_tag  "d3" %>
 
+    <!--[if lte IE 8]>
+        <%= javascript_include_tag  "r2d3.min" %>
+    <![endif]-->
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <%= stylesheet_link_tag "foundation", "aip-styles", "graph-styles", "main" %>
