@@ -78,35 +78,35 @@
             var childResultDivs = containerDiv.children('.search-result').get();
 
             childResultDivs.sort(function (a, b){
-                var compA = new Number( $(a).find('.sort-budget').val());
-                var compB = new Number( $(b).find('.sort-budget').val());
+            var compA = new Number( $(a).find('.sort-budget').val());
+            var compB = new Number( $(b).find('.sort-budget').val());
 
-                if(order=='asc')
-                    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-                else
-                    return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
-            })
+            if(order=='asc')
+                return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+            else
+                return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+        })
 
-            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
         }
 
-       function sortByTitle(order){
+        function sortByTitle(order){
 
             var containerDiv = $('#search-results');
             var childResultDivs = containerDiv.children('.search-result').get();
 
             childResultDivs.sort(function (a, b){
 
-                var compA = $(a).find('.sort-title').val().toString();
-                var compB = $(b).find('.sort-title').val().toString();
+            var compA = $(a).find('.sort-title').val().toString();
+            var compB = $(b).find('.sort-title').val().toString();
 
-                if(order=='asc')
-                    return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
-                else
-                    return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
-            })
+            if(order=='asc')
+                return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
+            else
+                return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
+        })
 
-            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
         }
 
     </script>
@@ -163,11 +163,11 @@
                                             <b>Sort results by:</b>
                                              &nbsp;
                                             <b>Title</b>
-                                            <button id="sortProjTitleAsc" style="cursor:pointer" >U</button>
+                                            <button id="sortProjTitleAsc" style="cursor:pointer" >A</button>
                                             <button id="sortProjTitleDsc" style="cursor:pointer">D</button>
                                              &nbsp;
                                             <b>Budget</b>
-                                            <button id="sortProjBudgAsc" style="cursor:pointer">U</button>
+                                            <button id="sortProjBudgAsc" style="cursor:pointer">A</button>
                                             <button id="sortProjBudgDsc" style="cursor:pointer">D</button>
                                         </div>
                                     </div>
