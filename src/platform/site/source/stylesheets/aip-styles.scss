@@ -948,3 +948,7 @@ a[rel="external"]::after, .external-link::after {
 .visually-hidden{
     left:-99999em !important;position:absolute
 }
+
+.hide-interactive-map{
+    display: none;
+}
