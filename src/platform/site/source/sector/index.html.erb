@@ -1,7 +1,6 @@
 ---
 title: Development Tracker
 ---
-
 <div id="page-title" class="row">
     <div class="twelve columns">
         <img src="/images/ukaid_logo.png" alt="UK aid from the British people">
@@ -16,7 +15,6 @@ title: Development Tracker
                 Aid by Sector
             </h1>
         </div>
-
     </div>
 </div>
 
@@ -29,20 +27,99 @@ title: Development Tracker
                 <p>DFID breakdown of primary sector showing percentage budget across all projects for current financial year</p>
             </div>
             <div class="eight columns">
-                <ul class="sector-list">
-                    <% (high_level_sectors_structure || []).each do |sector| %>
-                        <li>
-                            <a href="/sector/<%=sector[:code]%>"><%=sector[:name]%></a>
-                            <div class="progress">
-                                <em><%=format_percentage sector[:percentage]%></em>
-                                <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
-                                <span class="sector-value" style="float:right;">&pound;<%=format_round_m sector[:budget] || 0.0 %></span>
-                            </div>
-                        </li>
-                    <% end %>
-                </ul>
+            <div >
+                <b>Sort sectors by:</b>
+                &nbsp;
+                Name
+                <button id="sortSectName" style="cursor:pointer" >D</button>
+                &nbsp;
+                Budget %
+                <button id="sortSectBudgPer" style="cursor:pointer">A</button>
+            </div>
+            <ul class="sector-list">
+                <% (high_level_sectors_structure || []).each do |sector| %>
+                    <li>
+                        <a href="/sector/<%=sector[:code]%>" class="sort-sectorName"><%=sector[:name]%></a>
+                        <div class="progress">
+                            <em><%=format_percentage sector[:percentage]%></em>
+                            <span class="meter" style="width: <%=format_percentage sector[:cellWidth]%>"></span>
+                            <span class="sector-value" style="float:right;">&pound;<%=format_round_m sector[:budget] || 0.0 %></span>
+                        </div>
+                    </li>
+                <% end %>
+            </ul>
             </div>
         </div>
 
     </div>
 </div>
+<script type="text/javascript">
+    $("document").ready(function (){
+
+        $('#sortSectName').on('click',function(e){
+          if($(this).text()=="A")
+              {
+                  sortBySctorName('asc');
+                  $(this).text('D');
+              }
+              else
+              {
+                  sortBySctorName('dsc');
+                  $(this).text('A');
+              }
+
+              e.preventDefault();
+        });
+
+        $('#sortSectBudgPer').click(function(e){
+            if($(this).text()=="A")
+                {
+                    sortBySectorBudget('asc');
+                    $(this).text('D');
+                }
+                else
+                {
+                    sortBySectorBudget('dsc');
+                    $(this).text('A');
+                }
+
+                e.preventDefault();
+        });
+    });
+
+    function sortBySectorBudget(order){
+            var containerDiv = $('ul.sector-list');
+            var childResultDivs = containerDiv.children();
+
+            childResultDivs.sort(function (a, b){
+                var compA = parseFloat( $(a).find('div.progress').text());
+                var compB = parseFloat( $(b).find('div.progress').text());
+
+                if(order=='asc')
+                    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+                else
+                    return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+            })
+
+            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+    }
+
+    function sortBySctorName(order){
+
+        var containerDiv = $('ul.sector-list');
+        var childResultDivs = containerDiv.children();
+
+        childResultDivs.sort(function (a, b){
+
+            var compA = $(a).find('.sort-sectorName').text().toString();
+            var compB = $(b).find('.sort-sectorName').text().toString();
+
+            if(order=='asc')
+                return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
+            else
+                return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
+        })
+
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+    }
+</script>

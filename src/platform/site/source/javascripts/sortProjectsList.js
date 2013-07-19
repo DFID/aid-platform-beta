@@ -21,12 +21,10 @@
             e.preventDefault();
         });
 
-        alert('hi');
-
   });
 
   function sortByBudget(order){
-      alert('hi');
+
       var containerDiv = $('#search-results');
       var childResultDivs = containerDiv.children('.search-result').get();
 
@@ -44,7 +42,7 @@
   }
 
  function sortByTitle(order){
-      alert('hi');
+
       var containerDiv = $('#search-results');
       var childResultDivs = containerDiv.children('.search-result').get();
 

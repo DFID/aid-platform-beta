@@ -51,23 +51,33 @@
     <script type="text/javascript">
         $("document").ready(function (){
 
-            $('#sortProjBudgAsc').click(function(e){
-                sortByBudget('asc');
+            $('#sortProjTitle').click(function(e){
+                if($(this).text()=="A")
+                {
+                    sortByTitle('asc');
+                    $(this).text('D');
+                }
+                else
+                {
+                    sortByTitle('dsc');
+                    $(this).text('A');
+                }
+
                 e.preventDefault();
             });
 
-            $('#sortProjBudgDsc').click(function(e){
-                sortByBudget('dsc');
-                e.preventDefault();
-            });
+            $('#sortProjBudg').click(function(e){
+                if($(this).text()=="A")
+                {
+                    sortByBudget('asc');
+                    $(this).text('D');
+                }
+                else
+                {
+                    sortByBudget('dsc');
+                    $(this).text('A');
+                }
 
-            $('#sortProjTitleAsc').click(function(e){
-                sortByTitle('asc');
-                e.preventDefault();
-            });
-
-            $('#sortProjTitleDsc').click(function(e){
-                sortByTitle('dsc');
                 e.preventDefault();
             });
         });
@@ -162,13 +172,11 @@
                                         <div >
                                             <b>Sort results by:</b>
                                              &nbsp;
-                                            <b>Title</b>
-                                            <button id="sortProjTitleAsc" style="cursor:pointer" >A</button>
-                                            <button id="sortProjTitleDsc" style="cursor:pointer">D</button>
+                                             Title
+                                            <button id="sortProjTitle" style="cursor:pointer" >A</button>
                                              &nbsp;
-                                            <b>Budget</b>
-                                            <button id="sortProjBudgAsc" style="cursor:pointer">A</button>
-                                            <button id="sortProjBudgDsc" style="cursor:pointer">D</button>
+                                             Budget
+                                            <button id="sortProjBudg" style="cursor:pointer">A</button>
                                         </div>
                                     </div>
 
