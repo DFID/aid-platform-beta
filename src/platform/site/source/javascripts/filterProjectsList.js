@@ -35,10 +35,10 @@
         $( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
       },
       change: function( event, ui ) {
-        var self = $(this)
 
         if (!$('input[type=checkbox]').is(':checked')) {
           $(".search-result").each(function(i, div) {
+            var self = $(this);
             if ( (self.children("input[name='budget']").val() <= ui.values[1]) && 
                  (self.children("input[name='budget']").val() >= ui.values[0]) ) {
               self.show();
