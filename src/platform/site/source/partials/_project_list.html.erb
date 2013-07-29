@@ -7,39 +7,46 @@
 <script type="text/javascript">
         $("document").ready(function (){
 
-            $('#sortProjTitle').click(function(e){
 
-                if($(this).text()=="A")
-                  {
-                      sortByTitle('asc');
-                      $(this).text('D');
-                  }
-                  else
-                  {
-                      sortByTitle('dsc');
-                      $(this).text('A');
-                  }
+            $('#imgSortProjTitleAsc').click(function(){
 
-                e.preventDefault();
+                setDefaultBorder();
+                $(this).css('border', "solid 2px #FFA500");
+                sortByTitle('asc');
             });
 
-            $('#sortProjBudg').click(function(e){
+            $('#imgSortProjTitleDesc').click(function(){
 
-                if($(this).text()=="A")
-                  {
-                      sortByBudget('asc');
-                      $(this).text('D');
-                  }
-                  else
-                  {
-                      sortByBudget('dsc');
-                      $(this).text('A');
-                  }
+                setDefaultBorder();
+                $(this).css('border', "solid 2px #FFA500");
+                sortByTitle('dsc');
 
-                e.preventDefault();
+            });
+
+            $('#imgSortProjBudgAsc').click(function(){
+
+                setDefaultBorder();
+                $(this).css('border', "solid 2px #FFA500");
+                sortByBudget('asc');
+
+            });
+
+            $('#imgSortProjBudgDesc').click(function(){
+
+                setDefaultBorder();
+                $(this).css('border', "solid 2px #FFA500");
+                sortByBudget('dsc');
+
             });
 
         });
+
+        function setDefaultBorder()
+        {
+             $(".sort-img").each(function(){
+                $(this).css('border', "solid 2px #C0C0C0");
+             });
+        }
 
         function sortByBudget(order){
 
@@ -83,12 +90,13 @@
     <div class="nine columns push-three" id="search-results">
         <p>
             <b>Sort results by:</b>
-             &nbsp;
              Title
-            <button id="sortProjTitle" style="cursor:pointer" >A</button>
-             &nbsp;
+            <img id="imgSortProjTitleAsc" src="/images/asc.png" class="sort-img" alt="Sort by title"/>
+            <img id="imgSortProjTitleDesc" src="/images/desc.png" class="sort-img" alt="Sort by title"/>
+            &nbsp;
              Budget
-            <button id="sortProjBudg" style="cursor:pointer">A</button>
+            <img id="imgSortProjBudgAsc" src="/images/asc.png" class="sort-img" alt="Sort by budget"/>
+            <img id="imgSortProjBudgDesc" src="/images/desc.png" class="sort-img" alt="Sort by budget"/>
         </p>
 
         <p>
