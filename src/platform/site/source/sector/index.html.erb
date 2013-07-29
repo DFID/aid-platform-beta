@@ -31,10 +31,10 @@ title: Development Tracker
                 <b>Sort sectors by:</b>
                 &nbsp;
                 Name
-                <button id="sortSectName" style="cursor:pointer" >D</button>
+                <button id="sortSectName" class="sort-img">▲</button>
                 &nbsp;
                 Budget %
-                <button id="sortSectBudgPer" style="cursor:pointer">A</button>
+                <button id="sortSectBudgPer" class="sort-img">▼</button>
             </div>
             <ul class="sector-list">
                 <% (high_level_sectors_structure || []).each do |sector| %>
@@ -57,36 +57,46 @@ title: Development Tracker
     $("document").ready(function (){
 
         $('#sortSectName').on('click',function(e){
-          if($(this).text()=="A")
+          if($(this).text()=="▼")
               {
                   sortBySctorName('asc');
-                  $(this).text('D');
+                  $(this).text('▲');
               }
               else
               {
                   sortBySctorName('dsc');
-                  $(this).text('A');
+                  $(this).text('▼');
               }
 
+              setDefaultBorder();
+              $(this).css('border', "solid 1px #FFA500");
               e.preventDefault();
         });
 
         $('#sortSectBudgPer').click(function(e){
-            if($(this).text()=="A")
+            if($(this).text()=="▼")
                 {
                     sortBySectorBudget('asc');
-                    $(this).text('D');
+                    $(this).text('▲');
                 }
                 else
                 {
                     sortBySectorBudget('dsc');
-                    $(this).text('A');
+                    $(this).text('▼');
                 }
 
+                setDefaultBorder();
+                $(this).css('border', "solid 1px #FFA500");
                 e.preventDefault();
         });
     });
 
+    function setDefaultBorder()
+    {
+         $(".sort-img").each(function(){
+            $(this).css('border', "none");
+         });
+    }
     function sortBySectorBudget(order){
             var containerDiv = $('ul.sector-list');
             var childResultDivs = containerDiv.children();
