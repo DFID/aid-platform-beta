@@ -27,14 +27,14 @@ title: Development Tracker
                 <p>DFID breakdown of primary sector showing percentage budget across all projects for current financial year</p>
             </div>
             <div class="eight columns">
-            <div >
+            <div>
                 <b>Sort sectors by:</b>
                 &nbsp;
                 Name
-                <button id="sortSectName" class="sort-img">▲</button>
+                <span id="sortSectName" class="sort-proj-sectors">▲</span>
                 &nbsp;
                 Budget %
-                <button id="sortSectBudgPer" class="sort-img">▼</button>
+                <span id="sortSectBudgPer" class="sort-proj-sectors">▼</span>
             </div>
             <ul class="sector-list">
                 <% (high_level_sectors_structure || []).each do |sector| %>
@@ -93,7 +93,7 @@ title: Development Tracker
 
     function setDefaultBorder()
     {
-         $(".sort-img").each(function(){
+         $(".sort-proj-sectors").each(function(){
             $(this).css('border', "none");
          });
     }

@@ -51,36 +51,48 @@
     <script type="text/javascript">
         $("document").ready(function (){
 
-            $('#sortProjTitle').click(function(e){
-                if($(this).text()=="A")
+            $('#sortProjTitle').on('click',function(e){
+                if($(this).text()=="▼")
                 {
                     sortByTitle('asc');
-                    $(this).text('D');
+                    $(this).text('▲');
                 }
                 else
                 {
                     sortByTitle('dsc');
-                    $(this).text('A');
+                    $(this).text('▼');
                 }
 
+                setDefaultBorder();
+                $(this).css('border', "solid 1px #FFA500");
                 e.preventDefault();
             });
 
-            $('#sortProjBudg').click(function(e){
-                if($(this).text()=="A")
-                {
-                    sortByBudget('asc');
-                    $(this).text('D');
-                }
-                else
-                {
-                    sortByBudget('dsc');
-                    $(this).text('A');
-                }
+        $('#sortProjBudg').click(function(e){
+            if($(this).text()=="▼")
+            {
+                sortByBudget('asc');
+                $(this).text('▲');
+            }
+            else
+            {
+                sortByBudget('dsc');
+                $(this).text('▼');
+            }
 
-                e.preventDefault();
-            });
+            setDefaultBorder();
+            $(this).css('border', "solid 1px #FFA500");
+            e.preventDefault();
         });
+
+        });
+
+        function setDefaultBorder()
+        {
+        $(".sort-proj-sectors").each(function(){
+        $(this).css('border', "none");
+        });
+        }
 
         function sortByBudget(order){
 
@@ -169,14 +181,14 @@
 
                                     </div>
                                     <div class="six columns" style="text-align:left;float:left">
-                                        <div >
+                                        <div>
                                             <b>Sort results by:</b>
-                                             &nbsp;
-                                             Title
-                                            <button id="sortProjTitle" style="cursor:pointer" >A</button>
-                                             &nbsp;
-                                             Budget
-                                            <button id="sortProjBudg" style="cursor:pointer">A</button>
+                                            &nbsp;
+                                            Title
+                                            <span id="sortProjTitle" class="sort-proj-sectors" style="display:inline; cursor:pointer">▲</span>
+                                            &nbsp;
+                                            Budget
+                                            <span id="sortProjBudg" class="sort-proj-sectors" style="display:inline; cursor:pointer">▼</span>
                                         </div>
                                     </div>
 

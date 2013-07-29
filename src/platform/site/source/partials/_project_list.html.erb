@@ -7,44 +7,45 @@
 <script type="text/javascript">
         $("document").ready(function (){
 
+            $('#sortProjTitle').on('click',function(e){
+              if($(this).text()=="▼")
+                  {
+                      sortByTitle('asc');
+                      $(this).text('▲');
+                  }
+                  else
+                  {
+                      sortByTitle('dsc');
+                      $(this).text('▼');
+                  }
 
-            $('#imgSortProjTitleAsc').click(function(){
-
-                setDefaultBorder();
-                $(this).css('border', "solid 2px #FFA500");
-                sortByTitle('asc');
+              setDefaultBorder();
+              $(this).css('border', "solid 1px #FFA500");
+              e.preventDefault();
             });
 
-            $('#imgSortProjTitleDesc').click(function(){
+            $('#sortProjBudg').click(function(e){
+                if($(this).text()=="▼")
+                    {
+                        sortByBudget('asc');
+                        $(this).text('▲');
+                    }
+                    else
+                    {
+                        sortByBudget('dsc');
+                        $(this).text('▼');
+                    }
 
                 setDefaultBorder();
-                $(this).css('border', "solid 2px #FFA500");
-                sortByTitle('dsc');
-
+                $(this).css('border', "solid 1px #FFA500");
+                e.preventDefault();
             });
-
-            $('#imgSortProjBudgAsc').click(function(){
-
-                setDefaultBorder();
-                $(this).css('border', "solid 2px #FFA500");
-                sortByBudget('asc');
-
             });
-
-            $('#imgSortProjBudgDesc').click(function(){
-
-                setDefaultBorder();
-                $(this).css('border', "solid 2px #FFA500");
-                sortByBudget('dsc');
-
-            });
-
-        });
 
         function setDefaultBorder()
         {
-             $(".sort-img").each(function(){
-                $(this).css('border', "solid 2px #C0C0C0");
+             $(".sort-proj-sectors").each(function(){
+                $(this).css('border', "none");
              });
         }
 
@@ -88,22 +89,21 @@
     </script>
 <div class="row project-results">
     <div class="nine columns push-three" id="search-results">
-        <p>
+        <div>
             <b>Sort results by:</b>
-             Title
-            <img id="imgSortProjTitleAsc" src="/images/asc.png" class="sort-img" alt="Sort by title"/>
-            <img id="imgSortProjTitleDesc" src="/images/desc.png" class="sort-img" alt="Sort by title"/>
             &nbsp;
-             Budget
-            <img id="imgSortProjBudgAsc" src="/images/asc.png" class="sort-img" alt="Sort by budget"/>
-            <img id="imgSortProjBudgDesc" src="/images/desc.png" class="sort-img" alt="Sort by budget"/>
-        </p>
+            Title
+            <span id="sortProjTitle" class="sort-proj-sectors" style="display:inline;">▲</span>
+            &nbsp;
+            Budget
+            <span id="sortProjBudg" class="sort-proj-sectors" style="display:inline;">▼</span>
+        </div>
 
-        <p>
+        <div>
             Showing
             <span name="afterFilteringAmount" style="display:inline;"></span>
             <span name="numberofResults" value="@results.size" style="display:inline;"><%=projects.size%></span> results
-        </p>
+        </div>
         <% projects.each do |project| %>
             <div class="search-result">
                 <input type="hidden" name="status" value="<%= activity_status(project['status']) %>"/>
