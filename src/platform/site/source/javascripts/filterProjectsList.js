@@ -7,12 +7,75 @@
     addCheckboxesFilters();
     setOnChange();
     budgetFilteringSetUp();
+    dateFilteringSetUp();
 
   });
 
   function hasTrue(array) {
     return ($.inArray(true, array)!= -1);
   }
+
+function dateFilteringSetUp(){
+
+    var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+    var minStartDt = new Date();
+    var minDtTxt ='';
+    var maxDtTxt ='';
+    var maxEndDt = new Date();
+
+    $( "input[name=dateStart][type='hidden']" ).each(function(i, input){
+      var dt = new Date(input.value);
+
+      if(minStartDt > dt){
+        minStartDt = dt;
+        minDtTxt =  input.value;
+      }
+    });
+
+    maxEndDt = minStartDt;
+    $( "input[name=dateEnd][type='hidden']" ).each(function(i, input){
+      var dt = new Date(input.value);
+
+      if(maxEndDt < dt){
+        maxEndDt = dt;
+        maxDtTxt = input.value;
+      }
+    });
+
+    $("#date-slider-vertical").slider({
+       orientation: "horizontal",
+       range:true,
+       min: Date.parse(minStartDt),
+       max: Date.parse(maxEndDt),
+       step: 86400000,
+       values: [Date.parse(minStartDt), Date.parse(maxEndDt)],
+       slide: function(event, ui){
+
+        var startDt = new Date(ui.values[0]);
+        var endDt = new Date(ui.values[1]);
+        $('#date-range').html(startDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + endDt.customFormat("#DD# #MMM# #YYYY#"));
+       },
+       change: function( event, ui ) {
+
+        $(".search-result").each(function(i, div) {
+            var self = $(this);
+
+            var startDtElVal = Date.parse(new Date(self.children("input[name='dateStart']").val()));
+            var endDtElVal = Date.parse(new Date(self.children("input[name='dateEnd']").val()));
+
+            if (startDtElVal >= ui.values[0] && endDtElVal <= ui.values[1] ) {
+              self.show();
+            } else {
+              self.hide();
+            }
+          });
+        displayResultsAmount();
+       }
+    });
+
+    $('#date-range').html(minStartDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + maxEndDt.customFormat("#DD# #MMM# #YYYY#"));
+
+}
 
   function budgetFilteringSetUp() {
     var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
