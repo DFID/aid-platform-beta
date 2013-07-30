@@ -1,62 +1,81 @@
-(function($, undefined){
-    $(document).ready(function(){
+$("document").ready(function (){
 
-        $('#sortProjBudgAsc').click(function(e){
-                        sortByBudget('asc');
-                        e.preventDefault();
-                    });
+            $('#sortProjTitle').on('click',function(e){
+                if($(this).text()=="▼")
+                {
+                    sortByTitle('asc');
+                    $(this).text('▲');
+                }
+                else
+                {
+                    sortByTitle('dsc');
+                    $(this).text('▼');
+                }
 
-        $('#sortProjBudgDsc').click(function(e){
-            sortByBudget('dsc');
+                setDefaultBorder();
+                $(this).css('border', "solid 1px #FFA500");
+                e.preventDefault();
+            });
+
+        $('#sortProjBudg').click(function(e){
+            if($(this).text()=="▼")
+            {
+                sortByBudget('asc');
+                $(this).text('▲');
+            }
+            else
+            {
+                sortByBudget('dsc');
+                $(this).text('▼');
+            }
+
+            setDefaultBorder();
+            $(this).css('border', "solid 1px #FFA500");
             e.preventDefault();
         });
 
-        $('#sortProjTitleAsc').click(function(e){
-            sortByTitle('asc');
-            e.preventDefault();
         });
 
-        $('#sortProjTitleDsc').click(function(e){
-            sortByTitle('dsc');
-            e.preventDefault();
+        function setDefaultBorder()
+        {
+        $(".sort-proj-sectors").each(function(){
+        $(this).css('border', "none");
         });
+        }
 
-  });
+        function sortByBudget(order){
 
-  function sortByBudget(order){
+            var containerDiv = $('#search-results');
+            var childResultDivs = containerDiv.children('.search-result').get();
 
-      var containerDiv = $('#search-results');
-      var childResultDivs = containerDiv.children('.search-result').get();
+            childResultDivs.sort(function (a, b){
+            var compA = new Number( $(a).find('.sort-budget').val());
+            var compB = new Number( $(b).find('.sort-budget').val());
 
-      childResultDivs.sort(function (a, b){
-          var compA = new Number( $(a).find('.sort-budget').val());
-          var compB = new Number( $(b).find('.sort-budget').val());
+            if(order=='asc')
+                return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+            else
+                return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+        })
 
-          if(order=='asc')
-              return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-          else
-              return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
-      })
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        }
 
-      $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
-  }
+        function sortByTitle(order){
 
- function sortByTitle(order){
+            var containerDiv = $('#search-results');
+            var childResultDivs = containerDiv.children('.search-result').get();
 
-      var containerDiv = $('#search-results');
-      var childResultDivs = containerDiv.children('.search-result').get();
+            childResultDivs.sort(function (a, b){
 
-      childResultDivs.sort(function (a, b){
+            var compA = $(a).find('.sort-title').val().toString();
+            var compB = $(b).find('.sort-title').val().toString();
 
-          var compA = $(a).find('.sort-title').val().toString();
-          var compB = $(b).find('.sort-title').val().toString();
+            if(order=='asc')
+                return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
+            else
+                return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
+        })
 
-          if(order=='asc')
-              return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
-          else
-              return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
-      })
-
-      $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
-  }
-}
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+        }

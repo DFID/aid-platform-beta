@@ -68,30 +68,30 @@
                 e.preventDefault();
             });
 
-        $('#sortProjBudg').click(function(e){
-            if($(this).text()=="▼")
-            {
-                sortByBudget('asc');
-                $(this).text('▲');
-            }
-            else
-            {
-                sortByBudget('dsc');
-                $(this).text('▼');
-            }
+            $('#sortProjBudg').click(function(e){
+                if($(this).text()=="▼")
+                {
+                    sortByBudget('asc');
+                    $(this).text('▲');
+                }
+                else
+                {
+                    sortByBudget('dsc');
+                    $(this).text('▼');
+                }
 
-            setDefaultBorder();
-            $(this).css('border', "solid 1px #FFA500");
-            e.preventDefault();
-        });
+                setDefaultBorder();
+                $(this).css('border', "solid 1px #FFA500");
+                e.preventDefault();
+            });
 
         });
 
         function setDefaultBorder()
         {
-        $(".sort-proj-sectors").each(function(){
-        $(this).css('border', "none");
-        });
+            $(".sort-proj-sectors").each(function(){
+            $(this).css('border', "none");
+            });
         }
 
         function sortByBudget(order){
@@ -105,11 +105,11 @@
 
             if(order=='asc')
                 return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-            else
+                else
                 return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
-        })
+            })
 
-        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
         }
 
         function sortByTitle(order){
@@ -124,14 +124,14 @@
 
             if(order=='asc')
                 return (compA.toLowerCase() < compB.toLowerCase()) ? -1 : (compA.toLowerCase() > compB.toLowerCase()) ? 1 : 0;
-            else
+                else
                 return (compA.toLowerCase() < compB.toLowerCase()) ? 1 : (compA.toLowerCase() > compB.toLowerCase()) ? -1 : 0;
-        })
+            })
 
-        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
         }
-
     </script>
+
     <header role="banner" id="global-header">
         <div class="row">
             <div class="twelve columns">
