@@ -1,4 +1,5 @@
-$("document").ready(function (){
+(function($, undefined){
+    $("document").ready(function (){
 
         $('#sortSectName').on('click',function(e){
           if($(this).text()=="▼")
@@ -37,25 +38,28 @@ $("document").ready(function (){
 
     function setDefaultBorder()
     {
-         $(".sort-proj-sectors").each(function(){
+        $(".sort-proj-sectors").each(function(){
             $(this).css('border', "none");
-         });
+        });
     }
+
     function sortBySectorBudget(order){
-            var containerDiv = $('ul.sector-list');
-            var childResultDivs = containerDiv.children();
 
-            childResultDivs.sort(function (a, b){
-                var compA = parseFloat( $(a).find('div.progress').text());
-                var compB = parseFloat( $(b).find('div.progress').text());
+        var containerDiv = $('ul.sector-list');
+        var childResultDivs = containerDiv.children();
 
-                if(order=='asc')
-                    return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-                else
-                    return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
-            })
+        childResultDivs.sort(function (a, b){
 
-            $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
+            var compA = parseFloat( $(a).find('div.progress').text());
+            var compB = parseFloat( $(b).find('div.progress').text());
+
+            if(order=='asc')
+                return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+            else
+                return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+        })
+
+        $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
     }
 
     function sortBySctorName(order){
@@ -76,3 +80,4 @@ $("document").ready(function (){
 
         $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
     }
+})(jQuery)

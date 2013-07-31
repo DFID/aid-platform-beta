@@ -1,21 +1,22 @@
-$("document").ready(function (){
+(function($, undefined){
+    $("document").ready(function (){
 
-            $('#sortProjTitle').on('click',function(e){
-                if($(this).text()=="▼")
-                {
-                    sortByTitle('asc');
-                    $(this).text('▲');
-                }
-                else
-                {
-                    sortByTitle('dsc');
-                    $(this).text('▼');
-                }
+        $('#sortProjTitle').on('click',function(e){
+            if($(this).text()=="▼")
+            {
+                sortByTitle('asc');
+                $(this).text('▲');
+            }
+            else
+            {
+                sortByTitle('dsc');
+                $(this).text('▼');
+            }
 
-                setDefaultBorder();
-                $(this).css('border', "solid 1px #FFA500");
-                e.preventDefault();
-            });
+            setDefaultBorder();
+            $(this).css('border', "solid 1px #FFA500");
+            e.preventDefault();
+        });
 
         $('#sortProjBudg').click(function(e){
             if($(this).text()=="▼")
@@ -34,23 +35,22 @@ $("document").ready(function (){
             e.preventDefault();
         });
 
-        });
+    });
 
-        function setDefaultBorder()
-        {
+    function setDefaultBorder(){
         $(".sort-proj-sectors").each(function(){
-        $(this).css('border', "none");
+            $(this).css('border', "none");
         });
-        }
+    }
 
-        function sortByBudget(order){
+    function sortByBudget(order){
 
-            var containerDiv = $('#search-results');
-            var childResultDivs = containerDiv.children('.search-result').get();
+        var containerDiv = $('#search-results');
+        var childResultDivs = containerDiv.children('.search-result').get();
 
-            childResultDivs.sort(function (a, b){
-            var compA = new Number( $(a).find('.sort-budget').val());
-            var compB = new Number( $(b).find('.sort-budget').val());
+        childResultDivs.sort(function (a, b){
+            var compA = parseInt( $(a).find('.sort-budget').val());
+            var compB = parseInt( $(b).find('.sort-budget').val());
 
             if(order=='asc')
                 return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
@@ -59,15 +59,14 @@ $("document").ready(function (){
         })
 
         $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
-        }
+    }
 
-        function sortByTitle(order){
+    function sortByTitle(order){
 
-            var containerDiv = $('#search-results');
-            var childResultDivs = containerDiv.children('.search-result').get();
+        var containerDiv = $('#search-results');
+        var childResultDivs = containerDiv.children('.search-result').get();
 
-            childResultDivs.sort(function (a, b){
-
+        childResultDivs.sort(function (a, b){
             var compA = $(a).find('.sort-title').val().toString();
             var compB = $(b).find('.sort-title').val().toString();
 
@@ -78,4 +77,5 @@ $("document").ready(function (){
         })
 
         $.each(childResultDivs, function(idx, item){containerDiv.append(item);});
-        }
+    }
+})(jQuery)
