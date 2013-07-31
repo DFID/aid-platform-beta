@@ -6,15 +6,26 @@
 
 <div class="row project-results">
     <div class="nine columns push-three" id="search-results">
-        <p>
+        <div>
+            <b>Sort results by:</b>
+            &nbsp;
+            Title
+            <span id="sortProjTitle" class="sort-proj-sectors" style="display:inline;">▲</span>
+            &nbsp;
+            Budget
+            <span id="sortProjBudg" class="sort-proj-sectors" style="display:inline;">▲</span>
+        </div>
+
+        <div>
             Showing
             <span name="afterFilteringAmount" style="display:inline;"></span>
             <span name="numberofResults" value="@results.size" style="display:inline;"><%=projects.size%></span> results
-        </p>
+        </div>
         <% projects.each do |project| %>
             <div class="search-result">
                 <input type="hidden" name="status" value="<%= activity_status(project['status']) %>"/>
-                <input type="hidden" name="budget" value="<%= project['totalBudget'] %>"/>
+                <input type="hidden" name="budget" value="<%= project['totalBudget'] %>"  class="sort-budget"/>
+                <input type="hidden" name="title" value="<%= project['title'] %>" class="sort-title"/>
                 <input type="hidden" name="sectors" value="<%=retrieve_high_level_sector_names(project["iatiId"])%>"/>
                 <input type="hidden" name="organizations" value="<%=project['participatingOrgs'].join('#')%>" />
                 <% if project['projectType'] == "country" %>
@@ -52,4 +63,5 @@
             <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
         </div>
     </div>
+    <script src="/javascripts/sortProjectsList.js" type="text/javascript"></script>
 </div>
