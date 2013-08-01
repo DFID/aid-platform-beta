@@ -144,6 +144,10 @@
                                 <span class="budget">Budget: <em> @project.get("formattedBudget")</em></span>
                                 <span>Status: <em>@project.get("status")</em></span>
                                 <span>Reporting Org: <em>@project.get("reporting")</em></span>
+                                <span>Reporting Org: <em>@project.get("end-actual")</em></span>
+                                <span>Reporting Org: <em>@project.get("end-planned")</em></span>
+                                <span>Reporting Org: <em>@project.get("start-actual")</em></span>
+                                <span>Reporting Org: <em>@project.get("reporting")</em></span>
                                 <p class="description">@project.get("description")</p>
                             </div>
                         }
@@ -165,6 +169,9 @@
                         <div name="budget"><h3>Budget</h3></div>
                         <span id="amount" style="border: 0; font-weight: bold;"></span>
                         <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
+                        <div name="date" style="margin-top: 20px"><h3>Date</h3></div>
+                        <span id="date-range" style="border: 0; font-weight: bold;"></span>
+                        <div id="date-slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
                     </div>
                 }
             </div>
