@@ -94,10 +94,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#"),
           "reporting"       -> doc.getAs[BSONString]("reporting").get.value,
-          "end-actual"      -> doc.getAs[BSONString]("end-actual").get.value,
-          "end-planned"     -> doc.getAs[BSONString]("end-planned").get.value,
-          "start-actual"    -> doc.getAs[BSONString]("start-actual").get.value,
-          "start-planned"   -> doc.getAs[BSONString]("start-planned").get.value
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
@@ -133,10 +131,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#"),
           "reporting"       -> doc.getAs[BSONString]("organisation").get.value,
-          "end-actual"      -> doc.getAs[BSONString]("end-actual").get.value,
-          "end-planned"     -> doc.getAs[BSONString]("end-planned").get.value,
-          "start-actual"    -> doc.getAs[BSONString]("start-actual").get.value,
-          "start-planned"   -> doc.getAs[BSONString]("start-planned").get.value
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
@@ -210,13 +206,23 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "regions"         -> component("regions").mkString("#"),
           "sectors"         -> component("sectors").mkString("#"),
           "reporting"       -> "Department for International Development",
-          "end-actual"      -> doc.getAs[BSONString]("end-actual").get.value,
-          "end-planned"     -> doc.getAs[BSONString]("end-planned").get.value,
-          "start-actual"    -> doc.getAs[BSONString]("start-actual").get.value,
-          "start-planned"   -> doc.getAs[BSONString]("start-planned").get.value
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
     }
+
   }
+
+  private  def  chooseBetterDate(actual: Option[BSONDateTime], planned: Option[BSONDateTime]) : String = {
+
+    if(actual != Nil || !actual.isEmpty)
+      return actual.map(_.value).mkString;
+    if(planned!=Nil || !actual.isEmpty)
+      return planned.map(_.value).mkString;
+
+    return "0";
+  }
+
 }

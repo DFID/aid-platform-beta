@@ -24,9 +24,11 @@ function dateFilteringSetUp(){
     var maxEndDt = new Date();
 
     $( "input[name=dateStart][type='hidden']" ).each(function(i, input){
-      var dt = new Date(input.value);
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
 
-      if(minStartDt > dt){
+      if(minStartDt > dt && parseInt(input.value)>0){
         minStartDt = dt;
         minDtTxt =  input.value;
       }
@@ -34,9 +36,11 @@ function dateFilteringSetUp(){
 
     maxEndDt = minStartDt;
     $( "input[name=dateEnd][type='hidden']" ).each(function(i, input){
-      var dt = new Date(input.value);
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
 
-      if(maxEndDt < dt){
+      if(maxEndDt < dt && parseInt(input.value)>0){
         maxEndDt = dt;
         maxDtTxt = input.value;
       }
@@ -51,6 +55,7 @@ function dateFilteringSetUp(){
        values: [Date.parse(minStartDt), Date.parse(maxEndDt)],
        slide: function(event, ui){
 
+
         var startDt = new Date(ui.values[0]);
         var endDt = new Date(ui.values[1]);
         $('#date-range').html(startDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + endDt.customFormat("#DD# #MMM# #YYYY#"));
@@ -60,10 +65,10 @@ function dateFilteringSetUp(){
         $(".search-result").each(function(i, div) {
             var self = $(this);
 
-            var startDtElVal = Date.parse(new Date(self.children("input[name='dateStart']").val()));
-            var endDtElVal = Date.parse(new Date(self.children("input[name='dateEnd']").val()));
+            var startDtElVal = parseInt(self.children("input[name='dateStart']").val());
+            var endDtElVal = parseInt(self.children("input[name='dateEnd']").val());
 
-            if (startDtElVal >= ui.values[0] && endDtElVal <= ui.values[1] ) {
+            if (startDtElVal >= parseInt(ui.values[0]) && endDtElVal <= parseInt(ui.values[1]) ) {
               self.show();
             } else {
               self.hide();

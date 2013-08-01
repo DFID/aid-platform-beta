@@ -36,8 +36,8 @@
                     <input type="hidden" name="regions" value="<%=region_name project['recipient']%>"  />
                 <% end %>
                 <input type="hidden" name="organizations" value="<%=project['participatingOrgs'].join('#')%>" />
-                <input type="hidden" name="dateStart" value="<%= format_date(choose_better_date(project['start-actual'], project['start-planned'])) %>"/>
-                <input type="hidden" name="dateEnd" value="<%= format_date(choose_better_date(project['end-actual'], project['end-planned'])) %>"/>
+                <input type="hidden" name="dateStart" value="<%= choose_better_date(project['start-actual'], project['start-planned']) %>"/>
+                <input type="hidden" name="dateEnd" value="<%= choose_better_date(project['end-actual'], project['end-planned']) %>"/>
                 <h3>
                     <a href="/projects/<%=project['iatiId']%>">
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small>
@@ -46,9 +46,6 @@
                 <span class="budget">Budget: <em> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) %></em></span>
                 <span>Status: <em><%= activity_status project['status']%></em></span>
                 <span>Reporting Org: <em><%= project['reportingOrg']%></em></span>
-                <span>Start date: <em><%= format_date(choose_better_date(project['start-actual'], project['start-planned'])) %></em></span>
-                <span>End date: <em><%= format_date(choose_better_date(project['end-actual'], project['end-planned'])) %></em></span>
-
                 <p class="description"><%=project['description']%></p>
             </div>
         <% end %>
