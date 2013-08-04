@@ -68,12 +68,20 @@ function dateFilteringSetUp(){
             var startDtElVal = parseInt(self.children("input[name='dateStart']").val());
             var endDtElVal = parseInt(self.children("input[name='dateEnd']").val());
 
-            if (startDtElVal >= parseInt(ui.values[0]) && endDtElVal <= parseInt(ui.values[1]) ) {
+
+            if (startDtElVal <= 0 && endDtElVal > 0 && endDtElVal <= parseInt(ui.values[1])){
+                self.show();
+            }
+            else if(endDtElVal <= 0 && startDtElVal > 0 && startDtElVal >= parseInt(ui.values[0])) {
+                self.show();
+            }
+            else if (startDtElVal > 0 && endDtElVal > 0 && startDtElVal >= parseInt(ui.values[0]) && endDtElVal <= parseInt(ui.values[1]) ) {
               self.show();
-            } else {
+            }
+            else {
               self.hide();
             }
-          });
+        });
         displayResultsAmount();
        }
     });
