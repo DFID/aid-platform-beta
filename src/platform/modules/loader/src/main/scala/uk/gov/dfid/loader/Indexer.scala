@@ -218,9 +218,9 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
   private  def  chooseBetterDate(actual: Option[BSONDateTime], planned: Option[BSONDateTime]) : String = {
 
     val betterValue = actual match {
-      case Some(s) => s.toString
+      case Some(s) => s.value.toString
       case None => planned match {
-        case Some(s) => s.toString
+        case Some(s) => s.value.toString
         case None => "0"
       }
     }
