@@ -217,12 +217,15 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
 
   private  def  chooseBetterDate(actual: Option[BSONDateTime], planned: Option[BSONDateTime]) : String = {
 
-    if(actual != Nil || !actual.isEmpty)
-      return actual.map(_.value).mkString;
-    if(planned!=Nil || !actual.isEmpty)
-      return planned.map(_.value).mkString;
+    val betterValue = actual match {
+      case Some(s) => s.toString
+      case None => planned match {
+        case Some(s) => s.toString
+        case None => "0"
+      }
+    }
 
-    return "0";
+    betterValue
   }
 
 }
