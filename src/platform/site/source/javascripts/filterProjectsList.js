@@ -19,8 +19,6 @@ function dateFilteringSetUp(){
 
     var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
     var minStartDt = new Date();
-    var minDtTxt ='';
-    var maxDtTxt ='';
     var maxEndDt = new Date();
 
     $( "input[name=dateStart][type='hidden']" ).each(function(i, input){
@@ -30,7 +28,6 @@ function dateFilteringSetUp(){
 
       if(minStartDt > dt && parseInt(input.value)>0){
         minStartDt = dt;
-        minDtTxt =  input.value;
       }
     });
 
@@ -42,7 +39,6 @@ function dateFilteringSetUp(){
 
       if(maxEndDt < dt && parseInt(input.value)>0){
         maxEndDt = dt;
-        maxDtTxt = input.value;
       }
     });
 
