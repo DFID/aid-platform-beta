@@ -161,16 +161,14 @@ span.category {
 }
 
 .proj-filter-exp-collapse{
-    background-image: url(/images/asc.png);
-    border-radius: 50%;
-    text-align: center;
+    margin-left:none;
+    margin-right:8px;
+    margin-top: 2px;
+    text-align: bottom;
     vertical-align: middle;
     cursor:pointer;
-    border: 1px solid black;
+    border: none;
     float:left;
-    margin-right:5px;
-    width:25px;
-    height:25px;
-
-
+    width: 18px;
+    height:18px;
 }

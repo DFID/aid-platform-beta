@@ -6,9 +6,36 @@
     sortFilters();
     addCheckboxesFilters();
     setOnChange();
+    attacheClickEvent();
     budgetFilteringSetUp();
 
   });
+
+  function attacheClickEvent(){
+
+    /*$(".proj-filter-exp-collapse").each(function(){
+
+        if($(this).parent().find('ul').children().length <= 0)
+            $(this).css('display','none');
+    });*/
+
+    $(".proj-filter-exp-collapse").click(function(e){
+
+       var imgSrc = $(this).attr('src');
+       var ul = $(this).parent().find("ul");
+
+       if($(ul).css('display')=='block'){
+
+         $(ul).css('display','none');
+         $(this).attr('src', '/images/descTrans.png');
+       }
+       else if($(ul).css('display')=='none'){
+
+         $(ul).css('display','block');
+         $(this).attr('src','/images/ascTrans.png');
+       }
+    });
+  }
 
   function hasTrue(array) {
     return ($.inArray(true, array)!= -1);
