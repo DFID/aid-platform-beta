@@ -7,12 +7,84 @@
     addCheckboxesFilters();
     setOnChange();
     budgetFilteringSetUp();
+    dateFilteringSetUp();
 
   });
 
   function hasTrue(array) {
     return ($.inArray(true, array)!= -1);
   }
+
+function dateFilteringSetUp(){
+
+    var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+    var minStartDt = new Date();
+    var maxEndDt = new Date();
+
+    $( "input[name=dateStart][type='hidden']" ).each(function(i, input){
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
+
+      if(minStartDt > dt && parseInt(input.value)>0){
+        minStartDt = dt;
+      }
+    });
+
+    maxEndDt = minStartDt;
+    $( "input[name=dateEnd][type='hidden']" ).each(function(i, input){
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
+
+      if(maxEndDt < dt && parseInt(input.value)>0){
+        maxEndDt = dt;
+      }
+    });
+
+    $("#date-slider-vertical").slider({
+       orientation: "horizontal",
+       range:true,
+       min: Date.parse(minStartDt),
+       max: Date.parse(maxEndDt),
+       step: 86400000,
+       values: [Date.parse(minStartDt), Date.parse(maxEndDt)],
+       slide: function(event, ui){
+
+
+        var startDt = new Date(ui.values[0]);
+        var endDt = new Date(ui.values[1]);
+        $('#date-range').html(startDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + endDt.customFormat("#DD# #MMM# #YYYY#"));
+       },
+       change: function( event, ui ) {
+
+        $(".search-result").each(function(i, div) {
+            var self = $(this);
+
+            var startDtElVal = parseInt(self.children("input[name='dateStart']").val());
+            var endDtElVal = parseInt(self.children("input[name='dateEnd']").val());
+
+
+            if (startDtElVal <= 0 && endDtElVal > 0 && endDtElVal <= parseInt(ui.values[1])){
+                self.show();
+            }
+            else if(endDtElVal <= 0 && startDtElVal > 0 && startDtElVal >= parseInt(ui.values[0])) {
+                self.show();
+            }
+            else if (startDtElVal > 0 && endDtElVal > 0 && startDtElVal >= parseInt(ui.values[0]) && endDtElVal <= parseInt(ui.values[1]) ) {
+              self.show();
+            }
+            else {
+              self.hide();
+            }
+        });
+        displayResultsAmount();
+       }
+    });
+
+    $('#date-range').html(minStartDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + maxEndDt.customFormat("#DD# #MMM# #YYYY#"));
+
+}
 
   function budgetFilteringSetUp() {
     var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
