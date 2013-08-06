@@ -6,34 +6,28 @@
     sortFilters();
     addCheckboxesFilters();
     setOnChange();
-    attacheClickEvent();
+    attachFilterExpColClickEvent();
     budgetFilteringSetUp();
 
   });
 
-  function attacheClickEvent(){
-
-    /*$(".proj-filter-exp-collapse").each(function(){
-
-        if($(this).parent().find('ul').children().length <= 0)
-            $(this).css('display','none');
-    });*/
+  function attachFilterExpColClickEvent(){
 
     $(".proj-filter-exp-collapse").click(function(e){
 
-       var imgSrc = $(this).attr('src');
-       var ul = $(this).parent().find("ul");
+       $(this).parent().find('img').each(function(){
+          $(this).css('display', 'block');
+       });
+       $(this).css('display', 'none');
 
-       if($(ul).css('display')=='block'){
-
-         $(ul).css('display','none');
-         $(this).attr('src', '/images/descTrans.png');
+       var expOrCol = $(this).attr('alt').toLowerCase();
+       if(expOrCol == 'col'){
+         $(this).parent().find("ul").hide('slow');
        }
-       else if($(ul).css('display')=='none'){
-
-         $(ul).css('display','block');
-         $(this).attr('src','/images/ascTrans.png');
+       else{
+         $(this).parent().find("ul").show('slow');
        }
+
     });
   }
 
