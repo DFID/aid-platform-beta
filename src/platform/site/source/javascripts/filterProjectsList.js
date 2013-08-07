@@ -23,11 +23,17 @@
 
        var expOrCol = $(this).attr('alt').toLowerCase();
        if(expOrCol == 'col'){
+         $(this).parent().find("div[name=countries]").hide('slow');
+         $(this).parent().find("div[name=regions]").hide('slow');
          $(this).parent().find("ul").hide('slow');
        }
        else{
+        $(this).parent().find("div[name=countries]").show('slow');
+        $(this).parent().find("div[name=regions]").show('slow');
          $(this).parent().find("ul").show('slow');
        }
+
+
 
     });
   }
@@ -328,6 +334,7 @@ function dateFilteringSetUp(){
       $.each( Status, function( key, value ) {
         $("div[name=status] ul").append(createInputCheckbox('status', value));
       });
+      $("div[name=status] ul").css('display', 'none');
     }
 
     if(Sectors.length < 2) {
@@ -336,6 +343,7 @@ function dateFilteringSetUp(){
       $.each( Sectors, function( key, value ) {
         $("div[name=sectors] ul").append(createInputCheckbox('sectors', value));
       });
+      $("div[name=sectors] ul").css('display', 'none');
     }
 
     if(Organizations.length < 2) {
@@ -344,6 +352,7 @@ function dateFilteringSetUp(){
       $.each( Organizations, function( key, value ) {
         $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
       });
+      $("div[name=organizations] ul").css('display', 'none');
     }
 
     if(Countries.length < 2) {
@@ -352,6 +361,7 @@ function dateFilteringSetUp(){
       $.each( Countries, function( key, value ) {
         $("div[name=countries] ul").append(createInputCheckbox('countries', value));
       });
+      $("div[name=countries] ul").css('display', 'none');
     }
 
     if(Regions.length < 2) {
@@ -360,7 +370,12 @@ function dateFilteringSetUp(){
       $.each( Regions, function( key, value ) {
         $("div[name=regions] ul").append(createInputCheckbox('regions', value));
       });
+      $("div[name=regions] ul").css('display', 'none');
     }
+
+    if(Countries.length < 2 && Regions.length < 2)
+     $("div[name=locations]").hide() ;
+
   }
 
   function createInputCheckbox(name, value) {
