@@ -93,7 +93,9 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#"),
-          "reporting"       -> doc.getAs[BSONString]("reporting").get.value
+          "reporting"       -> doc.getAs[BSONString]("reporting").get.value,
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
@@ -128,7 +130,9 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "countries"       -> Nil.mkString("#"),
           "regions"         -> Nil.mkString("#"),
           "sectors"         -> Nil.mkString("#"),
-          "reporting"       -> doc.getAs[BSONString]("organisation").get.value
+          "reporting"       -> doc.getAs[BSONString]("organisation").get.value,
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
@@ -201,10 +205,27 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "countries"       -> component("countries").mkString("#"),
           "regions"         -> component("regions").mkString("#"),
           "sectors"         -> component("sectors").mkString("#"),
-          "reporting"       -> "Department for International Development"
+          "reporting"       -> "Department for International Development",
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
+          "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
         ElasticSearch.index(bean, "aid")
     }
+
   }
+
+  private  def  chooseBetterDate(actual: Option[BSONDateTime], planned: Option[BSONDateTime]) : String = {
+
+    val betterValue = actual match {
+      case Some(s) => s.value.toString
+      case None => planned match {
+        case Some(s) => s.value.toString
+        case None => "0"
+      }
+    }
+
+    betterValue
+  }
+
 }
