@@ -169,4 +169,5 @@ span.category {
     margin: 0px 2px 2px 2px;
     border: none;
     float:left;
+    cursor:pointer;
 }

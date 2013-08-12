@@ -180,22 +180,28 @@
                 @if(!results.isEmpty){
                     <div id="filter">
                         <h2 class="visually-hidden">Results Filter</h2>
-                        <div name="status" class="proj-filter-exp-collapse" style="cursor:pointer">
+                        <div name="status">
                             <div class="proj-filter-exp-collapse-sign">+</div>
-                            <h3>Status</h3>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Status</h3></span>
                         </div>
-                        <div name="organizations" class="proj-filter-exp-collapse" style="cursor:pointer">
+                        <div name="organizations">
                             <div class="proj-filter-exp-collapse-sign">+</div>
-                            <h3>Organisations</h3>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Organisations</h3></span>
                         </div>
                         <div name="locations">
                             <h3>Locations</h3>
-                            <div style="margin-left:20px;cursor:pointer" name="countries"><div class="proj-filter-exp-collapse-sign">+</div><h4>Countries</h4></div>
-                            <div style="margin-left:20px;cursor:pointer" name="regions"><div class="proj-filter-exp-collapse-sign">+</div><h4>Regions</h4></div>
+                            <div style="margin-left:20px;" name="countries">
+                                <div class="proj-filter-exp-collapse-sign">+</div>
+                                <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h4>Countries</h4></span>
+                            </div>
+                            <div style="margin-left:20px;" name="regions">
+                                <div class="proj-filter-exp-collapse-sign">+</div>
+                                <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h4>Regions</h4></span>
+                            </div>
                         </div>
-                        <div name="sectors" class="proj-filter-exp-collapse" style="cursor:pointer">
+                        <div name="sectors">
                             <div class="proj-filter-exp-collapse-sign">+</div>
-                            <h3>Sectors</h3>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Sectors</h3></span>
                         </div>
                         <div name="budget"><h3>Budget</h3></div>
                         <span id="amount" style="border: 0; font-weight: bold;"></span>

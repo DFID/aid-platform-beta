@@ -14,12 +14,9 @@
 
   function attachFilterExpColClickEvent(){
 
-    $(".proj-filter-exp-collapse").click(function(e){
+       $('.proj-filter-exp-collapse-sign').click(function(){
 
-       $(this).find('.proj-filter-exp-collapse-sign').each(function(){
-
-         if($(this).text() == '+')
-         {
+         if($(this).text() == '+'){
             $(this).text('-');
             $(this).parent().find("div[name=countries]").show('slow');
             $(this).parent().find("div[name=regions]").show('slow');
@@ -31,10 +28,26 @@
             $(this).parent().find("div[name=regions]").hide('slow');
             $(this).parent().find("ul").hide('slow');
          }
-
-
        });
-    });
+
+       $('.proj-filter-exp-collapse-text').click(function(){
+
+          $(this).parent().find('.proj-filter-exp-collapse-sign').each(function(){
+
+             if($(this).text() == '+'){
+                 $(this).text('-');
+                 $(this).parent().find("div[name=countries]").show('slow');
+                 $(this).parent().find("div[name=regions]").show('slow');
+                 $(this).parent().find("ul").show('slow');
+              }
+              else{
+                 $(this).text('+');
+                 $(this).parent().find("div[name=countries]").hide('slow');
+                 $(this).parent().find("div[name=regions]").hide('slow');
+                 $(this).parent().find("ul").hide('slow');
+              }
+          });
+       });
   }
 
   function hasTrue(array) {
