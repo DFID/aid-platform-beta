@@ -160,15 +160,13 @@ span.category {
     cursor:pointer;
 }
 
-.proj-filter-exp-collapse{
-    margin-left:none;
-    margin-right:8px;
-    margin-top: 2px;
-    text-align: bottom;
-    vertical-align: middle;
-    cursor:pointer;
+.proj-filter-exp-collapse-sign{
+     width:20px;
+        height:20px;;
+    text-align: left;
+    vertical-align:top;
+    font-size:1.5em;
+    margin: 0px 2px 2px 2px;
     border: none;
     float:left;
-    width: 18px;
-    height:18px;
 }

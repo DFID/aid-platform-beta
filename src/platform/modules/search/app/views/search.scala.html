@@ -180,26 +180,21 @@
                 @if(!results.isEmpty){
                     <div id="filter">
                         <h2 class="visually-hidden">Results Filter</h2>
-                        <div name="status">
-                            <img id="staExp" src="/images/ascTrans.png" style="display:none" class="proj-filter-exp-collapse" alt="col"/>
-                            <img id="staCol" src="/images/descTrans.png" style="display:block" class="proj-filter-exp-collapse" alt="exp"/>
+                        <div name="status" class="proj-filter-exp-collapse" style="cursor:pointer">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
                             <h3>Status</h3>
                         </div>
-                        <div name="organizations">
-                            <img id="expOrg" src="/images/ascTrans.png" style="display:none" class="proj-filter-exp-collapse" alt="col"/>
-                            <img id="colOrg"  src="/images/descTrans.png" style="display:block" class="proj-filter-exp-collapse" alt="exp"/>
+                        <div name="organizations" class="proj-filter-exp-collapse" style="cursor:pointer">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
                             <h3>Organisations</h3>
                         </div>
                         <div name="locations">
-                            <img id="locExp" src="/images/ascTrans.png" style="display:none" class="proj-filter-exp-collapse" alt="col"/>
-                            <img id="locCol" src="/images/descTrans.png" style="display:block" class="proj-filter-exp-collapse" alt="exp"/>
                             <h3>Locations</h3>
-                            <div style="margin-left:20px;" name="countries"><h4>Countries</h4></div>
-                            <div style="margin-left:20px;" name="regions"><h4>Regions</h4></div>
+                            <div style="margin-left:20px;cursor:pointer" name="countries"><div class="proj-filter-exp-collapse-sign">+</div><h4>Countries</h4></div>
+                            <div style="margin-left:20px;cursor:pointer" name="regions"><div class="proj-filter-exp-collapse-sign">+</div><h4>Regions</h4></div>
                         </div>
-                        <div name="sectors">
-                            <img id="secExp" src="/images/ascTrans.png" style="display:none" class="proj-filter-exp-collapse" alt="col"/>
-                            <img id="secCol" src="/images/descTrans.png" style="display:block" class="proj-filter-exp-collapse" alt="exp"/>
+                        <div name="sectors" class="proj-filter-exp-collapse" style="cursor:pointer">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
                             <h3>Sectors</h3>
                         </div>
                         <div name="budget"><h3>Budget</h3></div>

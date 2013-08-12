@@ -16,25 +16,24 @@
 
     $(".proj-filter-exp-collapse").click(function(e){
 
-       $(this).parent().find('img').each(function(){
-          $(this).css('display', 'block');
+       $(this).find('.proj-filter-exp-collapse-sign').each(function(){
+
+         if($(this).text() == '+')
+         {
+            $(this).text('-');
+            $(this).parent().find("div[name=countries]").show('slow');
+            $(this).parent().find("div[name=regions]").show('slow');
+            $(this).parent().find("ul").show('slow');
+         }
+         else{
+            $(this).text('+');
+            $(this).parent().find("div[name=countries]").hide('slow');
+            $(this).parent().find("div[name=regions]").hide('slow');
+            $(this).parent().find("ul").hide('slow');
+         }
+
+
        });
-       $(this).css('display', 'none');
-
-       var expOrCol = $(this).attr('alt').toLowerCase();
-       if(expOrCol == 'col'){
-         $(this).parent().find("div[name=countries]").hide('slow');
-         $(this).parent().find("div[name=regions]").hide('slow');
-         $(this).parent().find("ul").hide('slow');
-       }
-       else{
-        $(this).parent().find("div[name=countries]").show('slow');
-        $(this).parent().find("div[name=regions]").show('slow');
-         $(this).parent().find("ul").show('slow');
-       }
-
-
-
     });
   }
 
