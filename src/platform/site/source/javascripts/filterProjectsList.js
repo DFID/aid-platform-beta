@@ -116,6 +116,16 @@
           hasRegion.push(true);
         }
       });
+
+      var hasDocuments = [];
+      var isDocumentsGroupActive = false;
+      $('input:checked[name=documents]').each(function(i, checkboxes){
+          anythingFound = true;
+          isDocumentsGroupActive = true;
+          if ($(div).children('input[value*="' + checkboxes.value + '"][name="documents"]').length > 0) {
+            hasDocuments.push(true);
+          }
+      });
            
       var show = [];
       if(isStatusGroupActive){
@@ -140,6 +150,10 @@
       if (divBudget > max || divBudget < min) {
         show.push(false);
       } 
+
+      if(isDocumentsGroupActive){
+        show.push(hasTrue(hasDocuments));
+      }
 
       if ($.inArray(false, show)!= -1) {
         $(div).hide();
@@ -171,6 +185,7 @@
   var Organizations = [];
   var Sectors = [];
   var SectorGroups = [];
+  var Documents = [];
 
   function unique(array){
     return $.grep(array,function(el,index) {
@@ -190,6 +205,7 @@
     Countries     = Countries.sort(SortByName);
     Regions       = Regions.sort(SortByName);
     Organizations = Organizations.sort(SortByName);
+    Documents     = Documents.sort(SortByName);
   }
 
   function splitAndAssign(string, outputArray) {
@@ -223,11 +239,15 @@
     $(".search-result input[name=regions]").each(function() {
       splitAndAssign($(this).attr("value"),Regions)
     });
+
+    $(".search-result input[name=documents]").each(function() {
+       splitAndAssign($(this).attr("value"),Documents)
+    });
   }
 
   function addCheckboxesFilters() {
 
-    $("div[name=status], div[name=sectors], div[name=organizations], div[name=regions], div[name=countries]").append("<ul></ul>") 
+    $("div[name=status], div[name=sectors], div[name=organizations], div[name=regions], div[name=countries], div[name=documents]").append("<ul></ul>")
 
     if(Status.length < 2) {
       $("div[name=status]").hide()
@@ -268,6 +288,15 @@
         $("div[name=regions] ul").append(createInputCheckbox('regions', value));
       });
     }
+
+    if(Documents.length < 2) {
+      $("div[name=documents]").hide()
+    } else {
+      $.each( Documents, function( key, value ) {
+       $("div[name=documents] ul").append(createInputCheckbox('documents', value));
+      });
+    }
+
   }
 
   function createInputCheckbox(name, value) {

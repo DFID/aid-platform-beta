@@ -24,6 +24,9 @@
                     <input type="hidden" name="regions" value="<%=region_name project['recipient']%>"  />
                 <% end %>
                 <input type="hidden" name="organizations" value="<%=project['participatingOrgs'].join('#')%>" />
+                <!-- <input type="hidden" name="documents" value="<% if(project['documents'] != nil) then c = ""; project['documents'].each do |d| c += (d['format'] + '#') end; c = c.chop!; %><%= c %><% end%>" /> -->
+                <input type="hidden" name="documents" value="<% if(project['documents'] != nil) then result = ""; project['documents'].each do |d| d['categories'].each do |c| result += c.strip + '#' end;
+                                            end; result = result.chop!; %><%= result %><% end%>" />
                 <h3>
                     <a href="/projects/<%=project['iatiId']%>">
                         <%=project['title']%> <small>[<%=project['iatiId']%>]</small>
@@ -47,6 +50,7 @@
             </div>
             <div name="sectors"><h3>Sectors</h3></div>
             <div name="organizations"><h3>Organisations</h3></div>
+            <div name="documents"><h3>Document Type</h3></div>
             <div name="budget"><h3>Budget</h3></div>
             <span id="amount" style="border: 0; font-weight: bold;"></span>
             <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
