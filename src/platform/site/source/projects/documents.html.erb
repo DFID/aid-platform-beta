@@ -34,6 +34,25 @@ title: Development Tracker
                   </tr>
                 <% end %>
             </tbody>
-        </table>
+        </table>       
+        
+        <% r4dDocs = r4DApiDocFetch(project['iatiId']) %>
+        <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
+          <h3>Research Documents</h3>
+          <% r4dDocs.each do |s| %>
+            <a href="<%= s['link']%>" style="font-size: 1.5em"><%= s['title']%></a>
+            <br/>
+            <div style="margin-top: 20px;">
+              <ul class="legend-list" style="border:none">
+                <% (s['research_outputs']).each do |doc| %>
+                  <li style="border:none">
+                    <a href="<%= doc['link']%>"><%= doc['title']%></a>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        <% end %>
+        
     </div>
 </div>
