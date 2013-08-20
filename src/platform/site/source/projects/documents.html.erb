@@ -46,7 +46,10 @@ title: Development Tracker
               <ul class="legend-list" style="border:none">
                 <% (s['research_outputs']).each do |doc| %>
                   <li style="border:none">
-                    <a href="<%= doc['link']%>"><%= doc['title']%></a>
+                    <div>
+                      <a href="<%= doc['link']%>"><%= doc['title']%></a>
+                      <span style="font-size:small; font-weight:bold; position:relative">(<%= Time.parse(doc['publication_date']).strftime("%Y")%>)</span>
+                    </div>                    
                   </li>
                 <% end %>
               </ul>
