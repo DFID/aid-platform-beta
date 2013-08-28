@@ -1,6 +1,8 @@
 # Installing DevTracker
 
-1. Install Java (following three steps [instructions from here](http://simonholywell.com/post/2013/03/install-netbeans-scala-ubuntu.html)]:
+## Installing the API
+
+1. Install Java (instructions for following three steps [from here](http://simonholywell.com/post/2013/03/install-netbeans-scala-ubuntu.html)):
 
         sudo add-apt-repository ppa:webupd8team/java
         sudo apt-get update
@@ -8,9 +10,9 @@
 
 2. Install Scala:
 
-        wget http://scala-lang.org/files/archive/scala-2.10.2.tgz
-        tar -xzf scala-2.10.2.tgz
-        sudo mv scala-2.10.2 /usr/share/scala
+        wget http://scala-lang.org/files/archive/scala-2.10.2-RC2.tgz
+        tar -xzf scala-2.10.2-RC2.tgz
+        sudo mv scala-2.10.2-RC2 /usr/share/scala
 
 3. Edit `~/.profile` to add the following environment variables:
 
@@ -48,10 +50,69 @@
 
 6. Install Play (Scala web framework) ([instructions from here](http://flummox-engineering.blogspot.co.uk/2012/11/how-to-install-play-framework-ubuntu.html)):
 
-        wget http://downloads.typesafe.com/play/2.1.3/play-2.1.3.zip
-        unzip play-2.1.3
+        wget http://downloads.typesafe.com/play/2.1.0/play-2.1.0.zip
+        unzip play-2.1.0
+        sudo mv play-2.1.0 /opt
+        sudo ln -s /opt/play-2.1.0 /opt/play
+        sudo ln -s /opt/play/play /usr/local/bin/play
+        # uncomment the following line to confirm everything installed ok
+        # play
 
-6. Run the platform (will install dependencies on first run):
+7. There's a weird dependency issue with play-iteratees_2.10-RC2.
+
+8. Run the platform (will install dependencies on first run):
 
         cd src/platform
-        ./start-app.sh
+        sudo ./start-app.sh
+
+9. Navigate to `http://localhost:9000` to see the API.
+
+## Create a username and password
+
+1. Change to the scripts folder:
+
+        cd scripts
+
+2. Generate an encrypted password, which will be printed to your console:
+
+        ./bcrypt <password>
+
+3. Take the output of that prompt, which will begin with a $, and create a user (replace `<username>` and `<encryptedpassword>` below)
+
+        mongo
+        use dfid
+        db.users.insert({'username': '<username>', 'password': '<encryptedpassword>', 'retryCount': 0})
+
+## Installing the front-end
+
+The front-end runs on `middleman`, which is a Ruby gem.
+
+1. Ensure you've got ruby installed. You can run:
+
+        ruby -v
+
+   If you get a response, Ruby is installed. If not, run:
+
+        sudo apt-get install ruby rubygems
+
+2. Change to the site directory:
+
+        cd src/platform/site
+
+3. Install dependencies:
+
+        sudo bundle install
+
+4. Run the server:
+
+        sudo bundle exec middleman server
+
+5. Navigate to:
+
+        http://0.0.0.0:4567/
+
+6. You'll probably get an error, because there's no data loaded. To do that, run:
+
+        http://0.0.0.0:9000/admin
+
+7. Log in with the username and password you created above.
