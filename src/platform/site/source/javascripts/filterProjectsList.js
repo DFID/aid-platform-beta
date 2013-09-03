@@ -6,13 +6,124 @@
     sortFilters();
     addCheckboxesFilters();
     setOnChange();
+    attachFilterExpColClickEvent();
     budgetFilteringSetUp();
+    dateFilteringSetUp();
 
   });
+
+  function attachFilterExpColClickEvent(){
+
+       $('.proj-filter-exp-collapse-sign').click(function(){
+
+         if($(this).text() == '+'){
+            $(this).text('-');
+            $(this).parent().find("div[name=countries]").show('slow');
+            $(this).parent().find("div[name=regions]").show('slow');
+            $(this).parent().find("ul").show('slow');
+         }
+         else{
+            $(this).text('+');
+            $(this).parent().find("div[name=countries]").hide('slow');
+            $(this).parent().find("div[name=regions]").hide('slow');
+            $(this).parent().find("ul").hide('slow');
+         }
+       });
+
+       $('.proj-filter-exp-collapse-text').click(function(){
+
+          $(this).parent().find('.proj-filter-exp-collapse-sign').each(function(){
+
+             if($(this).text() == '+'){
+                 $(this).text('-');
+                 $(this).parent().find("div[name=countries]").show('slow');
+                 $(this).parent().find("div[name=regions]").show('slow');
+                 $(this).parent().find("ul").show('slow');
+              }
+              else{
+                 $(this).text('+');
+                 $(this).parent().find("div[name=countries]").hide('slow');
+                 $(this).parent().find("div[name=regions]").hide('slow');
+                 $(this).parent().find("ul").hide('slow');
+              }
+          });
+       });
+  }
 
   function hasTrue(array) {
     return ($.inArray(true, array)!= -1);
   }
+
+function dateFilteringSetUp(){
+
+    var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
+    var minStartDt = new Date();
+    var maxEndDt = new Date();
+
+    $( "input[name=dateStart][type='hidden']" ).each(function(i, input){
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
+
+      if(minStartDt > dt && parseInt(input.value)>0){
+        minStartDt = dt;
+      }
+    });
+
+    maxEndDt = minStartDt;
+    $( "input[name=dateEnd][type='hidden']" ).each(function(i, input){
+      var dt = new Date(0);
+      dt = dt.setUTCMilliseconds(input.value);
+      dt = new Date(dt);
+
+      if(maxEndDt < dt && parseInt(input.value)>0){
+        maxEndDt = dt;
+      }
+    });
+
+    $("#date-slider-vertical").slider({
+       orientation: "horizontal",
+       range:true,
+       min: Date.parse(minStartDt),
+       max: Date.parse(maxEndDt),
+       step: 86400000,
+       values: [Date.parse(minStartDt), Date.parse(maxEndDt)],
+       slide: function(event, ui){
+
+
+        var startDt = new Date(ui.values[0]);
+        var endDt = new Date(ui.values[1]);
+        $('#date-range').html(startDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + endDt.customFormat("#DD# #MMM# #YYYY#"));
+       },
+       change: function( event, ui ) {
+
+        $(".search-result").each(function(i, div) {
+            var self = $(this);
+
+            var startDtElVal = parseInt(self.children("input[name='dateStart']").val());
+            var endDtElVal = parseInt(self.children("input[name='dateEnd']").val());
+
+
+            if (startDtElVal <= 0 && endDtElVal > 0 && endDtElVal <= parseInt(ui.values[1])){
+                self.show();
+            }
+            else if(endDtElVal <= 0 && startDtElVal > 0 && startDtElVal >= parseInt(ui.values[0])) {
+                self.show();
+            }
+            else if (startDtElVal > 0 && endDtElVal > 0 && startDtElVal >= parseInt(ui.values[0]) && endDtElVal <= parseInt(ui.values[1]) ) {
+              self.show();
+            }
+            else {
+              self.hide();
+            }
+        });
+        displayResultsAmount();
+       }
+    });
+
+    $('#date-range').html(minStartDt.customFormat("#DD# #MMM# #YYYY#") + ' - ' + maxEndDt.customFormat("#DD# #MMM# #YYYY#"));
+
+}
 
   function budgetFilteringSetUp() {
     var divsToCheck = $('input[name=status][type="hidden"]').parent('div');
@@ -35,10 +146,10 @@
         $( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
       },
       change: function( event, ui ) {
-        var self = $(this)
 
         if (!$('input[type=checkbox]').is(':checked')) {
           $(".search-result").each(function(i, div) {
+            var self = $(this);
             if ( (self.children("input[name='budget']").val() <= ui.values[1]) && 
                  (self.children("input[name='budget']").val() >= ui.values[0]) ) {
               self.show();
@@ -255,6 +366,7 @@
       $.each( Status, function( key, value ) {
         $("div[name=status] ul").append(createInputCheckbox('status', value));
       });
+      $("div[name=status] ul").css('display', 'none');
     }
 
     if(Sectors.length < 2) {
@@ -263,6 +375,7 @@
       $.each( Sectors, function( key, value ) {
         $("div[name=sectors] ul").append(createInputCheckbox('sectors', value));
       });
+      $("div[name=sectors] ul").css('display', 'none');
     }
 
     if(Organizations.length < 2) {
@@ -271,6 +384,7 @@
       $.each( Organizations, function( key, value ) {
         $("div[name=organizations] ul").append(createInputCheckbox('organizations', value));
       });
+      $("div[name=organizations] ul").css('display', 'none');
     }
 
     if(Countries.length < 2) {
@@ -279,6 +393,7 @@
       $.each( Countries, function( key, value ) {
         $("div[name=countries] ul").append(createInputCheckbox('countries', value));
       });
+      $("div[name=countries] ul").css('display', 'none');
     }
 
     if(Regions.length < 2) {
@@ -287,6 +402,7 @@
       $.each( Regions, function( key, value ) {
         $("div[name=regions] ul").append(createInputCheckbox('regions', value));
       });
+      $("div[name=regions] ul").css('display', 'none');
     }
 
     if(Documents.length < 2) {
@@ -295,7 +411,11 @@
       $.each( Documents, function( key, value ) {
        $("div[name=documents] ul").append(createInputCheckbox('documents', value));
       });
+      $("div[name=documents] ul").css('display', 'none');
     }
+
+    if(Countries.length < 2 && Regions.length < 2)
+     $("div[name=locations]").hide() ;
 
   }
 

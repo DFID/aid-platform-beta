@@ -11,7 +11,6 @@
         <meta charset="utf-8">
         <title>Development Tracker</title>
 
-
         <!--[if IE 8]>
         <script type="text/javascript">
             (function(){if(window.opera){return;}
@@ -46,6 +45,8 @@
 
         <script src="/javascripts/filterProjectsList.js" type="text/javascript"></script>
         <script src="/javascripts/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+        <script src="/javascripts/sortProjectsList.js" type="text/javascript"></script>
+        <script src="/javascripts/formatDate.js" type="text/javascript"></script>
     </head>
   <body>
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script><a href="#content" class="visually-hidden">Skip to main content</a>
@@ -90,10 +91,31 @@
                                 <input type="submit" value="Search" class="button">
                             </div>
                         </div>
+                        <br/>
+                        @if(!results.isEmpty){
+                            <div class="row" id="sortResult">
+                                <div class="twelve columns">
+                                    <div class="three columns" ></div>
+                                    <div class="six columns" style="text-align:left;float:left">
+                                        <div>
+                                            <b>Sort results by:</b>
+                                            &nbsp;
+                                            Title
+                                            <span id="sortProjTitle" class="sort-proj-sectors" style="display:inline; cursor:pointer">▲</span>
+                                            &nbsp;
+                                            Budget
+                                            <span id="sortProjBudg" class="sort-proj-sectors" style="display:inline; cursor:pointer">▲</span>
+                                        </div>
+                                    </div>
+                                    <div class="three columns" ></div>
+                                </div>
+                            </div>
+                        }
                     </form>
                 </div>
             </div>
     	</div>
+
         <div class="row project-results" >
             <div class="nine columns push-three" id="search-results">
                 @if(results.isEmpty){
@@ -134,7 +156,10 @@
                                 <input type="hidden" name="countries" value='@project.get("countries")' />
                                 <input type="hidden" name="sectors" value='@project.get("sectors")' />
                                 <input type="hidden" name="regions" value='@project.get("regions")'/>
-                                <input type="hidden" name="budget" value='@project.get("budget")'/>
+                                <input type="hidden" name="budget" value='@project.get("budget")' class="sort-budget"/>
+                                <input type="hidden" name="title" value='@project.get("title")' class="sort-title"/>
+                                <input type="hidden" name="dateStart" value='@project.get("start-date")'/>
+                                <input type="hidden" name="dateEnd" value='@project.get("end-date")'/>
 
                                 <h3>
                                     <a href='/projects/@project.get("id")'>
@@ -155,16 +180,35 @@
                 @if(!results.isEmpty){
                     <div id="filter">
                         <h2 class="visually-hidden">Results Filter</h2>
-                        <div name="status"><h3>Status</h3></div>
-                        <div name="organizations"><h3>Organisations</h3></div>
-                        <div name="locations"><h3>Locations</h3>
-                            <div style="margin-left:20px;" name="countries"><h4>Countries</h4></div>
-                            <div style="margin-left:20px;" name="regions"><h4>Regions</h4></div>
+                        <div name="status">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Status</h3></span>
                         </div>
-                        <div name="sectors"><h3>Sectors</h3></div>
+                        <div name="organizations">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Organisations</h3></span>
+                        </div>
+                        <div name="locations">
+                            <h3>Locations</h3>
+                            <div style="margin-left:20px;" name="countries">
+                                <div class="proj-filter-exp-collapse-sign">+</div>
+                                <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h4>Countries</h4></span>
+                            </div>
+                            <div style="margin-left:20px;" name="regions">
+                                <div class="proj-filter-exp-collapse-sign">+</div>
+                                <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h4>Regions</h4></span>
+                            </div>
+                        </div>
+                        <div name="sectors">
+                            <div class="proj-filter-exp-collapse-sign">+</div>
+                            <span class="proj-filter-exp-collapse-text" style="cursor:pointer"><h3>Sectors</h3></span>
+                        </div>
                         <div name="budget"><h3>Budget</h3></div>
                         <span id="amount" style="border: 0; font-weight: bold;"></span>
                         <div id="slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
+                        <div name="date" style="margin-top: 20px"><h3>Start and end date</h3></div>
+                        <span id="date-range" style="border: 0; font-weight: bold;"></span>
+                        <div id="date-slider-vertical" style="height: 13px;width : 80%; margin-top: 10px;"></div>
                     </div>
                 }
             </div>
