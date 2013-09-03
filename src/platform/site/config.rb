@@ -39,7 +39,33 @@ ignore "/sector/projects.html"
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-  locations = @cms_db['locations'].find( { 
+
+
+  projects =  projects.map { |p|
+        {
+          'allRecipients'=>     p['allRecipients'],
+          'currentFYBudget'=>   p['currentFYBudget'],
+          'description'=>       p['description'],
+          'end-actual'=>        p['end-actual'],
+          'end-planned'=>       p['end-planned'],
+          'iatiId'=>            p['iatiId'],
+          'implementingOrgs'=>  p['implementingOrgs'],
+          'participatingOrgs'=> p['participatingOrgs'],
+          'projectType'=>       p['projectType'],
+          'recipient'=>         p['recipient'],
+          'reportingOrg'=>      p['reportingOrg'],
+          'start-actual'=>      p['start-actual'],
+          'start-planned'=>     p['start-planned'],
+          'status'=>            p['status'],
+          'title'=>             p['title'],
+          'totalBudget'=>       p['totalBudget'],
+          'totalProjectSpend'=> p['totalProjectSpend'],
+          'documents'   => @cms_db['documents'].find( {'project' => p['iatiId'] }).to_a.map { |document| document }
+        }
+      }
+
+
+  locations = @cms_db['locations'].find( {
     'id' =>  {
       '$in' => projects.map { |p| p['iatiId']}
     } 
