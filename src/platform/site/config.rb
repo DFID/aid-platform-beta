@@ -9,6 +9,7 @@ require "helpers/codelists"
 require "helpers/lookups"
 require "helpers/sector_helpers"
 require "middleman-smusher"
+require "rss"
 
 #------------------------------------------------------------------------------
 # CONFIGURATION VARIABLES
@@ -32,6 +33,7 @@ ignore "/projects/partners.html"
 ignore "/sector/categories.html"
 ignore "/sector/sectors.html"
 ignore "/sector/projects.html"
+ignore "/rss/index.html"
 
 #------------------------------------------------------------------------------
 # GENERATE COUNTRIES
@@ -349,6 +351,56 @@ end
 
   proxy "/sector/#{highLevelCode}/categories/#{categoryCode}/projects/#{sectorCode}/index.html", 'sector/projects.html', :locals => { :sector => sector, :projects => projects }  
 end
+
+#------------------------------------------------------------------------------
+# GENERATE RSS - Generate RSS for all the projects that have changed in the 
+# last month and all the projects that have changed for a specific country
+#------------------------------------------------------------------------------
+
+@cms_db['countries'].find({}).each do |country|
+
+  rss = RSS::Maker.make("atom") do |maker|
+
+    projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['lastUpdatedDateTime', Mongo::DESCENDING]).to_a 
+
+    maker.channel.author = "Department for Internation Development"
+    maker.channel.updated = Time.now.to_s
+    maker.channel.about = "A breakdown of all the projects that have changed for #{country['name']} on Devtracker in reverse chronological order"
+    maker.channel.title = "DFID projects feed for #{country['name']}"
+    maker.channel.link = "http://devtracker.dfid.gov.uk/countries/#{country['code']}/projects/"
+
+    projects.each do |project|
+      maker.items.new_item do |item|
+        item.link = "http://devtracker.dfid.gov.uk/projects/#{project['iatiId']}/"
+        item.title = project["title"]
+        item.description = project["description"]
+        item.updated = project["lastUpdatedDateTime"]
+      end
+    end
+  end
+   proxy "/rss/country/#{country['code']}.rss", 'rss/index.html', :layout => false, :locals => { :rss => rss}
+end
+
+
+rss = RSS::Maker.make("atom") do |maker|
+  projects = @cms_db['projects'].find({ }, :sort => ['lastUpdatedDateTime', Mongo::DESCENDING]).to_a
+
+  maker.channel.author = "Department for Internation Development"
+  maker.channel.updated = Time.now.to_s
+  maker.channel.about = "A breakdown of all the projects that have changed on Devtracker in reverse chronological order"
+  maker.channel.title = "DFID projects feed for all projects"
+  maker.channel.link = "http://devtracker.dfid.gov.uk/location/country/"
+
+  projects.each do |project|
+    maker.items.new_item do |item|
+      item.link = "http://devtracker.dfid.gov.uk/projects/#{project['iatiId']}/"
+      item.title = project["title"]
+      item.description = project["description"]
+      item.updated = project["lastUpdatedDateTime"]
+    end
+  end
+end
+proxy "/rss/projects.rss", 'rss/index.html', :layout => false, :locals => { :rss => rss}
 
 #------------------------------------------------------------------------------
 # DEFINE HELPERS - Import from modules to avoid bloat

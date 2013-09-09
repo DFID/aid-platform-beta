@@ -17,6 +17,8 @@ import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.indexes.{IndexType, Index}
 import concurrent._
+import java.util.Date
+import java.text.SimpleDateFormat
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -27,6 +29,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
     auditor.info("Loading Projects")
     auditor.info("Dropping current projects collection")
+
+    val formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     // drop the collection and start up
     Await.ready(db.collection("projects").drop, Duration.Inf)
@@ -52,16 +56,17 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           |AND    o.ref = "GB-1"
           |RETURN n, COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) as id,
           |       a.code as status,
-          |       COLLECT(p) as participating
-          |
+          |       COLLECT(p) as participating,
+          |       coalesce(n.`last-updated-datetime`?, "1991-08-02T00:00:00") as lastUpdatedDateTime
         """.stripMargin).foreach { row =>
 
-        val projectNode = row("n").asInstanceOf[Node]
-        val status      = row("status").asInstanceOf[Long].toInt
-        val title       = projectNode.getProperty("title").toString
-        val description = projectNode.getPropertySafe[String]("description").getOrElse("")
-        val id          = row("id").asInstanceOf[String]
-        val projectOrgs = row("participating").asInstanceOf[List[Node]]
+        val projectNode           = row("n").asInstanceOf[Node]
+        val status                = row("status").asInstanceOf[Long].toInt
+        val title                 = projectNode.getProperty("title").toString
+        val description           = projectNode.getPropertySafe[String]("description").getOrElse("")
+        val id                    = row("id").asInstanceOf[String]
+        val lastUpdatedDateTime   = formatter.parse(row("lastUpdatedDateTime").asInstanceOf[String])
+        val projectOrgs           = row("participating").asInstanceOf[List[Node]]
         //val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
 
 
@@ -124,7 +129,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
             recipient
           }}.toList
 
-        val project = Project(None, id, title, description, projectType, reportingOrg,
+        val project = Project(None, id, title, description, projectType, reportingOrg, lastUpdatedDateTime,
           recipient,allRecipients, status, None, participatingOrgs.distinct.sorted.filterNot(_ == "UNITED KINGDOM"), implementingOrgs.distinct.sorted)
 
         Await.ready(projects.insert(project), Duration.Inf)
