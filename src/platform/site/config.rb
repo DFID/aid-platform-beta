@@ -400,6 +400,7 @@ rss = RSS::Maker.make("atom") do |maker|
     end
   end
 end
+
 proxy "/rss/projects.rss", 'rss/index.html', :layout => false, :locals => { :rss => rss}
 
 #------------------------------------------------------------------------------
