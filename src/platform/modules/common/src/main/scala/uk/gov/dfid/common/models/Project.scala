@@ -4,20 +4,23 @@ import reactivemongo.bson._
 import reactivemongo.bson.handlers.{BSONWriter, BSONReader}
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONString
+import java.util.Date
+import java.text.SimpleDateFormat
 
 case class Project(
   id:                Option[BSONObjectID],
-  iatiId:            String,
-  title:             String,
-  description:       String,
-  projectType:       String,
-  reportingOrg:      String,
-  recipient:         Option[String],
-  allRecipients:     List[String],
-  status:            Int,
-  budget:            Option[Long],
-  participatingOrgs: List[String],
-  implementingOrgs: List[String]
+  iatiId:               String,
+  title:                String,
+  description:          String,
+  projectType:          String,
+  reportingOrg:         String,
+  lastUpdatedDateTime:  Date,
+  recipient:            Option[String],
+  allRecipients:        List[String],
+  status:               Int,
+  budget:               Option[Long],
+  participatingOrgs:    List[String],
+  implementingOrgs:     List[String]
   )
 
 object Project {
@@ -33,6 +36,7 @@ object Project {
         document.getAs[BSONString]("description").map(_.value).get,
         document.getAs[BSONString]("projectType").map(_.value).get,
         document.getAs[BSONString]("reportingOrg").map(_.value).get,
+        document.getAs[BSONString]("lastUpdatedDateTime").map(_.value).get.toLong.asInstanceOf[Date],
         document.getAs[BSONString]("recipient").map(_.value),
         document.getAs[BSONArray]("allRecipients").map { values =>
           values.values.toList.flatMap { case value =>
@@ -67,16 +71,17 @@ object Project {
   implicit object ProjectWriter extends BSONWriter[Project]{
     def toBSON(project: Project): BSONDocument = {
       BSONDocument(
-        "_id"               -> project.id.getOrElse(BSONObjectID.generate),
-        "iatiId"            -> BSONString(project.iatiId),
-        "title"             -> BSONString(project.title),
-        "description"       -> BSONString(project.description),
-        "projectType"       -> BSONString(project.projectType),
-        "reportingOrg"       -> BSONString(project.reportingOrg),
-        "status"            -> BSONInteger(project.status),
-        "allRecipients"     -> BSONArray(project.allRecipients.map(BSONString(_)): _*),
-        "participatingOrgs" -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*),
-        "implementingOrgs"  -> BSONArray(project.implementingOrgs.map(BSONString(_)): _*)
+        "_id"                   -> project.id.getOrElse(BSONObjectID.generate),
+        "iatiId"                -> BSONString(project.iatiId),
+        "title"                 -> BSONString(project.title),
+        "description"           -> BSONString(project.description),
+        "projectType"           -> BSONString(project.projectType),
+        "reportingOrg"          -> BSONString(project.reportingOrg),
+        "lastUpdatedDateTime"   -> BSONDateTime(project.lastUpdatedDateTime.getTime),
+        "status"                -> BSONInteger(project.status),
+        "allRecipients"         -> BSONArray(project.allRecipients.map(BSONString(_)): _*),
+        "participatingOrgs"     -> BSONArray(project.participatingOrgs.map(BSONString(_)): _*),
+        "implementingOrgs"      -> BSONArray(project.implementingOrgs.map(BSONString(_)): _*)
       ).append(Seq(
         project.budget.map(b => "budget" -> BSONLong(b)),
         project.recipient.map(r => "recipient" -> BSONString(r))
