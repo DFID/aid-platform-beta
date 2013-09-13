@@ -39,23 +39,20 @@ ignore "/sector/projects.html"
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-  locations = @cms_db['locations'].find( { 
+
+  projects.each { |p| p['documents'] = @cms_db['documents'].find( {'project' => p['iatiId'] }).to_a.map { |document| document } }
+
+  locations = @cms_db['locations'].find( {
     'id' =>  {
       '$in' => projects.map { |p| p['iatiId']}
     } 
   }).to_a.map { |location|
-    {
-      "name"      => location['name'], 
-      "longitude" => location['longitude'], 
-      "latitude"  => location['latitude'], 
-      "precision" => CodeLists.geographical_precision(location['precision']), 
-      "type"      => CodeLists.location_type(location['type']),
-      "id"        => location['id'],
-      "title"     => location['title']
-    }
+    location['precision'] = CodeLists.geographical_precision(location['precision'])
+    location['type'] = CodeLists.location_type(location['type'])
+    location
   }
-  
-  results = @cms_db['country-results'].aggregate([{ 
+
+  results = @cms_db['country-results'].aggregate([{
         "$match" => {"code" => country["code"]}
         }, {
          "$group" => {
@@ -121,17 +118,12 @@ CodeLists.all_global_recipients.map { |code, name|
   funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
-  locations           = @cms_db['locations'].find( { 'id' =>  id }).to_a.map { |location|
-    {
-      "name"      => location['name'], 
-      "longitude" => location['longitude'], 
-      "latitude"  => location['latitude'], 
-      "precision" => CodeLists.geographical_precision(location['precision']), 
-      "type"      => CodeLists.location_type(location['type']),
-      "id"        => location['id'],
-      "title"     => location['title']
-    }
+  locations           = @cms_db['locations'].find( { 'id' =>  id }) .to_a.map { |location|
+     location['precision'] = CodeLists.geographical_precision(location['precision'])
+     location['type'] = CodeLists.location_type(location['type'])
+     location
   }
+
   transaction_groups  = @cms_db['transactions'].aggregate([{
     "$match" => {
       "project" => id

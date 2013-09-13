@@ -48,7 +48,9 @@ module CodeLists
     "application/msword" => "Word Document",
     "application/vnd.ms-excel" => "Excel Spreadsheet",
     "application/octet-stream" => "Binary file",
-    "application/pdf" => "PDF Document"
+    "application/pdf" => "PDF Document",
+    "text/html" => "Web Page"
+
   }
 
   @@transaction_titles = {
