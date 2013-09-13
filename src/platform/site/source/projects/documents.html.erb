@@ -36,28 +36,27 @@ title: Development Tracker
             </tbody>
         </table>       
         
-        <% r4dDocs = r4DApiDocFetch(project['iatiId']) %>
+        <% r4dDocs = r4DApiDocFetch(project['iatiId']) || '' %>
         <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
           <h3>Research Documents</h3>
           <p>This project has supported the following research projects and publications.</p>
           <% r4dDocs.each do |s| %>
-            <a href="<%= s['link']%>" style="font-size: 1.5em"><%= s['title']%></a>
+            <a class="documentTitleLink" href="<%= s['link']%>"><%= s['title']%></a>
             <br/>
-            <div style="margin-top: 20px;">
-              
-              <ul class="legend-list" style="border:none">
+            <div class="documentContainer">
+              <ul class="legend-list">
                 <% (s['research_outputs']).each do |doc| %>
-                  <li style="border:none">
+                  <li>
                     <div>
                       <a href="<%= doc['link']%>"><%= doc['title']%></a>
-                      <span style="font-size:small; font-weight:bold; position:relative">(<%= Time.parse(doc['publication_date']).strftime("%Y")%>)</span>
+                      <span >(<%= Time.parse(doc['publication_date']).strftime("%Y")%>)</span>
                     </div>                    
                   </li>
                 <% end %>
                 <% total_count = getR4DDocsCountNotShowing(s['output_count'])%>                
                 <%if total_count > 0 %>
                   <% link = getR4DSearchLink(s['link'])%>
-                  <a href="<%= link %>" style="font-weight:bold; margin-left:1.5em">..Find <%=total_count%> more publications on R4D</a>
+                  <a class="moreDocsLink" href="<%= link %>" style="">..Find <%=total_count%> more publications on R4D</a>
                 <% end %>
               </ul>
             </div>

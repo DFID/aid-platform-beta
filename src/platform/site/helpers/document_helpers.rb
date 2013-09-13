@@ -16,13 +16,12 @@ def r4DApiDocFetch(projectId)
  
 		if response.code == "200"
 			result = JSON.parse(response.body)['results']		
-		else
-			''
 		end
 
-	rescue SystemCallError
-		''
+	rescue SystemCallError => theSystemCallError
+  		raise 'A SystemCallError has occured ----------- Details : ' + theSystemCallError  
 	end
+
 end
 
 def getR4DSearchLink(link)
