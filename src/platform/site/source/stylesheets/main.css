@@ -161,8 +161,8 @@ span.category {
 }
 
 .proj-filter-exp-collapse-sign{
-     width:20px;
-        height:20px;;
+    width:20px;
+    height:20px;;
     text-align: left;
     vertical-align:top;
     font-size:1.5em;
@@ -170,4 +170,27 @@ span.category {
     border: none;
     float:left;
     cursor:pointer;
+}
+
+a.documentTitleLink{
+  font-size: 1.5em
+}
+
+ul.legend-list, ul.legend-list li{
+  border:none;
+}
+
+ul.legend-list li div span{
+  font-size:small; 
+  font-weight:bold; 
+  position:relative;
+}
+
+.documentContainer{
+  margin-top: 20px;
+}
+
+.moreDocsLink{
+  font-weight:bold; 
+  margin-left:1.5em;
 }
