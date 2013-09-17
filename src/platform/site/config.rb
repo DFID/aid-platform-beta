@@ -365,7 +365,7 @@ end
       maker.items.new_item do |item|
         item.link = "http://devtracker.dfid.gov.uk/projects/#{project['iatiId']}/"
         item.title = project["title"]
-        item.description = project["description"]
+        item.description = project["description"] + " [Last updated: " + project["lastUpdatedDateTime"] + "]"
         item.updated = project["lastUpdatedDateTime"]
       end
     end
@@ -387,7 +387,7 @@ rss = RSS::Maker.make("atom") do |maker|
     maker.items.new_item do |item|
       item.link = "http://devtracker.dfid.gov.uk/projects/#{project['iatiId']}/"
       item.title = project["title"]
-      item.description = project["description"]
+      item.description = project["description"] + " [Last updated: " + project["lastUpdatedDateTime"] + "]"
       item.updated = project["lastUpdatedDateTime"]
     end
   end
