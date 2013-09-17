@@ -19,7 +19,7 @@ def r4DApiDocFetch(projectId)
 		end
 
 	rescue SystemCallError => theSystemCallError
-  		raise 'A SystemCallError has occured ----------- Details : ' + theSystemCallError  
+  		""
 	end
 
 end
