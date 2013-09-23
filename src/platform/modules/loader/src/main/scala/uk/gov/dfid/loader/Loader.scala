@@ -34,11 +34,16 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
       val indexer    = new Indexer(mongodb, engine, sectors)
+      val results    = new CountryResults(engine, mongodb, auditor)
 
       // drop current audtis table.  Transient data ftw
       auditor.drop
       auditor.info("Loading data")
 
+      auditor.info("Loading country results")
+      results.loadCountryResults
+      auditor.info("Finished loading country results")
+      
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
