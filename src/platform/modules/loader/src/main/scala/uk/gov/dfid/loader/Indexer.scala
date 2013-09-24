@@ -23,6 +23,8 @@ import scala.concurrent.duration.Duration
 class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors) {
 
   def index {
+    auditor.info("Indexing Data")
+
     // clear the elastic search
     ElasticSearch.reset
 
@@ -35,6 +37,8 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     indexOtherOrganisationProjects
     println("Indexing Partner Projects")
     indexPartnerProjects
+
+    auditor.success("Indexed Data")
   }
 
   private lazy val components = {

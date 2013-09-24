@@ -40,10 +40,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.drop
       auditor.info("Loading data")
 
-      auditor.info("Loading country results")
       results.loadCountryResults
-      auditor.info("Finished loading country results")
-      
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
@@ -59,11 +56,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectProjectLocations
       other.collectOtherOrganisationProjects
       other.collectTransactions
-
-      auditor.info("Indexing Data")
       indexer.index
-      auditor.success("Indexed Data")
-
+      
       auditor.success("Loading process completed")
     }
   }

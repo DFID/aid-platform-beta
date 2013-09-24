@@ -14,6 +14,9 @@ import scala.util.parsing.combinator.RegexParsers
 class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadCountryResults = {
+
+    auditor.info("Loading country results")
+
     val country_results = db.collection("country-results")
     val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
     
@@ -34,6 +37,8 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
       Await.ready(country_results.insert(document), Duration.Inf)
       //auditor.info(s"Inserted results for " + label.toString)
     }
+    
+    auditor.info("Finished loading country results")
   }
 
   object CSV extends RegexParsers {
