@@ -36,8 +36,6 @@ object Main extends App  {
   loadCountries
   println("Loading Collection of Regions")
   loadRegions
-  println("Loading Collection of country results")
-  loadCountryResults
   println("Loading Collection of sector hierarchies")
   loadSectorHierarchies
   println("Shutting down Mongo")
@@ -134,25 +132,6 @@ object Main extends App  {
         "name" -> BSONString("Kosovo")
       )
     ), upsert = true, multi = false)
-  }
-
-  private def loadCountryResults = {
-    Await.ready(country_results.drop(), Duration.Inf)
-    val source = country_results_src.getLines.drop(1).mkString("\n")
-    val results = CSV.parse(source)
-    results.foreach { result =>
-      val document = BSONDocument(
-        "country" -> BSONString(result(0)),
-        "code" -> BSONString(result(1)),
-        "pillar" -> BSONString(result(2)),
-        "results" -> BSONString(result(3)),
-        "total" -> BSONString(result(5))
-      )
-
-
-      Await.ready(country_results.insert(document), Duration.Inf)
-      println(s"Inserted document! ")
-    }
   }
 
   private def loadSectorHierarchies = {
