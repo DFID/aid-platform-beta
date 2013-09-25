@@ -33,7 +33,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val projects   = new ProjectAggregator(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
-      val indexer    = new Indexer(mongodb, engine, sectors)
+      val indexer    = new Indexer(mongodb, engine, sectors, auditor)
       val results    = new CountryResults(engine, mongodb, auditor)
 
       // drop current audtis table.  Transient data ftw

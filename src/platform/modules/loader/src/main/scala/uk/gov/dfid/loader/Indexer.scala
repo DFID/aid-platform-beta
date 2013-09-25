@@ -16,11 +16,12 @@ import uk.gov.dfid.common.ElasticSearch
 import concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import uk.gov.dfid.common.DataLoadAuditor
 
 /**
  * Performs indexing of elastic search data against the aggregated data
  */
-class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors) {
+class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors, auditor: DataLoadAuditor) {
 
   def index {
     auditor.info("Indexing Data")
