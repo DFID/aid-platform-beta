@@ -33,7 +33,7 @@
     height : 380px;
 }
 
-.negative { color: #f00; }
+.negative { }
 
 .leaflet-popup-tip-container { display: none; }
 
