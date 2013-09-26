@@ -84,7 +84,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       // validation throws uncontrollable errors
       try{
-        val valid = Seq("1.02","1.01") exists { version =>
+        val valid = Seq("1.03", "1.02","1.01") exists { version =>
           val stream  = new URL(url).openStream
           val valid = validator.validate(stream, version, source.getAs[BSONString]("sourceType").map(_.value).get)
 
