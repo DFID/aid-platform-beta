@@ -207,6 +207,7 @@ end
     'iatiId'            => funded_project['funded'],
     'title'             => funded_project['title'],
     'description'       => funded_project['description'],
+    'currency'       	=> funded_project['currency'],
     'funds'             => funded_project['funds'],
     'totalBudget'       => funded_project['totalBudget'],    
     'totalProjectSpend' => funded_project['totalSpend'],
@@ -243,6 +244,7 @@ end
           "component"     => "$component",
           "date"          => "$date",
           "value"         => "$value",
+	  "currency"      => "$currency",
           "provider-org"  => "$provider-org",
           "provider-activity-id" => "$provider-activity-id"
         }

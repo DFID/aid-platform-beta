@@ -43,6 +43,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | RETURN n.`iati-identifier`?           as id,
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,
+        |        COALESCE(value.`currency`?, "") as currency,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
         |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
         |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
@@ -52,6 +53,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project          = row("id").asInstanceOf[String]
       val value            = row("value").asInstanceOf[Long]
+      val currency         = row("currency").asInstanceOf[String]
       val date             = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction      = row("type").asInstanceOf[String]
       val receiver         = row("receiver-org").asInstanceOf[String]
@@ -68,6 +70,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "provider-org"           -> BSONString(provider),
           "provider-activity-id"   -> BSONString(providerActivity),
           "value"                  -> BSONLong(value),
+          "currency"               -> BSONString(currency),
           "date"                   -> BSONDateTime(date.getMillis),
           "type"                   -> BSONString(transaction)
         )
@@ -97,6 +100,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        COALESCE(txn.description?, "") as description,
         |        COALESCE(component.title?, "") as title,
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
+        |        COALESCE(value.`currency`?, "") as currency,
         |        value.value                    as value,
         |        date.`iso-date`                as date,
         |        type.code                      as type
@@ -104,6 +108,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project     = row("project").asInstanceOf[String]
       val value       = row("value").asInstanceOf[Long]
+      val currency    = row("currency").asInstanceOf[String]
       val date        = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction = row("type").asInstanceOf[String]
       val component   = row("component").asInstanceOf[String]
@@ -119,6 +124,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "receiver-org"  -> BSONString(receiver),
           "title"         -> BSONString(title),
           "value"         -> BSONLong(value),
+          "currency"      -> BSONString(currency),
           "date"          -> BSONDateTime(date.getMillis),
           "type"          -> BSONString(transaction)
         )
@@ -219,26 +225,27 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     try{
       engine.execute("""
-         | START  n=node:entities(type="iati-activity")
-         | MATCH  n-[:`participating-org`]-o,
-         |        n-[:`reporting-org`]-ro,
-         |        n-[:transaction]-t-[:`transaction-type`]-tt,
-         |        n-[:description]-d,
-         |        t-[:value]-v,
-         |        n-[:`activity-status`]-status,
-         |        t-[:`provider-org`]-po
-         | WHERE  o.role  = "Funding"
-         | AND    o.ref!   = "GB-1"
-         | AND    tt.code = "IF"
-         | AND    HAS(po.`provider-activity-id`)
-         | RETURN n.`iati-identifier`?      as funded      ,
-         |        ro.`reporting-org`        as reporting   ,
-         |        n.title                   as title       ,
-         |        d.description             as description ,
-         |        po.`provider-activity-id` as funding     ,
-         |        SUM(v.value)              as funds       ,
-         |        status.code               as status
-       """.stripMargin).toSeq.foreach { row =>
+                       | START  n=node:entities(type="iati-activity")
+                       | MATCH  n-[:`participating-org`]-o,
+                       |        n-[:`reporting-org`]-ro,
+                       |        n-[:transaction]-t-[:`transaction-type`]-tt,
+                       |        n-[:description]-d,
+                       |        t-[:value]-v,
+                       |        n-[:`activity-status`]-status,
+                       |        t-[:`provider-org`]-po
+                       | WHERE  o.role  = "Funding"
+                       | AND    o.ref!   = "GB-1"
+                       | AND    tt.code = "IF"
+                       | AND    HAS(po.`provider-activity-id`)
+                       | RETURN n.`iati-identifier`?      as funded      ,
+                       |        ro.`reporting-org`        as reporting   ,
+                       |        n.title                   as title       ,
+                       |        d.description             as description ,
+                       |        po.`provider-activity-id` as funding     ,
+                       |        COALESCE(v.currency?, "")  as currency,
+                       |        SUM(v.value)              as funds       ,
+                       |        status.code               as status
+                     """.stripMargin).toSeq.foreach { row =>
 
         val funded      = row("funded").asInstanceOf[String]
         val reporting   = row("reporting").asInstanceOf[String]
@@ -246,6 +253,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         val description = row("description").asInstanceOf[String]
         val funding     = row("funding").asInstanceOf[String]
         val status      = row("status").asInstanceOf[Long]
+        val currency    = row("currency").asInstanceOf[String]
         val funds       = row("funds") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
@@ -321,6 +329,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             "organisation" -> BSONString(reporting),
             "description"  -> BSONString(description),
             "funds"        -> BSONLong(funds),
+            "currency"     -> BSONString(currency),
             "totalBudget"  -> BSONLong(totalBudget),
             "totalSpend"   -> BSONLong(totalSpend),
             "status"       -> BSONLong(status)
@@ -335,15 +344,18 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             |        b-[:`period-start`]-p
             | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN v.value        as value,
+                     COALESCE(v.`currency`?, "") as currency,
             |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
 
           val value = row("value").asInstanceOf[Long].toInt
           val date = row("date").asInstanceOf[String]
+          val currency = row("currency").asInstanceOf[String]
 
           db.collection("project-budgets").insert(
             BSONDocument(
               "id"    -> BSONString(funded),
+              "currency"  -> BSONString(currency),
               "value" -> BSONInteger(value),
               "date"  -> BSONString(date)
             )
@@ -358,6 +370,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN s.code                                                as code,
             |        s.sector?                                             as name,
+                     COALESCE(v.`currency`?, "")                           as currency,
             |        COALESCE(s.percentage?, 100)                          as percentage,
             |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
           """.stripMargin).foreach { row =>
@@ -367,6 +380,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case value: String => Some(value)
           }
           val code        = row("code").asInstanceOf[Long]
+          val currency    = row("currency").asInstanceOf[String]
           val total       = row("total")  match {
             case v: java.lang.Integer => v.toLong
             case v: java.lang.Long    => v.toLong
@@ -377,6 +391,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             BSONDocument(
               "projectIatiId" -> BSONString(funded),
               "sectorCode"    -> BSONLong(code),
+              "currency"      -> BSONString(currency),
               "sectorBudget"  -> BSONLong(total)
             ).append(
               Seq(
