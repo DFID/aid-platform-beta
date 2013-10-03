@@ -347,7 +347,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
           val value = row("value").asInstanceOf[Long].toInt
           val date = row("date").asInstanceOf[String]
-          val currency = row("currency").asInstanceOf[String]
+          //val currency = row("currency").asInstanceOf[String]
 
           db.collection("project-budgets").insert(
             BSONDocument(
