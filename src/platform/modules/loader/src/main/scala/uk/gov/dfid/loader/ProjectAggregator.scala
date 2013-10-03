@@ -42,8 +42,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | $whereClause
         | RETURN n.`iati-identifier`?           as id,
         |        COALESCE(txn.description?, "") as description,
-        |        value.value                    as value,
-        |        COALESCE(value.`currency`?, "") as currency,
+        |        value.value                    as value,        
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
         |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
         |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
@@ -53,7 +52,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project          = row("id").asInstanceOf[String]
       val value            = row("value").asInstanceOf[Long]
-      val currency         = row("currency").asInstanceOf[String]
+      //val currency         = row("currency").asInstanceOf[String] --  COALESCE(value.`currency`?, "") as currency,
       val date             = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction      = row("type").asInstanceOf[String]
       val receiver         = row("receiver-org").asInstanceOf[String]
@@ -70,7 +69,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "provider-org"           -> BSONString(provider),
           "provider-activity-id"   -> BSONString(providerActivity),
           "value"                  -> BSONLong(value),
-          "currency"               -> BSONString(currency),
+          //"currency"               -> BSONString(currency),
           "date"                   -> BSONDateTime(date.getMillis),
           "type"                   -> BSONString(transaction)
         )
@@ -99,8 +98,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        component.`iati-identifier`?   as component,
         |        COALESCE(txn.description?, "") as description,
         |        COALESCE(component.title?, "") as title,
-        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
-        |        COALESCE(value.`currency`?, "") as currency,
+        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,        
         |        value.value                    as value,
         |        date.`iso-date`                as date,
         |        type.code                      as type
@@ -108,7 +106,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project     = row("project").asInstanceOf[String]
       val value       = row("value").asInstanceOf[Long]
-      val currency    = row("currency").asInstanceOf[String]
+      //val currency    = row("currency").asInstanceOf[String] -- COALESCE(value.`currency`?, "") as currency,
       val date        = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction = row("type").asInstanceOf[String]
       val component   = row("component").asInstanceOf[String]
@@ -124,7 +122,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "receiver-org"  -> BSONString(receiver),
           "title"         -> BSONString(title),
           "value"         -> BSONLong(value),
-          "currency"      -> BSONString(currency),
+          //"currency"      -> BSONString(currency),
           "date"          -> BSONDateTime(date.getMillis),
           "type"          -> BSONString(transaction)
         )
@@ -343,8 +341,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | MATCH  v-[:value]-b-[:budget]-n,
             |        b-[:`period-start`]-p
             | WHERE  n.`iati-identifier`? = '$funded'
-            | RETURN v.value        as value,
-                     COALESCE(v.`currency`?, "") as currency,
+            | RETURN v.value        as value,                     
             |        p.`iso-date` as date
           """.stripMargin).foreach { row =>
 
@@ -355,7 +352,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           db.collection("project-budgets").insert(
             BSONDocument(
               "id"    -> BSONString(funded),
-              "currency"  -> BSONString(currency),
+              //"currency"  -> BSONString(currency), -- COALESCE(v.`currency`?, "") as currency,
               "value" -> BSONInteger(value),
               "date"  -> BSONString(date)
             )
@@ -369,8 +366,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | MATCH  s-[:sector]-n-[:`budget`]-b-[:`value`]-v
             | WHERE  n.`iati-identifier`? = '$funded'
             | RETURN s.code                                                as code,
-            |        s.sector?                                             as name,
-                     COALESCE(v.`currency`?, "")                           as currency,
+            |        s.sector?                                             as name,                     
             |        COALESCE(s.percentage?, 100)                          as percentage,
             |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
           """.stripMargin).foreach { row =>
@@ -380,7 +376,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case value: String => Some(value)
           }
           val code        = row("code").asInstanceOf[Long]
-          val currency    = row("currency").asInstanceOf[String]
+          //val currency    = row("currency").asInstanceOf[String] -- COALESCE(v.`currency`?, "")   as currency,
           val total       = row("total")  match {
             case v: java.lang.Integer => v.toLong
             case v: java.lang.Long    => v.toLong
@@ -391,7 +387,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             BSONDocument(
               "projectIatiId" -> BSONString(funded),
               "sectorCode"    -> BSONLong(code),
-              "currency"      -> BSONString(currency),
+              //"currency"      -> BSONString(currency),
               "sectorBudget"  -> BSONLong(total)
             ).append(
               Seq(
