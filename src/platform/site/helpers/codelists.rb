@@ -1,18 +1,5 @@
 module CodeLists
 
-  @@currency_type = {
-    "" => "",    
-    "GBP" => "",
-    "USD"  => "$",
-    "SLL"  => "SLL",
-    "ZAR"   => "ZAR",
-    "UGX"   => "UGX",
-    "NPR"   => "NPR",
-    "ZMK"   => "ZMK",
-    "INR"  => "INR",
-    "BDT"  => "BDT"
-  }
-
   @@location_type = {
     "ADM1"  => "first-order administrative division",
     "ADM2"  => "second-order administrative division",
@@ -277,10 +264,6 @@ module CodeLists
     99810 => 'Sectors not specified',
     99820 => 'Promotion of development awareness'
   }
-
-  def currency_type(code)
-    @@currency_type[code]
-  end
 
   def transaction_type(code)
     @@transaction_types[code]

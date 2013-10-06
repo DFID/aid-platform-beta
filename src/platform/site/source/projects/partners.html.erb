@@ -13,7 +13,7 @@ title: Development Tracker
             </div>
             <div class="eight columns">
                 <ul>
-                    <li><a href="/projects/<%=funding_project['iatiId']%>"><%=funding_project['title']%></a><%=funding_project['description']%><span><%= number_to_currency(project['funds'], :unit=>currency_type(project['currency']) || "£", :precision => 0) %></span></li>
+                    <li><a href="/projects/<%=funding_project['iatiId']%>"><%=funding_project['title']%></a><%=funding_project['description']%><span><%= number_to_currency(project['funds'], :unit=>currency_symbol(project['currency']) || "£", :precision => 0) %></span></li>
                 </ul> 
             </div>
         </div>
@@ -35,7 +35,7 @@ title: Development Tracker
               </div>
               <div class="eight columns">
                   <ul>
-                      <li><a href="/projects/<%=funded_project['funded']%>"><%=funded_project['title']%></a><%=funded_project['description']%><span><%= number_to_currency(funded_project['funds'], :unit=>currency_type(project['currency']) || "£", :precision => 0) %></span></li>
+                      <li><a href="/projects/<%=funded_project['funded']%>"><%=funded_project['title']%></a><%=funded_project['description']%><span><%= number_to_currency(funded_project['funds'], :unit=>currency_symbol(funded_project['currency']) || "£", :precision => 0) %></span></li>
                   </ul> 
               </div>
           </div>

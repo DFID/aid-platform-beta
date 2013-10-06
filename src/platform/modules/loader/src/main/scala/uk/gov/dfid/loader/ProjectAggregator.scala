@@ -51,8 +51,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project          = row("id").asInstanceOf[String]
-      val value            = row("value").asInstanceOf[Long]
-      //val currency         = row("currency").asInstanceOf[String] --  COALESCE(value.`currency`?, "") as currency,
+      val value            = row("value").asInstanceOf[Long]      
       val date             = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction      = row("type").asInstanceOf[String]
       val receiver         = row("receiver-org").asInstanceOf[String]
@@ -68,8 +67,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "receiver-org"           -> BSONString(receiver),
           "provider-org"           -> BSONString(provider),
           "provider-activity-id"   -> BSONString(providerActivity),
-          "value"                  -> BSONLong(value),
-          //"currency"               -> BSONString(currency),
+          "value"                  -> BSONLong(value),          
           "date"                   -> BSONDateTime(date.getMillis),
           "type"                   -> BSONString(transaction)
         )
@@ -105,8 +103,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project     = row("project").asInstanceOf[String]
-      val value       = row("value").asInstanceOf[Long]
-      //val currency    = row("currency").asInstanceOf[String] -- COALESCE(value.`currency`?, "") as currency,
+      val value       = row("value").asInstanceOf[Long]      
       val date        = DateTime.parse(row("date").asInstanceOf[String], format)
       val transaction = row("type").asInstanceOf[String]
       val component   = row("component").asInstanceOf[String]
@@ -121,8 +118,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "description"   -> BSONString(description),
           "receiver-org"  -> BSONString(receiver),
           "title"         -> BSONString(title),
-          "value"         -> BSONLong(value),
-          //"currency"      -> BSONString(currency),
+          "value"         -> BSONLong(value),          
           "date"          -> BSONDateTime(date.getMillis),
           "type"          -> BSONString(transaction)
         )
@@ -346,13 +342,11 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).foreach { row =>
 
           val value = row("value").asInstanceOf[Long].toInt
-          val date = row("date").asInstanceOf[String]
-          //val currency = row("currency").asInstanceOf[String]
+          val date = row("date").asInstanceOf[String]          
 
           db.collection("project-budgets").insert(
             BSONDocument(
-              "id"    -> BSONString(funded),
-              //"currency"  -> BSONString(currency), -- COALESCE(v.`currency`?, "") as currency,
+              "id"    -> BSONString(funded),              
               "value" -> BSONInteger(value),
               "date"  -> BSONString(date)
             )
@@ -375,8 +369,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case null          => None
             case value: String => Some(value)
           }
-          val code        = row("code").asInstanceOf[Long]
-          //val currency    = row("currency").asInstanceOf[String] -- COALESCE(v.`currency`?, "")   as currency,
+          val code        = row("code").asInstanceOf[Long]          
           val total       = row("total")  match {
             case v: java.lang.Integer => v.toLong
             case v: java.lang.Long    => v.toLong
@@ -386,8 +379,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           db.collection("project-sector-budgets").insert(
             BSONDocument(
               "projectIatiId" -> BSONString(funded),
-              "sectorCode"    -> BSONLong(code),
-              //"currency"      -> BSONString(currency),
+              "sectorCode"    -> BSONLong(code),              
               "sectorBudget"  -> BSONLong(total)
             ).append(
               Seq(
