@@ -13,11 +13,12 @@ module Lookups
   	case code
   	when "GBP", ""
   		nil
-	when "USD"
-		"$"
-	else
-		code
+	  when "USD"
+		  "$"
+	  else
+		  code
   	end
+    
   end	
 
 end
