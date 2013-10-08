@@ -236,7 +236,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                        |        n.title                   as title       ,
                        |        d.description             as description ,
                        |        po.`provider-activity-id` as funding     ,
-                       |        COALESCE(v.currency?, "")  as currency,
+                       |        COALESCE(v.currency?, "GBP")  as currency,
                        |        SUM(v.value)              as funds       ,
                        |        status.code               as status
                      """.stripMargin).toSeq.foreach { row =>
