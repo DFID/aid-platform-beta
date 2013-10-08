@@ -265,7 +265,6 @@ module CodeLists
     99820 => 'Promotion of development awareness'
   }
 
-
   def transaction_type(code)
     @@transaction_types[code]
   end
