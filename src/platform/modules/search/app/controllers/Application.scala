@@ -12,12 +12,10 @@ object Application extends Controller {
         Ok(views.html.search("", 0 , List.empty, List.empty))
       } else {
         val (projects, countries) = ElasticSearch.search(query).partition(_.contains("id"))
-        println(countries)
         if(countries.isEmpty) {
           Ok(views.html.search(query, projects.size , projects, countries))
         } else {
           val country = countries.maxBy(_("countryBudget").asInstanceOf[Int])
-          println(country)
           Ok(views.html.search(query, projects.size , projects, countries))
         }
       }
