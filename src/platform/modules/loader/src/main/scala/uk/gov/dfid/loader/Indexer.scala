@@ -148,7 +148,6 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
       stats.map {
         stat =>
           val code = stat.getAs[BSONString]("code").get.value
-          println("code " + code)
           db.collection("projects").find(
             BSONDocument("recipient" -> BSONString(code))
           ).headOption.map { maybeProject =>
