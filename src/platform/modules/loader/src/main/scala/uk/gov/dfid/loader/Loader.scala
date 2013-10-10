@@ -33,12 +33,14 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val projects   = new ProjectAggregator(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
-      val indexer    = new Indexer(mongodb, engine, sectors)
+      val indexer    = new Indexer(mongodb, engine, sectors, auditor)
+      val results    = new CountryResults(engine, mongodb, auditor)
 
       // drop current audtis table.  Transient data ftw
       auditor.drop
       auditor.info("Loading data")
 
+      results.loadCountryResults
       validateAndMap(sources, neo4j)
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
@@ -54,11 +56,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       projects.collectProjectLocations
       other.collectOtherOrganisationProjects
       other.collectTransactions
-
-      auditor.info("Indexing Data")
       indexer.index
-      auditor.success("Indexed Data")
-
+      
       auditor.success("Loading process completed")
     }
   }
