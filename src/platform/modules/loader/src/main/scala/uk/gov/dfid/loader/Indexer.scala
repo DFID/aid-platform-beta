@@ -83,7 +83,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         val currency = doc.getAs[BSONString]("currency").get.value
 
         val formattedBudget = {
-          if(currency == null || currency.isEmpty)
+          if(currency == null || currency.isEmpty || currency.trim().toLowerCase() == "gbp")
             NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
           else {
             val fmt = NumberFormat.getCurrencyInstance();
