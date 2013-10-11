@@ -5,7 +5,7 @@ import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import uk.gov.dfid.loader.util.{Sectors, Statuses}
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.{Currency, Locale}
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
@@ -80,7 +80,17 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         val funded = doc.getAs[BSONString]("funded").get.value
         val funding = doc.getAs[BSONString]("funding").get.value
         val budget = doc.getAs[BSONLong]("totalBudget").get.value
-        val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+        val currency = doc.getAs[BSONString]("currency").get.value
+
+        val formattedBudget = {
+          if(currency == null || currency.isEmpty)
+            NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+          else {
+            val fmt = NumberFormat.getCurrencyInstance();
+            fmt.setCurrency(Currency.getInstance(currency.trim()));
+            fmt.format(budget);
+          }
+        }
 
         // TODO: James Hughes 22 Apr 2012 - need to get a list of all countries
         // TODO: James Hughes 22 Apr 2012 - need to get a list of all regions
