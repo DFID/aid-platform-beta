@@ -143,19 +143,14 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
             engine.execute(
               s"""
             | START  n=node:entities(type="iati-activity")
-            | MATCH  n-[?:`iati-identifier`]-id,
-            |        n-[:`reporting-org`]-org,
-            |        s-[:`sector`]-n-[:`budget`]-b-[:`value`]-v
-            | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
+            | MATCH  s-[:`sector`]-n-[:`budget`]-b-[:`value`]-v
+            | WHERE  n.`iati-identifier`? = '$id'
             |        AND HAS(s.code) AND s.code <> ""
-            | RETURN COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) AS id,
-            |        s.code                                               as code,
+            | RETURN s.code                                                as code,
             |        s.sector?                                             as name,
             |        COALESCE(s.percentage?, 100)                          as percentage,
             |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
           """.stripMargin).foreach { row =>
-
-              val projectIatiId           = row("id").asInstanceOf[String]
 
               val sectorName = row("name") match {
                 case null          => None
@@ -171,7 +166,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
 
               db.collection("project-sector-budgets").insert(
                 BSONDocument(
-                  "projectIatiId" -> BSONString(projectIatiId),
+                  "projectIatiId" -> BSONString(id),
                   "sectorCode"  -> BSONLong(sectorCode.toLong),
                   "sectorBudget"  -> BSONLong(total)
                 ).append(
