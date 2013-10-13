@@ -139,6 +139,44 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
                 )
               )
             }
+
+            engine.execute(
+              s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  s-[:`sector`]-n-[:`budget`]-b-[:`value`]-v
+            | WHERE  n.`iati-identifier`? = '$id'
+            |        AND HAS(s.code) AND s.code <> ""
+            | RETURN s.code                                                as code,
+            |        s.sector?                                             as name,
+            |        COALESCE(s.percentage?, 100)                          as percentage,
+            |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          """.stripMargin).foreach { row =>
+
+              val sectorName = row("name") match {
+                case null          => None
+                case value: String => Some(value)
+              }
+              val sectorCode        = row("code").asInstanceOf[Long]
+
+              val total       = row("total")  match {
+                case v: java.lang.Integer => v.toLong
+                case v: java.lang.Long    => v.toLong
+                case v: java.lang.Double  => v.toLong
+              }
+
+              db.collection("project-sector-budgets").insert(
+                BSONDocument(
+                  "projectIatiId" -> BSONString(id),
+                  "sectorCode"  -> BSONLong(sectorCode.toLong),
+                  "sectorBudget"  -> BSONLong(total)
+                ).append(
+                  Seq(
+                    sectorName.map("sectorName" -> BSONString(_))
+                  ).flatten:_*
+                )
+              )
+            }
+
           }catch{
             case e: Throwable => println(e.getMessage); e.printStackTrace()
           }
