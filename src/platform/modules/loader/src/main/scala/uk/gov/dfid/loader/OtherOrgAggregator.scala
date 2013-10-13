@@ -139,6 +139,49 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
                 )
               )
             }
+
+            engine.execute(
+              s"""
+            | START  n=node:entities(type="iati-activity")
+            | MATCH  n-[?:`iati-identifier`]-id,
+            |        n-[:`reporting-org`]-org,
+            |        s-[:`sector`]-n-[:`budget`]-b-[:`value`]-v
+            | WHERE  HAS(org.ref) AND org.ref IN ${OtherOrganisations.Supported.mkString("['","','","']")}
+            |        AND HAS(s.code) AND s.code <> ""
+            | RETURN COALESCE(n.`iati-identifier`?, id.`iati-identifier`?) AS id,
+            |        s.code                                               as code,
+            |        s.sector?                                             as name,
+            |        COALESCE(s.percentage?, 100)                          as percentage,
+            |        (COALESCE(s.percentage?, 100) / 100.0 * sum(v.value)) as total
+          """.stripMargin).foreach { row =>
+
+              val projectIatiId           = row("id").asInstanceOf[String]
+
+              val sectorName = row("name") match {
+                case null          => None
+                case value: String => Some(value)
+              }
+              val sectorCode        = row("code").asInstanceOf[Long]
+
+              val total       = row("total")  match {
+                case v: java.lang.Integer => v.toLong
+                case v: java.lang.Long    => v.toLong
+                case v: java.lang.Double  => v.toLong
+              }
+
+              db.collection("project-sector-budgets").insert(
+                BSONDocument(
+                  "projectIatiId" -> BSONString(projectIatiId),
+                  "sectorCode"  -> BSONLong(sectorCode.toLong),
+                  "sectorBudget"  -> BSONLong(total)
+                ).append(
+                  Seq(
+                    sectorName.map("sectorName" -> BSONString(_))
+                  ).flatten:_*
+                )
+              )
+            }
+
           }catch{
             case e: Throwable => println(e.getMessage); e.printStackTrace()
           }

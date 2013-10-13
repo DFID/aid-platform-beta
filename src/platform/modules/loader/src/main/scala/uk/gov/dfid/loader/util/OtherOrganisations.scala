@@ -6,7 +6,8 @@ package uk.gov.dfid.loader.util
 object OtherOrganisations {
 
   val Supported = Seq(
-    "GB-4",                   // DECC
+    "GB-4",                   //DECC
+    "DECC",                   // DECC
     "GB-2",                   // CDC	CDC Capital Partners PLC
     "GB-3",                   // FCO	Foreign & Commonwealth Office
     "GB-4",                   // DECC	Department of Energy and Climate Change
