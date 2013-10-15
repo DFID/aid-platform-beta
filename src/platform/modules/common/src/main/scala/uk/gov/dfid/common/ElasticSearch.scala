@@ -20,7 +20,6 @@ object ElasticSearch {
     val client = node.client()
     val query = QueryBuilders.queryString(search).defaultOperator(QueryStringQueryBuilder.Operator.AND)
     val response = client.prepareSearch().setQuery(query).setSize(999).execute.actionGet
-
     response.getHits.getHits.map(_.getSource.toMap).toList
   }
 
