@@ -1,4 +1,4 @@
-@(query:String, numberOfEesultsFoundByES:Int, results:List[Map[String,AnyRef]])
+@(query:String, numberOfEesultsFoundByES:Int, results:List[Map[String,AnyRef]], countries:List[Map[String,AnyRef]])
 
 <!DOCTYPE html>
 
@@ -137,43 +137,41 @@
                     </p>
                     <span name="sugestionSpan" style="display:none;"></span>
 
-                    @results.map { project =>
+                    @countries.map { country =>
+                        <div class="suggested-country" style="background-color: #F0F0F0;font-size: 1.1em;margin: 20px 0;padding: 15px;">
+                            <p>Did you mean the <em>country <a href='/countries/@country.get("countryCode")'>@country.get("countryName")</a></em>?</p>
+                            <p></p>
+                            <h3><em>@country.get("countryName")</em></h3>
+                            Budget: <em>£@country.get("countryBudget")</em>
+                            <p></p>
+                        </div>
+                        }   
 
-                        @if(project.get("status").isEmpty){
-                            <script>
-                                $(function() {
-                                    $('span[name=numberofResults]').attr("value",$('span[name=numberofResults]').attr("value")-1)
-                                    $('span[name=numberofResults]').html($('span[name=numberofResults]').attr("value"));
-                                    $('span[name=sugestionSpan]').show();
-                                    var budget = '@project.get("countryBudget")'.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
-                                    $('span[name=sugestionSpan]').html("<div class='suggested-country' style='background-color: #F0F0F0;font-size: 1.1em;margin: 20px 0;padding: 15px;'><p>Did you mean the <em>country <a href='/countries/@project.get("countryCode")'>@project.get("countryName")</a></em>?</p><p></p><h3><em>@project.get("countryName")</em></h3>Budget: <em>£"+budget+"</em><p></p></div>");
-                                });
-                            </script>
-                        } else {
-                            <div class="search-result">
-                                <input type="hidden" name="status" value='@project.get("status")' />
-                                <input type="hidden" name="organizations" value='@project.get("organizations")' />
-                                <input type="hidden" name="countries" value='@project.get("countries")' />
-                                <input type="hidden" name="sectors" value='@project.get("sectors")' />
-                                <input type="hidden" name="regions" value='@project.get("regions")'/>
-                                <input type="hidden" name="budget" value='@project.get("budget")' class="sort-budget"/>
-                                <input type="hidden" name="title" value='@project.get("title")' class="sort-title"/>
-                                <input type="hidden" name="dateStart" value='@project.get("start-date")'/>
-                                <input type="hidden" name="dateEnd" value='@project.get("end-date")'/>
+                        @results.map { project =>
+                        <div class="search-result">
+                            <input type="hidden" name="status" value='@project.get("status")' />
+                            <input type="hidden" name="organizations" value='@project.get("organizations")' />
+                            <input type="hidden" name="countries" value='@project.get("countries")' />
+                            <input type="hidden" name="sectors" value='@project.get("sectors")' />
+                            <input type="hidden" name="regions" value='@project.get("regions")'/>
+                            <input type="hidden" name="budget" value='@project.get("budget")' class="sort-budget"/>
+                            <input type="hidden" name="title" value='@project.get("title")' class="sort-title"/>
+                            <input type="hidden" name="dateStart" value='@project.get("start-date")'/>
+                            <input type="hidden" name="dateEnd" value='@project.get("end-date")'/>
 
-                                <h3>
-                                    <a href='/projects/@project.get("id")'>
-                                        @project.get("title") <small>[@project.get("id")]</small>
-                                    </a>
-                                </h3>
-                                <span class="budget">Budget: <em> @project.get("formattedBudget")</em></span>
-                                <span>Status: <em>@project.get("status")</em></span>
-                                <span>Reporting Org: <em>@project.get("reporting")</em></span>
-                                <p class="description">@project.get("description")</p>
-                            </div>
+                            <h3>
+                                <a href='/projects/@project.get("id")'>
+                                    @project.get("title") <small>[@project.get("id")]</small>
+                                </a>
+                            </h3>
+                            <span class="budget">Budget: <em> @project.get("formattedBudget")</em></span>
+                            <span>Status: <em>@project.get("status")</em></span>
+                            <span>Reporting Org: <em>@project.get("reporting")</em></span>
+                            <p class="description">@project.get("description")</p>
+                        </div>
                         }
                     }
-                }
+                </div>
             </div>
 
             <div class="three columns pull-nine">
