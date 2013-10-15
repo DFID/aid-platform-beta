@@ -31,7 +31,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
       engine.execute(
         s"""
           | START  activity = node:entities(type="iati-activity")
-          | MATCH  status-[:`activity-status`]-activity-[:`reporting-org`]-org,
+          | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
           | 	     activity-[?:title]-title,
           |        activity-[?:description]-description,
           |        activity-[?:`iati-identifier`]-id

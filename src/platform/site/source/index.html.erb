@@ -82,19 +82,22 @@ layout: landing
     </div>
 
     <div class="four columns" id="top-5-sectors">
-        <h4>Top 5 things we do</h4>
-        <ol>
-          <% what_we_do.each do |sector| %>
-              <li>
-                    <a href="/sector/<%=sector[:code]%>"><%=sector[:name]%></a>
-                    <em>&pound;<%=format_round_m sector[:budget] || 0.0 %></em>
-                </li>
-          <% end %>
-        </ol>
+        <%if !what_we_do.nil?  %>
+            <h4>Top 5 things we do</h4>
+            <ol>
+                <% what_we_do.each do |sector| %>
+                    <li>
+                        <a href="/sector/<%=sector[:code]%>"><%=sector[:name]%></a>
+                        <em>&pound;<%=format_round_m sector[:budget] || 0.0 %></em>
+                    </li>
+                <% end %>
+            </ol>
+        <%end%>
         <p>Project budgets for each sector [<%= financial_year_formatter DateTime.now %>]</p>
     </div>
 
     <div class="four columns" id="top-5-achiee">
+        <%if !what_we_achieve.nil?  %>
         <h4>Top 5 things we achieve</h4>
         <ol>
           <% what_we_achieve.each do |entry| %>
@@ -104,6 +107,7 @@ layout: landing
           </li>
           <% end %>
         </ol>
+        <%end%>
         <p>Results from <a href="https://www.gov.uk/government/publications/dfid-annual-report-and-accounts-2012-13">DFID Annual Report 2012-13</a></p>
     </div>
 
