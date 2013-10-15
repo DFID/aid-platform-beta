@@ -213,7 +213,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "regions"         -> component("regions").mkString("#"),
           "sectors"         -> component("sectors").mkString("#"),
           "reporting"       -> "Department for International Development",
-          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actuapl"), doc.getAs[BSONDateTime]("end-planned")),
+          "end-date"        -> chooseBetterDate( doc.getAs[BSONDateTime]("end-actual"), doc.getAs[BSONDateTime]("end-planned")),
           "start-date"      -> chooseBetterDate(doc.getAs[BSONDateTime]("start-actual"),doc.getAs[BSONDateTime]("start-planned"))
         )
 
