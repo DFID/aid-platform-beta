@@ -145,28 +145,30 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     }
   }
 
-  private def indexCountrySuggestions = {
+ private def indexCountrySuggestions = {
     for (
       countries <- db.collection("countries").find(BSONDocument()).toList;
-      stats <- db.collection("country-stats").find(BSONDocument(
-        "totalBudget" -> BSONDocument(
-          "$gt" -> BSONLong(0L)
-        )
-      )).toList
+      stats     <- db.collection("country-stats").find(BSONDocument()).toList
     ) yield {
       stats.map {
         stat =>
           val code = stat.getAs[BSONString]("code").get.value
-          val name = countries.find(_.getAs[BSONString]("code").get.value == code).head.getAs[BSONString]("name").get.value
-          val bean = Map(
-            // this is called sugestion - i.e. badly named for some temporary backwards compatibility
-            "sugestion"     -> "CountriesSugestion",
-            "countryName"   -> name,
-            "countryCode"   -> code,
-            "countryBudget" -> stat.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
-          )
+          db.collection("projects").find(
+            BSONDocument("recipient" -> BSONString(code))
+          ).headOption.map { maybeProject =>
+            maybeProject.map { _ =>
+              val name = countries.find(_.getAs[BSONString]("code").get.value == code).head.getAs[BSONString]("name").get.value
+              val bean = Map(
+                // this is called sugestion - i.e. badly named for some temporary backwards compatibility
+                "sugestion"     -> "CountriesSugestion",
+                "countryName"   -> name,
+                "countryCode"   -> code,
+                "countryBudget" -> stat.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+              )
 
-          ElasticSearch.index(bean, "aid")
+              ElasticSearch.index(bean, "aid")
+            }
+          }
       }
     }
   }

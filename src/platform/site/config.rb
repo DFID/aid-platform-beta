@@ -41,7 +41,6 @@ ignore "/rss/index.html"
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
-
   projects.each { |p| p['documents'] = @cms_db['documents'].find( {'project' => p['iatiId'] }).to_a.map { |document| document } }
 
   locations = @cms_db['locations'].find( {
@@ -104,10 +103,10 @@ CodeLists.all_global_recipients.map { |code, name|
     }
   }]).first || { "total" => 0 })['total']
 
-  if budget > 0 then
+  #if budget > 0 then
     projects = @cms_db['projects'].find({ 'projectType' => 'global', 'recipient' => code }).to_a
     proxy "/global/#{code}/projects/index.html", "/projectList.html", :locals => {:projects => projects, :name => name}
-  end
+  #end
 }
 
 
@@ -207,6 +206,7 @@ end
     'iatiId'            => funded_project['funded'],
     'title'             => funded_project['title'],
     'description'       => funded_project['description'],
+    'currency'       	  => funded_project['currency'],
     'funds'             => funded_project['funds'],
     'totalBudget'       => funded_project['totalBudget'],    
     'totalProjectSpend' => funded_project['totalSpend'],
