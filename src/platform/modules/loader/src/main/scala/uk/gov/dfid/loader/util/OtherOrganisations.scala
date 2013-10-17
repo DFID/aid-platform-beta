@@ -13,6 +13,7 @@ object OtherOrganisations {
     "GB-5",                   // ECGD	Export Credit Guarantee Department
     "GB-99",                  // MISC	Miscellaneous
     "GB-21",                  // Scottish Gov
-    "GB-GOVUK-uk_Home Office" // Home Office
+    "GB-GOVUK-uk_Home Office", // Home Office
+    "GB-9"                     //Department for Work and Pensions
   )
 }

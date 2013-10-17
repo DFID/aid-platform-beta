@@ -5,7 +5,7 @@ import reactivemongo.bson._
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import uk.gov.dfid.loader.util.{Sectors, Statuses}
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.{Currency, Locale}
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONInteger
 import reactivemongo.api.DefaultDB
@@ -80,7 +80,17 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         val funded = doc.getAs[BSONString]("funded").get.value
         val funding = doc.getAs[BSONString]("funding").get.value
         val budget = doc.getAs[BSONLong]("totalBudget").get.value
-        val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+        val currency = doc.getAs[BSONString]("currency").get.value
+
+        val formattedBudget = {
+          if(currency == null || currency.isEmpty || currency.trim().toLowerCase() == "gbp")
+            NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
+          else {
+            val fmt = NumberFormat.getCurrencyInstance();
+            fmt.setCurrency(Currency.getInstance(currency.trim()));
+            fmt.format(budget);
+          }
+        }
 
         // TODO: James Hughes 22 Apr 2012 - need to get a list of all countries
         // TODO: James Hughes 22 Apr 2012 - need to get a list of all regions
@@ -145,28 +155,30 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     }
   }
 
-  private def indexCountrySuggestions = {
+ private def indexCountrySuggestions = {
     for (
       countries <- db.collection("countries").find(BSONDocument()).toList;
-      stats <- db.collection("country-stats").find(BSONDocument(
-        "totalBudget" -> BSONDocument(
-          "$gt" -> BSONLong(0L)
-        )
-      )).toList
+      stats     <- db.collection("country-stats").find(BSONDocument()).toList
     ) yield {
       stats.map {
         stat =>
           val code = stat.getAs[BSONString]("code").get.value
-          val name = countries.find(_.getAs[BSONString]("code").get.value == code).head.getAs[BSONString]("name").get.value
-          val bean = Map(
-            // this is called sugestion - i.e. badly named for some temporary backwards compatibility
-            "sugestion"     -> "CountriesSugestion",
-            "countryName"   -> name,
-            "countryCode"   -> code,
-            "countryBudget" -> stat.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
-          )
+          db.collection("projects").find(
+            BSONDocument("recipient" -> BSONString(code))
+          ).headOption.map { maybeProject =>
+            maybeProject.map { _ =>
+              val name = countries.find(_.getAs[BSONString]("code").get.value == code).head.getAs[BSONString]("name").get.value
+              val bean = Map(
+                // this is called sugestion - i.e. badly named for some temporary backwards compatibility
+                "sugestion"     -> "CountriesSugestion",
+                "countryName"   -> name,
+                "countryCode"   -> code,
+                "countryBudget" -> stat.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+              )
 
-          ElasticSearch.index(bean, "aid")
+              ElasticSearch.index(bean, "aid")
+            }
+          }
       }
     }
   }
