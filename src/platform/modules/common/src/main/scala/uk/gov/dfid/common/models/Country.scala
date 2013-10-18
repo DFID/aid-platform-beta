@@ -10,7 +10,10 @@ case class Country(
   description: Option[String],
   population: Option[String],
   lifeExpectancy: Option[String],
-  incomeLevel: Option[String]
+  incomeLevel: Option[String],
+  belowPovertyLine: Option[String],
+  fertilityRate: Option[String],
+  gdpGrowthRate: Option[String]
 )
 
 object Country {
@@ -45,9 +48,9 @@ object Country {
         country.population.map("population" -> BSONString(_)),
         country.lifeExpectancy.map("lifeExpectancy" -> BSONString(_)),
         country.incomeLevel.map("incomeLevel" -> BSONString(_)),
-        country.incomeLevel.map("belowPovertyLine" -> BSONString(_)),
-        country.incomeLevel.map("fertilityRate" -> BSONString(_)),
-        country.incomeLevel.map("gdpGrowthRate" -> BSONString(_))
+        country.belowPovertyLine.map("belowPovertyLine" -> BSONString(_)),
+        country.fertilityRate.map("fertilityRate" -> BSONString(_)),
+        country.gdpGrowthRate.map("gdpGrowthRate" -> BSONString(_))
       ).flatten: _*)
     }
   }

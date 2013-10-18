@@ -71,6 +71,24 @@ title: Development Tracker
                     <span><strong><%=h country['incomeLevel']%></strong></span>
                 </li>   
             <% end %>
+            <% if country['belowPovertyLine'] then %>
+                <li class="fact-item">
+                    Percentage below Poverty Line:
+                    <span><strong><%= country['belowPovertyLine'].to_f.round(0)%></strong></span>
+                </li>
+            <% end %>
+             <% if country['fertilityRate'] then %>
+                <li class="fact-item">
+                    Fertility Rate:
+                    <span><strong><%= country['fertilityRate'].to_f.round(0)%></strong></span>
+                </li>
+            <% end %>
+             <% if country['gdpGrowthRate'] then %>
+                <li class="fact-item">
+                    GDP Growth Rate:
+                    <span><strong><%= country['gdpGrowthRate'].to_f.round(0)%></strong></span>
+                </li>
+            <% end %>
         </ul>
     </div>
 

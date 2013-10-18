@@ -22,7 +22,7 @@ class Countries @Inject()(val api: Api[Country]) extends Controller with Secured
       "population" -> optional(text),
       "lifeExpectancy" -> optional(text),
       "incomeLevel" -> optional(text),
-      "belowPovertyLine" -> option(text),
+      "belowPovertyLine" -> optional(text),
       "fertilityRate" -> optional(text),
       "gdpGrowthRate" -> optional(text)
     )(Country.apply)
