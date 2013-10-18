@@ -63,14 +63,14 @@ title: Development Tracker
                 <li class="fact-item">
                     Life expectancy at birth (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
                     <span><strong><%= country['lifeExpectancy'].to_f.round(0)%></strong></span>
-                </li>
-            <% end %>
+                 </li>
+             <% end %>
             <% if country['incomeLevel'] then %>
                 <li class="fact-item">
                     Income level (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
                     <span><strong><%=h country['incomeLevel']%></strong></span>
-                </li>   
-            <% end %>
+               </li> 
+            <% end %>   
         </ul>
     </div>
 
