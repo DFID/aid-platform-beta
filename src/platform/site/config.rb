@@ -215,7 +215,8 @@ end
     'start-actual'      => funded_project['start-actual'],
     'start-planned'     => funded_project['start-planned'],
     'status'            => funded_project['status'],
-    'organisation'      => funded_project['organisation']
+    'organisation'      => funded_project['organisation'],
+    'recipient'         => funded_project['recipient']
   }
 
   # get the other funded projects
