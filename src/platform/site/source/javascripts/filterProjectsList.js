@@ -143,7 +143,7 @@ function dateFilteringSetUp(){
       step : (Math.round(max / 100) * 100)/100,
       values: [min,max],
       slide: function( event, ui ) {
-        $( "#amount" ).html( ("£"+ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ ("£"+ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+        $( "#amount" ).html( (ui.values[0]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,")+" - "+ (ui.values[1]).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
       },
       change: function( event, ui ) {
 
@@ -164,7 +164,7 @@ function dateFilteringSetUp(){
       }
     });
 
-    $("#amount").html( ("£" + min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+("£"+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
+    $("#amount").html( ("" + min).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,") +" - "+(""+max).replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"));
   }
 
   function filter(divsToCheck) {
