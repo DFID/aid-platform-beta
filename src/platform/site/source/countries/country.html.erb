@@ -59,24 +59,18 @@ title: Development Tracker
                     <span><strong><%= format_round_million country['population'].to_f%></strong></span>
                 </li>
             <% end %>
-            <% if country['belowPovertyLine'] then %>
+            <% if country['lifeExpectancy'] then %>
                 <li class="fact-item">
-                    % below poverty line:
-                    <span><strong><%= country['belowPovertyLine'].to_f.round(0)%></strong></span>
-                </li>
-            <% end %>
-             <% if country['fertilityRate'] then %>
+                    Life expectancy at birth (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
+                    <span><strong><%= country['lifeExpectancy'].to_f.round(0)%></strong></span>
+                 </li>
+             <% end %>
+            <% if country['incomeLevel'] then %>
                 <li class="fact-item">
-                    Fertility rate:
-                    <span><strong><%= country['fertilityRate'].to_f.round(0)%></strong></span>
-                </li>
-            <% end %>
-             <% if country['gdpGrowthRate'] then %>
-                <li class="fact-item">
-                    GDP growth rate:
-                    <span><strong><%= country['gdpGrowthRate'].to_f.round(0)%></strong></span>
-                </li>
-            <% end %>
+                    Income level (source: <a href="http://data.worldbank.org/country" rel="external">World Bank</a>):
+                    <span><strong><%=h country['incomeLevel']%></strong></span>
+               </li> 
+            <% end %>   
         </ul>
     </div>
 
