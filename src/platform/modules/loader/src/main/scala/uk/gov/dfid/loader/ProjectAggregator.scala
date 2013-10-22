@@ -411,7 +411,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     val noOfProjects = db.collection("funded-projects").count
 
-    if (noOfProjects>0){
       try{
         auditor.info("Number of funded projects: " + noOfProjects)
         engine.execute("""
@@ -426,7 +425,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                          |        n-[?:`recipient-country`]-country,
                          |        n-[?:`recipient-region`]-region
                          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
-                         | AND    HAS(po.`provider-activity-id`)
+                         | AND    funded-projects.count>0
                          | RETURN n.`iati-identifier`?      as funded      ,
                          |        ro.`reporting-org`        as reporting   ,
                          |        n.title                   as title       ,
@@ -589,7 +588,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             )
           }
         recursiveFundedProjects();
-    }
     }catch{
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
