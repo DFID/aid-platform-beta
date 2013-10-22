@@ -316,6 +316,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           dateType -> BSONDateTime(date.getMillis)
         }
 
+
+
         db.collection("funded-projects").insert(
           BSONDocument(
             "funded"       -> BSONString(funded),
@@ -393,12 +395,74 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             )
           )
         }
-      }
+      recursiveFundedProjects();
+
     }catch{
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
     auditor.success("Collected Partner Projects")
+
+
+  }
+
+  def recursiveFundedProjects = {
+    auditor.info("Searching for projects linked to funded-projects")
+
+    try{
+      engine.execute("""
+                       | START  n=node:entities(type="iati-activity")
+                       | MATCH  n-[:`participating-org`]-o,
+                       |        n-[:`reporting-org`]-ro,
+                       |        n-[:transaction]-t-[:`transaction-type`]-tt,
+                       |        n-[:description]-d,
+                       |        t-[:value]-v,
+                       |        n-[:`activity-status`]-status,
+                       |        t-[:`provider-org`]-po,
+                       |        n-[?:`recipient-country`]-country,
+                       |        n-[?:`recipient-region`]-region
+                       | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
+                       | AND    HAS(po.`provider-activity-id`)
+                       | RETURN n.`iati-identifier`?      as funded      ,
+                       |        ro.`reporting-org`        as reporting   ,
+                       |        n.title                   as title       ,
+                       |        d.description             as description ,
+                       |        po.`provider-activity-id` as funding     ,
+                       |        COALESCE(v.currency?, "GBP")  as currency,
+                       |        SUM(v.value)              as funds       ,
+                       |        status.code               as status,
+                       |        COALESCE(country.code?,region.code?,"")   as recipient
+                     """.stripMargin).toSeq.foreach { row =>
+
+        val funded      = row("funded").asInstanceOf[String]
+        val reporting   = row("reporting").asInstanceOf[String]
+        val title       = row("title").asInstanceOf[String]
+        val description = row("description").asInstanceOf[String]
+        val funding     = row("funding").asInstanceOf[String]
+        val status      = row("status").asInstanceOf[Long]
+        val currency    = row("currency").asInstanceOf[String]
+        val funds       = row("funds") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+        }
+
+        db.collection("funded-projects").insert(
+          BSONDocument(
+            "funded"       -> BSONString(funded),
+            "funding"      -> BSONString(project),
+            "title"        -> BSONString(title),
+            "reporting"    -> BSONString(reporting),
+            "organisation" -> BSONString(reporting),
+            "description"  -> BSONString(description),
+            "funds"        -> BSONLong(funds),
+            "currency"     -> BSONString(currency),
+            "totalBudget"  -> BSONLong(totalBudget),
+            "totalSpend"   -> BSONLong(totalSpend),
+            "status"       -> BSONLong(status),
+            "recipient"    -> BSONString(recipient)
+          ).append(dates: _*)
+        )
+
   }
 
   def collectProjectLocations = {
