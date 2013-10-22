@@ -409,6 +409,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
   def recursiveFundedProjects = {
     auditor.info("Searching for projects linked to funded-projects")
 
+    if funded-projects.size > 0
     try{
       engine.execute("""
                        | START  n=node:entities(type="iati-activity")
