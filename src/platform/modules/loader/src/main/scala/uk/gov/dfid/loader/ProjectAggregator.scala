@@ -226,7 +226,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                        |        n-[:description]-d,
                        |        t-[:value]-v,
                        |        n-[:`activity-status`]-status,
-                       |        t-[:`provider-org`]-po
+                       |        t-[:`provider-org`]-po,
+                       |        n-[?:`recipient-country`]-country,
+                       |        n-[?:`recipient-region`]-region
                        | WHERE  o.role  = "Funding"
                        | AND    o.ref!   = "GB-1"
                        | AND    tt.code = "IF"
@@ -238,7 +240,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                        |        po.`provider-activity-id` as funding     ,
                        |        COALESCE(v.currency?, "GBP")  as currency,
                        |        SUM(v.value)              as funds       ,
-                       |        status.code               as status
+                       |        status.code               as status,
+                       |        COALESCE(country.code?,region.code?,"")   as recipient
                      """.stripMargin).toSeq.foreach { row =>
 
         val funded      = row("funded").asInstanceOf[String]
@@ -252,6 +255,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
         }
+        val recipient   = row("recipient").asInstanceOf[String] 
 
         println(s"$funding, $funded")
 
@@ -326,7 +330,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             "currency"     -> BSONString(currency),
             "totalBudget"  -> BSONLong(totalBudget),
             "totalSpend"   -> BSONLong(totalSpend),
-            "status"       -> BSONLong(status)
+            "status"       -> BSONLong(status),
+            "recipient"    -> BSONString(recipient)
           ).append(dates: _*)
         )
 
