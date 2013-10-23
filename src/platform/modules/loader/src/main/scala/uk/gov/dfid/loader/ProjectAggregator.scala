@@ -404,7 +404,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
   }
 
   def recursiveFundedProjects(results:Val) =
-    auditor.info("Searching for projects linked to funded-projects")
+    auditor.info("Searching for projects linked to fudnded-projects")
 
 
     val results = db.collection("funded-projects").find(
