@@ -316,8 +316,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           dateType -> BSONDateTime(date.getMillis)
         }
 
-
-
         db.collection("funded-projects").insert(
           BSONDocument(
             "funded"       -> BSONString(funded),
@@ -394,25 +392,27 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
               ).flatten:_*
             )
           )
+          recursiveFundedProjects(funded-projects)
         }
-      recursiveFundedProjects();
-
-    }catch{
+      }
+    }
+    catch{
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
     auditor.success("Collected Partner Projects")
-
-
   }
 
-  def recursiveFundedProjects = {
+  def recursiveFundedProjects(results:Val) =
     auditor.info("Searching for projects linked to funded-projects")
 
-    val noOfProjects = db.collection("funded-projects").count
+
+    val results = db.collection("funded-projects").find(
+      BSONDocument(),
+      BSONDocument("funded" -> BSONInteger(1))
+    ).toList
 
       try{
-        auditor.info("Number of funded projects: " + noOfProjects)
         engine.execute("""
                          | START  n=node:entities(type="iati-activity")
                          | MATCH  n-[:`participating-org`]-o,
@@ -425,7 +425,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                          |        n-[?:`recipient-country`]-country,
                          |        n-[?:`recipient-region`]-region
                          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
-                         | AND    funded-projects.count>0
+                         | AND    results.count()>0
                          | RETURN n.`iati-identifier`?      as funded      ,
                          |        ro.`reporting-org`        as reporting   ,
                          |        n.title                   as title       ,
@@ -581,16 +581,25 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                 "sectorCode"    -> BSONLong(code),              
                 "sectorBudget"  -> BSONLong(total)
               ).append(
-                Seq(
-                  name.map("sectorName" -> BSONString(_))
-                ).flatten:_*
-              )
+              Seq(
+                name.map("sectorName" -> BSONString(_))
+              ).flatten:_*
             )
-          }
-        recursiveFundedProjects();
-    }catch{
+          )
+
+          val results = db.collection("funded-projects").find(
+      BSONDocument(),
+      BSONDocument("funded" -> BSONInteger(1))
+    ).toList
+          recursiveFundedProjects(results)
+        }
+      }
+    }
+    catch{
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
+
+    auditor.success("Searched for projects linked to funded-projects")
   }
 
   def collectProjectLocations = {
