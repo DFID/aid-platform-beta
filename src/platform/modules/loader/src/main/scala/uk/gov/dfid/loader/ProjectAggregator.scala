@@ -392,7 +392,21 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
               ).flatten:_*
             )
           )
-          recursiveFundedProjects(funded-projects)
+
+
+          engine.execute(
+        s"""
+          | START  activity = node:entities(type="iati-activity")
+          | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
+          |        activity-[?:title]-title,
+          |        activity-[?:description]-description,
+          |        activity-[?:`iati-identifier`]-id
+          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
+          | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
+        """.stripMargin).foreach { row =>
+        val fPResults           = row("id").asInstanceOf[String]
+
+        recursiveFundedProjects(fPResults)
         }
       }
     }
@@ -403,14 +417,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.success("Collected Partner Projects")
   }
 
-  def recursiveFundedProjects(results:Val) =
-    auditor.info("Searching for projects linked to fudnded-projects")
-
-
-    val results = db.collection("funded-projects").find(
-      BSONDocument(),
-      BSONDocument("funded" -> BSONInteger(1))
-    ).toList
+  def recursiveFundedProjects(results: val) = {
+    auditor.info("Searching for projects linked to funded-projects")
 
       try{
         engine.execute("""
@@ -424,6 +432,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                          |        t-[:`provider-org`]-po,
                          |        n-[?:`recipient-country`]-country,
                          |        n-[?:`recipient-region`]-region
+                         | WHERE  po.provider-activity-id in results
                          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
                          | AND    results.count()>0
                          | RETURN n.`iati-identifier`?      as funded      ,
@@ -587,20 +596,30 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             )
           )
 
-          val results = db.collection("funded-projects").find(
-      BSONDocument(),
-      BSONDocument("funded" -> BSONInteger(1))
-    ).toList
+          engine.execute(
+        s"""
+          | START  activity = node:entities(type="iati-activity")
+          | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
+          |        activity-[?:title]-title,
+          |        activity-[?:description]-description,
+          |        activity-[?:`iati-identifier`]-id
+          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
+          | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
+        """.stripMargin).foreach { row =>
+        val results           = row("id").asInstanceOf[String]
+          
           recursiveFundedProjects(results)
         }
       }
     }
-    catch{
+    catch
+      {
       case e: Throwable => println(e.getMessage); e.printStackTrace()
-    }
+      }
 
     auditor.success("Searched for projects linked to funded-projects")
   }
+
 
   def collectProjectLocations = {
 
