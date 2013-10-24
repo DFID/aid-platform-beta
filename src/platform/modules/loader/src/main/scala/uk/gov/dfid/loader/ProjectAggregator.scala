@@ -404,9 +404,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
           | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
         """.stripMargin).foreach { row =>
-        val fPResults           = row("id").asInstanceOf[String]
+        val results           = row("id").asInstanceOf[String]}
 
-        recursiveFundedProjects(fPResults)
+        recursiveFundedProjects(results)
         }
       }
     }
@@ -417,7 +417,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.success("Collected Partner Projects")
   }
 
-  def recursiveFundedProjects(results: val) = {
+  def recursiveFundedProjects(results:String) = {
     auditor.info("Searching for projects linked to funded-projects")
 
       try{
@@ -606,7 +606,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
           | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
         """.stripMargin).foreach { row =>
-        val results           = row("id").asInstanceOf[String]
+        val results           = row("id").asInstanceOf[String]}
           
           recursiveFundedProjects(results)
         }
