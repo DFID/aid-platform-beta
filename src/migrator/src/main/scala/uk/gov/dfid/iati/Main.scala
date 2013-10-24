@@ -22,9 +22,7 @@ object Main extends App  {
   val database  = mongo.db(config.getString("mongodb.db"))
   val countries = database.collection("countries")
   val regions   = database.collection("regions")
-  val country_results = database.collection("country-results")
   val sector_hierarchies = database.collection("sector-hierarchies")
-  val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
   val sector_hierarchies_src = Source.fromURL(getClass.getResource("/sector_hierarchies.csv"))
 
   // create an index to avoid dirty data

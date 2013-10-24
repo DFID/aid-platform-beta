@@ -14,8 +14,11 @@
         @form.textfield(country("name"), "Country Name")
         @form.pagedown(country("description"), "Description")
         @form.textfield(country("population"), "Population")
-        @form.textfield(country("lifeExpectancy"), "Life expectancy at birth")
+        @form.textfield(country("lifeExpectancy"), "Life Expectancy")
         @form.textfield(country("incomeLevel"), "Income Level")
+        @form.textfield(country("belowPovertyLine"), "Below Poverty Line")
+        @form.textfield(country("fertilityRate"), "Fertility Rate")
+        @form.textfield(country("gdpGrowthRate"), "GDP Growth Rate")
 
         <input type="submit" class="btn" value="Save" />
     }
