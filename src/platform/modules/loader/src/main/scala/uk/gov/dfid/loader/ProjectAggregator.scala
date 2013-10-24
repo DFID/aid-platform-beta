@@ -392,9 +392,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
               ).flatten:_*
             )
           )
-
-
-          engine.execute(
+        engine.execute(
         s"""
           | START  activity = node:entities(type="iati-activity")
           | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
@@ -417,7 +415,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.success("Collected Partner Projects")
   }
 
-  def recursiveFundedProjects(results:String) = {
+  def recursiveFundedProjects(results:String):String = results {
     auditor.info("Searching for projects linked to funded-projects")
 
       try{
