@@ -392,19 +392,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
               ).flatten:_*
             )
           )
-        engine.execute(
-        s"""
-          | START  activity = node:entities(type="iati-activity")
-          | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
-          |        activity-[?:title]-title,
-          |        activity-[?:description]-description,
-          |        activity-[?:`iati-identifier`]-id
-          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
-          | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
-        """.stripMargin).foreach { row =>
-        val fpresults           = row("id").asInstanceOf[String]}
 
-        recursiveFundedProjects(results)
+          val results = db.collection("funded-projects").find(
+            BSONDocument(),
+            BSONDocument("funded" -> BSONInteger(1))
+          ).toList
+          
+          recursiveFundedProjects(results)
+
+          
         }
       }
     }
@@ -594,17 +590,10 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             )
           )
 
-          engine.execute(
-        s"""
-          | START  activity = node:entities(type="iati-activity")
-          | MATCH  status-[?:`activity-status`]-activity-[:`reporting-org`]-org,
-          |        activity-[?:title]-title,
-          |        activity-[?:description]-description,
-          |        activity-[?:`iati-identifier`]-id
-          | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
-          | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
-        """.stripMargin).foreach { row =>
-        val results           = row("id").asInstanceOf[String]}
+          val results = db.collection("funded-projects").find(
+            BSONDocument(),
+            BSONDocument("funded" -> BSONInteger(1))
+          ).toList
           
           recursiveFundedProjects(results)
         }
