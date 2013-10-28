@@ -402,7 +402,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
           | RETURN COALESCE(activity.`iati-identifier`?, id.`iati-identifier`?) AS id
         """.stripMargin).foreach { row =>
-        val results           = row("id").asInstanceOf[String]}
+        val fpresults           = row("id").asInstanceOf[String]}
 
         recursiveFundedProjects(results)
         }
