@@ -195,8 +195,12 @@ ul.legend-list li div span{
   margin-left:1.5em;
 }
 
+.button-row {
+    padding-right: 40px;
+}
+
 .button-row span {
-  margin:0.5em 0.5em;
+  margin:0.5em 0em;
 }
 
 .button.inform {
