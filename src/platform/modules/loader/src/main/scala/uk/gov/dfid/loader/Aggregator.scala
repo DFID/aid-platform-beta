@@ -41,6 +41,8 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     ), Duration.Inf)
 
     auditor.success("Current projects collection dropped")
+    var counter = 0
+    val s = System.currentTimeMillis
 
     try {
 
@@ -69,7 +71,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         val projectOrgs           = row("participating").asInstanceOf[List[Node]]
         //val projectOrgs = row("participating").asInstanceOf[List[String]].filterNot(_ == "UNITED KINGDOM")
 
-
+        counter += 1
 
         val projectType = id match {
           case i if (globalProjects.exists(_._1.equals(i)))   => "global"
@@ -135,10 +137,14 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         Await.ready(projects.insert(project), Duration.Inf)
       }
 
-      auditor.success("All projects loaded")
+
     }catch{
       case e: Throwable => e.printStackTrace(); auditor.error(s"Error loading projects: ${e.getMessage}")
     }
+
+    auditor.info("Total H1 DFID projects loaded: " + counter)
+    auditor.info("Total load time in millisecs : " + (System.currentTimeMillis - s))
+    auditor.success("All H1 DFID Projects loaded")
   }
 
   def rollupCountrySectorBreakdown = {

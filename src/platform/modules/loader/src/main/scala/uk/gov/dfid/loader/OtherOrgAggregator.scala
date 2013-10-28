@@ -27,6 +27,8 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
 
     Await.ready(db.collection("other-org-projects").drop(), Duration.Inf)
 
+    var counter = 0
+    val s = System.currentTimeMillis
     try {
       engine.execute(
         s"""
@@ -49,6 +51,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
         val status       = row("status").asInstanceOf[Long]
         val organisation = row("organisation").asInstanceOf[String]
 
+        counter += 1
         // some data generation results in bad data being spat out.  If there is no IATI ID
         // then we are going to ignore this.
         if(id != null) {
@@ -185,14 +188,16 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
   } catch {
     case e: Throwable => println(e.getMessage); e.printStackTrace()
   }
-
+    auditor.info("Total OGD projects loaded: " + counter)
+    auditor.info("Total load time in millisecs : " + (System.currentTimeMillis - s))
     auditor.info("Collected other Organisation projects")
   }
 
   def collectTransactions = {
 
     auditor.info("Collecting other Organisation Project Transactions")
-
+    var counter = 0
+    val s = System.currentTimeMillis
     engine.execute(
       s"""
         | START  txn = node:entities(type="transaction")
@@ -226,7 +231,8 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
         )
       )
     }
-
+    auditor.info("Total OGD transaction loaded: " + counter)
+    auditor.info("Total load time in millisecs : " + (System.currentTimeMillis - s))
     auditor.success("Collected other Organisation Project Transactions")
   }
 }
