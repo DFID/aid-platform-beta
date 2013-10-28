@@ -28,8 +28,14 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
     Await.ready(db.collection("other-org-projects").drop(), Duration.Inf)
 
     var counter = 0
+    var sectorBudgetElapsed:Long = 0
+    var pElapsed:Long = 0
+    var bElapsed:Long = 0
+    var sElapsed:Long = 0
+    var dElapsed:Long = 0
     val s = System.currentTimeMillis
     try {
+      val loadTimeOGPProjStart = System.currentTimeMillis
       engine.execute(
         s"""
           | START  activity = node:entities(type="iati-activity")
@@ -51,11 +57,17 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
         val status       = row("status").asInstanceOf[Long]
         val organisation = row("organisation").asInstanceOf[String]
 
+
+        if(counter==0){
+          val loadTimeOGPProjEnd = System.currentTimeMillis
+          pElapsed = pElapsed + (loadTimeOGPProjEnd - loadTimeOGPProjStart)
+        }
+
         counter += 1
         // some data generation results in bad data being spat out.  If there is no IATI ID
         // then we are going to ignore this.
         if(id != null) {
-
+          val loadTimeOGDProjTotalBudgStart = System.currentTimeMillis
           try{
             // now we need to sum up the project budgets and spend.
             val totalBudget = engine.execute(
@@ -70,6 +82,10 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               case v: java.lang.Long    => v.toLong
             }
 
+            val loadTimeOGDProjTotalBudgEnd = System.currentTimeMillis
+            bElapsed = bElapsed + (loadTimeOGDProjTotalBudgEnd - loadTimeOGDProjTotalBudgStart)
+
+            val loadTimeOGDProjTotalSpendStart = System.currentTimeMillis
             val totalSpend = engine.execute(
               s"""
                | START  funded=node:entities(type="iati-activity")
@@ -85,7 +101,10 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               case v: java.lang.Integer => v.toLong
               case v: java.lang.Long    => v.toLong
             }
+            val loadTimeOGDProjTotalSpendEnd = System.currentTimeMillis
+            sElapsed = sElapsed + (loadTimeOGDProjTotalSpendEnd - loadTimeOGDProjTotalSpendStart)
 
+            val loadTimeOGDProjDateStart = System.currentTimeMillis
             // then we need to get the dates as well
             val dates = engine.execute(
               s"""
@@ -104,6 +123,8 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
 
               dateType -> BSONDateTime(date.getMillis)
             }
+            val loadTimeOGDProjDateEnd = System.currentTimeMillis
+            dElapsed = dElapsed + (loadTimeOGDProjDateEnd - loadTimeOGDProjDateStart)
 
             db.collection("other-org-projects").insert(
               BSONDocument(
@@ -118,6 +139,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
             )
 
             // put the project budgets in
+            val loadTimeSectorBudgetStart = System.currentTimeMillis
             engine.execute(
               s"""
               | START  b=node:entities(type="budget")
@@ -178,6 +200,9 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
                   ).flatten:_*
                 )
               )
+
+              val loadTimeSectorBudgetEnd = System.currentTimeMillis
+              sectorBudgetElapsed = sectorBudgetElapsed + (loadTimeSectorBudgetEnd - loadTimeSectorBudgetStart)
             }
 
           }catch{
@@ -189,6 +214,11 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
     case e: Throwable => println(e.getMessage); e.printStackTrace()
   }
     auditor.info("Total OGD projects loaded: " + counter)
+    auditor.info("Total load time for 'project' in millisecs : " + pElapsed)
+    auditor.info("Total load time for 'budget' in millisecs : " + bElapsed)
+    auditor.info("Total load time for 'spend' in millisecs : " + sElapsed)
+    auditor.info("Total load time for 'date' in millisecs : " + dElapsed)
+    auditor.info("Total load time for 'project-sector-budgets' in millisecs : " + sectorBudgetElapsed)
     auditor.info("Total load time in millisecs : " + (System.currentTimeMillis - s))
     auditor.info("Collected other Organisation projects")
   }
