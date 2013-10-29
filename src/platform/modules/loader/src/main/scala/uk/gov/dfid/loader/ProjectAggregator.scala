@@ -217,9 +217,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
 
-    var counter = 0
-    val s = System.currentTimeMillis
-
     try{
       engine.execute("""
                        | START  n=node:entities(type="iati-activity")
@@ -258,8 +255,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
         }
-        val recipient   = row("recipient").asInstanceOf[String]
-        counter += 1
+        val recipient   = row("recipient").asInstanceOf[String] 
+
         println(s"$funding, $funded")
 
         val project = engine.execute(
@@ -401,8 +398,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
-    auditor.info("Total partner projects loaded: " + counter)
-    auditor.info("Total load time in millisecs : " + (System.currentTimeMillis - s))
     auditor.success("Collected Partner Projects")
   }
 
