@@ -40,25 +40,49 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.drop
       auditor.info("Loading data")
 
+      val timeCRStart = System.currentTimeMillis
       results.loadCountryResults
+
+      val timeVMStart = System.currentTimeMillis
       validateAndMap(sources, neo4j)
+
+      val timeAggStart = System.currentTimeMillis
       aggregator.rollupCountryBudgets
       aggregator.rollupCountrySectorBreakdown
       aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
+
+      val timeDocStart = System.currentTimeMillis
       documents.collectProjectDocuments
+
+      val timePrjStart = System.currentTimeMillis
       projects.collectProjectSectorGroups
       projects.collectTransactions
       projects.collectPartnerProjects
       projects.collectPartnerTransactions
       projects.collectProjectDetails
       projects.collectProjectLocations
+
+      val timeOGDStart = System.currentTimeMillis
       other.collectOtherOrganisationProjects
       other.collectTransactions
+
+      val timeIndexStart = System.currentTimeMillis
       indexer.index
-      
+      val end = System.currentTimeMillis
+
       auditor.success("Loading process completed")
+      auditor.success("Load performance in milliSecs:: ")
+      auditor.success("Country Result:: " + (timeVMStart-timeCRStart) )
+      auditor.success("Mapping and Validation:: " + (timeAggStart-timeVMStart) )
+      auditor.success("Aggregation:: " + (timeDocStart-timeAggStart) )
+      auditor.success("Project Documents:: " + (timePrjStart-timeDocStart) )
+      auditor.success("Partner project, sector, transaction, locations:: " + (timeOGDStart-timePrjStart) )
+      auditor.success("OGD Projects and Transactions:: " + (timeIndexStart-timeOGDStart) )
+      auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
+
+      auditor.success("Total Load Time:: " + (end-timeCRStart) )
     }
   }
 
