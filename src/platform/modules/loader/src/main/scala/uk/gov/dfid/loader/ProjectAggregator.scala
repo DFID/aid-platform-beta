@@ -396,11 +396,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           val results = db.collection("funded-projects").find(
             BSONDocument(),
             BSONDocument("funded" -> BSONInteger(1))
-          ).toList
-          
-          recursiveFundedProjects(results)
+          ).toString  
 
-          
+          recursiveFundedProjects(results)
         }
       }
     }
@@ -426,8 +424,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                          |        t-[:`provider-org`]-po,
                          |        n-[?:`recipient-country`]-country,
                          |        n-[?:`recipient-region`]-region
-                         | WHERE  po.provider-activity-id in results
-                         | WHERE  po.provider-activity-id in (SELECT * from funded-projects)
+                         | WHERE  HAS org.ref != 'GB-1'
+                         | AND    po.provider-activity-id IN ${results.Support.mkString("['","','","']")}
                          | AND    results.count()>0
                          | RETURN n.`iati-identifier`?      as funded      ,
                          |        ro.`reporting-org`        as reporting   ,
@@ -593,7 +591,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           val results = db.collection("funded-projects").find(
             BSONDocument(),
             BSONDocument("funded" -> BSONInteger(1))
-          ).toList
+          ).toString  
           
           recursiveFundedProjects(results)
         }
