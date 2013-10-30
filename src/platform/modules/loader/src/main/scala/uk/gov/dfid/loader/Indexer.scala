@@ -30,13 +30,13 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     ElasticSearch.reset
 
     // perform the various indexing activities
-    println("Indexing DFID Projects")
+    auditor.info("Indexing DFID Projects")
     indexDfidProjects
-    println("Indexing Country Suggestions")
+    auditor.info("Indexing Country Suggestions")
     indexCountrySuggestions
-    println("Indexing Other Org Projects")
+    auditor.info("Indexing Other Org Projects")
     indexOtherOrganisationProjects
-    println("Indexing Partner Projects")
+    auditor.info("Indexing Partner Projects")
     indexPartnerProjects
 
     auditor.success("Indexed Data")
@@ -188,7 +188,11 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     // touching components here as it will perform the load into memory.
     // with a full dataset this might be pretty huge adn we should address
     // that ASAP
+    println("Loading components")
+
     components
+
+    println("Loaded components")
 
     val projects = Await.result(db.collection("projects").find(BSONDocument()).toList(), Duration.Inf)
 
