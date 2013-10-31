@@ -194,3 +194,26 @@ ul.legend-list li div span{
   font-weight:bold; 
   margin-left:1.5em;
 }
+
+.button-row {
+    padding-right: 40px;
+}
+
+.button-row span {
+  margin:0.5em 0em;
+}
+
+.button.inform {
+  background-color:#ffffff;
+  color:#000;
+  font-weight: bold;
+}
+.button.inform:hover {
+  background-color:#ffffff;
+  color:#000;
+}
+
+.envelope {
+  display:inline;
+  font-size:bigger;
+}
