@@ -424,9 +424,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                          |        t-[:`provider-org`]-po,
                          |        n-[?:`recipient-country`]-country,
                          |        n-[?:`recipient-region`]-region
-                         | WHERE  HAS org.ref != 'GB-1'
-                         | AND    po.provider-activity-id IN ${results.Support.mkString("['","','","']")}
-                         | AND    results.count()>0
+                         | WHERE  po.provider-activity-id IN ${results.mkString("['","','","']")}
                          | RETURN n.`iati-identifier`?      as funded      ,
                          |        ro.`reporting-org`        as reporting   ,
                          |        n.title                   as title       ,
