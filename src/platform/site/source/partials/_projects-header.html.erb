@@ -38,6 +38,7 @@
                             <% if has_funded_projects then %>
                                 <li <%= active=="partners" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/partners">Partners</a></li>
                             <% end %>
+                            <li <%= active=="relateddocuments" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/researchdocuments">Research Documents</a></li>
                         </ul>
                     </nav>
                 </div>          
