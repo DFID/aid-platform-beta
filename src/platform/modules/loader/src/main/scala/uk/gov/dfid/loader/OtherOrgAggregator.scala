@@ -59,8 +59,7 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               s"""
                | START  funded=node:entities(type="iati-activity")
                | MATCH  id-[r?:`iati-identifier`]-funded-[:budget]-budget-[:value]-budget_value
-               | WHERE  ((r is null)     AND (funded.`iati-identifier` = '$id'))
-               | OR     ((r is not null) AND (id.`iati-identifier` = '$id'))
+               | WHERE  (funded.`iati-identifier` = '$id' OR  id.`iati-identifier` = '$id')
                | RETURN SUM(budget_value.value) as totalBudget
             """.stripMargin).toSeq.head("totalBudget") match {
               case v: java.lang.Integer => v.toLong
@@ -69,15 +68,12 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
 
             val totalSpend = engine.execute(
               s"""
-               | START  funded=node:entities(type="iati-activity")
-               | MATCH  id-[r?:`iati-identifier`]-funded-[:transaction]-transaction-[:value]-transaction_value,
-               |        transaction-[:`transaction-type`]-type
-               | WHERE  (
-               |             ((r is null)     AND (funded.`iati-identifier` = '$id'))
-               |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-               |        )
-               | AND    (type.`code` = 'D' OR type.`code` = 'E')
-               | RETURN SUM(transaction_value.value) as totalSpend
+               |START  funded=node:entities(type="iati-activity")
+               |MATCH  id-[r?:`iati-identifier`]-funded-[:transaction]-transaction-[:value]-transaction_value,
+               |       transaction-[:`transaction-type`]-type
+               |WHERE  (	funded.`iati-identifier` = '$id'  OR id.`iati-identifier` = '$id' )
+               |       AND    (type.`code` = 'D' OR type.`code` = 'E')
+               |RETURN SUM(transaction_value.value) as totalSpend
             """.stripMargin).toSeq.head("totalSpend") match {
               case v: java.lang.Integer => v.toLong
               case v: java.lang.Long    => v.toLong
@@ -88,11 +84,8 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
               s"""
               | START  n=node:entities(type="iati-activity")
               | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a,
-              |        id-[r?:`iati-identifier`]-n
-              | WHERE  (
-              |             ((r is null)     AND (n.`iati-identifier` = '$id'))
-              |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-              |        )
+              | id-[r?:`iati-identifier`]-n
+              | WHERE  (n.`iati-identifier` = '$id' OR id.`iati-identifier` = '$id')
               | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
             """.stripMargin).toSeq.map { row =>
 
@@ -117,15 +110,12 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
             // put the project budgets in
             engine.execute(
               s"""
-              | START  b=node:entities(type="budget")
-              | MATCH  v-[:value]-b-[:budget]-n-[r?:`iati-identifier`]-id,
-              |        b-[:`period-start`]-p
-              | WHERE  (
-              |             ((r is null)     AND (n.`iati-identifier` = '$id'))
-              |          OR ((r is not null) AND (id.`iati-identifier` = '$id'))
-              |        )
-              | RETURN v.value      as value,
-              |        p.`iso-date` as date
+              |  START b=node:entities(type="budget")
+              |  MATCH  v-[:value]-b-[:budget]-n-[r?:`iati-identifier`]-id,
+              |         b-[:`period-start`]-p
+              |  WHERE  (n.`iati-identifier` = '$id' OR id.`iati-identifier` = '$id')
+              |  RETURN v.value      as value,
+              |         p.`iso-date` as date
             """.stripMargin).foreach { row =>
 
               val value = row("value").asInstanceOf[Long].toInt
