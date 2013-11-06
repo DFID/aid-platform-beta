@@ -50,9 +50,10 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
         |        component-[?:sector]-sector,
         |        component-[?:`recipient-region`]-region,
         |        component-[?:`recipient-country`]-country,
-        |        component-[:`participating-org`]-org,
+        |        rorg-[:`reporting-org`]-component-[:`participating-org`]-org,
         |        component-[?:`iati-identifier`]-id
-        | WHERE  project.type = 1
+        | WHERE  rorg.ref = "GB-1"
+        |        AND project.type = 1
         | RETURN COLLECT(DISTINCT(COALESCE(component.`iati-identifier`?, id.`iati-identifier`?))) as ids,
         |        project.ref                                    as parent,
         |        COLLECT(DISTINCT(sector.code))                 as sectors,
