@@ -202,11 +202,6 @@ end
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [] }
   proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents }
   proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups }
-  
-  #r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
-  #if !r4dDocs.nil? && r4dDocs.length > 0 then
-  #  proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :r4dDocs => r4dDocs }
-  #end
 
 end
 
@@ -270,10 +265,6 @@ end
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
   proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project  }
   
-  #r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
-  #if !r4dDocs.nil? && r4dDocs.length > 0 then
-  #  proxy "/projects/#{project['iatiId']}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :r4dDocs => r4dDocs }
-  #end
 end
 
 #------------------------------------------------------------------------------
