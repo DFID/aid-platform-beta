@@ -10,8 +10,7 @@ title: Development Tracker
     <div class="twelve columns summary">    
         <% r4dDocs = r4DApiDocFetch(project['iatiId']) || '' %>
         <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
-          <h3>Research Documents</h3>
-          <p>This project has supported the following research projects and publications.</p>
+          <p>This project has supported the following research projects and/or publications</p>
           <% r4dDocs.each do |s| %>
             <a class="documentTitleLink" href="<%= s['link']%>"><%= s['title']%></a>
             <br/>
