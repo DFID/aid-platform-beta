@@ -183,6 +183,8 @@ title: Development Tracker
     <div class="row">
         <div class="twelve columns download-link">
             <p>Download IATI Data for <%= project['iatiId']%>: <a href="/api/access/activities/<%=project['iatiId'] %>" class="api-link button">JSON</a></p>
-            <p>Project data last updated on <%= project['lastUpdatedDateTime'].strftime("%d/%m/%Y")%></p>
+            <%if project['lastUpdatedDateTime'].nil?%>
+                <p>Project data last updated on <%= project['lastUpdatedDateTime'].strftime("%d/%m/%Y")%></p>
+            <% end %>
         </div>
     </div>
