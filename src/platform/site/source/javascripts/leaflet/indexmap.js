@@ -163,7 +163,7 @@
 
     // map.addLayer(new L.Google('ROADMAP'))
     // creates a tile layer with the tiles hosted in mapbox
-    L.tileLayer("http://aipalpha.dfid.gov.uk/v2/dfid/{z}/{x}/{y}.png", {
+    L.tileLayer("http://devtracker.dfid.gov.uk/v2/dfid-towns/{z}/{x}/{y}.png", {
                             minZoom: 2,
                             maxZoom: 4,
                             attribution: ''
