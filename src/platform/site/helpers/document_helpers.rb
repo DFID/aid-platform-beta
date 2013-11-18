@@ -11,7 +11,8 @@ def r4DApiDocFetch(projectId)
  
 		http = Net::HTTP.new(uri.host, uri.port)
 		request = Net::HTTP::Get.new(uri.request_uri)
- 
+ 		http.read_timeout = 500
+
 		response = http.request(request)
  
 		if response.code == "200"

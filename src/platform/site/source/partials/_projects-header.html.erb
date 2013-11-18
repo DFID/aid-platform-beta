@@ -38,6 +38,11 @@
                             <% if has_funded_projects then %>
                                 <li <%= active=="partners" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/partners">Partners</a></li>
                             <% end %>
+                            <% r4dDocs = r4DApiDocFetch(project['iatiId']) || '' %>
+                            <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
+                                <li <%= active=="r4dDocs" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/r4dDocs">Research (<%= r4dDocs.length %>)</a></li>
+                            <% end %>
+
                         </ul>
                     </nav>
                 </div>          
