@@ -101,4 +101,21 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="span12">
+                <div class="widget widget-table action-table" id="environmentvariables">
+                    <div class="widget-header">
+                        <i class="icon-th-list"></i>
+                        <h3>Environment Variables</h3>
+                    </div>
+                    <div class="widget-content">
+                        <p>DFID_SMTP_USER = @System.getenv("DFID_SMTP_USER")</p>
+                        <p>DFID_SMTP_PASSWORD = @System.getenv("DFID_SMTP_USER")</p>
+                        <p>DFID_ELASTICSEARCH_PATH = @System.getenv("DFID_ELASTICSEARCH_PATH")</p>
+                        <p>DFID_DEPLOYMENT_PASSWORD = @System.getenv("DFID_DEPLOYMENT_PASSWORD")</p>
+                        <p>DFID_DATA_PATH = @System.getenv("DFID_DATA_PATH")</p>
+                    </div> <!-- /widget-content -->
+                </div>
+            </div>
+        </div>
 }
