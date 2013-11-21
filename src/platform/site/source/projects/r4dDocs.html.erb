@@ -4,11 +4,11 @@ title: Development Tracker
 
 ---
 
-<%= partial "partials/projects-header", :locals => { :project => project, :active => "r4dDocs", :has_funded_projects => has_funded_projects} %>
+<%= partial "partials/projects-header", :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs %>
 
 <div class="row">
     <div class="twelve columns summary">    
-        <% r4dDocs = r4DApiDocFetch(project['iatiId']) || '' %>
+        
         <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
           <p>This project has supported the following research projects and/or publications</p>
           <% r4dDocs.each do |s| %>
