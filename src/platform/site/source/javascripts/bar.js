@@ -117,10 +117,14 @@
                     }
 
                 })
-                .attr("title", function(d){ return d })
-                .style("fill", function(d, i) { return color(i); });
+                .attr("title", function(d){ return d})
+                .style("fill", function(d, i) { return color(i); })
+                .append("title").text("£")
+                .append("title").text((function(d){ return d}))
 
    }
+
+
 
     global.charts = global.charts || {}
     global.charts.bar = bar
