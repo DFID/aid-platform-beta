@@ -82,21 +82,21 @@ class IatiDataSourceSelector @Inject()(database: DefaultDB) extends SourceSelect
         firstMatchOnly = false
       ), Duration.Inf)
 
-      // the iait registry will only ever return 999 elements and ignore the limit value
+      // the IATI registry will only ever return 999 elements and ignore the limit value
       // we then need to bash it with more requests and page the entries
-      WS.url(s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType").get.map { result =>
+      WS.url(s"http://www.iatiregistry.org/api/search/dataset?extras_filetype=$sourceType").get.map { result =>
         val count = (result.json \ "count").as[JsNumber].value.toInt
         val pages = (count/999.0).ceil.toInt
 
-        // define paging as a loopable array
+        // define paging as a loopable arrays
         0.to(pages-1).foreach { offsetWindow =>
           val offset = offsetWindow * 999
-          val url = s"http://www.iatiregistry.org/api/search/dataset?filetype=$sourceType&all_fields=1&limit=999&offset=$offset"
+          val url = s"http://www.iatiregistry.org/api/search/dataset?extras_filetype=$sourceType&all_fields=1&limit=999&offset=$offset"
           val response = Await.result(WS.url(url).get, Duration Inf)
           val results = (response.json \ "results").as[JsArray].value
           val orgs = results.flatMap { json =>
 
-            val downloadUrl = (json \ "download_url").asOpt[String]
+            val downloadUrl = (json \ "res_url")(0).asOpt[String]
             val title = (json \ "title").as[String]
 
             if(downloadUrl.isEmpty) {
