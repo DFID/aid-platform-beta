@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+    config.vm.box = "precise64"
+
+    ## This is what configuration will be copied to the Vagrant
+    config.vm.synced_folder "srv/", "/srv/"
+
+    config.vm.provision :salt do |salt|
+    	salt.verbose = true
+        salt.minion_config = "srv/minion"
+        salt.run_highstate = true
+    end
+end
