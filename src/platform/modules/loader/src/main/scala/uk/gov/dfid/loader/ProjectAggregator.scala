@@ -51,8 +51,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
-      val value            = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else ""}     
-      val date             = { if(row("date").isInstanceOf[String]) DateTime.parse(row("date").asInstanceOf[String], format) else ""}
+      val value            = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else 0}     
+      val date             = DateTime.parse(row("date").asInstanceOf[String], format) 
       val transaction      = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else ""}
       val receiver         = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
       val provider         = { if(row("provider-org").isInstanceOf[String]) row("provider-org").asInstanceOf[String] else ""}
@@ -103,8 +103,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project     = { if(row("project").isInstanceOf[String]) row("project").asInstanceOf[String] else "" }
-      val value       = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else "" }     
-      val date        = { if(row("date").isInstanceOf[String]) DateTime.parse(row("date").asInstanceOf[String], format) else "" }
+      val value       = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else 0 }     
+      val date        = DateTime.parse(row("date").asInstanceOf[String], format) 
       val transaction = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
       val component   = { if(row("component").isInstanceOf[String]) row("component").asInstanceOf[String] else "" }
       val description = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else "" }
@@ -146,7 +146,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val id       = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
       val dateType = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
-      val date     = { if(row("date").isInstanceOf[String]) DateTime.parse(row("date").asInstanceOf[String], format) else ""}
+      val date     = DateTime.parse(row("date").asInstanceOf[String], format) 
 
       db.collection("projects").update(
         BSONDocument("iatiId" -> BSONString(id)),
@@ -187,7 +187,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
         val id          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
         val name        = { if(row("name").isInstanceOf[String]) row("name").asInstanceOf[String] else "" }
-        val code        = { if(row("code").isInstanceOf[Long]) row("code").asInstanceOf[Long] else "" }
+        val code        = { if(row("code").isInstanceOf[Long]) row("code").asInstanceOf[Long] else 0 }
         val total       = row("total")  match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
@@ -335,7 +335,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             dateType -> BSONDateTime(date.getMillis)
           }
           else
-            dateType -> None
+            dateType -> BSONDateTime(0)
         }
 
         db.collection("funded-projects").insert(
@@ -369,10 +369,10 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).foreach { row =>
 
           val value = row("value")  match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-            case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => v.toLong
+            case v: java.lang.Integer => v.toInt
+            case v: java.lang.Long    => v.toInt
+            case v: java.lang.Double  => v.toInt
+            case v: java.lang.String => v.toInt
             case _ => 0
           }  
           val date = { if ( row("date").isInstanceOf[String] ) row("date").asInstanceOf[String] else ""}
@@ -463,7 +463,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val id           = { if ( row("id").isInstanceOf[String] ) row("id").asInstanceOf[String] else "" }
       val title        = { if ( row("title").isInstanceOf[String] ) row("title").asInstanceOf[String] else "" }
       val name         = { if ( row("name").isInstanceOf[String] ) row("name").asInstanceOf[String] else "" }
-      val precision    = { if ( row("precision").isInstanceOf[Long] ) row("precision").asInstanceOf[Long] else "" }
+      val precision    = { if ( row("precision").isInstanceOf[Long] ) row("precision").asInstanceOf[Long] else 0 }
       val longitude    = row("longitude") match {
         case l: java.lang.Double => l.toDouble
         case l: java.lang.Long   => l.toDouble
