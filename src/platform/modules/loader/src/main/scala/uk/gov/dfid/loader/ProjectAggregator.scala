@@ -51,7 +51,14 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
-      val value            = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else 0}     
+      
+      val value            = row("value") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
+          case _ => 0
+        }
       val date             = DateTime.parse(row("date").asInstanceOf[String], format) 
       val transaction      = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else ""}
       val receiver         = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
@@ -103,7 +110,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       """.stripMargin).foreach { row =>
 
       val project     = { if(row("project").isInstanceOf[String]) row("project").asInstanceOf[String] else "" }
-      val value       = { if(row("value").isInstanceOf[Long]) row("value").asInstanceOf[Long] else 0 }     
+
+      val value       = row("value") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
+          case _ => 0
+        }
+      
       val date        = DateTime.parse(row("date").asInstanceOf[String], format) 
       val transaction = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
       val component   = { if(row("component").isInstanceOf[String]) row("component").asInstanceOf[String] else "" }
@@ -187,11 +202,21 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
         val id          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
         val name        = { if(row("name").isInstanceOf[String]) row("name").asInstanceOf[String] else "" }
-        val code        = { if(row("code").isInstanceOf[Long]) row("code").asInstanceOf[Long] else 0 }
+
+        val code        = row("code") match {
+          case v: java.lang.Integer => v.toLong
+          case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
+          case _ => 0
+        }
+
         val total       = row("total")  match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
           case v: java.lang.Double  => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
+          case _ => 0
         }
         val date        = { if(row("date").isInstanceOf[String]) row("date").asInstanceOf[String] else "" }
 
@@ -252,7 +277,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         
         val status      = row("status") match {
           case v: java.lang.Integer => v.toLong
-          case v: java.lang.String => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
         
@@ -260,6 +285,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         val funds       = row("funds") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
 
@@ -285,7 +311,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
              .asInstanceOf[String])
              .getOrElse(funding)
 
-        println(s"USed: $project")
+        println(s"USed: $project (Recipient: $recipient)")
 
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
@@ -299,7 +325,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).toSeq.head("totalBudget") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
-          case v: java.lang.String => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
 
@@ -314,7 +340,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).toSeq.head("totalSpend") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
-          case v: java.lang.String => v.toLong
+          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
 
@@ -372,7 +398,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case v: java.lang.Integer => v.toInt
             case v: java.lang.Long    => v.toInt
             case v: java.lang.Double  => v.toInt
-            case v: java.lang.String => v.toInt
+            case v: java.lang.String => try { v.toInt } catch { case _ : Throwable => 0 }
             case _ => 0
           }  
           val date = { if ( row("date").isInstanceOf[String] ) row("date").asInstanceOf[String] else ""}
@@ -406,7 +432,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case v: java.lang.Integer => v.toLong
             case v: java.lang.Long    => v.toLong
             case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => v.toLong
+            case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
             case _ => 0
           }  
 
@@ -414,7 +440,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case v: java.lang.Integer => v.toLong
             case v: java.lang.Long    => v.toLong
             case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => v.toLong
+            case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
             case _ => 0
           }
 
