@@ -285,6 +285,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         val funds       = row("funds") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double  => v.toLong
           case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
@@ -325,6 +326,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).toSeq.head("totalBudget") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double    => v.toLong
           case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
@@ -340,6 +342,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).toSeq.head("totalSpend") match {
           case v: java.lang.Integer => v.toLong
           case v: java.lang.Long    => v.toLong
+          case v: java.lang.Double    => v.toLong
           case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
           case _ => 0
         }
