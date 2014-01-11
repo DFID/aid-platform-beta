@@ -443,4 +443,43 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
       id -> region
     }
   }
+
+  def collectFundingTraceability = {
+
+    auditor.info("Collecting multilevel traceability")
+    Await.ready(db.collection("multilevel-traceablity").drop(), Duration.Inf)
+
+    try { 
+      
+  engine.execute(
+      s"""
+        | START  n=node:entities(type="iati-activity")
+        | MATCH n-[:transaction]-t-[:`transaction-type`]-tt,
+        |       n-[:transaction]-t-[:`provider-org`]-po
+        | WHERE tt.code = "IF"
+        | RETURN po.`provider-activity-id` as Funding, collect(distinct (n.`iati-identifier`)) as Funded
+      """.stripMargin).foreach { row =>
+
+      val funding     = row("Funding").asInstanceOf[String]
+      val funded       = row("Funded").asInstanceOf[Seq[String]]
+      val ref = row("Ref").asInstanceOf[String]
+
+      println(s"$funding, $funded")
+
+      db.collection("multilevel-traceablity").insert(
+        BSONDocument(
+          "funding"     -> BSONString(funding),
+          "funded" -> BSONArray(
+            funded.map(c => BSONString(c)): _*
+          )
+        )
+      )
+    }
+
+    auditor.success("Collected multilevel traceability")
+
+    } catch {
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }
+  }
 }

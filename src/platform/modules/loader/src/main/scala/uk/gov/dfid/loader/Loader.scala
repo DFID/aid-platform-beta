@@ -52,6 +52,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       aggregator.rollupCountryProjectBudgets
       aggregator.loadProjects
       aggregator.rollupProjectBudgets
+      aggregator.collectFundingTraceability
 
       val timeDocStart = System.currentTimeMillis
       documents.collectProjectDocuments

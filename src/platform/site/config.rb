@@ -32,6 +32,7 @@ ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
 ignore "/projects/r4dDocs.html"
+ignore "/projects/trace.html"
 ignore "/sector/categories.html"
 ignore "/sector/sectors.html"
 ignore "/sector/projects.html"
@@ -118,7 +119,7 @@ CodeLists.all_global_recipients.map { |code, name|
 @cms_db['projects'].find({}).each do |project|
 
   id                  = project['iatiId']
-  funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a
+  funded_projects     = @cms_db['funded-projects'].find({ 'funding' => id }).to_a  
   has_funded_projects = funded_projects.size > 0
   documents           = @cms_db['documents'].find({ 'project' => id}).to_a
   locations           = @cms_db['locations'].find( { 'id' =>  id }) .to_a.map { |location|
@@ -167,6 +168,7 @@ CodeLists.all_global_recipients.map { |code, name|
 
   if has_funded_projects then
     proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{id}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :funded_projects => funded_projects }
   end
 end
 
@@ -259,6 +261,12 @@ end
       }
     }
   }])
+
+  any_immediate_funded_projects = @cms_db['multilevel-traceablity'].find({'funding' => funded_project['funded']}).count > 0
+  
+  if any_immediate_funded_projects then    
+    proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_funded_projects => any_immediate_funded_projects }
+  end
 
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
@@ -416,7 +424,7 @@ helpers do
   include ProjectHelpers
   include CodeLists
   include SectorHelpers
-  include RegionHelpers
+  include RegionHelpers  
 end
 
 #------------------------------------------------------------------------------

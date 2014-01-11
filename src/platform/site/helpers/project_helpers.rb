@@ -268,8 +268,67 @@ module ProjectHelpers
         country['name']
     end
 
+    def project_by_id(projectId)
+        funded_project =  @cms_db['funded-projects'].find_one({ 'funded' =>  projectId })
+
+         project = {
+                    'iatiId'            => funded_project['funded'],
+                    'title'             => funded_project['title'],
+                    'description'       => funded_project['description']
+                }
+        project
+    end
+
     def project_documents(projectCode)
         @cms_db['documents'].find({ 'project' => projectCode}).count
+    end
+
+    def funded_project_immediate_count(projectIatiId)
+        @cms_db['multilevel-traceablity'].find({'funding' => projectIatiId}).count
+    end
+
+    def funded_project_immediate(projectIatiId)
+        funded_project = @cms_db['multilevel-traceablity'].find_one({ 
+            'funding' => projectIatiId 
+        })||{"funded" => []}
+
+        funded_project["funded"].to_a
+    end
+
+    def recursive_project_tree(root, is_top)
+        html = ''
+        if !root.nil?
+            if !is_top
+                html << %Q!<div class="documentContainer">
+                    <li>
+                        <a href="/projects/#{root['iatiId']}">#{root['title']}</a>!
+            end
+            
+            
+            children = funded_project_immediate(root['iatiId'])
+            
+            if(!children.nil? && children.length > 0)
+                
+                html << %Q!<ul>!
+                
+                children.each do |child| 
+                    project = project_by_id(child)
+                    if(!project.nil?)
+                        html << recursive_project_tree(project, false)
+                    end 
+                end
+                html << "</ul>"
+            end
+
+            html << "</li>"
+            html << "</div>"
+        end
+
+        html
+    end
+
+    def funded_project_all(project)
+        recursive_project_tree(project, true)
     end
 
 private
