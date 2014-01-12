@@ -7,9 +7,9 @@ title: Development Tracker
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :has_funded_projects => has_funded_projects} %>
 
 <div class="row">
-    <div class="twelve columns summary">    
+    <div style="margin-left:2em">    
     	<p>This project has supported the following projects direct or indirectly.</p>
-    	<div class="documentContainer">            
+    	<div style="margin-left:3em">            
             <ul >
     			<%= funded_project_all(project) %>
     		</ul>

@@ -299,7 +299,7 @@ module ProjectHelpers
         html = ''
         if !root.nil?
             if !is_top
-                html << %Q!<div class="documentContainer">
+                html << %Q!<div>
                     <li>
                         <a href="/projects/#{root['iatiId']}">#{root['title']}</a>!
             end
