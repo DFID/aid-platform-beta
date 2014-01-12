@@ -168,7 +168,7 @@ CodeLists.all_global_recipients.map { |code, name|
 
   if has_funded_projects then
     proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
-    proxy "/projects/#{id}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{id}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects }
   end
 end
 

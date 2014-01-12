@@ -462,7 +462,6 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
       val funding     = row("Funding").asInstanceOf[String]
       val funded       = row("Funded").asInstanceOf[Seq[String]]
-      val ref = row("Ref").asInstanceOf[String]
 
       println(s"$funding, $funded")
 
