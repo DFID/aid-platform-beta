@@ -35,7 +35,7 @@
                             <li <%= active=="summary" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>">Summary</a></li>
                             <li <%= active=="documents" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/documents">Documents (<%= project_documents project['iatiId'] %>)</a></li>
                             <li <%= active=="transactions" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/transactions">Transactions</a></li>
-                            <% if has_funded_projects then %>
+                            <% if (is_dfid_project(project['iatiId']) && has_funded_projects) || (defined?(funding_project) && !funding_project.nil?) then %>
                                 <li <%= active=="partners" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/partners">Partners</a></li>
                             <% end %>
                             <% r4dDocs = r4DApiDocFetch(project['iatiId']) || '' %>

@@ -3,7 +3,7 @@ title: Development Tracker
 ---
 
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true} %>
-<% if defined?(funding_project) then %>
+<% if defined?(funding_project) && !funding_project.nil? then %>
   <div class="row">
       <div class="twelve columns results-info">
         <h3 class="section-group-title">Funding Project</h3>

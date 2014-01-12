@@ -271,7 +271,10 @@ end
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project  }
+  
+  if(!funding_project.nil?) then
+    proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project  }
+  end    
   
 end
 
