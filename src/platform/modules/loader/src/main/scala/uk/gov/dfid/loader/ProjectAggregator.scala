@@ -13,6 +13,7 @@ import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONDateTime
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONString
+import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
 
 class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
@@ -89,7 +90,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     Await.ready(db.collection("transactions").drop, Duration Inf)
 
     engine.execute(
-      """
+      s"""
         | START  txn = node:entities(type="transaction")
         | MATCH  project-[:`related-activity`]-component-[:transaction]-txn,
         |        component-[:`reporting-org`]-org,
@@ -98,7 +99,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        txn-[:`transaction-type`]-type,
         |        txn-[r?:`receiver-org`]-receiver
         | WHERE  project.type = 1
-        | AND    org.ref      = "GB-1"
+        | AND    HAS(org.ref) AND org.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
         | RETURN project.ref                    as project,
         |        component.`iati-identifier`?   as component,
         |        COALESCE(txn.description?, "") as description,
@@ -149,13 +150,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.info("Getting project start and end dates")
 
     engine.execute(
-      """
+      s"""
         | START n=node:entities(type="iati-activity")
         | MATCH n-[:`reporting-org`]-o,
         |       n-[:`activity-status`]-a,
         |       n-[:`activity-date`]-d
         | WHERE n.hierarchy! = 1
-        | AND   o.ref = "GB-1"
+        | AND   HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
         | RETURN distinct(n.`iati-identifier`?) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
       """.stripMargin).foreach { row =>
 
@@ -183,7 +184,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     auditor.info("Getting project sector groups")
     try {
       engine.execute(
-        """
+        s"""
           | START  n=node:entities(type="iati-activity")
           | MATCH  n-[:`reporting-org`]-o,
           |   	   n-[:`related-activity`]-a,
@@ -191,7 +192,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           |        n-[:`sector`]-s,
           |        b-[:`period-start`]-p
           | WHERE  n.hierarchy! = 2
-          | AND    o.ref = "GB-1"
+          | AND    HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
           | AND	   a.type = 1
           | RETURN a.ref as id, s.code as code, s.sector as name,
           |        COALESCE(s.percentage?, 100) as percentage, sum(v.value) as val,
@@ -243,7 +244,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
 
     try{
-      engine.execute("""
+      engine.execute(s"""
                        | START  n=node:entities(type="iati-activity")
                        | MATCH  n-[:`participating-org`]-o,
                        |        n-[:`reporting-org`]-ro,
@@ -255,7 +256,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
                        |        n-[?:`recipient-country`]-country,
                        |        n-[?:`recipient-region`]-region
                        | WHERE  o.role  = "Funding"
-                       | AND    o.ref!   = "GB-1"
+                       | AND HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Participating.mkString("['","','","']")}                        
                        | AND    tt.code = "IF"
                        | AND    HAS(po.`provider-activity-id`)
                        | RETURN n.`iati-identifier`?      as funded,
@@ -475,11 +476,11 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
     Await.ready(db.collection("locations").drop, Duration.Inf)
 
     engine.execute(
-      """
+      s"""
         | START  location=node:entities(type='location')
         | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates,
         |        location-[:`location-type`]-type
-        | WHERE  org.ref! ='GB-1'
+        | WHERE  HAS(org.ref) AND org.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
         | RETURN project.`iati-identifier`? as id,
         |        project.title             as title,
         |        location.name             as name,
