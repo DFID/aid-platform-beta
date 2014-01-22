@@ -447,7 +447,7 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
   def collectFundingTraceability = {
 
     auditor.info("Collecting multilevel traceability")
-    Await.ready(db.collection("multilevel-traceablity").drop(), Duration.Inf)
+    Await.ready(db.collection("multilevel-traceability").drop(), Duration.Inf)
 
     try { 
       
@@ -457,15 +457,16 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | MATCH n-[:transaction]-t-[:`transaction-type`]-tt,
         |       n-[:transaction]-t-[:`provider-org`]-po
         | WHERE tt.code = "IF"
+        | AND   HAS(po.`provider-activity-id`)
         | RETURN po.`provider-activity-id` as Funding, collect(distinct (n.`iati-identifier`)) as Funded
       """.stripMargin).foreach { row =>
 
       val funding     = row("Funding").asInstanceOf[String]
-      val funded       = row("Funded").asInstanceOf[Seq[String]]
+      val funded      = row("Funded").asInstanceOf[Seq[String]]
 
       println(s"$funding, $funded")
 
-      db.collection("multilevel-traceablity").insert(
+      db.collection("multilevel-traceability").insert(
         BSONDocument(
           "funding"     -> BSONString(funding),
           "funded" -> BSONArray(
