@@ -262,7 +262,7 @@ end
     }
   }])
 
-  any_immediate_funded_projects = @cms_db['multilevel-traceablity'].find({'funding' => funded_project['funded']}).count > 0
+  any_immediate_funded_projects = @cms_db['multilevel-traceability'].find({'funding' => funded_project['funded']}).count > 0
   
   if any_immediate_funded_projects then    
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_funded_projects => any_immediate_funded_projects }

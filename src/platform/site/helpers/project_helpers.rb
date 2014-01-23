@@ -1,5 +1,6 @@
 require "helpers/codelists"
 require "helpers/lookups"
+require 'json'
 
 module ProjectHelpers
 
@@ -284,11 +285,11 @@ module ProjectHelpers
     end
 
     def funded_project_immediate_count(projectIatiId)
-        @cms_db['multilevel-traceablity'].find({'funding' => projectIatiId}).count
+        @cms_db['multilevel-traceability'].find({'funding' => projectIatiId}).count
     end
 
     def funded_project_immediate(projectIatiId)
-        funded_project = @cms_db['multilevel-traceablity'].find_one({ 
+        funded_project = @cms_db['multilevel-traceability'].find_one({ 
             'funding' => projectIatiId 
         })||{"funded" => []}
 
@@ -327,8 +328,47 @@ module ProjectHelpers
         html
     end
 
+    def build_recursive_project_hash(project, is_top)
+        
+        str = ''
+
+        if !project.nil?
+            
+            if is_top
+                str << %Q!{ "name" : "#{project['iatiId']}", "title" : "#{project['title']}"!              
+            else
+                str << %Q!{ "name" : "#{project['iatiId']}", "title" : "#{project['title']}"},!  
+            end
+
+            children = funded_project_immediate(project['iatiId'])
+
+            if(!children.nil? && children.length > 0)                
+                str = str.chomp(",")
+                str << %Q!, "children" : [!  
+                children.each do |child| 
+                    project = project_by_id(child)
+                    if(!project.nil?)
+                        str << build_recursive_project_hash(project, false)
+                    end 
+                end
+                str = str.chomp(",")
+                str << %Q!],!
+            end
+        end
+
+        return str
+    end
+
     def funded_project_all(project)
         recursive_project_tree(project, true)
+    end
+
+    def get_multilevel_json(project)        
+        str = build_recursive_project_hash(project, true) 
+        str = str.chomp(",")       
+        str << %Q!}!
+
+        str
     end
 
 private
