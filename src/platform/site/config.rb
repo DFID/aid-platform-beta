@@ -160,10 +160,10 @@ CodeLists.all_global_recipients.map { |code, name|
   proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents }
   proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups }
     
-  r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
-  if !r4dDocs.nil? && r4dDocs.length > 0 then
-    proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs }
-  end
+  #r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
+  #if !r4dDocs.nil? && r4dDocs.length > 0 then
+  #  proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs }
+  #end
 
   if has_funded_projects then
     proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }

@@ -34,6 +34,32 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <%= stylesheet_link_tag "foundation", "aip-styles", "graph-styles", "main" %>
+
+    
+   <!--  <script>  
+        jQuery(function(){
+          jQuery('.more-info-link').click( function(){
+              jQuery('#moreinfo'+$(this).attr('target')).toggle();
+           }); 
+         });  
+    </script> -->
+   <script> 
+    $(document).ready(function() {
+         $(".more-info-link").click(function(e){
+            e.stopPropagation();
+            $("#moreinfo"+$(this).attr('target')).toggle();
+           });
+         
+         $(".more-info").on('click', function(e){
+            e.stopPropagation();
+          });
+
+         $(document).on('click', function(e){
+            $(".more-info").hide(); 
+          });           
+      });
+  </script> 
+
   </head>
   <body>
     <script type="text/javascript">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
