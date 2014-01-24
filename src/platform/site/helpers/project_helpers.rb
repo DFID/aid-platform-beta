@@ -328,16 +328,16 @@ module ProjectHelpers
         html
     end
 
-    def build_recursive_project_hash(project, is_top)
+    def build_recursive_project_hierarchy(project, is_top)
         
         str = ''
 
         if !project.nil?
             
             if is_top
-                str << %Q!{ "name" : "#{project['iatiId']}", "title" : "#{project['title']}"!              
+                str << %Q!{ "name" : "#{project['iatiId']} ( #{project['title']} )", "title" : "#{project['title']}"!              
             else
-                str << %Q!{ "name" : "#{project['iatiId']}", "title" : "#{project['title']}"},!  
+                str << %Q!{ "name" : "#{project['iatiId']} ( #{project['title']} )", "title" : "#{project['title']}"!  
             end
 
             children = funded_project_immediate(project['iatiId'])
@@ -348,25 +348,26 @@ module ProjectHelpers
                 children.each do |child| 
                     project = project_by_id(child)
                     if(!project.nil?)
-                        str << build_recursive_project_hash(project, false)
+                        str << build_recursive_project_hierarchy(project, false)
                     end 
                 end
                 str = str.chomp(",")
-                str << %Q!],!
+                str << %Q!]},!
+            else
+                str << %Q!},!
             end
         end
 
         return str
     end
 
-    def funded_project_all(project)
+    def get_multilevel_recursive_project_hierarchy_as_html_list(project)
         recursive_project_tree(project, true)
     end
 
-    def get_multilevel_json(project)        
-        str = build_recursive_project_hash(project, true) 
-        str = str.chomp(",")       
-        str << %Q!}!
+    def get_multilevel_recursive_project_hierarchy(project)        
+        str = build_recursive_project_hierarchy(project, true) 
+        str = str.chomp(",") 
 
         str
     end
