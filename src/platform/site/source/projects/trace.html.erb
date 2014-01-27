@@ -7,9 +7,16 @@ title: Development Tracker
 <%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :has_funded_projects => has_funded_projects} %>
 
 <div class="row">
-    <div style="margin-left:2em">    
-    	<p>This project has supported the following projects direct or indirectly, shown as a <b>collapsible indendent tree</b>.</p>
-    	
+    <div style="margin-left:2em">  
+    	<p>Experiment as <b>html list</b></p>
+       	<div style="margin-left:3em">
+           <ul>
+           		<%= get_multilevel_recursive_project_hierarchy_as_html_list(project) %>
+           </ul>
+         </div>
+
+       <hr/>  
+    	<p>Experiment as <b>collapsible indendent tree</b>.</p>    	
     	<div style="margin-left:8em">            
             
     			<script src="/javascripts/d3.v3.js" type="text/javascript"></script>
