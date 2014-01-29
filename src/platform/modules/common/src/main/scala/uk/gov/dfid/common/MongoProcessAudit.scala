@@ -17,6 +17,7 @@ trait Auditor {
   def failure(msg: String)
   def warn(msg: String)
   def error(msg: String)
+  def time[T](title: String, block: => T): T
 }
 
 /**
@@ -32,6 +33,14 @@ class DataLoadAuditor @Inject()(db: DefaultDB) extends Auditor {
   def error(msg: String)   = insert("error", msg)
   def info(msg: String)    = insert("info", msg)
   def warn(msg: String)    = insert("warn", msg)
+
+  def time[T](title: String, block: => T) : T = {
+    val t0 = System.nanoTime()
+    val result = block
+    val t1 = System.nanoTime()
+    info(s"$title - Elapsed time: " + ((t1 - t0)/1000000) + "ms")
+    result
+  }
 
   def drop {
     Await.ready(audits.drop, Duration.Inf)
