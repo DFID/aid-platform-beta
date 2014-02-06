@@ -35,6 +35,6 @@ object ElasticSearch {
 
   def sanitize(query: String) = {
     // replace characters that can break the search e.g. \+-&|!(){}[]^~*?:/"
-    query.replaceAll("[\\(\\)\\*\\?\\^\\[\\]}{!|&\\-~:/+\\\\\"]", "")
+    query.replaceAll("[\\(\\)\\*\\?\\^\\[\\]}{!|&~:/+\\\\\"]", "")
   }
 }
