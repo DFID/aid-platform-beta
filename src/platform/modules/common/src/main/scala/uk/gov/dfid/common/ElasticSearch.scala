@@ -18,7 +18,7 @@ object ElasticSearch {
   def search(search: String) = {
 
     val client = node.client()
-    val query = QueryBuilders.queryString(search).defaultOperator(QueryStringQueryBuilder.Operator.AND)
+    val query = QueryBuilders.queryString(sanitize(search)).defaultOperator(QueryStringQueryBuilder.Operator.AND)
     val response = client.prepareSearch().setQuery(query).setSize(999).execute.actionGet
     response.getHits.getHits.map(_.getSource.toMap).toList
   }
@@ -31,5 +31,10 @@ object ElasticSearch {
     val request = new IndexRequest(name, "index")
     request.source(data)
     node.client.index(request).actionGet()
+  }
+
+  def sanitize(query: String) = {
+    // replace characters that can break the search e.g. \+-&|!(){}[]^~*?:/"
+    query.replaceAll("[\\(\\)\\*\\?\\^\\[\\]}{!|&\\-~:/+\\\\\"]", "")
   }
 }
