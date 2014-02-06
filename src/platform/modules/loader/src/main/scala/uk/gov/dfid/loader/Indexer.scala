@@ -139,7 +139,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "id"              -> id,
           "title"           -> doc.getAs[BSONString]("title").get.value,
           "description"     -> doc.getAs[BSONString]("description").get.value,
-          "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).get,
+          "status"          -> Statuses.get(doc.getAs[BSONLong]("status").get.value).getOrElse(""),
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
           "organizations"   -> (doc.getAs[BSONString]("organisation").get.value :: Nil).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
