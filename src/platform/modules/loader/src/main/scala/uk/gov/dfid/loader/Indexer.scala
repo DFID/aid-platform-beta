@@ -215,6 +215,10 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
             }
         }.getOrElse(List.empty)
 
+        val suppliers = Await.result(db.collection("transactions")
+          .find(BSONDocument("project" -> BSONString(id))).toList(), Duration.Inf)
+          .flatMap({ case t => t.getAs[BSONString]("receiver-org") })
+
         val bean = Map(
           "id"              -> id,
           "title"           -> doc.getAs[BSONString]("title").get.value,
@@ -223,6 +227,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
           "budget"          -> budget,
           "formattedBudget" -> formattedBudget.substring(0, formattedBudget.size - 3),
           "organizations"   -> (organisations ::: component("organizations")).distinct.filterNot(_ == "UNITED KINGDOM").mkString("#"),
+          "suppliers"       -> suppliers.distinct.mkString("#"),
           "subActivities"   -> component("subActivities").mkString("#"),
           "countries"       -> component("countries").mkString("#"),
           "regions"         -> component("regions").mkString("#"),
