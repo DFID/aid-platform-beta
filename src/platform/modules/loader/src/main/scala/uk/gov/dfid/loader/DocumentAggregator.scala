@@ -23,17 +23,21 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
     engine.execute(
       """
         |START  doc = node:entities(type = "document-link")
-        |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id
+        |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id,
+        |       language-[:`language`]-doc<-[?:`document-link`]-project-[?:`iati-identifier`]-id  
         |RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as id,
         |       doc.title!                                                  as title,
         |       COALESCE(doc.format?, "text/plain")                         as format,
         |       doc.url                                                     as url,
-        |       COLLECT(COALESCE(category.category?, ""))                   as categories
+        |       language.language                                           as language,
+        |       COLLECT(COALESCE(category.category?, ""))                   as categories  
+
       """.stripMargin).foreach { row =>
 
       val projectId  = row("id").asInstanceOf[String]
       val format     = row("format").asInstanceOf[String]
       val url        = row("url").asInstanceOf[String]
+      val language   = row("language").asInstanceOf[String]
       val categories = row("categories").asInstanceOf[Seq[String]]
       val title      = row("title") match {
         case null => ""
@@ -46,6 +50,7 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
           "title"      -> BSONString(title),
           "format"     -> BSONString(format),
           "url"        -> BSONString(url),
+          "language"   -> BSONString(language),
           "categories" -> BSONArray(
             categories.map(c => BSONString(c)): _*
           )
