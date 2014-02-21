@@ -217,3 +217,166 @@ ul.legend-list li div span{
   display:inline;
   font-size:bigger;
 }
+
+/* CSS to control the information boxes */
+
+.more-info  {
+  display: none; 
+}
+
+.more-info-content {
+  background: #f8f8f8;
+ /*  top: 1em; */
+  position: absolute; 
+  margin: 8px 15px 0 0;
+  padding: 0.6em; 
+ /* right: 0; */
+  width: 80%;
+  z-index: 101;
+  list-style: none;
+  background: #f8f8f8;
+  border: 3px solid #097f96;
+  box-sizing: border-box;
+  zoom: 1;
+ /* font-size: 160%; */
+  line-height: 1.5;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  font-family: "nta", Arial, sans-serif;
+}
+
+.more-info-container{
+  margin: 15px 0px 15px 0px; 
+}
+
+.more-info-title
+{
+  font-size: 27px;
+  font-weight: bold;  
+}
+
+.more-info-link{
+  cursor:pointer;
+}
+
+.move-up-4{
+  margin-top:-4px;
+}
+
+.move-down-4{
+  margin-top: 4px;
+}
+
+.more-info-link-spacer{
+  margin-left: 10px;
+}
+
+.float-right{
+  float:right;   
+}
+
+.float-left{
+  float:left;   
+}
+
+/*More Information CSS for landing page*/
+
+.top-five-header{
+    margin-bottom: 14px;
+    width:100%;    
+}
+
+.top-five-title{
+  font-size: 23px;
+  font-family: "NTA", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-style: normal;
+  color: #222222;
+  text-rendering: optimizeLegibility;
+  line-height: 1.1;
+  -webkit-margin-after: 1.33em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*More Information CSS for Project Page*/
+
+.project-country-title{
+  float:left;
+  font-size: 1.25em;
+  margin-bottom: 20px;
+}
+
+.move-message-box{
+  margin-top:-35px;
+  margin-right:90px;
+}
+
+.more-info-limit-size{
+  width: 320px;
+  margin-right: 689px;
+}
+
+/*More Information CSS for Country Page*/
+
+.country-info{
+  font-size: 27px;
+  font-family: "NTA", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  color: rgb(34, 34, 34);
+  text-rendering: optimizeLegibility;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  margin-top: 
+}
+
+/*More Information CSS for Transactions Page*/
+
+.trans-header-container{
+  float:left;
+  width:100%;
+  margin-bottom:14px;
+}
+
+.trans-header-left{
+  float:left; 
+  width:70%;
+  margin-bottom:5px;
+}
+
+.trans-header-right{
+  float:left; 
+  width:30%;
+  margin-bottom:5px;
+}
+
+.trans-type-title{
+  font-size: 27px;
+  font-family: "NTA","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  color: rgb(34, 34, 34);
+  text-rendering: optimizelegibility;
+  line-height: 1.1;
+  margin-bottom: 14px;
+  margin-top: 14px;
+}
+
+.trans-type-value{
+  font-size: 27px;
+  font-family: "NTA","Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  color: rgb(34, 34, 34);
+  text-rendering: optimizelegibility;
+  line-height: 1.1;
+  margin-top: 24px;
+}
+
+
+.trans-more-info-box-limiter{
+  width: 320px;
+  margin-right: 689px;
+  margin-top: 5px;
+}
+

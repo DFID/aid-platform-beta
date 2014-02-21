@@ -2,19 +2,34 @@
 title: Development Tracker
 ---
 
-<%= partial "partials/projects-header", :locals => { :project => project, :active => "transactions", :has_funded_projects => has_funded_projects} %>
+ <%= partial "partials/projects-header", :locals => { :project => project, :active => "transactions", :has_funded_projects => has_funded_projects} %>
 
 <%# ------------------------------------------------------------------------ %>
 <%#                       B U D G E T S   T A B L E                          %>
 <%# ------------------------------------------------------------------------ %>
 <div class="row">
   <div class="twelve columns transactions">
-    <h3 class="section-group-title">Budget
-      <span class="<%= (total_project_budget project['iatiId']) < 0 ? 'negative' : ''%>" style="float:right; margin-top:20px;">
-        <%= number_to_currency((total_project_budget project['iatiId']), :unit=> currency_symbol(project['currency']) || "£", :precision =>0) %>
-      </span>
-      <p style="margin-bottom:2px;">(Current approved budget)</p>
-    </h3>
+
+    <div class="section-group-title trans-header-container">
+      <div class="trans-header-left">
+        <span class="trans-type-title">Budget</span>
+        <a class="more-info-link more-info-link-spacer" id="moreinfolink1" target="1">
+           <img src="/images/icon-information.png" alt="More information about budget" class="more-info-link-middle"/>
+        </a> 
+        <aside id="moreinfo1" class="more-info">  
+              <div class="more-info-content trans-more-info-box-limiter">
+                The total amount of money available to spend.  Some budgets may not be shown if projects are in an active procurement phase.
+              </div>
+        </aside>   
+        <p style="margin-bottom:2px;">(Current approved budget)</p>
+       </div>  
+
+       <div class="trans-header-right">
+         <div class="<%= (total_project_budget project['iatiId']) < 0 ? 'negative' : ''%> float-right trans-type-value">
+           <%= number_to_currency((total_project_budget project['iatiId']), :unit=> currency_symbol(project['currency']) || "£", :precision =>0) %>
+         </div>
+       </div>        
+    </div>
     <table class="transactions-table" style="width:100%">
       <tbody>
         <tr>
@@ -38,9 +53,27 @@ title: Development Tracker
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'IF' }.each do |transaction_group| %>
-      <h3 class="section-group-title">Incoming Funds<span class="<%= transaction_group["total"] < 0 ? 'negative' : ''%>" style="float:right; margin-top:20px;"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%></span>
-        <p style="margin-bottom:2px;">(Funds received from an external funding source)</p>
-      </h3> 
+      <div class="section-group-title trans-header-container">
+          <div class="trans-header-left">
+            <span class="trans-type-title">Incoming Funds</span>
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink2" target="2">
+               <img src="/images/icon-information.png" alt="More information about Incoming Funds" class="more-info-link-middle"/>
+            </a> 
+            <aside id="moreinfo2" class="more-info">  
+                  <div class="more-info-content trans-more-info-box-limiter">
+                   Funds that originate from a source other than the donor(s) resported in the activity.
+                  </div>
+            </aside>   
+            <p style="margin-bottom:2px;">(Funds received from an external funding source)</p>
+           </div>  
+
+           <div class="trans-header-right">
+             <div class="<%= transaction_group["total"] < 0 ? 'negative' : ''%> float-right trans-type-value"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%></div>
+           </div>        
+        </div>
+
+
+
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
@@ -69,9 +102,25 @@ title: Development Tracker
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'C' }.each do |transaction_group| %>
-      <h3 class="section-group-title">Commitment <span class="<%= transaction_group["total"] < 0 ? 'negative' : ''%>" style="float:right; margin-top:20px;"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%></span>
-        <p style="margin-bottom:2px;">(Obligation to provide funding)</p>
-      </h3> 
+     <div class="section-group-title trans-header-container">
+          <div class="trans-header-left">
+            <span class="trans-type-title">Commitment</span>
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink3" target="3">
+               <img src="/images/icon-information.png" alt="More information about budget" class="more-info-link-middle"/>
+            </a> 
+            <aside id="moreinfo3" class="more-info">  
+                  <div class="more-info-content trans-more-info-box-limiter">
+                    A firm obligation to provide resources of a specified amount.
+                  </div>
+            </aside>   
+            <p style="margin-bottom:2px;">(Obligation to provide funding)</p>
+           </div>  
+
+           <div class="trans-header-right">
+             <div class="<%= transaction_group["total"] < 0 ? 'negative' : ''%> float-right trans-type-value"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%>
+             </div>
+           </div>        
+      </div> 
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
@@ -100,9 +149,25 @@ title: Development Tracker
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'D' }.each do |transaction_group| %>
-      <h3 class="section-group-title">Disbursement<span class="<%= transaction_group["total"] < 0 ? 'negative' : ''%>" style="float:right;margin-top:20px;"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) ||  "£", :precision => 0)%></span>
-        <p style="margin-bottom:2px;">(Fund transfer to implementing agency)</p>
-      </h3> 
+      <div class="section-group-title trans-header-container">
+          <div class="trans-header-left">
+            <span class="trans-type-title">Disbursement</span>
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink4" target="4">
+               <img src="/images/icon-information.png" alt="More information about budget" class="more-info-link-middle"/>
+            </a> 
+            <aside id="moreinfo4" class="more-info">  
+                  <div class="more-info-content trans-more-info-box-limiter">
+                    The amount placed at the disposal of a recipient country or agency.
+                  </div>
+            </aside>   
+            <p style="margin-bottom:2px;">(Fund transfer to implementing agency)</p>
+           </div>  
+
+           <div class="trans-header-right">
+             <div class="<%= transaction_group["total"] < 0 ? 'negative' : ''%> float-right trans-type-value"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%>
+             </div>
+           </div>        
+      </div>       
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>
@@ -133,9 +198,25 @@ title: Development Tracker
 <div class="row">
   <div class="twelve columns transactions">
     <% transaction_groups.select {|group| group['_id'] == 'E' }.each do |transaction_group| %>
-      <h3 class="section-group-title">Expenditure<span class="<%= transaction_group["total"] < 0 ? 'negative' : ''%>"style="float:right; margin-top:20px;"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%></span>
-        <p style="margin-bottom:2px;">(Project spend)</p>
-      </h3> 
+      <div class="section-group-title trans-header-container">
+          <div class="trans-header-left">
+            <span class="trans-type-title">Expenditure</span>
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink5" target="5">
+               <img src="/images/icon-information.png" alt="More information about budget" class="more-info-link-middle"/>
+            </a> 
+            <aside id="moreinfo5" class="more-info">  
+                  <div class="more-info-content trans-more-info-box-limiter">
+                    Funds spent on goods and services.
+                  </div>
+            </aside>   
+            <p style="margin-bottom:2px;">(Project spend)</p>
+           </div>  
+
+           <div class="trans-header-right">
+             <div class="<%= transaction_group["total"] < 0 ? 'negative' : ''%> float-right trans-type-value"><%= number_to_currency(transaction_group["total"], :unit=> currency_symbol(project['currency']) || "£", :precision => 0)%>
+             </div>
+           </div>        
+      </div>      
       <table class="transactions-table" style="width:100%">
         <tbody>
           <tr>

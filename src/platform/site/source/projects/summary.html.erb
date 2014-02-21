@@ -20,10 +20,16 @@ title: Development Tracker
         <p class="project-description"><%= project['description'] %></p>
 
     <%if !project['allRecipients'].nil? && project['allRecipients'].length > 0 %>
-        <p>
-            <b>Benefitting country/region</b>:
-                <%= project['allRecipients'].join(", ") %>
-        </p>
+        <div class="project-country-title"> 
+          <strong>Benefitting country/region</strong>: <%= project['allRecipients'].join(", ") %>
+          
+           <a class="more-info-link more-info-link-spacer" id="moreinfolink1" target="1"> <img src="/images/icon-information.png" alt="More information about: country, countries and regions" class="more-info-link-middle"/> </a>
+           <aside id="moreinfo1" class="more-info">            
+                    <div class="more-info-content more-info-limit-size">
+                        The country/countries/regions that have been identified as having project funds spent in it.
+                    </div>
+            </aside>
+        </div>  
     <%end%>
     </div>
 
@@ -32,7 +38,18 @@ title: Development Tracker
 <div class="row">
 
     <div class="six columns">
-        <h3 >Funding</h3>
+         <div class="more-info-container">  
+            <span class="more-info-title">Funding</span> 
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink2" target="2"><img src="/images/icon-information.png" alt="More information about project funding" class="more-info-link-middle"/></a>
+            <aside id="moreinfo2" class="more-info">            
+                    <div class="more-info-content">
+                        Project budget and spend to date, as per the amounts loaded in financial system(s), and for which procurement has been finalised. 
+                    </div>
+            </aside>
+         </div> 
+
+
+
         <div id="funding-progress" style="height: 150px;" class="progress"></div>
 
         <!--[if lte IE 8]>
@@ -41,8 +58,18 @@ title: Development Tracker
                 <p><strong>Project budget:</strong> <%= number_to_currency(project['totalBudget'], :unit=>"£", :precision => 0) || 0.00 %> </p>
            </div>
         <![endif]-->
+        
+        <div class="more-info-container">  
+            <span class="more-info-title">Status - <%= activity_status(project['status']) %></span> 
+            <a class="more-info-link more-info-link-spacer" id="moreinfolink3" target="3"><img src="/images/icon-information.png" alt="More information about project status" class="more-info-link-middle"/></a>
+            <aside id="moreinfo3" class="more-info">            
+                    <div class="more-info-content">
+                        The current stage of the project, consistent with the International Aid Transparency Initiative's (IATI) classifications.
+                    </div>
+            </aside>
+        </div> 
 
-        <h3 >Status - <%= activity_status(project['status']) %></h3>
+
         <div id="time-progress" style="height: 150px;" class="progress"></div>
 
         <!--[if lte IE 8]>
@@ -54,7 +81,16 @@ title: Development Tracker
 
         <% if (!project['implementingOrgs'].nil? && !project['implementingOrgs'].empty?)  %>
 
-            <h3>Implementing Organisation(s)</h3>
+            <div class="more-info-container">  
+                <span class="more-info-title">Implementing Organisation(s)</span> 
+                <a class="more-info-link more-info-link-spacer" id="moreinfolink4" target="4"><img src="/images/icon-information.png" alt="More information about implementing organisation(s)" class="more-info-link-middle"/></a>
+                <aside id="moreinfo4" class="more-info">            
+                        <div class="more-info-content">
+                            Mapped from the Development Assistance Committee's (DAC) list for 'channel of delivery' codes and names - used by donors to report on their aid flows. 
+                        </div>
+                </aside>
+            </div>
+
             <div id="implementing-organisations">
                 <ul>
                     <% project['implementingOrgs'].each do |implementingOrgs| %>
@@ -101,7 +137,15 @@ title: Development Tracker
 
 <div class="row">
     <div class="six columns">
-        <h3>Sector groups as a percentage of project budget</h3>
+        <div class="more-info-container">  
+                <span class="more-info-title">Sector groups as a percentage of project budget</span> 
+                <a class="more-info-link more-info-link-spacer" id="moreinfolink5" target="5"><img src="/images/icon-information.png" alt="More information about project sector groups" class="more-info-link-middle"/></a>
+                <aside id="moreinfo5" class="more-info">            
+                        <div class="more-info-content">
+                            A project can have up to 8 sectors, which are displayed with percentage allocations that total up to 100%.  They are consistent with the Development Assistance Committee's (DAC) classifications.
+                        </div>
+                </aside>
+        </div>
         <div class="row">
             <div class="six columns">
                 <div id="sector-breakdown" class="donut"></div>
@@ -122,7 +166,15 @@ title: Development Tracker
     </div>
 
     <div class="six columns">
-        <h3 >Project budget vs actual spend</h3>
+        <div class="more-info-container">  
+                <span class="more-info-title">Project budget vs actual spend</span> 
+                <a class="more-info-link more-info-link-spacer" id="moreinfolink6" target="6"><img src="/images/icon-information.png" alt="More information about project budget vs actual spend" class="more-info-link-middle"/></a>
+                <aside id="moreinfo6" class="more-info">            
+                        <div class="more-info-content">
+                           A comparison of forecast spend and the total amount of money spent on the project to date.  Some budgets may not be shown if projects are in an active procurement phase.
+                        </div>
+                </aside>
+        </div>
         <div id="budget-plan-spend-legend">
             <div class="row">
                 <div class="six columns">
