@@ -23,7 +23,14 @@ title: Development Tracker
                 <% documents.each do |document| %>
                   <tr class="result-list-row">
                       <th scope="row"><a href="<%=document['url']%>"><%= document['title'].gsub(/\.[^.]*$/, '') %></a></th>
-                      <td scope="col"><%= mime_type document['format'] %></td>
+                      <% if document['format'] == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %>
+                          <td scope="col">Word Document</td>  
+                      <% else %> 
+                          <td scope="col"><%= mime_type document['format'] %></td>
+                      <% end %>
+                      <%if document['language'] != 'English'  %>
+                        <td scope="col">Language: <%= document['language'] %></td>
+                      <% end %>
                       <td scope="col">
                         <% document['categories'].each do |category| %>
                           <span class="category">
@@ -34,9 +41,6 @@ title: Development Tracker
                   </tr>
                 <% end %>
             </tbody>
-        </table>       
-        
-        
-        
+        </table>        
     </div>
 </div>
