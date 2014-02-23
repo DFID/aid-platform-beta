@@ -356,7 +356,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             | START  n=node:entities(type="iati-activity")
             | MATCH  d-[:`activity-date`]-n-[:`activity-status`]-a
             | WHERE  n.`iati-identifier`? = '$funded'
-            | AND HAS(d.type) AND (HAS(d.`iso-date`) OR (d.`activity-date`))
+            | AND HAS(d.type) AND (HAS(d.`iso-date`) OR HAS(d.`activity-date`))
             | RETURN d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
           """.stripMargin).toSeq.map { row =>
 
