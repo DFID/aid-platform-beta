@@ -6,7 +6,8 @@ require "uri"
 def r4DApiDocFetch(projectId)
 	
 	begin
-		uri_str = URI.escape("http://linked-development.org/openapi/r4d/get/research_outputs/"+projectId+"?per_project=5&format=json")
+		uri_str = URI.escape("http://api.linkeddev.swirrl.com/openapi/r4d/get/research_outputs/"+projectId+".json?per_project=5")
+		
 		uri = URI.parse(uri_str)
  
 		http = Net::HTTP.new(uri.host, uri.port)
