@@ -28,8 +28,8 @@ title: Development Tracker
                       <% else %> 
                           <td scope="col"><%= mime_type document['format'] %></td>
                       <% end %>
-                      <%if document['language'] != 'English'  %>
-                        <td scope="col">Language: <%= document['language'] %></td>
+                      <%if (document['language'] != 'English' && document['language'] != '') %> 
+                         <td scope="col">Language: <%= document['language'] %></td>
                       <% end %>
                       <td scope="col">
                         <% document['categories'].each do |category| %>

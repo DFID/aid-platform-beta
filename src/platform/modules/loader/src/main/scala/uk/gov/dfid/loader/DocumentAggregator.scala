@@ -20,6 +20,18 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
 
     auditor.info("Collecting Project Documents")
 
+     /*   
+
+        |START  doc = node:entities(type = "document-link")
+        |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id,
+        |       language-[:`language`]-doc<-[?:`document-link`]-project-[?:`iati-identifier`]-id  
+        |RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as id,
+        |       doc.title!                                                  as title,
+        |       COALESCE(doc.format?, "text/plain")                         as format,
+        |       doc.url                                                     as url,
+        |       COALESCE(language.language?, "")                            as language,
+        |       COLLECT(COALESCE(category.category?, ""))                   as categories  */
+
     engine.execute(
       """
         |START  doc = node:entities(type = "document-link")
@@ -29,7 +41,7 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
         |       doc.title!                                                  as title,
         |       COALESCE(doc.format?, "text/plain")                         as format,
         |       doc.url                                                     as url,
-        |       language.language                                           as language,
+        |       language.language!                                          as language,       
         |       COLLECT(COALESCE(category.category?, ""))                   as categories  
 
       """.stripMargin).foreach { row =>
@@ -37,7 +49,10 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
       val projectId  = row("id").asInstanceOf[String]
       val format     = row("format").asInstanceOf[String]
       val url        = row("url").asInstanceOf[String]
-      val language   = row("language").asInstanceOf[String]
+      val language   = row("language") match {
+        case null => ""
+        case l    => l.asInstanceOf[String] 
+      }
       val categories = row("categories").asInstanceOf[Seq[String]]
       val title      = row("title") match {
         case null => ""
@@ -50,7 +65,7 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
           "title"      -> BSONString(title),
           "format"     -> BSONString(format),
           "url"        -> BSONString(url),
-          "language"   -> BSONString(language),
+          "language"   -> BSONString(language), 
           "categories" -> BSONArray(
             categories.map(c => BSONString(c)): _*
           )
