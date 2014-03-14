@@ -166,7 +166,7 @@ CodeLists.all_global_recipients.map { |code, name|
   end
 
   if has_funded_projects then
-    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects }
+    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :is_funded_by_dfid_project => true }
   end
 end
 
@@ -230,9 +230,9 @@ end
 
   # get the other funded projects
   funded_projects = @cms_db['funded-projects'].find({ 
-    'funding' => funded_project['funding'],
-    'funded'  => { '$ne' => funded_project['funded'] } 
+    'funding' => funded_project['funded']
   }).to_a
+  has_funded_projects = funded_projects.size > 0
 
   # get the parent project
   funding_project    = @cms_db['projects'].find_one({ 'iatiId' =>  funded_project['funding'] })
@@ -263,7 +263,14 @@ end
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project  }
+  
+  is_funded_by_dfid_project = true
+  if funding_project.nil? then
+    funding_project    = @cms_db['funded-projects'].find_one({ 'funded' =>  funded_project['funding'] })
+    is_funded_by_dfid_project = false
+  end
+
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project }
   
 end
 
