@@ -36,12 +36,12 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
       """
         |START  doc = node:entities(type = "document-link")
         |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id,
-        |       language-[:`language`]-doc<-[?:`document-link`]-project-[?:`iati-identifier`]-id  
+        |       doc-[?:language]-lang  
         |RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as id,
         |       doc.title!                                                  as title,
         |       COALESCE(doc.format?, "text/plain")                         as format,
         |       doc.url                                                     as url,
-        |       language.language!                                          as language,       
+        |       COALESCE(lang.language?, "")                                as language,       
         |       COLLECT(COALESCE(category.category?, ""))                   as categories  
 
       """.stripMargin).foreach { row =>
@@ -49,10 +49,7 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
       val projectId  = row("id").asInstanceOf[String]
       val format     = row("format").asInstanceOf[String]
       val url        = row("url").asInstanceOf[String]
-      val language   = row("language") match {
-        case null => ""
-        case l    => l.asInstanceOf[String] 
-      }
+      val language   = row("language").asInstanceOf[String]
       val categories = row("categories").asInstanceOf[Seq[String]]
       val title      = row("title") match {
         case null => ""
