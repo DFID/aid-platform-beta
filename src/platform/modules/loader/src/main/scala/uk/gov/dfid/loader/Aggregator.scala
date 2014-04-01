@@ -19,6 +19,7 @@ import reactivemongo.api.indexes.{IndexType, Index}
 import concurrent._
 import java.util.Date
 import java.text.SimpleDateFormat
+import uk.gov.dfid.loader.util.Converter
 
 /**
  * Aggregates a bunch of data related to certain elements
@@ -167,14 +168,14 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
           val country = row("country").asInstanceOf[String]
           val sector = row("sector").asInstanceOf[Long].toString
           val name = row("name").asInstanceOf[String]
-          val total = row("total").asInstanceOf[Long].toInt
+          val total = Converter.toLong(row("total"))
 
           sectorBreakdowns.insert(
             BSONDocument(
               "country" -> BSONString(country),
               "sector"  -> BSONString(sector),
               "name"    -> BSONString(name),
-              "total"   -> BSONInteger(total)
+              "total"   -> BSONLong(total)
             )
           )
         } catch {
@@ -208,13 +209,13 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
        """.stripMargin).toSeq.foreach { row =>
       try {
         val id = row("projectId").asInstanceOf[String]
-        val value = row("value").asInstanceOf[Long].toInt
+        val value = Converter.toDouble(row("value"))
         val date = row("date").asInstanceOf[String]
 
         projectBudgets.insert(
           BSONDocument(
              "id" -> BSONString(id),
-             "value" -> BSONInteger(value),
+             "value" -> BSONDouble(value),
              "date" -> BSONString(date)
           )
         )
@@ -235,9 +236,9 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
     Await.ready(projects.update(
       BSONDocument(),
       BSONDocument("$set" -> BSONDocument(
-        "totalBudget" -> BSONLong(0),
-        "currentFYBudget" -> BSONLong(0),
-        "totalProjectSpend" -> BSONLong(0)
+        "totalBudget" -> BSONDouble(0.0),
+        "currentFYBudget" -> BSONDouble(0.0),
+        "totalProjectSpend" -> BSONDouble(0.0)
       )
     ), multi = true), Duration Inf)
 
@@ -253,18 +254,15 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | RETURN a.ref as id, v.value as value, p.`iso-date` as date
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
-      val budget = row("value") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
+      val budget = Converter.toDouble(row("value"))
       val date = row("date").asInstanceOf[String]
       val currentFy = date >= start && date <= end
 
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument(
-          "$inc" -> BSONDocument("totalBudget" -> BSONLong(budget)),
-          "$inc" -> BSONDocument("currentFYBudget" -> BSONLong(if(currentFy) budget else 0L)
+          "$inc" -> BSONDocument("totalBudget" -> BSONDouble(budget)),
+          "$inc" -> BSONDocument("currentFYBudget" -> BSONDouble(if(currentFy) budget else 0.0)
         )),
         upsert = false, multi = false
       )
@@ -286,15 +284,12 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
         | sum(value.value)     as spend
       """.stripMargin).foreach { row =>
       val id = row("id").asInstanceOf[String]
-      val spend = row("spend") match {
-        case v: java.lang.Integer => v.toLong
-        case v: java.lang.Long    => v.toLong
-      }
+      val spend = Converter.toDouble(row("spend"))
 
       projects.update(
         BSONDocument("iatiId" -> BSONString(id)),
         BSONDocument("$set" -> BSONDocument(
-          "totalProjectSpend" -> BSONLong(spend)
+          "totalProjectSpend" -> BSONDouble(spend)
         )),
         upsert = false, multi = false
       )
@@ -336,17 +331,14 @@ class Aggregator(engine: ExecutionEngine, db: DefaultDB, projects: Api[Project],
 
         val result = engine.execute(query).columnAs[Object]("value")
 
-        val totalBudget = result.toSeq.head match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-        }
+        val totalBudget = Converter.toDouble(result.toSeq.head)
 
         // update the country stats collection
         db.collection("country-stats").update(
           BSONDocument("code" -> BSONString(code)),
           BSONDocument("$set" -> BSONDocument(
             "code"        -> BSONString(code),
-            "totalBudget" -> BSONLong(totalBudget)
+            "totalBudget" -> BSONDouble(totalBudget)
           )),
           multi = false,
           upsert = true
