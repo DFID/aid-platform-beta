@@ -80,7 +80,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
       projects.foreach { doc =>
         val funded = doc.getAs[BSONString]("funded").get.value
         val funding = doc.getAs[BSONString]("funding").get.value
-        val budget = doc.getAs[BSONLong]("totalBudget").get.value
+        val budget = doc.getAs[BSONDouble]("totalBudget").get.value
         val currency = doc.getAs[BSONString]("currency").get.value
 
         val formattedBudget = {
@@ -127,7 +127,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
       projects.foreach { doc =>
 
         val id = doc.getAs[BSONString]("iatiId").get.value
-        val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+        val budget = doc.getAs[BSONDouble]("totalBudget").map(_.value).getOrElse(0L)
         val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
 
         // TODO: James Hughes 22 Apr 2012 - need to get a list of all participating orgs
@@ -174,7 +174,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
                 "sugestion"     -> "CountriesSugestion",
                 "countryName"   -> name,
                 "countryCode"   -> code,
-                "countryBudget" -> stat.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+                "countryBudget" -> stat.getAs[BSONDouble]("totalBudget").map(_.value).getOrElse(0L)
               )
 
               ElasticSearch.index(bean, "aid")
@@ -200,7 +200,7 @@ class Indexer @Inject()(db: DefaultDB, engine: ExecutionEngine, sectors: Sectors
     // loop over projects collection and index the values
     projects.map { doc =>
         val id = doc.getAs[BSONString]("iatiId").get.value
-        val budget = doc.getAs[BSONLong]("totalBudget").map(_.value).getOrElse(0L)
+        val budget = doc.getAs[BSONDouble]("totalBudget").map(_.value).getOrElse(0L)
         val formattedBudget = NumberFormat.getCurrencyInstance(Locale.UK).format(budget)
         val component = components(id)
 
