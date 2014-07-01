@@ -14,6 +14,7 @@ import reactivemongo.bson.BSONDateTime
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONString
 import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
+import uk.gov.dfid.loader.util.Converter
 
 class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
@@ -53,13 +54,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
       
-      val value            = row("value") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+      val value            = Converter.toDouble(row("value"))
       val date             = try { DateTime.parse(row("date").asInstanceOf[String], format).getMillis } catch { case _ : Throwable => 0 }
       val transaction      = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else ""}
       val receiver         = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
@@ -75,7 +70,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "receiver-org"           -> BSONString(receiver),
           "provider-org"           -> BSONString(provider),
           "provider-activity-id"   -> BSONString(providerActivity),
-          "value"                  -> BSONLong(value),          
+          "value"                  -> BSONDouble(value),          
           "date"                   -> BSONDateTime(date),
           "type"                   -> BSONString(transaction)
         )
@@ -112,13 +107,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       val project     = { if(row("project").isInstanceOf[String]) row("project").asInstanceOf[String] else "" }
 
-      val value       = row("value") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+      val value       = Converter.toDouble(row("value"))
       
       val date        = DateTime.parse(row("date").asInstanceOf[String], format) 
       val transaction = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
@@ -134,7 +123,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "description"   -> BSONString(description),
           "receiver-org"  -> BSONString(receiver),
           "title"         -> BSONString(title),
-          "value"         -> BSONLong(value),          
+          "value"         -> BSONDouble(value),          
           "date"          -> BSONDateTime(date.getMillis),
           "type"          -> BSONString(transaction)
         )
@@ -204,21 +193,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         val id          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
         val name        = { if(row("name").isInstanceOf[String]) row("name").asInstanceOf[String] else "" }
 
-        val code        = row("code") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+        val code        = Converter.toLong(row("code"))
+        val total       = Converter.toDouble(row("total"))
 
-        val total       = row("total")  match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
         val date        = { if(row("date").isInstanceOf[String]) row("date").asInstanceOf[String] else "" }
 
         projectSectorBudgets.insert(
@@ -226,7 +203,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             "projectIatiId" -> BSONString(id),
             "sectorName"    -> BSONString(name),
             "sectorCode"    -> BSONLong(code),
-            "sectorBudget"  -> BSONLong(total),
+            "sectorBudget"  -> BSONDouble(total),
             "date"          -> BSONString(date)
           )
         )
@@ -276,21 +253,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         val description = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else ""}
         val funding     = { if(row("funding").isInstanceOf[String]) row("funding").asInstanceOf[String] else ""}
         
-        val status      = row("status") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
-        
+        val status      = Converter.toLong(row("status"))        
         val currency    = { if( row("currency").isInstanceOf[String] ) row("currency").asInstanceOf[String] else ""}
-        val funds       = row("funds") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double  => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+        val funds       = Converter.toDouble(row("funds"))
 
         val recipient   = row("recipient") match {          
           case v: java.lang.Long    => v.toString
@@ -319,21 +284,15 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
         // now we need to sum up the project budgets and spend.
-        val totalBudget = engine.execute(
+        val totalBudget = Converter.toDouble(engine.execute(
           s"""
              | START  funded=node:entities(type="iati-activity")
              | MATCH  funded-[:budget]-budget-[:value]-budget_value
              | WHERE  funded.`iati-identifier`? = '$funded'
              | RETURN SUM(budget_value.value) as totalBudget
-          """.stripMargin).toSeq.head("totalBudget") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double    => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+          """.stripMargin).toSeq.head("totalBudget"))
 
-        val totalSpend = engine.execute(
+        val totalSpend = Converter.toDouble(engine.execute(
           s"""
              | START  funded=node:entities(type="iati-activity")
              | MATCH  funded-[:transaction]-transaction-[:value]-transaction_value,
@@ -342,13 +301,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
              | AND    HAS(type.`code`)
              | AND    (type.`code` = 'D' OR type.`code` = 'E')
              | RETURN SUM(transaction_value.value) as totalSpend
-          """.stripMargin).toSeq.head("totalSpend") match {
-          case v: java.lang.Integer => v.toLong
-          case v: java.lang.Long    => v.toLong
-          case v: java.lang.Double    => v.toLong
-          case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-          case _ => 0
-        }
+          """.stripMargin).toSeq.head("totalSpend"))
 
         // then we need to get the dates as well
         val dates = engine.execute(
@@ -381,10 +334,10 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             // so we can use it in the diclaimer component
             "organisation" -> BSONString(reporting),
             "description"  -> BSONString(description),
-            "funds"        -> BSONLong(funds),
+            "funds"        -> BSONDouble(funds),
             "currency"     -> BSONString(currency),
-            "totalBudget"  -> BSONLong(totalBudget),
-            "totalSpend"   -> BSONLong(totalSpend),
+            "totalBudget"  -> BSONDouble(totalBudget),
+            "totalSpend"   -> BSONDouble(totalSpend),
             "status"       -> BSONLong(status),
             "recipient"    -> BSONString(recipient)
           ).append(dates: _*)
@@ -401,19 +354,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             |        p.`iso-date`? as date
           """.stripMargin).foreach { row =>
 
-          val value = row("value")  match {
-            case v: java.lang.Integer => v.toInt
-            case v: java.lang.Long    => v.toInt
-            case v: java.lang.Double  => v.toInt
-            case v: java.lang.String => try { v.toInt } catch { case _ : Throwable => 0 }
-            case _ => 0
-          }  
+          val value = Converter.toDouble(row("value"))
           val date = { if ( row("date").isInstanceOf[String] ) row("date").asInstanceOf[String] else ""}
 
           db.collection("project-budgets").insert(
             BSONDocument(
               "id"    -> BSONString(funded),              
-              "value" -> BSONInteger(value),
+              "value" -> BSONDouble(value),
               "date"  -> BSONString(date)
             )
           )
@@ -436,27 +383,14 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
             case null          => None
             case value: String => Some(value)
           }
-          val code        = row("code")  match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-            case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-            case _ => 0
-          }  
-
-          val total       = row("total")  match {
-            case v: java.lang.Integer => v.toLong
-            case v: java.lang.Long    => v.toLong
-            case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
-            case _ => 0
-          }
+          val code        = Converter.toLong(row("code")) 
+          val total       = Converter.toDouble(row("total"))
 
           db.collection("project-sector-budgets").insert(
             BSONDocument(
               "projectIatiId" -> BSONString(funded),
               "sectorCode"    -> BSONLong(code),              
-              "sectorBudget"  -> BSONLong(total)
+              "sectorBudget"  -> BSONDouble(total)
             ).append(
               Seq(
                 name.map("sectorName" -> BSONString(_))
@@ -498,14 +432,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val title        = { if ( row("title").isInstanceOf[String] ) row("title").asInstanceOf[String] else "" }
       val name         = { if ( row("name").isInstanceOf[String] ) row("name").asInstanceOf[String] else "" }
       val precision    = { if ( row("precision").isInstanceOf[Long] ) row("precision").asInstanceOf[Long] else 0 }
-      val longitude    = row("longitude") match {
-        case l: java.lang.Double => l.toDouble
-        case l: java.lang.Long   => l.toDouble
-      }
-      val latitude     = row("latitude") match {
-        case l: java.lang.Double => l.toDouble
-        case l: java.lang.Long   => l.toDouble
-      }
+      val longitude    = Converter.toDouble(row("longitude"))
+      val latitude     = Converter.toDouble(row("latitude"))
       val locationType = { if ( row("type").isInstanceOf[String] ) row("type").asInstanceOf[String] else "" }
 
       db.collection("locations").insert(BSONDocument(
