@@ -35,6 +35,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val sectors    = new Sectors(mongodb)
       val indexer    = new Indexer(mongodb, engine, sectors, auditor)
       val results    = new CountryResults(engine, mongodb, auditor)
+      val sector_hierarchies_results  = new SectorHierarchies(engine, mongodb, auditor)
 
       // drop current audtis table.  Transient data ftw
       auditor.drop
@@ -42,6 +43,9 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       val timeCRStart = System.currentTimeMillis
       results.loadCountryResults
+
+      val timeSHStart = System.currentTimeMillis
+      sector_hierarchies_results.loadSectorHierarchies
 
       val timeVMStart = System.currentTimeMillis
       validateAndMap(sources, neo4j)
