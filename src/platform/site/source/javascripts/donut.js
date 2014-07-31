@@ -55,6 +55,7 @@
             .append("rect")
                 .attr("width", "100%")
                 .attr("height", 46)
+                .attr("width", 10)
                 .style("fill", function(d) {
                     return colourFor(paletteFn(d));
                 });
