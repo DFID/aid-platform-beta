@@ -32,10 +32,10 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
         "results" -> BSONString(result(3)),
         "total" -> BSONString(result(5))
       )
-      //val label = BSONString(result(0))
+      val label = BSONString(result(0))
 
       Await.ready(country_results.insert(document), Duration.Inf)
-      //auditor.info(s"Inserted results for " + label.toString)
+      auditor.info(s"Inserted results for " + label.toString)
     }
     
     auditor.info("Finished loading country results")
