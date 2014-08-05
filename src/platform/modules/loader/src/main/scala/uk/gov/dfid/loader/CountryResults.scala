@@ -22,8 +22,9 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     
     Await.ready(country_results.drop(), Duration.Inf)
 
-    auditor.info("Country results dropped")
+    auditor.info("Country results dropped, loading source")
     val source = country_results_src.getLines.drop(1).mkString("\n")
+    auditor.info("parsing source")
     val results = CSV.parse(source)
     auditor.info("processing country results")
     results.foreach { result =>
