@@ -22,8 +22,10 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     
     Await.ready(country_results.drop(), Duration.Inf)
 
+    auditor.info("Country results dropped")
     val source = country_results_src.getLines.drop(1).mkString("\n")
     val results = CSV.parse(source)
+    auditor.info("processing country results")
     results.foreach { result =>
       val document = BSONDocument(
         "country" -> BSONString(result(0)),
@@ -33,7 +35,8 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
         "total" -> BSONString(result(5))
       )
       val label = BSONString(result(0))
-
+      
+      auditor.info("Ready to insert result")
       Await.ready(country_results.insert(document), Duration.Inf)
       auditor.info(s"Inserted results for " + label.toString)
     }
