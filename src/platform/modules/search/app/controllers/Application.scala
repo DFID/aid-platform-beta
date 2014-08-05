@@ -15,7 +15,7 @@ object Application extends Controller {
         if(countries.isEmpty) {
           Ok(views.html.search(query, projects.size , projects, countries))
         } else {
-          val country = countries.maxBy(_("countryBudget").asInstanceOf[Int])
+          val country = countries.maxBy(_("countryBudget").asInstanceOf[Double])
           Ok(views.html.search(query, projects.size , projects, countries))
         }
       }
