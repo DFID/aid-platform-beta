@@ -14,8 +14,7 @@ object Application extends Controller {
         val (projects, countries) = ElasticSearch.search(query).partition(_.contains("id"))
         if(countries.isEmpty) {
           Ok(views.html.search(query, projects.size , projects, countries))
-        } else {
-          val country = countries.maxBy(_("countryBudget").asInstanceOf[Double])
+        } else {          
           Ok(views.html.search(query, projects.size , projects, countries))
         }
       }
