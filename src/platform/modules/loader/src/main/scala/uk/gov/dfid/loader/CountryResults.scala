@@ -15,10 +15,12 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadCountryResults = {
 
-    auditor.info("Loading country results")
+    try {
+      auditor.info("Loading country results")
 
     val country_results = db.collection("country-results")
-    val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+    //val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+    val country_results_src = Source.fromURL(getClass.getResource("/var/lib/jenkins/jobs/aid-platform-beta/workspace/src/plaform/modules/loader/src/main/resources/country_results.csv"))
     
     Await.ready(country_results.drop(), Duration.Inf)
 
@@ -43,6 +45,9 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     }
     
     auditor.info("Finished loading country results")
+    } catch{
+            case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }
   }
 
   object CSV extends RegexParsers {
