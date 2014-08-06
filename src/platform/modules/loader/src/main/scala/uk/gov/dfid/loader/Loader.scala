@@ -42,7 +42,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.info("Loading data")
 
       val timeCRStart = System.currentTimeMillis
-      //results.loadCountryResults
+      results.loadCountryResults
 
       val timeSHStart = System.currentTimeMillis
       //sector_hierarchies_results.loadSectorHierarchies
