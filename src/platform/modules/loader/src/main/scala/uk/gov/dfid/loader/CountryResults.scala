@@ -15,8 +15,7 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadCountryResults = {
 
-    try {
-      auditor.info("Loading country results")
+    auditor.info("Loading country results")
 
     val country_results = db.collection("country-results")
     //val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
@@ -37,17 +36,15 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
         "results" -> BSONString(result(3)),
         "total" -> BSONString(result(5))
       )
-      val label = BSONString(result(0))
+     // val label = BSONString(result(0))
       
-      auditor.info("Ready to insert result")
+     // auditor.info("Ready to insert result")
       Await.ready(country_results.insert(document), Duration.Inf)
-      auditor.info(s"Inserted results for " + label.toString)
+     // auditor.info(s"Inserted results for " + label.toString)
     }
     
     auditor.info("Finished loading country results")
-    } catch{
-            case e: Throwable => println(e.getMessage); e.printStackTrace()
-    }
+    
   }
 
   object CSV extends RegexParsers {
