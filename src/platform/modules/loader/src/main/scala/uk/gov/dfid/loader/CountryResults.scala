@@ -20,7 +20,7 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
     val country_results = db.collection("country-results")
     //val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
-    val country_results_src = Source.fromURL(getClass.getResource("/var/lib/jenkins/jobs/aid-platform-beta/workspace/src/plaform/modules/loader/src/main/resources/country_results.csv"))
+    val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
     
     Await.ready(country_results.drop(), Duration.Inf)
 
