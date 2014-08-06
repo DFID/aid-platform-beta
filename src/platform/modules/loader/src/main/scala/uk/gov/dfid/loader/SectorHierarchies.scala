@@ -14,7 +14,9 @@ import scala.util.parsing.combinator.RegexParsers
 class SectorHierarchies(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadSectorHierarchies = {
-
+  
+    try{      
+    
     auditor.info("Loading sector hierarchies")
 
     val sector_hierarchies = db.collection("sector-hierarchies")
@@ -44,6 +46,11 @@ class SectorHierarchies(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor
     })
     
     auditor.info("Finished loading sector hierarchies")
+    } catch{
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }
+    
+    
   }
 
   object CSV extends RegexParsers {
