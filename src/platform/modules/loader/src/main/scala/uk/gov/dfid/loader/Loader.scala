@@ -45,7 +45,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       results.loadCountryResults
 
       val timeSHStart = System.currentTimeMillis
-      //sector_hierarchies_results.loadSectorHierarchies
+      sector_hierarchies_results.loadSectorHierarchies
 
       val timeVMStart = System.currentTimeMillis
       validateAndMap(sources, neo4j)
