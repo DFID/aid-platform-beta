@@ -15,19 +15,21 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadCountryResults = {
 
-    auditor.info("Loading country results")
+    try {
 
-    val country_results = db.collection("country-results")
-    val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+      auditor.info("Loading country results")
+
+      val country_results = db.collection("country-results")
+      val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
     
-    Await.ready(country_results.drop(), Duration.Inf)
+      Await.ready(country_results.drop(), Duration.Inf)
 
-    auditor.info("Country results dropped, loading source")
-    val source = country_results_src.getLines.drop(1).mkString("\n")
-    auditor.info("parsing source")
-    val results = CSV.parse(source)
-    auditor.info("processing country results")
-    results.foreach { result =>
+      auditor.info("Country results dropped, loading source")
+      val source = country_results_src.getLines.drop(1).mkString("\n")
+      auditor.info("parsing source")
+      val results = CSV.parse(source)
+      auditor.info("processing country results")
+      results.foreach { result =>
       val document = BSONDocument(
         "country" -> BSONString(result(0)),
         "code" -> BSONString(result(1)),
@@ -43,6 +45,9 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     }
     
     auditor.info("Finished loading country results")
+    } catch{
+          case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }    
   }
 
   object CSV extends RegexParsers {
