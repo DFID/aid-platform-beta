@@ -14,12 +14,15 @@ import scala.util.parsing.combinator.RegexParsers
 class SectorHierarchies(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def loadSectorHierarchies = {
-
+  
+    try{      
+    
     auditor.info("Loading sector hierarchies")
 
     val sector_hierarchies = db.collection("sector-hierarchies")
-    val sector_hierarchies_src = Source.fromURL(getClass.getResource("/sector_hierarchies.csv"))
-    
+    //val sector_hierarchies_src = Source.fromURL(getClass.getResource("/sector_hierarchies.csv"))
+    val sector_hierarchies_src = Source.fromURL("https://raw.githubusercontent.com/DFID/aid-platform-beta/master/src/platform/modules/loader/src/main/resources/sector_hierarchies.csv")
+      
     Await.ready(sector_hierarchies.drop(), Duration.Inf)
 
     val source = sector_hierarchies_src.getLines.drop(1).mkString("\n")
@@ -43,6 +46,11 @@ class SectorHierarchies(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor
     })
     
     auditor.info("Finished loading sector hierarchies")
+    } catch{
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }
+    
+    
   }
 
   object CSV extends RegexParsers {

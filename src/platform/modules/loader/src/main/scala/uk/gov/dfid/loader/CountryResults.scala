@@ -18,12 +18,16 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     auditor.info("Loading country results")
 
     val country_results = db.collection("country-results")
-    val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+    //val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+    val country_results_src = Source.fromURL("https://raw.githubusercontent.com/DFID/aid-platform-beta/e7e9ab34488b84dc16a84babc20edb64aaf44097/src/platform/modules/loader/src/main/resources/country_results.csv")
     
     Await.ready(country_results.drop(), Duration.Inf)
 
+    auditor.info("Country results dropped, loading source")
     val source = country_results_src.getLines.drop(1).mkString("\n")
+    auditor.info("parsing source")
     val results = CSV.parse(source)
+    auditor.info("processing country results")
     results.foreach { result =>
       val document = BSONDocument(
         "country" -> BSONString(result(0)),
@@ -32,13 +36,15 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
         "results" -> BSONString(result(3)),
         "total" -> BSONString(result(5))
       )
-      //val label = BSONString(result(0))
-
+     // val label = BSONString(result(0))
+      
+     // auditor.info("Ready to insert result")
       Await.ready(country_results.insert(document), Duration.Inf)
-      //auditor.info(s"Inserted results for " + label.toString)
+     // auditor.info(s"Inserted results for " + label.toString)
     }
     
     auditor.info("Finished loading country results")
+    
   }
 
   object CSV extends RegexParsers {

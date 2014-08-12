@@ -28,7 +28,7 @@ title: Development Tracker
         <div class="description"><%= markdown_to_html(h country['description'])%></div>
         <script type="text/javascript">
             $('div.description').expander({
-                slicePoint    : 300,
+                slicePoint    : <%= country['description'].index('<!--(more)-->') || 300 %>,
                 expandSpeed   : 0,
                 collapseSpeed : 0,
                 expandText    : 'Read more about <%=h country["name"] %>' 
