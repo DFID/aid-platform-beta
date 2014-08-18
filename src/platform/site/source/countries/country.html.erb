@@ -41,6 +41,20 @@ title: Development Tracker
     <div class="six columns">
         <h3>Key Info</h3>
         <ul class="info-list vertical">
+            <% if country_organisation_plan!= nil then %>
+                <li class="fact-item">
+                Operational Plan Budget
+                <a class="more-info-link more-info-link-spacer" id="moreinfolink1" target="1">
+                    <img src="/images/icon-information.png" alt="More information about the operational plan budget"/>
+                </a>
+                <aside id="moreinfo1" class="more-info">            
+                    <div class="more-info-content">
+                       This is the figure quoted in the Country's Operational Plan that we budget to spend each financial year.
+                    </div>
+                </aside>
+                <span><strong><%= number_to_currency(country_organisation_plan['operationalBudget'], :unit=>"£", :precision => 0) %></strong></span>
+                </li>
+            <% end %>
             <li class="fact-item">
                 Total Project Budget for <strong><%= current_financial_year %></strong>
                 <a class="more-info-link more-info-link-spacer" id="moreinfolink1" target="1">

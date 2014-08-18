@@ -42,6 +42,7 @@ ignore "/rss/index.html"
 #------------------------------------------------------------------------------
 @cms_db['countries'].find({}).each do |country|
   stats    = @cms_db['country-stats'].find_one({ "code" => country["code"] })
+  country_organisation_plan    = @cms_db['country-operation-budgets'].find_one({ "code" => country["code"] })
   projects = @cms_db['projects'].find({ "recipient" => country['code'] }, :sort => ['totalBudget', Mongo::DESCENDING]).to_a
   projects.each { |p| p['documents'] = @cms_db['documents'].find( {'project' => p['iatiId'] }).to_a.map { |document| document } }
 
@@ -68,8 +69,9 @@ ignore "/rss/index.html"
             }
         } 
       }])
+
   
-  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats    => stats,    :projects => projects, :results => results, :locations => locations }
+  proxy "/countries/#{country['code']}/index.html",          "/countries/country.html",  :locals => { :country => country, :stats    => stats,    :projects => projects, :results => results, :locations => locations, :country_organisation_plan=> country_organisation_plan }
   proxy "/countries/#{country['code']}/results/index.html",  "/countries/results.html",  :locals => { :country => country, :projects => projects, :results  => results }
   proxy "/countries/#{country['code']}/projects/index.html", "/countries/projects.html", :locals => { :country => country, :projects => projects, :results => results }
 end
