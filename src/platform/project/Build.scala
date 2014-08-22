@@ -8,8 +8,8 @@ object ApplicationBuild extends Build {
   val appName         = "platform"
   val appVersion      = "1.0-SNAPSHOT"
 
-  resolvers := Seq(
-    "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/"
+  lazy val appResolvers = Seq(
+      "Typesafe repository releases" at "http://repo.typesafe.com/typesafe/releases/"
   )
 
   object Dependencies {
@@ -46,6 +46,7 @@ object ApplicationBuild extends Build {
   ).settings(
     organization := "uk.gov.dfid.common",
     scalaVersion := "2.10.0",
+    resolvers ++= appResolvers,
     libraryDependencies ++= Dependencies.base
       ++ Dependencies.neo4j
       ++ Dependencies.elasticSearch

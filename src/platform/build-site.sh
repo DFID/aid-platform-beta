@@ -1,34 +1,21 @@
 #!/bin/bash
 
 # move into correct directory context
-cd site
+cd /opt/generator
+source /etc/profile.d/rbenv.sh
+
+# Set ENV['HOME']
+export HOME=/root
+
+# remove backup web directory
+rm -Rf /var/www-bak
 
 # remove any current build folder and recreate empty
-rm -rf build && mkdir build
-
-# TODO 2013-05-14 James Hughes - Removed this as we are operating under in standalone mode
-# move into build folder and clone current build repo
-git clone git@github.com:DFID/aid-platform-site.git build/
-rm -rf build/*
+rm -Rf /opt/generator/build && mkdir /opt/generator/build
 
 # generate site with middleman
-bundle install
-bundle exec 'middleman build --clean --verbose'
-
-# if the DFID_STATIC_FILE_PATH variable is set then we can
-# deploy the site locally
-if [ "$DFID_STATIC_FILE_PATH" != "" ]; then
-    find $DFID_STATIC_FILE_PATH -mindepth 1 -delete
-    cp -fR ./build/* $DFID_STATIC_FILE_PATH
-fi
-
-# TODO 2013-05-14 James Hughes - Removed this as we are operating under in standalone mode
-# commit generated site
-cd build
-git add -A
-git commit -m "Automated Commit through build-site.sh"
-git push -f origin master
-cd ..
-
-# remove the unnecessary build directory
-rm -rf build
+rbenv exec bundle install
+rbenv exec bundle exec 'middleman build --clean --verbose'
+cp /var/www /var/www-bak
+find /var/www -mindepth 1 -delete
+cp -fR /opt/generator/build/* /var/www

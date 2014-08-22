@@ -8,7 +8,7 @@ class Deployinator extends Deployer {
   def deploy {
     Play.current.mode match {
       case Mode.Dev | Mode.Test => println("Not building site in dev mode. Run it yourself")
-      case Mode.Prod => Process.apply("./build-site.sh").run
+      case Mode.Prod => Process.apply("/opt/generator/build-site.sh").run
     }
   }
 }
