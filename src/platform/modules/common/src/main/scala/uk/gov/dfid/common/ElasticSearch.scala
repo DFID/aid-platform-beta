@@ -9,7 +9,7 @@ import org.elasticsearch.action.index.IndexRequest
 
 object ElasticSearch {
 
-  lazy private val path     = Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/dfid/elastic" )
+  lazy private val path     = Properties.envOrElse("DFID_ELASTICSEARCH_PATH", "/opt/elasticsearch" )
   lazy private val settings = ImmutableSettings.settingsBuilder.put("path.data", path)
   lazy private val node     = NodeBuilder.nodeBuilder.local(true).data(true).settings(settings).node
 
