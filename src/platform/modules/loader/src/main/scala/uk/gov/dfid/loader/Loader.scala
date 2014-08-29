@@ -30,6 +30,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val engine     = new ExecutionEngine(neo4j)
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
       val documents  = new DocumentAggregator(engine, mongodb, auditor)
+      val organisations  = new OrganisationAggregator(engine, mongodb, auditor)
       val projects   = new ProjectAggregator(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
@@ -49,6 +50,10 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       val timeVMStart = System.currentTimeMillis
       validateAndMap(sources, neo4j)
+
+
+      val timeOrgStart = System.currentTimeMillis
+      organisations.loadCountryOperationPlanBudgets
 
       val timeAggStart = System.currentTimeMillis
       aggregator.rollupCountryBudgets
@@ -79,7 +84,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Loading process completed")
       auditor.success("Load performance in milliSecs:: ")
       auditor.success("Country Result:: " + (timeVMStart-timeCRStart) )
-      auditor.success("Mapping and Validation:: " + (timeAggStart-timeVMStart) )
+      auditor.success("Mapping and Validation:: " + (timeOrgStart-timeVMStart) )
+      auditor.success("Country Operation Plan:: " + (timeAggStart-timeOrgStart) )
       auditor.success("Aggregation:: " + (timeDocStart-timeAggStart) )
       auditor.success("Project Documents:: " + (timePrjStart-timeDocStart) )
       auditor.success("Partner project, sector, transaction, locations:: " + (timeOGDStart-timePrjStart) )
