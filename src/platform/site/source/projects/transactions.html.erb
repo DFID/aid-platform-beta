@@ -78,14 +78,14 @@ title: Development Tracker
         <tbody>
           <tr>
             <th>Description</th>
-            <th width="15%">Provider</th>
+            <th width="30%">Provider</th>
             <th width="15%">Date</th>
             <th width="15%" style="text-align:right;">Value</th>
           </tr>
           <% transaction_group['transactions'].sort_by { | tx | -tx['date'].to_i }.each do |transaction| %>
             <tr>
-              <td><%= transaction_description(transaction, transaction_group['_id']) %></td>
-              <td width="15%"><%= transaction['provider-org'] + " (" + transaction['provider-activity-id'] + ")" %></td>
+              <td><%= transaction['description'] %></td>
+              <td width="30%"><%= transaction['provider-org'] + " (" + transaction['provider-activity-id'] + ")" %></td>
               <td width="15%"><%=transaction['date'].strftime("%d %b %Y")%></td>
               <td width="15%" class="<%= transaction['value'] < 0 ? 'negative' : ''%>" style="text-align:right;"><%= number_to_currency(transaction['value'], :unit=> currency_symbol(project['currency']) || "£", :precision => 0) %></td>
           </tr>
