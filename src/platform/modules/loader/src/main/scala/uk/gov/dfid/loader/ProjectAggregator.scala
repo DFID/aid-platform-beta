@@ -46,6 +46,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,        
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
+        |        COALESCE(receiver.`receiver-activity-id`?, txn.`receiver-activity-id`?, "") as `receiver-activity-id`,
         |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
         |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
         |        date.`iso-date`?                as date,
@@ -58,6 +59,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val date             = try { DateTime.parse(row("date").asInstanceOf[String], format).getMillis } catch { case _ : Throwable => 0 }
       val transaction      = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else ""}
       val receiver         = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
+      val receiverActivity = { if(row("receiver-activity-id").isInstanceOf[String]) row("receiver-activity-id").asInstanceOf[String] else ""}
       val provider         = { if(row("provider-org").isInstanceOf[String]) row("provider-org").asInstanceOf[String] else ""}
       val providerActivity = { if(row("provider-activity-id").isInstanceOf[String]) row("provider-activity-id").asInstanceOf[String] else ""}
       val description      = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else ""}
@@ -68,6 +70,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "component"              -> BSONString(""),
           "description"            -> BSONString(description),
           "receiver-org"           -> BSONString(receiver),
+          "receiver-activity-id"   -> BSONString(receiverActivity),
           "provider-org"           -> BSONString(provider),
           "provider-activity-id"   -> BSONString(providerActivity),
           "value"                  -> BSONDouble(value),          
@@ -99,7 +102,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        component.`iati-identifier`?   as component,
         |        COALESCE(txn.description?, "") as description,
         |        COALESCE(component.title?, "") as title,
-        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,        
+        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,   
+        |        COALESCE(receiver.`receiver-activity-id`?, txn.`receiver-activity-id`?, "") as `receiver-activity-id`,     
         |        value.value                    as value,
         |        date.`iso-date`                as date,
         |        type.code                      as type
@@ -114,6 +118,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val component   = { if(row("component").isInstanceOf[String]) row("component").asInstanceOf[String] else "" }
       val description = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else "" }
       val receiver    = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
+      val receiverActivity = { if(row("receiver-activity-id").isInstanceOf[String]) row("receiver-activity-id").asInstanceOf[String] else ""}
       val title       = { if(row("title").isInstanceOf[String]) row("title").asInstanceOf[String] else ""}
 
       db.collection("transactions").insert(
@@ -122,6 +127,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           "component"     -> BSONString(component),
           "description"   -> BSONString(description),
           "receiver-org"  -> BSONString(receiver),
+          "receiver-activity-id"   -> BSONString(receiverActivity),
           "title"         -> BSONString(title),
           "value"         -> BSONDouble(value),          
           "date"          -> BSONDateTime(date.getMillis),

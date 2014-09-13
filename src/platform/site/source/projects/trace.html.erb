@@ -1,0 +1,134 @@
+---
+title: Development Tracker
+---
+
+<%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :results => results, :has_funded_projects => has_funded_projects} %>
+
+<div class="row">
+    <div class="twelve columns summary">    
+      <p>Receipients</p>
+
+      <div id="implementing-organisations">
+            <%= results %>
+      </div>
+        
+
+        <hr/>        
+    </div>
+</div>
+
+<div id="d3" class="row" style = "border : 1px solid red">
+  <p>Experiment as <b>collapsible indendent tree</b>.</p>
+        
+        
+          <script type="text/javascript">             
+
+            (function(){
+            
+              d3.select("div#d3").append("svg").attr("width", 50).attr("height", 50).append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple");
+
+            })();
+          </script>    
+</div>
+
+<div class="row" id="viz" style="border: 1px solid black; padding-left: 2em">
+  <style>
+ 
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 4.5px;
+    }
+</style>
+  <script type="text/javascript">             
+
+            (function(){
+          
+    //JSON object with the data
+      /* var treeData = {"id" : "A", "info" : "tst", "children" : [
+            {"id" : "A1" },
+            {"id" : "A2" },
+            {"id" : "A3", "children": [
+                  {"id" : "A31", "children" :[
+            {"id" : "A311" },
+            {"id" : "A312" }
+    ]}] }
+      ]}; */
+
+      var treeData = <%=results%>
+ 
+      // Create a svg canvas
+      var vis = d3.select("#viz").append("svg:svg")
+      .attr("width", 800)
+      .attr("height", 1200)
+      .append("svg:g")
+      .attr("transform", "translate(160, 0)"); // shift everything to the right
+ 
+      // Create a tree "canvas"
+      var tree = d3.layout.tree()
+    .size([800,250]);
+ 
+      var diagonal = d3.svg.diagonal()
+      // change x and y (for the left to right tree)
+      .projection(function(d) { return [d.y, d.x]; });
+ 
+      // Preparing the data for the tree layout, convert data into an array of nodes
+      var nodes = tree.nodes(treeData);
+      // Create an array with all the links
+      var links = tree.links(nodes);
+ 
+      console.log(treeData)
+      console.log(nodes)
+      console.log(links)
+ 
+      var link = vis.selectAll("pathlink")
+      .data(links)
+      .enter().append("svg:path")
+      .attr("class", "link")
+      .attr("d", diagonal)
+ 
+      var node = vis.selectAll("g.node")
+      .data(nodes)
+      .enter().append("svg:g")
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+ 
+      // Add the dot at every node
+      node.append("svg:circle")
+      .attr("r", 3.5);
+ 
+      // place the id atribute left or right depending if children
+      node.append("svg:text")
+      .attr("dx", function(d) { return d.children ? -8 : 8; })
+      .attr("dy", 15)
+      .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })      
+      .text(function(d) { return d.id; })
+      //.call(wrap, 20)
+
+      })();
+
+      function wrap(text, width) {
+  text.each(function() {
+    var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line = [],
+        lineNumber = 0,
+        lineHeight = 1.1, // ems
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+    while (word = words.pop()) {
+      line.push(word);
+      tspan.text(line.join(" "));
+      if (tspan.node().getComputedTextLength() > width) {
+        line.pop();
+        tspan.text(line.join(" "));
+        line = [word];
+        tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+      }
+    }
+  });
+}
+
+          </script> 
+</div>

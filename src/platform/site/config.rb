@@ -9,6 +9,7 @@ require "helpers/codelists"
 require "helpers/lookups"
 require "helpers/document_helpers"
 require "helpers/sector_helpers"
+require "helpers/trace_helpers"
 require "middleman-smusher"
 require "rss"
 
@@ -32,6 +33,7 @@ ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
 ignore "/projects/r4dDocs.html"
+ignore "/projects/trace.html.html"
 ignore "/sector/categories.html"
 ignore "/sector/sectors.html"
 ignore "/sector/projects.html"
@@ -262,6 +264,30 @@ end
     }
   }])
 
+  results = @cms_db['transactions'].aggregate([{
+                    "$match" => {
+                        "project" => funded_project['funded'],
+                        "type" => 'D',
+                        "receiver-activity-id" => { "$ne" => ""}
+                    }
+                }, {
+                    "$group" => { 
+                        "_id" => "$project", 
+                                             
+                        "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
+                        "total" => {
+                            "$sum" => "$value"
+                        }
+                    }
+                }, {
+                    "$project" => {
+                      "id" => "$_id",
+                      "_id" => 0,
+                      "children" => "$receipients"
+                    }
+                  }]
+            )[0].to_json
+
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
   proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
   proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
@@ -270,8 +296,14 @@ end
   if funding_project.nil? then
     funding_project    = @cms_db['funded-projects'].find_one({ 'funded' =>  funded_project['funding'] })
     is_funded_by_dfid_project = false
-  end
+  end  
 
+  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
+  #if !results.nil?  then
+    #proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => has_funded_projects }
+  #end  
+
+  proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => has_funded_projects }
   proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project }
   
 end
@@ -425,7 +457,8 @@ helpers do
   include ProjectHelpers
   include CodeLists
   include SectorHelpers
-  include RegionHelpers
+  include RegionHelpers  
+  include TraceHelpers
 end
 
 #------------------------------------------------------------------------------
