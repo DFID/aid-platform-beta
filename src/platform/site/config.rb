@@ -159,18 +159,67 @@ CodeLists.all_global_recipients.map { |code, name|
     }
   }])
 
+  has_receipient_project = false
+  results = @cms_db['transactions'].aggregate([{
+                    "$match" => {
+                        "provider-activity-id" => id, # filter with Project Id
+                        "receiver-activity-id" => { "$ne" => ""} # filter out rec without any activity id or with empty ones
+                    }
+                }, {
+                    "$group" => { 
+                        "_id" => "$provider-activity-id", 
+                                             
+                        "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
+                        "total" => {
+                            "$sum" => "$value"
+                        }
+                    }
+                }, {
+                    "$project" => {                      
+                      "_id" => 0,
+                      "id" => '$_id',
+                      "receipients" => 1,
+                      "total" => 1
+                    }
+                },{ 
+                  "$unwind" => "$receipients" 
+                }, { 
+                  "$group" => { 
+                    "_id" => { "id" => "$id", "rec-id" => "$receipients.id", "total" => "$total" }, 
+                    'sub-sum' => { "$sum" => "$receipients.value"}
+                    }
+                }, { 
+                  "$group" => {
+                    "_id" => { "id" => '$_id.id', "total" => "$_id.total"}, 
+                    "children" => { "$addToSet" => { "id" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
+                }, { 
+                  "$project" => { 
+                    "_id" => 0, 
+                    "id" => "$_id.id", 
+                    "total" => "$_id.total", 
+                    "children" => 1} 
+                }]
+            )[0].to_json
+
+  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
   
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups }
+  if results != 'null'  then
+    has_receipient_project = true    
+    results = JSON.parse(results)
+    proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+  end  
+
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
     
   r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
   if !r4dDocs.nil? && r4dDocs.length > 0 then
-    proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs }
+    proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs, :has_receipient_project => has_receipient_project  }
   end
 
   if has_funded_projects then
-    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :is_funded_by_dfid_project => true }
+    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :is_funded_by_dfid_project => true, :has_receipient_project => has_receipient_project  }
   end
 end
 
@@ -202,10 +251,10 @@ end
     }
   }])
 
-
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [] }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups }
+  has_receipient_project = false
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
 
 end
 
@@ -264,48 +313,69 @@ end
     }
   }])
 
-  results = @cms_db['transactions'].aggregate([{
-                    "$match" => {
-                        "project" => funded_project['funded'],
-                        "type" => 'D',
-                        "receiver-activity-id" => { "$ne" => ""}
-                    }
-                }, {
-                    "$group" => { 
-                        "_id" => "$project", 
-                                             
-                        "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
-                        "total" => {
-                            "$sum" => "$value"
-                        }
-                    }
-                }, {
-                    "$project" => {
-                      "id" => "$_id",
-                      "_id" => 0,
-                      "children" => "$receipients"
-                    }
-                  }]
-            )[0].to_json
+has_receipient_project = false
+results = @cms_db['transactions'].aggregate([{
+                  "$match" => {
+                      "provider-activity-id" => funded_project['funded'], # filter with Project Id
+                      "receiver-activity-id" => { "$ne" => ""} # filter out rec without any activity id or with empty ones
+                  }
+              }, {
+                  "$group" => { 
+                      "_id" => "$provider-activity-id", 
+                                           
+                      "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
+                      "total" => {
+                          "$sum" => "$value"
+                      }
+                  }
+              }, {
+                  "$project" => {                      
+                    "_id" => 0,
+                    "id" => '$_id',
+                    "receipients" => 1,
+                    "total" => 1
+                  }
+              },{ 
+                "$unwind" => "$receipients" 
+              }, { 
+                "$group" => { 
+                  "_id" => { "id" => "$id", "rec-id" => "$receipients.id", "total" => "$total" }, 
+                  'sub-sum' => { "$sum" => "$receipients.value"}
+                  }
+              }, { 
+                "$group" => {
+                  "_id" => { "id" => '$_id.id', "total" => "$_id.total"}, 
+                  "children" => { "$addToSet" => { "id" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
+              }, { 
+                "$project" => { 
+                  "_id" => 0, 
+                  "id" => "$_id.id", 
+                  "total" => "$_id.total", 
+                  "children" => 1} 
+              }]
+          )[0].to_json
 
-  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
+
+  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
+  if results != 'null'  then
+    has_receipient_project = true
+    results = JSON.parse(results)
+    proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+  end  
+
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
   
+
   is_funded_by_dfid_project = true
   if funding_project.nil? then
     funding_project    = @cms_db['funded-projects'].find_one({ 'funded' =>  funded_project['funding'] })
     is_funded_by_dfid_project = false
-  end  
+  end
 
-  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
-  #if !results.nil?  then
-    #proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => has_funded_projects }
-  #end  
-
-  proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => has_funded_projects }
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project }
-  
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project, :has_receipient_project => has_receipient_project }
+   
 end
 
 #------------------------------------------------------------------------------

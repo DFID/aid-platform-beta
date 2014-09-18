@@ -2,7 +2,7 @@
 title: Development Tracker
 ---
 
-<%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :results => results, :has_funded_projects => has_funded_projects} %>
+<%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :results => results, :has_funded_projects => has_funded_projects, :has_receipient_project => true} %>
 
 <div class="row">
     <div class="twelve columns summary">    
@@ -55,7 +55,7 @@ title: Development Tracker
     ]}] }
       ]}; */
 
-      var treeData = <%=results%>
+      var treeData = <%=results.to_json%>
  
       // Create a svg canvas
       var vis = d3.select("#viz").append("svg:svg")

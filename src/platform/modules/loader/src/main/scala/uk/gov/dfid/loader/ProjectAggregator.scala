@@ -46,7 +46,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         |        COALESCE(txn.description?, "") as description,
         |        value.value                    as value,        
         |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
-        |        COALESCE(receiver.`receiver-activity-id`?, txn.`receiver-activity-id`?, "") as `receiver-activity-id`,
+        |        COALESCE(receiver.`receiver-activity-id`?, txn.`receiver-activity-id`?, n.`iati-identifier`, "") as `receiver-activity-id`,
         |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
         |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
         |        date.`iso-date`?                as date,

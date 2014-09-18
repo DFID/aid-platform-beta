@@ -42,8 +42,9 @@
                             <%if !r4dDocs.nil? && r4dDocs.length > 0 %>
                                 <li <%= active=="r4dDocs" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/r4dDocs">Research (<%= r4dDocs.length %>)</a></li>
                             <% end %>                                                        
-                            
+                            <%if has_receipient_project then %>
                                  <li <%= active=="trace" ? "class='active'" : ""%>><a href="/projects/<%=project['iatiId']%>/trace">Trace</a></li>
+                             <%end%>
                             
 
                         </ul>
