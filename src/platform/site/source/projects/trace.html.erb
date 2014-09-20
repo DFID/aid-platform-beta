@@ -9,26 +9,14 @@ title: Development Tracker
       <p>Receipients</p>
 
       <div id="implementing-organisations">
+            <%= results['children'].length %>
+            <%= results['children'].nil? %>
             <%= results %>
       </div>
         
 
         <hr/>        
     </div>
-</div>
-
-<div id="d3" class="row" style = "border : 1px solid red">
-  <p>Experiment as <b>collapsible indendent tree</b>.</p>
-        
-        
-          <script type="text/javascript">             
-
-            (function(){
-            
-              d3.select("div#d3").append("svg").attr("width", 50).attr("height", 50).append("circle").attr("cx", 25).attr("cy", 25).attr("r", 25).style("fill", "purple");
-
-            })();
-          </script>    
 </div>
 
 <div class="row" id="viz" style="border: 1px solid black; padding-left: 2em">
@@ -99,7 +87,7 @@ title: Development Tracker
       // place the id atribute left or right depending if children
       node.append("svg:text")
       .attr("dx", function(d) { return d.children ? -8 : 8; })
-      .attr("dy", 15)
+      .attr("dy", 8)
       .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })      
       .text(function(d) { return d.id; })
       //.call(wrap, 20)
@@ -131,4 +119,247 @@ title: Development Tracker
 }
 
           </script> 
+    <hr/>
+</div>
+
+<div class="row" id="viz2" style="border: 1px solid black; padding-left: 2em">
+    <style type="text/css">
+      .node {
+      border: solid 1px white;
+      font: 10px sans-serif;
+      line-height: 12px;
+      overflow: hidden;
+      position: absolute;
+      text-indent: 2px;
+    }
+    </style>
+
+    <script type="text/javascript">
+
+(function(){
+
+
+    var margin = {top: 40, right: 10, bottom: 10, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+    var color = d3.scale.category20c();
+
+    var treemap = d3.layout.treemap()
+    .size([width, height])
+    .sticky(true)
+    .value(function(d) { return 1; });
+
+    var div = d3.select("#viz2").append("div")
+    .style("position", "relative")
+    .style("width", (width + margin.left + margin.right) + "px")
+    .style("height", (height + margin.top + margin.bottom) + "px")
+    .style("left", margin.left + "px")
+    .style("top", margin.top + "px");
+
+    var root = <%=results.to_json%>
+
+    var node = div.datum(root).selectAll(".node")
+      .data(treemap.nodes)
+    .enter().append("div")
+      .attr("class", "node")
+      .call(position)
+      .style("background", function(d) { return d.children ? color(d.id) : null; })
+      .text(function(d) { return d.children ? null : d.id; });
+
+    })();
+
+    function position() {
+  this.style("left", function(d) { return d.x + "px"; })
+      .style("top", function(d) { return d.y + "px"; })
+      .style("width", function(d) { return Math.max(0, d.dx - 1) + "px"; })
+      .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
+}
+
+    </script>
+
+    <hr/>
+</div>
+
+<div class="row" id="viz3" style="border: 1px solid black; padding-left: 2em">
+
+<style type="text/css">
+
+.node circle {
+   fill: #fff;
+   stroke: steelblue;
+   stroke-width: 3px;
+ }
+
+ .node text { font: 12px sans-serif; }
+
+ .link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
+
+</style>
+<script type="text/javascript">
+  
+  // ************** Generate the tree diagram  *****************
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+ width = 960 - margin.right - margin.left,
+ height = 500 - margin.top - margin.bottom;
+ 
+var i = 0;
+
+var tree = d3.layout.tree()
+ .size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+ .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("#viz3").append("svg")
+ .attr("width", width + margin.right + margin.left)
+ .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+root = <%=results.to_json%>;
+  
+update(root);
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+   links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 280; });
+
+  // Declare the nodesâ€¦
+  var node = svg.selectAll("g.node")
+   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter the nodes.
+  var nodeEnter = node.enter().append("g")
+   .attr("class", "node")
+   .attr("transform", function(d) { 
+    return "translate(" + d.y + "," + d.x + ")"; });
+
+  nodeEnter.append("circle")
+   .attr("r", 10)
+   .style("fill", "#fff");
+
+  nodeEnter.append("text")
+   .attr("x", function(d) { 
+    return d.children || d._children ? -13 : 13; })
+   .attr("dy", ".35em")
+   .attr("text-anchor", function(d) { 
+    return d.children || d._children ? "end" : "start"; })
+   .text(function(d) { return d.id; })
+   .style("fill-opacity", 1);
+
+  // Declare the linksâ€¦
+  var link = svg.selectAll("path.link")
+   .data(links, function(d) { return d.target.id; });
+
+  // Enter the links.
+  link.enter().insert("path", "g")
+   .attr("class", "link")
+   .attr("d", diagonal);
+
+}
+
+
+</script>
+<hr/>
+</div>
+
+<div class="row" id="viz4" style="border: 1px solid black; padding-left: 2em">
+
+<style type="text/css">
+
+.node circle {
+   fill: #fff;
+   stroke: steelblue;
+   stroke-width: 3px;
+ }
+
+ .node text { font: 12px sans-serif; }
+
+ .link {
+   fill: none;
+   stroke: #ccc;
+   stroke-width: 2px;
+ }
+
+</style>
+<script type="text/javascript">
+  
+  // ************** Generate the tree diagram  *****************
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
+ width = 960 - margin.right - margin.left,
+ height = 500 - margin.top - margin.bottom;
+ 
+var i = 0;
+
+var tree = d3.layout.tree()
+ .size([height, width]);
+
+var diagonal = d3.svg.diagonal()
+ .projection(function(d) { return [d.x, d.y]; });
+
+var svg = d3.select("#viz4").append("svg")
+ .attr("width", width + margin.right + margin.left)
+ .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+ .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+root = <%=results.to_json%>;
+  
+update(root);
+
+function update(source) {
+
+  // Compute the new tree layout.
+  var nodes = tree.nodes(root).reverse(),
+   links = tree.links(nodes);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d) { d.y = d.depth * 100; });
+
+  // Declare the nodesâ€¦
+  var node = svg.selectAll("g.node")
+   .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+  // Enter the nodes.
+  var nodeEnter = node.enter().append("g")
+   .attr("class", "node")
+   .attr("transform", function(d) { 
+    return "translate(" + d.x + "," + d.y + ")"; });
+
+  nodeEnter.append("circle")
+   .attr("r", 10)
+   .style("fill", "#fff");
+
+  nodeEnter.append("text")
+   .attr("y", function(d) { 
+    return d.children || d._children ? -18 : 18; })
+   .attr("dy", ".35em")
+   .attr("text-anchor", "middle")
+   .text(function(d) { return d.id; })
+   .style("fill-opacity", 1);
+
+  // Declare the linksâ€¦
+  var link = svg.selectAll("path.link")
+   .data(links, function(d) { return d.target.id; });
+
+  // Enter the links.
+  link.enter().insert("path", "g")
+   .attr("class", "link")
+   .attr("d", diagonal);
+
+}
+
+
+</script>
+<hr/>
 </div>

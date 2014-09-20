@@ -33,7 +33,7 @@ ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
 ignore "/projects/r4dDocs.html"
-ignore "/projects/trace.html.html"
+ignore "/projects/trace.html"
 ignore "/sector/categories.html"
 ignore "/sector/sectors.html"
 ignore "/sector/projects.html"
@@ -160,53 +160,16 @@ CodeLists.all_global_recipients.map { |code, name|
   }])
 
   has_receipient_project = false
-  results = @cms_db['transactions'].aggregate([{
-                    "$match" => {
-                        "provider-activity-id" => id, # filter with Project Id
-                        "receiver-activity-id" => { "$ne" => ""} # filter out rec without any activity id or with empty ones
-                    }
-                }, {
-                    "$group" => { 
-                        "_id" => "$provider-activity-id", 
-                                             
-                        "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
-                        "total" => {
-                            "$sum" => "$value"
-                        }
-                    }
-                }, {
-                    "$project" => {                      
-                      "_id" => 0,
-                      "id" => '$_id',
-                      "receipients" => 1,
-                      "total" => 1
-                    }
-                },{ 
-                  "$unwind" => "$receipients" 
-                }, { 
-                  "$group" => { 
-                    "_id" => { "id" => "$id", "rec-id" => "$receipients.id", "total" => "$total" }, 
-                    'sub-sum' => { "$sum" => "$receipients.value"}
-                    }
-                }, { 
-                  "$group" => {
-                    "_id" => { "id" => '$_id.id', "total" => "$_id.total"}, 
-                    "children" => { "$addToSet" => { "id" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
-                }, { 
-                  "$project" => { 
-                    "_id" => 0, 
-                    "id" => "$_id.id", 
-                    "total" => "$_id.total", 
-                    "children" => 1} 
-                }]
-            )[0].to_json
-
-  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
+  results = get_funded_child_projects(id)
   
   if results != 'null'  then
     has_receipient_project = true    
     results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+
+
+    #@cms_db['trace'].insert({ "id" => results['id'], "total" => results['total'], "children" => results['children'] })
+
   end  
 
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations, :has_receipient_project => has_receipient_project  }
@@ -313,54 +276,16 @@ end
     }
   }])
 
-has_receipient_project = false
-results = @cms_db['transactions'].aggregate([{
-                  "$match" => {
-                      "provider-activity-id" => funded_project['funded'], # filter with Project Id
-                      "receiver-activity-id" => { "$ne" => ""} # filter out rec without any activity id or with empty ones
-                  }
-              }, {
-                  "$group" => { 
-                      "_id" => "$provider-activity-id", 
-                                           
-                      "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
-                      "total" => {
-                          "$sum" => "$value"
-                      }
-                  }
-              }, {
-                  "$project" => {                      
-                    "_id" => 0,
-                    "id" => '$_id',
-                    "receipients" => 1,
-                    "total" => 1
-                  }
-              },{ 
-                "$unwind" => "$receipients" 
-              }, { 
-                "$group" => { 
-                  "_id" => { "id" => "$id", "rec-id" => "$receipients.id", "total" => "$total" }, 
-                  'sub-sum' => { "$sum" => "$receipients.value"}
-                  }
-              }, { 
-                "$group" => {
-                  "_id" => { "id" => '$_id.id', "total" => "$_id.total"}, 
-                  "children" => { "$addToSet" => { "id" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
-              }, { 
-                "$project" => { 
-                  "_id" => 0, 
-                  "id" => "$_id.id", 
-                  "total" => "$_id.total", 
-                  "children" => 1} 
-              }]
-          )[0].to_json
+  has_receipient_project = false
+  results = get_funded_child_projects(funded_project['funded'])
 
-
-  #results = TraceHelpers.projectFundingTo(funded_project['funded']) || ''
   if results != 'null'  then
     has_receipient_project = true
     results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+
+    #@cms_db['trace'].insert({ "id" => results['id'], "total" => results['total'], "children" => results['children'] })
+
   end  
 
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }
@@ -527,8 +452,7 @@ helpers do
   include ProjectHelpers
   include CodeLists
   include SectorHelpers
-  include RegionHelpers  
-  include TraceHelpers
+  include RegionHelpers    
 end
 
 #------------------------------------------------------------------------------
