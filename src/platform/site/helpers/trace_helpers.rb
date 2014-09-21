@@ -46,39 +46,30 @@ def get_funded_child_projects(project_id)
           )[0].to_json
 
 	
-	#return JSON.parse(result)	
 	result
 		
 end
 
-def get_child_funded_projects_recursive(project_id, is_top, parent)
+def get_child_funded_projects_recursive(project_id)
 
-	result = get_funded_child_projects(project_id)
+	result = get_funded_child_projects(project_id) || ''
 
-	if !result.empty? && !result['children'].nil? then
-	
-		
-		children = result[0]['children']
-		
-	
-		# if( !children.empty? && children.length > 0) then
+  if !result.nil? && result.length > 0 && !result['children'].nil? then
+    result = JSON.parse(result)
+    result['children'].each do |child|
 
-			children = JSON.parse(children)
+      secLeveData = get_funded_child_projects(child['id']) || ''
 
-		# 	if !is_top && !parent.nil? then
-		# 		parent['children'] = children
-		# 	end
+      if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? then
 
-		# 	children.each do |child|
-		# 		#get_child_funded_projects_recursive(child['id'], false, child)
-		# 	end		
-		# end
+        secLeveData = JSON.parse(secLeveData)
+        child['children'] = secLeveData['children']
 
-	end
+      end
 
-	# if result != 'null' then
-	# 	result = JSON.parse(result)
-	# end
+    end
+
+  end
 
 	result
 end

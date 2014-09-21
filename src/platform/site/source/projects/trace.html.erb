@@ -6,16 +6,90 @@ title: Development Tracker
 
 <div class="row">
     <div class="twelve columns summary">    
-      <p>Receipients</p>
+      <p>First level Raw Data</p>
 
-      <div id="implementing-organisations">
-            <%= results['children'].length %>
-            <%= results['children'].nil? %>
+      <div>
             <%= results %>
       </div>
         
 
         <hr/>        
+    </div>
+
+    <div class="twelve columns summary">    
+      <p>Second level Raw Data</p>
+
+      <div>
+            <% results = get_child_funded_projects_recursive(results['id']) %>
+            <%= results %>
+      </div>
+        
+
+        <hr/>        
+    </div>
+
+    <div class="twelve columns summary">    
+      <p>First level Raw Data - experiment of Children</p>
+      <table style="width:100%">
+      <tbody>
+        <tr>
+          <th>Id</th>
+          <th>Raw</th>
+        </tr>
+
+      <% results['children'].each do |child| %>
+          <tr>
+            <td><%= child['id'] %></td>            
+            <td><%= child %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    </div>
+
+    <div class="twelve columns summary">    
+      <p>Second level Raw Data - experiment of Children</p>
+      
+
+      <% results['children'].each do |child| %>
+           <p> Second level for <b><%= child['id'] %> </b> </p>
+            <% secLeveData = get_funded_child_projects(child['id']) || '' %>
+
+            <table style="width:100%">
+                <tbody>
+                  <tr>
+                    <th>Id</th>
+                    <th>Raw</th>
+                  </tr>
+
+
+            <%if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? %>
+              <% secLeveData = JSON.parse(secLeveData) %>
+              
+                  <% child['children'] = secLeveData['children'] %>
+                  <% secLeveData['children'].each do |secChild| %>
+                  <tr>
+
+                    <td><%= secChild['id'] %></td>            
+                    <td><%= secChild %></td>
+                  </tr>
+
+                  <% end %>                
+
+            <% else %>
+            <tr>
+              <td><%= child['id'] %></td>     
+              <td> <b> No data!! </b> </td>
+            </tr>
+            <%end%>          
+
+              </tbody>
+            </table>           
+          
+      <% end %>
+
+
     </div>
 </div>
 
