@@ -167,9 +167,6 @@ CodeLists.all_global_recipients.map { |code, name|
     results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
 
-
-    #@cms_db['trace'].insert({ "id" => results['id'], "total" => results['total'], "children" => results['children'] })
-
   end  
 
   proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations, :has_receipient_project => has_receipient_project  }
@@ -283,9 +280,6 @@ end
     has_receipient_project = true
     results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
-
-    #@cms_db['trace'].insert({ "id" => results['id'], "total" => results['total'], "children" => results['children'] })
-
   end  
 
   proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }

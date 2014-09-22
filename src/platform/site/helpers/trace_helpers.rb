@@ -50,26 +50,90 @@ def get_funded_child_projects(project_id)
 		
 end
 
-def get_child_funded_projects_recursive(project_id)
+# def get_children(project_id, data=nil, children=nil)
+#   result = get_funded_child_projects(project_id) || ''
+
+#   if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
+#     result = JSON.parse(result)
+
+#     if !children.nil? then
+#       data['children'] = children
+#     else
+#       data = result
+#     end
+
+#     result['children'].each do |child|
+#       get_children(child['id'], child, result['children'])
+
+#     end
+
+#   end
+
+#   return data
+
+# end
+
+def get_child_funded_projects_recursive(project_id, parent=nil)
 
 	result = get_funded_child_projects(project_id) || ''
 
-  if !result.nil? && result.length > 0 && !result['children'].nil? then
+  if result['children'].nil? then
+    return parent
+  end
+
+  if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
     result = JSON.parse(result)
+
+    if !parent.nil? then
+      parent['children'] = result['children']
+    end
+    
     result['children'].each do |child|
 
-      secLeveData = get_funded_child_projects(child['id']) || ''
+      data = get_child_funded_projects_recursive(child['id'], child) || ''
 
-      if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? then
+      # if !data.nil? && data.length > 0 && !data['children'].nil? then
 
-        secLeveData = JSON.parse(secLeveData)
-        child['children'] = secLeveData['children']
+      #   data = JSON.parse(data)
+      #   child['children'] = data['children']
 
-      end
+      # end
 
-    end
-
+    end  
   end
 
 	result
+end
+
+
+def get_child_funded_projects_by_level(project_id, result = nil, depth = 1, current_level = 0)
+
+  current_level += 1
+  result = get_funded_child_projects(project_id) || ''
+
+  if depth == current_level then
+    return result
+  end
+
+    
+  if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
+    result = JSON.parse(result)
+      
+      
+      result['children'].each do |child|
+
+        data = get_child_funded_projects_by_level(child['id'], result['children'], depth, current_level)
+
+        if !data.nil? && data.length > 0 && !data['children'].nil? then
+
+          data = JSON.parse(data)
+          child['children'] = data['children']
+
+        end
+
+      end
+
+  end
+
+  result
 end

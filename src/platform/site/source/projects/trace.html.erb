@@ -16,81 +16,17 @@ title: Development Tracker
         <hr/>        
     </div>
 
-    <div class="twelve columns summary">    
+    <!-- <div class="twelve columns summary">    
       <p>Second level Raw Data</p>
 
       <div>
-            <% results = get_child_funded_projects_recursive(results['id']) %>
+            <% results = get_child_funded_projects_by_level(results['id'], nil, 2) %>
             <%= results %>
       </div>
         
 
         <hr/>        
-    </div>
-
-    <div class="twelve columns summary">    
-      <p>First level Raw Data - experiment of Children</p>
-      <table style="width:100%">
-      <tbody>
-        <tr>
-          <th>Id</th>
-          <th>Raw</th>
-        </tr>
-
-      <% results['children'].each do |child| %>
-          <tr>
-            <td><%= child['id'] %></td>            
-            <td><%= child %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-
-    </div>
-
-    <div class="twelve columns summary">    
-      <p>Second level Raw Data - experiment of Children</p>
-      
-
-      <% results['children'].each do |child| %>
-           <p> Second level for <b><%= child['id'] %> </b> </p>
-            <% secLeveData = get_funded_child_projects(child['id']) || '' %>
-
-            <table style="width:100%">
-                <tbody>
-                  <tr>
-                    <th>Id</th>
-                    <th>Raw</th>
-                  </tr>
-
-
-            <%if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? %>
-              <% secLeveData = JSON.parse(secLeveData) %>
-              
-                  <% child['children'] = secLeveData['children'] %>
-                  <% secLeveData['children'].each do |secChild| %>
-                  <tr>
-
-                    <td><%= secChild['id'] %></td>            
-                    <td><%= secChild %></td>
-                  </tr>
-
-                  <% end %>                
-
-            <% else %>
-            <tr>
-              <td><%= child['id'] %></td>     
-              <td> <b> No data!! </b> </td>
-            </tr>
-            <%end%>          
-
-              </tbody>
-            </table>           
-          
-      <% end %>
-
-
-    </div>
+    </div> -->    
 </div>
 
 <div class="row" id="viz" style="border: 1px solid black; padding-left: 2em">
@@ -98,7 +34,7 @@ title: Development Tracker
  
     .link {
       fill: none;
-      stroke: #ccc;
+      stroke: #000000;
       stroke-width: 4.5px;
     }
 </style>
@@ -158,15 +94,30 @@ title: Development Tracker
       node.append("svg:circle")
       .attr("r", 3.5);
  
-      // place the id atribute left or right depending if children
-      node.append("svg:text")
+      //place the id atribute left or right depending if children
+      node.append("svg:text")      
       .attr("dx", function(d) { return d.children ? -8 : 8; })
       .attr("dy", 8)
       .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })      
       .text(function(d) { return d.id; })
+
+      //.html("<a href='#'>link</a>")
+      //.on("click",function(d,i) { alert("Clicked on the text");});
       //.call(wrap, 20)
 
       })();
+
+      node.append("svg:a")
+      .attr("xlink:href", function(d){ return "/projects/=" + d.id })
+      // .append("svg:text")
+      // .attr("dx", function(d) { return d.children ? -8 : 8; })
+      // .attr("dy", 8)
+      // .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })      
+      // .text(function(d) { return d.id; })
+
+
+
+
 
       function wrap(text, width) {
   text.each(function() {
@@ -260,28 +211,34 @@ title: Development Tracker
 <style type="text/css">
 
 .node circle {
-   fill: #fff;
-   stroke: steelblue;
+   fill: #000;
+   stroke: #000;
    stroke-width: 3px;
  }
 
  .node text { font: 12px sans-serif; }
 
  .link {
-   fill: none;
-   stroke: #ccc;
+   fill: "black";
+   stroke: "black";
    stroke-width: 2px;
  }
 
 </style>
 <script type="text/javascript">
   
-  // ************** Generate the tree diagram  *****************
+  // ************** ????????????  *****************
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
- width = 960 - margin.right - margin.left,
- height = 500 - margin.top - margin.bottom;
+ width = 1280 - margin.right - margin.left,
+ height = 800 - margin.top - margin.bottom;
  
 var i = 0;
+var radius = 10;
+
+var defaultNodeSize = 5.5;
+var horizontalTreeOffset = 150;
+var horizontalNodeOffset = horizontalTreeOffset - 10;
+var horizontalNodeOffsetLeaf = horizontalTreeOffset + 10;
 
 var tree = d3.layout.tree()
  .size([height, width]);
@@ -295,6 +252,8 @@ var svg = d3.select("#viz3").append("svg")
   .append("g")
  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var color = d3.scale.category20();
+
 root = <%=results.to_json%>;
   
 update(root);
@@ -306,7 +265,7 @@ function update(source) {
    links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 280; });
+  nodes.forEach(function(d) { d.y = d.depth * 180; });
 
   // Declare the nodesâ€¦
   var node = svg.selectAll("g.node")
@@ -319,17 +278,29 @@ function update(source) {
     return "translate(" + d.y + "," + d.x + ")"; });
 
   nodeEnter.append("circle")
-   .attr("r", 10)
+   .attr("r", radius)
    .style("fill", "#fff");
 
-  nodeEnter.append("text")
-   .attr("x", function(d) { 
-    return d.children || d._children ? -13 : 13; })
-   .attr("dy", ".35em")
-   .attr("text-anchor", function(d) { 
-    return d.children || d._children ? "end" : "start"; })
-   .text(function(d) { return d.id; })
-   .style("fill-opacity", 1);
+  // nodeEnter.append("text")
+  //  .attr("x", function(d) { 
+  //   return d.children || d._children ? -13 : 13; })
+  //  .attr("dy", ".35em")
+  //  .attr("text-anchor", function(d) { 
+  //   return d.children || d._children ? "end" : "start"; })
+  //  .text(function(d) { return d.id; })
+  //  .style("fill-opacity", 1);
+
+   // Use foreignObject to append HTML text in order to implement word wrapping
+  nodeEnter.append("svg:foreignObject")
+      .attr("width", "300")
+      .attr("height", "60")
+      .attr("x", -50)
+      .attr("y", -15)
+      .style("opacity", 0.8)
+      .attr("text-anchor", "start")      
+    .append("xhtml:body")
+      .attr("xmlns", "http://www.w3.org/1999/xhtml")
+      .html(function(d){ return "<a href=/projects/" + d.id + ">" + d.id + "</a>"; });
 
   // Declare the linksâ€¦
   var link = svg.selectAll("path.link")
@@ -338,8 +309,11 @@ function update(source) {
   // Enter the links.
   link.enter().insert("path", "g")
    .attr("class", "link")
-   .attr("d", diagonal);
+   .attr("d", diagonal)
+   .style("stroke", function (d) { return 'black'; })
 
+
+   
 }
 
 
@@ -349,91 +323,66 @@ function update(source) {
 
 <div class="row" id="viz4" style="border: 1px solid black; padding-left: 2em">
 
-<style type="text/css">
+<style>
 
-.node circle {
-   fill: #fff;
-   stroke: steelblue;
-   stroke-width: 3px;
- }
-
- .node text { font: 12px sans-serif; }
-
- .link {
-   fill: none;
-   stroke: #ccc;
-   stroke-width: 2px;
- }
-
-</style>
-<script type="text/javascript">
-  
-  // ************** Generate the tree diagram  *****************
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
- width = 960 - margin.right - margin.left,
- height = 500 - margin.top - margin.bottom;
- 
-var i = 0;
-
-var tree = d3.layout.tree()
- .size([height, width]);
-
-var diagonal = d3.svg.diagonal()
- .projection(function(d) { return [d.x, d.y]; });
-
-var svg = d3.select("#viz4").append("svg")
- .attr("width", width + margin.right + margin.left)
- .attr("height", height + margin.top + margin.bottom)
-  .append("g")
- .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-root = <%=results.to_json%>;
-  
-update(root);
-
-function update(source) {
-
-  // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-   links = tree.links(nodes);
-
-  // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 100; });
-
-  // Declare the nodesâ€¦
-  var node = svg.selectAll("g.node")
-   .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-  // Enter the nodes.
-  var nodeEnter = node.enter().append("g")
-   .attr("class", "node")
-   .attr("transform", function(d) { 
-    return "translate(" + d.x + "," + d.y + ")"; });
-
-  nodeEnter.append("circle")
-   .attr("r", 10)
-   .style("fill", "#fff");
-
-  nodeEnter.append("text")
-   .attr("y", function(d) { 
-    return d.children || d._children ? -18 : 18; })
-   .attr("dy", ".35em")
-   .attr("text-anchor", "middle")
-   .text(function(d) { return d.id; })
-   .style("fill-opacity", 1);
-
-  // Declare the linksâ€¦
-  var link = svg.selectAll("path.link")
-   .data(links, function(d) { return d.target.id; });
-
-  // Enter the links.
-  link.enter().insert("path", "g")
-   .attr("class", "link")
-   .attr("d", diagonal);
-
+circle {
+  fill: rgb(31, 119, 180);
+  fill-opacity: .25;
+  stroke: rgb(31, 119, 180);
+  stroke-width: 1px;
 }
 
+.leaf circle {
+  fill: #ff7f0e;
+  fill-opacity: 1;
+}
+
+text {
+  font: 10px sans-serif;
+}
+
+</style>
+
+
+<script>
+
+var root = <%=results.to_json%>;
+
+var diameter = 960,
+    format = d3.format(",d");
+
+var pack = d3.layout.pack()
+    .size([diameter - 4, diameter - 4])
+    .value(function(d) { return d.value; });
+
+var svg = d3.select("#viz4").append("svg")
+    .attr("width", diameter)
+    .attr("height", diameter)
+  .append("g")
+    .attr("transform", "translate(2,2)");
+
+// d3.json("flare.json", function(error, root) {
+  var node = svg.datum(root).selectAll(".node")
+      .data(pack.nodes)
+    .enter().append("g")
+      .attr("class", function(d) { return d.children ? "node" : "leaf node"; })
+      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+  node.append("title")
+      .text(function(d) { return d.id + (d.children ? "" : ": " + format(d.value)); });
+
+  node.append("circle")
+      .attr("r", function(d) { return d.r; });
+
+  node.filter(function(d) { return !d.children; }).append("text")
+      .attr("dy", ".3em")
+      .style("text-anchor", "middle")
+      .text(function(d) { return d.id.substring(0, d.r / 3); });
+// });
+
+d3.select(self.frameElement).style("height", diameter + "px");
 
 </script>
 <hr/>
 </div>
+
