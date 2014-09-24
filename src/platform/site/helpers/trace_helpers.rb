@@ -13,7 +13,7 @@ def get_funded_child_projects(project_id)
                   "$group" => { 
                       "_id" => "$provider-activity-id", 
                                            
-                      "receipients" => { "$addToSet" => { 'id' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
+                      "receipients" => { "$addToSet" => { 'name' =>  "$receiver-activity-id", 'receiver-org' => '$receiver-org', 'value' => '$value'} },
                       "total" => {
                           "$sum" => "$value"
                       }
@@ -29,18 +29,18 @@ def get_funded_child_projects(project_id)
                 "$unwind" => "$receipients" 
               }, { 
                 "$group" => { 
-                  "_id" => { "id" => "$id", "rec-id" => "$receipients.id", "total" => "$total" }, 
+                  "_id" => { "id" => "$id", "rec-id" => "$receipients.name", "total" => "$total" }, 
                   'sub-sum' => { "$sum" => "$receipients.value"}
                   }
               }, { 
                 "$group" => {
                   "_id" => { "id" => '$_id.id', "total" => "$_id.total"}, 
-                  "children" => { "$addToSet" => { "id" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
+                  "children" => { "$addToSet" => { "name" => '$_id.rec-id', "org" => '$rec-org', "value" => "$sub-sum"}}}
               }, { 
                 "$project" => { 
                   "_id" => 0, 
-                  "id" => "$_id.id", 
-                  "total" => "$_id.total", 
+                  "name" => "$_id.id", 
+                  "value" => "$_id.total", 
                   "children" => 1} 
               }]
           )[0].to_json
@@ -73,58 +73,38 @@ end
 
 # end
 
-def get_child_funded_projects_recursive(project_id, parent=nil)
-
-	result = get_funded_child_projects(project_id) || ''
-
-  if result['children'].nil? then
-    return parent
-  end
-
-  if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
+def get_child_funded_projects_recursive(project_id)
+  result = get_funded_child_projects(project_id) || ''
+  if !result.nil? && result.length > 0 && !result['children'].nil? then
     result = JSON.parse(result)
-
-    if !parent.nil? then
-      parent['children'] = result['children']
-    end
-    
     result['children'].each do |child|
-
-      data = get_child_funded_projects_recursive(child['id'], child) || ''
-
-      # if !data.nil? && data.length > 0 && !data['children'].nil? then
-
-      #   data = JSON.parse(data)
-      #   child['children'] = data['children']
-
-      # end
-
-    end  
+    secLeveData = get_funded_child_projects(child['name']) || ''
+    if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? then
+      secLeveData = JSON.parse(secLeveData)
+      child['children'] = secLeveData['children']
+    end
   end
+end
 
-	result
+result
 end
 
 
-def get_child_funded_projects_by_level(project_id, result = nil, depth = 1, current_level = 0)
+def get_child_funded_projects_by_level(project_id)
 
-  current_level += 1
+  
   result = get_funded_child_projects(project_id) || ''
 
-  if depth == current_level then
-    return result
-  end
-
+  
     
   if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
     result = JSON.parse(result)
-      
-      
-      result['children'].each do |child|
 
-        data = get_child_funded_projects_by_level(child['id'], result['children'], depth, current_level)
+    result['children'].each do |child|
 
-        if !data.nil? && data.length > 0 && !data['children'].nil? then
+        data = get_funded_child_projects(child['name']) || ''
+
+        if !data['children'].nil? && data['children'].length > 0 then
 
           data = JSON.parse(data)
           child['children'] = data['children']
@@ -132,8 +112,42 @@ def get_child_funded_projects_by_level(project_id, result = nil, depth = 1, curr
         end
 
       end
+      
+      
+      
 
   end
 
   result
+end
+
+def get_trace_data(parent_proj_id)
+  
+  return_resutl = nil
+
+  result = get_funded_child_projects(parent_proj_id) || ''
+
+  if !result.nil? && !result['children'].nil? && result['children'].length > 0 then
+    result = JSON.parse(result)
+
+    return_resutl = Hash.new 
+    return_resutl['name'] = result['name']
+    return_resutl['value'] = result['value']
+    return_resutl['children'] = []
+
+    result['children'].each do |child|
+
+      temp_result = Hash.new 
+      temp_result['name'] = child['name']
+      temp_result['value'] = child['value']
+      temp_result['children'] = get_trace_data(child['name'])
+
+      return_resutl['children'] << temp_result
+
+    end
+
+  end
+
+  return_resutl
+
 end
