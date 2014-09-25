@@ -28,8 +28,8 @@ title: Development Tracker
     <div class="twelve columns summary">
         <p>Recursive Trace Data</p>
         <div>
-        <% results2 = get_trace_data(results['name']) %>
-        <%= results2 %>
+        <% results = get_trace_data(results['name']) %>
+        <%= results.to_json %>
         </div>
         <hr/>
     </div>

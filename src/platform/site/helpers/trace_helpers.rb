@@ -121,32 +121,49 @@ def get_child_funded_projects_by_level(project_id)
   result
 end
 
-def get_trace_data(parent_proj_id)
+def get_trace_data(project_id, parent = nil, level = 0)
   
   return_resutl = nil
+  result = get_funded_child_projects(project_id) || ''
 
-  result = get_funded_child_projects(parent_proj_id) || ''
+  return_resutl = Hash.new
+
+  if !parent.nil? then     
+    return_resutl['name'] = parent['name']
+    return_resutl['value'] = parent['value']
+  end
+  
+  level += 1
+  if level == 7 then
+    return return_resutl
+  end
+  
 
   if !result.nil? && !result['children'].nil? && result['children'].length > 0 then
     result = JSON.parse(result)
 
-    return_resutl = Hash.new 
+    return_resutl = Hash.new
     return_resutl['name'] = result['name']
-    return_resutl['value'] = result['value']
+    return_resutl['value'] = result['value']           
     return_resutl['children'] = []
+        
 
     result['children'].each do |child|
 
-      temp_result = Hash.new 
-      temp_result['name'] = child['name']
-      temp_result['value'] = child['value']
-      temp_result['children'] = get_trace_data(child['name'])
+      # temp_result = Hash.new 
+      # temp_result['name'] = child['name']
+      # temp_result['value'] = child['value']
+      #temp_result['children'] = get_trace_data(child['name'], false)
 
-      return_resutl['children'] << temp_result
+      return_resutl['children'] << get_trace_data(child['name'], child, level)
 
     end
+  else
+
+      
 
   end
+
 
   return_resutl
 
