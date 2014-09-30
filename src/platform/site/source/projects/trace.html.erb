@@ -1,0 +1,52 @@
+---
+title: Development Tracker
+---
+
+<%= partial "partials/projects-header", :locals => { :project => project, :active => "trace", :results => results, :has_funded_projects => has_funded_projects, :has_receipient_project => true} %>
+
+<div class="row">
+    <div class="twelve columns summary">    
+      <p>Data Initial</p>
+
+      <div>
+            <%= results %>
+      </div>
+      <hr/>        
+    </div>
+    
+</div>
+
+<div class="row" id="layout" style="border: 1px solid black; padding-left: 2em">
+   <p>Layout#7</p>
+    
+<style type="text/css">
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+</style>
+    
+    <script type="text/javascript">
+      var root = <%=results.to_json%>
+    </script>
+    <script src="/javascripts/pages/d3_trace_layout_option7.js" type="text/javascript"></script>
+   
+    <hr/>
+</div>
+

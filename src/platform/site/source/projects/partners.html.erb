@@ -2,7 +2,7 @@
 title: Development Tracker
 ---
 
-<%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true} %>
+<%= partial "partials/projects-header", :locals => { :project => project, :active => "partners", :has_funded_projects => true, :has_receipient_project => has_receipient_project} %>
 <% if defined?(funding_project) then %>
   <div class="row">
       <div class="twelve columns results-info">
@@ -18,14 +18,16 @@ title: Development Tracker
                   </ul> 
               </div>
             <% else %>
-              <div class="four columns summary">
-                  <h4><%=funding_project['reporting']%></h4>         
-              </div>
-              <div class="eight columns">
-                  <ul>
-                      <li><a href="/projects/<%=funding_project['funded']%>"><%=funding_project['title']%></a><%=funding_project['description']%><span><%= number_to_currency(project['funds'], :unit=>currency_symbol(project['currency']) || "£", :precision => 0) %></span></li>
-                  </ul> 
-              </div>
+              <% if !funding_project.nil? && !funding_project['reporting'].nil? %>
+                <div class="four columns summary">
+                    <h4><%= funding_project['reporting']%></h4>         
+                </div>
+                <div class="eight columns">
+                    <ul>
+                        <li><a href="/projects/<%=funding_project['funded']%>"><%=funding_project['title']%></a><%=funding_project['description']%><span><%= number_to_currency(project['funds'], :unit=>currency_symbol(project['currency']) || "£", :precision => 0) %></span></li>
+                    </ul> 
+                </div>
+              <% end %>
            <% end %>
         </div>
       </div>
