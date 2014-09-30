@@ -50,77 +50,6 @@ def get_funded_child_projects(project_id)
 		
 end
 
-# def get_children(project_id, data=nil, children=nil)
-#   result = get_funded_child_projects(project_id) || ''
-
-#   if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
-#     result = JSON.parse(result)
-
-#     if !children.nil? then
-#       data['children'] = children
-#     else
-#       data = result
-#     end
-
-#     result['children'].each do |child|
-#       get_children(child['id'], child, result['children'])
-
-#     end
-
-#   end
-
-#   return data
-
-# end
-
-def get_child_funded_projects_recursive(project_id)
-  result = get_funded_child_projects(project_id) || ''
-  if !result.nil? && result.length > 0 && !result['children'].nil? then
-    result = JSON.parse(result)
-    result['children'].each do |child|
-    secLeveData = get_funded_child_projects(child['name']) || ''
-    if !secLeveData.nil? && secLeveData.length > 0 && !secLeveData['children'].nil? then
-      secLeveData = JSON.parse(secLeveData)
-      child['children'] = secLeveData['children']
-    end
-  end
-end
-
-result
-end
-
-
-def get_child_funded_projects_by_level(project_id)
-
-  
-  result = get_funded_child_projects(project_id) || ''
-
-  
-    
-  if !result.nil? && result.length > 0 && !result['children'].nil? && result['children'].length > 0 then
-    result = JSON.parse(result)
-
-    result['children'].each do |child|
-
-        data = get_funded_child_projects(child['name']) || ''
-
-        if !data['children'].nil? && data['children'].length > 0 then
-
-          data = JSON.parse(data)
-          child['children'] = data['children']
-
-        end
-
-      end
-      
-      
-      
-
-  end
-
-  result
-end
-
 def get_trace_data(project_id, parent = nil, level = 0)
   
   return_resutl = nil
@@ -134,7 +63,7 @@ def get_trace_data(project_id, parent = nil, level = 0)
   end
   
   level += 1
-  if level == 7 then
+  if level == 7 then    
     return return_resutl
   end
   
@@ -150,20 +79,10 @@ def get_trace_data(project_id, parent = nil, level = 0)
 
     result['children'].each do |child|
 
-      # temp_result = Hash.new 
-      # temp_result['name'] = child['name']
-      # temp_result['value'] = child['value']
-      #temp_result['children'] = get_trace_data(child['name'], false)
-
       return_resutl['children'] << get_trace_data(child['name'], child, level)
 
     end
-  else
-
-      
-
   end
-
 
   return_resutl
 

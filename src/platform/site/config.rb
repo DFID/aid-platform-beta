@@ -160,11 +160,11 @@ CodeLists.all_global_recipients.map { |code, name|
   }])
 
   has_receipient_project = false
-  results = get_funded_child_projects(id)
+  results = get_trace_data(id)
   
-  if results != 'null'  then
+  if !results.nil? && results.length > 0 then
     has_receipient_project = true    
-    results = JSON.parse(results)
+    #results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
 
   end  
@@ -274,11 +274,11 @@ end
   }])
 
   has_receipient_project = false
-  results = get_funded_child_projects(funded_project['funded'])
+  results = get_trace_data(funded_project['funded'])
 
-  if results != 'null'  then
+  if !results.nil? && results.length > 0  then
     has_receipient_project = true
-    results = JSON.parse(results)
+    #results = JSON.parse(results)
     proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
   end  
 
