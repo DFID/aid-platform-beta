@@ -11,6 +11,7 @@ object OtherOrganisations {
     "GB-3",                   // FCO	Foreign & Commonwealth Office
     "GB-4",                   // DECC	Department of Energy and Climate Change
     "GB-5",                   // ECGD	Export Credit Guarantee Department
+    "GB-6",                   // Home Office
     "GB-7",                    // DEFRA Department for Environment Food & Rural Affairs 
     "GB-9",                    // DWP Department for Work and Pensions
     "GB-10",                   // DH Department of Health
