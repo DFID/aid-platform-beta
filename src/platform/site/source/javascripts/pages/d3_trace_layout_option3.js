@@ -1,22 +1,4 @@
-<style>
 
-circle {
-  fill: rgb(31, 119, 180);
-  fill-opacity: .25;
-  stroke: rgb(31, 119, 180);
-  stroke-width: 1px;
-}
-
-.leaf circle {
-  fill: #ff7f0e;
-  fill-opacity: 1;
-}
-
-text {
-  font: 10px sans-serif;
-}
-
-</style>
 
 (function($, undefined){
   //$("document").ready(function (){
@@ -33,7 +15,7 @@ text {
 	    .size([diameter - 4, diameter - 4])
 	    .value(function(d) { return d.value; });
 
-	var svg = d3.select("#viz4").append("svg")
+	var svg = d3.select("#layout3").append("svg")
 	    .attr("width", diameter)
 	    .attr("height", diameter)
 	  .append("g")

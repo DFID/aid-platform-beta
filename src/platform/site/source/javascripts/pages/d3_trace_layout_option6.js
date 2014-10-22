@@ -1,62 +1,3 @@
-<style type="text/css">
-
-  html, body {
-    font-family: Arial, sans-serif;
-}
-
-.title {
-    font-size: 12px;
-}
-
-.canvas .wrapper.outer > .background {
-    fill: #000000;
-}
-.canvas .wrapper.inner > .background {
-    fill: #CCCCCC;
-    cursor: move;
-}
-.canvas .background {
-    fill: #F6F6F6;
-    stroke: #333333;
-    cursor: move;
-}
-.canvas .panCanvas {
-    cursor: move;
-}
-
-.canvas .minimap .frame .background {
-    stroke: #111111;
-    stroke-width: 4px;
-    fill-opacity: 0.4;
-    fill: #000000;
-    fill: url(#minimapGradient);
-    filter: url(#minimapDropShadow);
-    cursor: move;
-}
-
-.forcecircle {
-    stroke: #111111;
-    fill: blue;
-}
-
-
-.node circle {
-  fill: #fff;
-  stroke: steelblue;
-  stroke-width: 1.5px;
-}
-
-.node {
-  font: 10px sans-serif;
-}
-
-.link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 1.5px;
-}
-</style>
-
 (function($, undefined){
   //$("document").ready(function (){
 
@@ -71,7 +12,7 @@ d3.demo.canvas = function() {
 
     "use strict";
 
-    var _width           = $("#viz5").width() - margin.right - margin.left,
+    var _width           = $("#layout2").width() - margin.right - margin.left,
         _height          = 600,
         zoomEnabled     = true,
         dragEnabled     = true,
@@ -628,7 +569,7 @@ d3.demo.util.getXYFromTranslate = function(translateString) {
 
 var circleCount = 0;
 var canvas = d3.demo.canvas();
-d3.select("#viz7").call(canvas);
+d3.select("#layout2").call(canvas);
 
 canvas.loadTree();
 
