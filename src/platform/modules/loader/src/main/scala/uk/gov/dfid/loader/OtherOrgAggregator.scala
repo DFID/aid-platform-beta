@@ -15,6 +15,7 @@ import reactivemongo.bson.BSONDateTime
 import reactivemongo.api.DefaultDB
 import reactivemongo.bson.BSONString
 import scala.Some
+import uk.gov.dfid.loader.util.Converter
 import uk.gov.dfid.loader.util.OtherOrganisations
 
 class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor)  {
@@ -243,10 +244,11 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
       //auditor.info(s"$project")
 
       if(project!=""){
+ //       val value = Converter.toDouble(row("value"))
         val value       = row("valueReturn") match {            
-            case v: java.lang.Long    => v.toLong
-            case v: java.lang.Double  => v.toLong
-            case v: java.lang.String => try { v.toLong } catch { case _ : Throwable => 0 }
+            case v: java.lang.Long    =>  Converter.toDouble(v) // v.toLong
+            case v: java.lang.Double  =>  Converter.toDouble(v) //v.toLong
+            case v: java.lang.String => try {Converter.toDouble(v)} catch { case _ : Throwable => 0 }
             case _ => 0
           }
         val date        = try { DateTime.parse(row("dateReturn").asInstanceOf[String], format).getMillis } catch { case _ : Throwable => 0 }
@@ -260,7 +262,8 @@ class OtherOrgAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLo
             "project"     -> BSONString(project),
             "description" -> BSONString(description),
             "component"   -> BSONString(""),
-            "value"       -> BSONLong(value),
+         // "value"       -> BSONLong(value),
+            "value"       -> BSONDouble(value), 
             "date"        -> BSONDateTime(date),
             "type"        -> BSONString(transaction)
           )
