@@ -8,6 +8,9 @@
     var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = 960 - margin.right - margin.left,
     height = 800 - margin.top - margin.bottom;
+
+var minRadius = 5, maxRadius = 15;
+
     
 var i = 0,
     duration = 750;
@@ -24,7 +27,7 @@ var svg = d3.select("#layout").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-//d3.json("/d/4063550/flare.json", function(error, flare) {
+
   
   root.x0 = height / 2;
   root.y0 = 0;
@@ -36,18 +39,20 @@ var svg = d3.select("#layout").append("svg")
       d.children = null;
     }
   }
+  
 
   root.children.forEach(collapse);
   update(root);
-//});
+
 
 d3.select(self.frameElement).style("height", "800px");
 
 function update(source) {
 
+
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
-      links = tree.links(nodes);
+      links = tree.links(nodes);  
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
@@ -56,6 +61,11 @@ function update(source) {
   var node = svg.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
+  var scale = d3.scale.linear()
+                      .domain([0, d3.max(nodes, function(d) { return d.value; })])
+                      .range([minRadius, maxRadius])
+                      .nice();
+
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
       .attr("class", "node")
@@ -63,14 +73,14 @@ function update(source) {
       .on("click", click);
 
   nodeEnter.append("circle")
-      .attr("r", 1e-6)
+      .attr("r", function(d) { return scale(d.value); })
       .style("fill", function(d) { return d._children ? "red" : "#fff"; });
 
   nodeEnter.append("text")
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
+      .text(function(d) { return d.name + "(" + d.value + ")"; })
       .style("fill-opacity", 1e-6);
 
   // Transition nodes to their new position.
@@ -79,7 +89,7 @@ function update(source) {
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
   nodeUpdate.select("circle")
-      .attr("r", 4.5)
+      .attr("r", function(d) { return scale(d.value); })
       .style("fill", function(d) { return d._children ? "red" : "#fff"; });
 
   nodeUpdate.select("text")
@@ -92,7 +102,7 @@ function update(source) {
       .remove();
 
   nodeExit.select("circle")
-      .attr("r", 1e-6);
+      .attr("r", function(d) { return scale(d.value); });
 
   nodeExit.select("text")
       .style("fill-opacity", 1e-6);
