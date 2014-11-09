@@ -21,4 +21,16 @@ object Converter {
             case _ => 0
         }
 	}
+
+    def toString(input: Any) : String = {
+
+        input match {
+            case v: java.lang.String => v.toString
+            case v: java.lang.Long    => try { v.toString} catch { case _ : Throwable => "" }
+            case v: java.lang.Double    => try { v.toString } catch { case _ : Throwable => "" }
+            case _ => ""
+        }
+    }
+
+
 }
