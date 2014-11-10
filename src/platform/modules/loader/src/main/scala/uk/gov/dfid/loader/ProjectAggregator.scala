@@ -463,13 +463,13 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         
       }
       
-    }
+    }   
 
-    }catch{
+    }
+    catch{
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
-
     auditor.success("Collected all project locations")
-  }
+  }  
 }
