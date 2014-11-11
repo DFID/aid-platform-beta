@@ -455,7 +455,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         "title"     -> BSONString(title),
         "name"      -> BSONString(name),
         "precision" -> BSONLong(precision),
-        "pos"       -> BSONString(pos),
         "longitude" -> BSONDouble(longitude),
         "latitude"  -> BSONDouble(latitude),
         "type"      -> BSONString(locationType)
