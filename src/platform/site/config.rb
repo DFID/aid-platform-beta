@@ -9,6 +9,7 @@ require "helpers/codelists"
 require "helpers/lookups"
 require "helpers/document_helpers"
 require "helpers/sector_helpers"
+require "helpers/trace_helpers"
 require "middleman-smusher"
 require "rss"
 
@@ -32,6 +33,7 @@ ignore "/projects/documents.html"
 ignore "/projects/transactions.html"
 ignore "/projects/partners.html"
 ignore "/projects/r4dDocs.html"
+ignore "/projects/trace.html"
 ignore "/sector/categories.html"
 ignore "/sector/sectors.html"
 ignore "/sector/projects.html"
@@ -157,18 +159,27 @@ CodeLists.all_global_recipients.map { |code, name|
     }
   }])
 
+  has_receipient_project = false
+  results = get_trace_data(id)
   
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups }
+  if !results.nil? && results.length > 0 then
+    has_receipient_project = true    
+    #results = JSON.parse(results)
+    proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+
+  end  
+
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :locations => locations, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
     
   r4dDocs = r4DApiDocFetch(project['iatiId']) || ''
   if !r4dDocs.nil? && r4dDocs.length > 0 then
-    proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs }
+    proxy "/projects/#{id}/r4dDocs/index.html", '/projects/r4dDocs.html', :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => false, :r4dDocs => r4dDocs, :has_receipient_project => has_receipient_project  }
   end
 
   if has_funded_projects then
-    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :is_funded_by_dfid_project => true }
+    proxy "/projects/#{id}/partners/index.html",   '/projects/partners.html',     :locals => { :project => project, :funded_projects => funded_projects, :is_funded_by_dfid_project => true, :has_receipient_project => has_receipient_project  }
   end
 end
 
@@ -200,10 +211,10 @@ end
     }
   }])
 
-
-  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [] }
-  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents }
-  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups }
+  has_receipient_project = false
+  proxy "/projects/#{id}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }
+  proxy "/projects/#{id}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{id}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => false, :non_dfid_data => true, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
 
 end
 
@@ -262,18 +273,28 @@ end
     }
   }])
 
-  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [] }
-  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents  }
-  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups  }
+  has_receipient_project = false
+  results = get_trace_data(funded_project['funded'])
+
+  if !results.nil? && results.length > 0  then
+    has_receipient_project = true
+    #results = JSON.parse(results)
+    proxy "/projects/#{project['iatiId']}/trace/index.html",   '/projects/trace.html',     :locals => { :project => project, :has_receipient_project => true, :results => results, :has_funded_projects => true, :has_receipient_project => has_receipient_project }
+  end  
+
+  proxy "/projects/#{project['iatiId']}/index.html",              '/projects/summary.html',      :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :locations => [], :has_receipient_project => has_receipient_project }
+  proxy "/projects/#{project['iatiId']}/documents/index.html",    '/projects/documents.html',    :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :documents => documents, :has_receipient_project => has_receipient_project  }
+  proxy "/projects/#{project['iatiId']}/transactions/index.html", '/projects/transactions.html', :locals => { :project => project, :has_funded_projects => true, :non_dfid_data => true, :transaction_groups => transaction_groups, :has_receipient_project => has_receipient_project  }
   
+
   is_funded_by_dfid_project = true
   if funding_project.nil? then
     funding_project    = @cms_db['funded-projects'].find_one({ 'funded' =>  funded_project['funding'] })
     is_funded_by_dfid_project = false
   end
 
-  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project }
-  
+  proxy "/projects/#{project['iatiId']}/partners/index.html",     '/projects/partners.html',     :locals => { :project => project, :has_funded_projects => has_funded_projects, :non_dfid_data => true, :funded_projects => funded_projects, :funding_project => funding_project, :is_funded_by_dfid_project => is_funded_by_dfid_project, :has_receipient_project => has_receipient_project }
+   
 end
 
 #------------------------------------------------------------------------------
@@ -425,7 +446,7 @@ helpers do
   include ProjectHelpers
   include CodeLists
   include SectorHelpers
-  include RegionHelpers
+  include RegionHelpers    
 end
 
 #------------------------------------------------------------------------------
