@@ -18,6 +18,7 @@ import concurrent.duration.Duration
 
 trait DataLoader {
   def load: Future[Unit]
+  def loadSeparate : Future[Unit]
 }
 
 class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, auditor: DataLoadAuditor) extends DataLoader {
@@ -97,6 +98,40 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
 
       auditor.success("Total Load Time:: " + (end-timeCRStart) )
+    }
+  }
+
+  def loadSeparate = {
+
+    future {
+      auditor.info("Separate Loading process has started")
+
+      val neo4j      = manager.restart(true)
+      //val neo4j      = manager.get
+      val sources    = mongodb.collection("iati-datasources")
+      val engine     = new ExecutionEngine(neo4j)
+      val separateDataAggregator = new SeparateDataAggregator(engine, mongodb, auditor)
+      
+      // drop current audtis table.  Transient data ftw
+      auditor.drop
+      auditor.info("Loading data for FCO etc")
+
+      val timeVMStart = System.currentTimeMillis
+      validateAndMap(sources, neo4j)
+
+      val timeOGDStart = System.currentTimeMillis
+      //load data for FCO etc
+      separateDataAggregator.collectProjects
+      separateDataAggregator.collectTransactions
+      separateDataAggregator.collectProjectDocuments
+      separateDataAggregator.collectProjectLocations
+
+      auditor.success("Loading process completed for FCO etc")
+      auditor.success("Load performance in milliSecs:: ")
+      auditor.success("Projects, Transactions, Documents and locations:: " + (timeOGDStart-timeVMStart) )
+
+      //TODO: not implemented yet
+      mergeCollections
     }
   }
 
@@ -190,5 +225,12 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       case e: Exception => auditor.error(s"Failed to update version number $url")
     }  
 
+  }
+
+  //TODO: Use this merge collections. Example:  // documents = documents + documents-separate
+  // Till not implemented do the merge in mongo script like following:
+  // db['documents-separate'].copyTo('documents')
+  private def mergeCollections = {
+    
   }
 }

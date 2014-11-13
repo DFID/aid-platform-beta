@@ -31,6 +31,17 @@
                     </div>
                     <div>
                         <div class="span2">
+                            <a class="btn btn-primary btn-block btn-large" href="#loadSeparate" data-toggle="modal" role="button" style="display:block;">Load IATI Data (FCO etc)</a>
+                            @modal.loadSeparate()
+                        </div>
+                        <div class="span3">
+                            <p>
+                                Load IATI Data (FCO etc which are more static) from the XML Sources defined, aggregate results etc.
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="span2">
                             <a class="btn btn-danger btn-block btn-large" href="#deploy" data-toggle="modal" role="button" style="display:block;">Deploy Site</a>
                             @modal.deploy()
                         </div>

@@ -25,6 +25,8 @@ class Application @Inject()(val auth: Authenticator, val deployer: Deployer, val
 
   def load = secured(authroiseDeployment)(() => loader.load)
 
+  def loadSeparate = secured(authroiseDeployment)(() => loader.loadSeparate)
+
   private def secured(authenticate: String => Boolean)(action: () => Unit) = {
     SecuredAction(parse.urlFormEncoded) { user => request =>
       request.body("password").headOption.map(authenticate) match {

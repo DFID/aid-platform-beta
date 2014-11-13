@@ -8,10 +8,15 @@ import reactivemongo.bson.handlers.DefaultBSONHandlers._
 import concurrent.ExecutionContext.Implicits.global
 import concurrent.Await
 import concurrent.duration.Duration
+import scala.Some
+import uk.gov.dfid.loader.util.OtherOrganisations
+
 
 class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
 
   def collectProjectDocuments = {
+
+     try{
 
     auditor.info("Dropping documents collection")
     // drop the collection and start up
@@ -20,10 +25,17 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
 
     auditor.info("Collecting Project Documents")
 
+    val supportedOrgRefs = OtherOrganisations.Supported :+ "GB-1"
+    val orgRefList = supportedOrgRefs.mkString("['","','","']")
+
+    auditor.info(orgRefList)
+
     engine.execute(
-      """
+      s"""
         |START  doc = node:entities(type = "document-link")
-        |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id
+        |MATCH  category-[:category]-doc<-[:`document-link`]-project-[?:`iati-identifier`]-id,
+        |       project-[:`reporting-org`]-org        
+        |WHERE  HAS(org.ref) AND org.ref IN ${ orgRefList }
         |RETURN COALESCE(project.`iati-identifier`?, id.`iati-identifier`?) as id,
         |       doc.title!                                                  as title,
         |       COALESCE(doc.format?, "text/plain")                         as format,
@@ -54,5 +66,9 @@ class DocumentAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Audito
     }
 
     auditor.success("Aggregated all project documents")
+    }
+    catch{
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
+    }
   }
 }
