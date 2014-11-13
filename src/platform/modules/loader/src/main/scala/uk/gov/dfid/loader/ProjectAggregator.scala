@@ -410,21 +410,24 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     auditor.info("Collecting project locations")
 
+    try{
+
     // drop the collection as we will build is all from scratch here
     Await.ready(db.collection("locations").drop, Duration.Inf)
 
     engine.execute(
       s"""
         | START  location=node:entities(type='location')
-        | MATCH  org-[:`reporting-org`]-project-[:location]-location-[:coordinates]-coordinates,
-        |        location-[:`location-type`]-type
+        | MATCH  org-[:`reporting-org`]-project-[:location]-location,
+        |        location-[:point]-point,
+        |        location-[:exactness]-exactness,
+        |        location-[:`feature-designation`]-type
         | WHERE  HAS(org.ref) AND org.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
         | RETURN project.`iati-identifier`? as id,
         |        project.title             as title,
         |        location.name             as name,
-        |        coordinates.precision     as precision,
-        |        coordinates.longitude     as longitude,
-        |        coordinates.latitude      as latitude,
+        |        point.pos                 as pos,
+        |        exactness.code            as precision,
         |        type.code                 as type
       """.stripMargin).foreach { row =>
 
@@ -432,11 +435,16 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val title        = { if ( row("title").isInstanceOf[String] ) row("title").asInstanceOf[String] else "" }
       val name         = { if ( row("name").isInstanceOf[String] ) row("name").asInstanceOf[String] else "" }
       val precision    = { if ( row("precision").isInstanceOf[Long] ) row("precision").asInstanceOf[Long] else 0 }
-      val longitude    = Converter.toDouble(row("longitude"))
-      val latitude     = Converter.toDouble(row("latitude"))
+      
+      val pos = row("pos").asInstanceOf[String].trim
       val locationType = { if ( row("type").isInstanceOf[String] ) row("type").asInstanceOf[String] else "" }
 
-      db.collection("locations").insert(BSONDocument(
+      if(pos != "" && pos.contains(" ")){
+        
+        val longitude    = Converter.toDouble(pos.substring(0, pos.indexOf(" ")))
+        val latitude     = Converter.toDouble(pos.substring(pos.indexOf(" ") + 1, pos.length ))
+
+        db.collection("locations").insert(BSONDocument(
         "id"        -> BSONString(id),
         "title"     -> BSONString(title),
         "name"      -> BSONString(name),
@@ -444,10 +452,17 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         "longitude" -> BSONDouble(longitude),
         "latitude"  -> BSONDouble(latitude),
         "type"      -> BSONString(locationType)
-      ))
+        ))
+        
+      }
+      
+    }   
+
+    }
+    catch{
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
-
     auditor.success("Collected all project locations")
-  }
+  }  
 }

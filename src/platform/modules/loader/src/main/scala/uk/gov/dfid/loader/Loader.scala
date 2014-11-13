@@ -38,6 +38,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val results    = new CountryResults(engine, mongodb, auditor)
       val sector_hierarchies_results  = new SectorHierarchies(engine, mongodb, auditor)
 
+       val aggregatorBackwardCompatibility = new AggregatorBackwardCompatibility(engine, mongodb, auditor)
+
       // drop current audtis table.  Transient data ftw
       auditor.drop
       auditor.info("Loading data")
@@ -76,6 +78,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val timeOGDStart = System.currentTimeMillis
       other.collectOtherOrganisationProjects
       other.collectTransactions
+
+      aggregatorBackwardCompatibility.collectProjectLocationsForVersionBefore104
 
       val timeIndexStart = System.currentTimeMillis
       indexer.index
@@ -118,12 +122,15 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       // validation throws uncontrollable errors
       try{
-        val valid = Seq("1.03", "1.02","1.01") exists { version =>
+        val valid = Seq("1.04", "1.03", "1.02","1.01") exists { version =>
           val stream  = new URL(url).openStream
           val valid = validator.validate(stream, version, source.getAs[BSONString]("sourceType").map(_.value).get)
 
           valid match {
-            case true => println(s"Valid for $version")
+            case true => { 
+                          println(s"Valid for $version")
+                          updateIatiVersionNumber(sources, version, url)
+                        }
             case false =>println(s"Invalid for $version")
           }
 
@@ -166,5 +173,22 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
         auditor.success("All data sources mapped")
       }
     }
+  }
+
+  private def updateIatiVersionNumber(sources: DefaultCollection, version: String, url: String) {
+
+    auditor.info(s"Updating version number $version to $url")
+    try { 
+        sources.update(
+            BSONDocument("url" -> BSONString(url)),
+            BSONDocument("$set" -> BSONDocument(
+              "version" -> BSONString(version)
+            )),
+            upsert = false, multi = false
+        )
+    } catch {
+      case e: Exception => auditor.error(s"Failed to update version number $url")
+    }  
+
   }
 }
