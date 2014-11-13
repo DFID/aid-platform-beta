@@ -441,8 +441,8 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
       if(pos != "" && pos.contains(" ")){
         
-        val longitude    = Converter.toDouble(pos.substring(0, pos.indexOf(" ")))
-        val latitude     = Converter.toDouble(pos.substring(pos.indexOf(" ") + 1, pos.length ))
+        val latitude    = Converter.toDouble(pos.substring(0, pos.indexOf(" ")))
+        val longitude     = Converter.toDouble(pos.substring(pos.indexOf(" ") + 1, pos.length ))
 
         db.collection("locations").insert(BSONDocument(
         "id"        -> BSONString(id),
