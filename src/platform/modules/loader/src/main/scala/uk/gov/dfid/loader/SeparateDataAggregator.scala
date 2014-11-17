@@ -374,4 +374,42 @@ class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Da
     } 
   }
 
+  def mergeSeparatelyLoadedProjects = {
+
+    auditor.info("Preparing to merge separately loaded data")
+
+    try {
+
+    auditor.info("Preparing to merge: other-org-projects-separate")
+ //   db['other-org-projects'].find().forEach( function(x) {db['other-org-projects-separate'].insert(x)})
+    db.collection("other-org-projects").find().forEach( function(x) {db.collection("other-org-projects-separate").insert(x)})
+
+    //auditor.info("Preparing to merge: project-budgets-separate")
+
+    //auditor.info("Preparing to merge: project-sector-budgets-separate")
+
+    //auditor.info("Preparing to merge: transactions-separate")  
+
+    //auditor.info("Preparing to merge: documents-separate")      
+
+    //auditor.info("Preparing to merge: locations-separate")  
+
+
+    } catch {
+      case e: Throwable => println(e.getMessage); e.printStackTrace()
+    } 
+  }
+
+//  def mergeSeparatelyLoadedTransactions = {
+
+//    auditor.info("Preparing to merge separately loaded data")
+
+ //   try {
+ //       auditor.info("Preparing to merge: transactions-separate")  
+ //   } catch {
+ //     case e: Throwable => println(e.getMessage); e.printStackTrace()
+//    } 
+//  }
+
+
 }

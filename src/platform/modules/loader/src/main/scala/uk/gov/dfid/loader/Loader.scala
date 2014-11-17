@@ -34,6 +34,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val organisations  = new OrganisationAggregator(engine, mongodb, auditor)
       val projects   = new ProjectAggregator(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
+      val separate   = new SeparateDataAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
       val indexer    = new Indexer(mongodb, engine, sectors, auditor)
       val results    = new CountryResults(engine, mongodb, auditor)
@@ -82,6 +83,9 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       aggregatorBackwardCompatibility.collectProjectLocationsForVersionBefore104
 
+      val timeSepDataStart = System.currentTimeMillis
+      separate.mergeSeparatelyLoadedProjects
+
       val timeIndexStart = System.currentTimeMillis
       indexer.index
       val end = System.currentTimeMillis
@@ -95,6 +99,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Project Documents:: " + (timePrjStart-timeDocStart) )
       auditor.success("Partner project, sector, transaction, locations:: " + (timeOGDStart-timePrjStart) )
       auditor.success("OGD Projects and Transactions:: " + (timeIndexStart-timeOGDStart) )
+      auditor.success("Separately loaded projects and transactions:: ")
       auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
 
       auditor.success("Total Load Time:: " + (end-timeCRStart) )
@@ -130,8 +135,6 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Load performance in milliSecs:: ")
       auditor.success("Projects, Transactions, Documents and locations:: " + (timeOGDStart-timeVMStart) )
 
-      //TODO: not implemented yet
-      mergeCollections
     }
   }
 
