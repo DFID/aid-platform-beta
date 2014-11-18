@@ -400,7 +400,7 @@ class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Da
 
     //auditor.info("Preparing to merge: locations-separate")  
 
-    val collection = db("locations-separated")
+    val collection = db("locations-separate")
     val cursor = collection.find(query)
     cursor.enumerate.apply(Iteratee.foreach { doc =>
        db.collection("locations").insert(doc)
