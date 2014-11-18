@@ -98,8 +98,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Aggregation:: " + (timeDocStart-timeAggStart) )
       auditor.success("Project Documents:: " + (timePrjStart-timeDocStart) )
       auditor.success("Partner project, sector, transaction, locations:: " + (timeOGDStart-timePrjStart) )
-      auditor.success("OGD Projects and Transactions:: " + (timeIndexStart-timeOGDStart) )
-      auditor.success("Separately loaded projects and transactions:: ")
+      auditor.success("OGD Projects and Transactions:: " + (timeSepDataStart-timeOGDStart) )
+      auditor.success("Merging separately loaded projects and transactions:: " + (timeSepDataStart-timeIndexStart) )
       auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
 
       auditor.success("Total Load Time:: " + (end-timeCRStart) )
