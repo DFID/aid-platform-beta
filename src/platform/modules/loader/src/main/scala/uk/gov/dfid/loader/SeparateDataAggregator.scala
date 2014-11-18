@@ -12,11 +12,17 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import reactivemongo.bson.BSONLong
 import reactivemongo.bson.BSONDateTime
-import reactivemongo.api.DefaultDB
-import reactivemongo.bson.BSONString
 import scala.Some
 import uk.gov.dfid.loader.util.Converter
 import uk.gov.dfid.loader.util.OtherOrganisations
+
+import play.api.libs.iteratee._ 
+import play.api.libs.iteratee.Iteratee
+import reactivemongo.api._
+import reactivemongo.bson.handlers.DefaultBSONHandlers._
+
+
+
 
 class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor)  {
 
@@ -380,10 +386,10 @@ class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Da
 
     try {
 
-    auditor.info("Preparing to merge: other-org-projects-separate")
- //   db['other-org-projects'].find().forEach( function(x) {db['other-org-projects-separate'].insert(x)})
-    db.collection("other-org-projects").find().forEach( function(x) {db.collection("other-org-projects-separate").insert(x)})
+    val query = BSONDocument()
 
+    //auditor.info("Preparing to merge: other-org-projects-separate")
+ 
     //auditor.info("Preparing to merge: project-budgets-separate")
 
     //auditor.info("Preparing to merge: project-sector-budgets-separate")
@@ -394,8 +400,15 @@ class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Da
 
     //auditor.info("Preparing to merge: locations-separate")  
 
+    val collection = db("locations-separated")
+    val cursor = collection.find(query)
+    cursor.enumerate.apply(Iteratee.foreach { doc =>
+       db.collection("locations").insert(doc)
+    })
 
-    } catch {
+
+
+     } catch {
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     } 
   }
