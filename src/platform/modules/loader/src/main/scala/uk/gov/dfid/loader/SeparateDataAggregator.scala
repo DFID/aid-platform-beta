@@ -378,63 +378,24 @@ class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: Da
     } catch {
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     } 
-  }
+  }  
+ 
+ def mergeCollections(source:String, target:String) {
 
-  def mergeSeparatelyLoadedProjects = {
-
-    auditor.info("Preparing to merge separately loaded data")
-
-    try {
+  try {
 
     val query = BSONDocument()
 
-    //auditor.info("Preparing to merge: other-org-projects-separate")
-    val othOrgProjSepCollection = db("other-org-projects-separate")
-    val othOrgProjSepCursor = othOrgProjSepCollection.find(query)
-    othOrgProjSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("other-org-projects").insert(doc)
+    val sourceCollection = db(source)
+    val sourceCursor = sourceCollection.find(query)
+    sourceCursor.enumerate.apply(Iteratee.foreach { doc =>
+       db.collection(target).insert(doc)
     })
 
-    //auditor.info("Preparing to merge: project-budgets-separate")
-    val projBudSepCollection = db("project-budgets-separate")
-    val projBudSepCursor = projBudSepCollection.find(query)
-    projBudSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("project-budgets").insert(doc)
-    })
-
-    //auditor.info("Preparing to merge: project-sector-budgets-separate")
-    val projSecBudSepCollection = db("project-sector-budgets-separate")
-    val projSecBudSepCursor = projSecBudSepCollection.find(query)
-    projSecBudSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("project-sector-budgets").insert(doc)
-    })
-
-    //auditor.info("Preparing to merge: documents-separate")      
-    val docSepCollection = db("documents-separate")
-    val docSepCursor = docSepCollection.find(query)
-    docSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("documents").insert(doc)
-    })
-
-    //auditor.info("Preparing to merge: locations-separate")  
-    val locSepCollection = db("locations-separate")
-    val locSepCursor = locSepCollection.find(query)
-    locSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("locations").insert(doc)
-    })
-
-    //auditor.info("Preparing to merge: transactions-separate")
-    val transSepCollection = db("transactions-separate")
-    val transSepCursor = transSepCollection.find(query)
-    transSepCursor.enumerate.apply(Iteratee.foreach { doc =>
-       db.collection("transactions").insert(doc)
-    })
-
-     } catch {
-      case e: Throwable => println(e.getMessage); e.printStackTrace()
-    } 
+  } catch {
+    case e: Throwable => println(e.getMessage); e.printStackTrace()
   }
-
+ }
 
 
 

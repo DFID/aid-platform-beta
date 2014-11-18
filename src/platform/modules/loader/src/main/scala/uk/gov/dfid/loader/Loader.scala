@@ -84,7 +84,12 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       aggregatorBackwardCompatibility.collectProjectLocationsForVersionBefore104
 
       val timeSepDataStart = System.currentTimeMillis
-      separate.mergeSeparatelyLoadedProjects
+
+      separate.mergeCollections("other-org-projects-separate", "other-org-projects")
+      separate.mergeCollections("project-budgets-separate", "project-budgets")
+      separate.mergeCollections("project-sector-budgets-separate", "project-sector-budgets")
+      separate.mergeCollections("documents-separate", "documents")
+      separate.mergeCollections("locations-separate", "locations")
 
       val timeIndexStart = System.currentTimeMillis
       indexer.index
