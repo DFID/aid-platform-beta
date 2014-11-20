@@ -317,11 +317,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
           if( dateType != "")
           {
-            //Newly added
             val date     = DateTime.parse(row("date").asInstanceOf[String].replace('Z',' ').trim(),format)
-            //date         = date.trim()
-            //date         = DateTime.parse(date, format)
-            //val date     = DateTime.parse(row("date").asInstanceOf[String], format)
             dateType -> BSONDateTime(date.getMillis)
           }
           else
