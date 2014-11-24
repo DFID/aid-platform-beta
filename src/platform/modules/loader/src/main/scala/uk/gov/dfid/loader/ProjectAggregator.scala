@@ -55,7 +55,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       val project          = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
       
       val value            = Converter.toDouble(row("value"))
-      val date             = try { DateTime.parse(row("date").asInstanceOf[String], format).getMillis } catch { case _ : Throwable => 0 }
+      val date             = try { DateTime.parse(row("date").asInstanceOf[String].replace('Z',' ').trim(), format).getMillis } catch { case _ : Throwable => 0 }
       val transaction      = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else ""}
       val receiver         = { if(row("receiver-org").isInstanceOf[String]) row("receiver-org").asInstanceOf[String] else ""}
       val provider         = { if(row("provider-org").isInstanceOf[String]) row("provider-org").asInstanceOf[String] else ""}
@@ -317,7 +317,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
           if( dateType != "")
           {
-            val date     = DateTime.parse(row("date").asInstanceOf[String], format)
+            val date     = DateTime.parse(row("date").asInstanceOf[String].replace('Z',' ').trim(),format)
             dateType -> BSONDateTime(date.getMillis)
           }
           else
@@ -355,7 +355,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
           """.stripMargin).foreach { row =>
 
           val value = Converter.toDouble(row("value"))
-          val date = { if ( row("date").isInstanceOf[String] ) row("date").asInstanceOf[String] else ""}
+          val date = { if ( row("date").isInstanceOf[String] ) row("date").asInstanceOf[String].replace('Z',' ').trim() else ""}
 
           db.collection("project-budgets").insert(
             BSONDocument(
