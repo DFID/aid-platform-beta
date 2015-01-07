@@ -21,9 +21,6 @@ import play.api.libs.iteratee.Iteratee
 import reactivemongo.api._
 import reactivemongo.bson.handlers.DefaultBSONHandlers._
 
-
-
-
 class SeparateDataAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor)  {
 
 	private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
