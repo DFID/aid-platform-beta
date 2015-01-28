@@ -48,7 +48,8 @@ class Mapper(val db: GraphDatabaseService, auditor: DataLoadAuditor) {
 
       // if it has a single child that is an atom then its a property
       val hasTextProperty = children.size == 1 && children.head.isAtom
-      val shouldBeProperty = hasTextProperty && (child.attributes.isEmpty || (child.attributes.size == 1 && child.attributes.asAttrMap.get("xml:lang").isDefined))
+      //val shouldBeProperty = hasTextProperty && (child.attributes.isEmpty || (child.attributes.size == 1 && child.attributes.asAttrMap.get("xml:lang").isDefined))
+      val shouldBeProperty = hasTextProperty && (child.attributes.isEmpty || (child.attributes.size == 1 && child.attributes.asAttrMap.get("xml:lang").isDefined && child.attributes.asAttrMap.get("xml:lang") == "en"))
 
       // if this child has no descendants then it should be treated as a new entity.
       // if it has a child that is not an atom is an entity
@@ -71,6 +72,7 @@ class Mapper(val db: GraphDatabaseService, auditor: DataLoadAuditor) {
 
         // fill the properties of the parent node
         fillProperties(node, child.attributes)
+
       }
     }
 
@@ -84,9 +86,10 @@ class Mapper(val db: GraphDatabaseService, auditor: DataLoadAuditor) {
    */
   private def fillProperties(node: Node, attrs: xml.MetaData) {
     attrs.asAttrMap.foreach { case (key, value) =>
-      if(key != "xml:lang") {
+    //  if(key != "xml:lang") {
         node + (key -> value.mungeToType)
-      }
+    //    auditor.info(key + ":" + value)
+    //  }
     }
   }
 }
