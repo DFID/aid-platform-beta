@@ -20,6 +20,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
 
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
+  /* Funded/Partner Projects: Collecting Transactions */
   def collectPartnerTransactions = {
 
     val results = db.collection("funded-projects").find(
@@ -156,6 +157,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
 
       val id       = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
       val dateType = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
+
       val date     = DateTime.parse(row("date").asInstanceOf[String], format) 
 
       db.collection("projects").update(
@@ -169,6 +171,12 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
 
     auditor.success("Project dates added")
   }
+
+def dateTypeConverter(dateType) {
+  switch (dateType) {
+    case:"1" return "start-actual"; break;
+  }
+}
 
   def collectProjectSectorGroups = {
 
