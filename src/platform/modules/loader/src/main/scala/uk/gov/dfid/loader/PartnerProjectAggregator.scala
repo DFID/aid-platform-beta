@@ -23,6 +23,8 @@ class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: 
   /* Funded/Partner Projects: Collecting Transactions */
   def collectPartnerTransactions = {
 
+    auditor.info("Collecting Partner Project Transactions (PartnerProjectAggregator)")
+
     val results = db.collection("funded-projects").find(
       BSONDocument(),
       BSONDocument("funded" -> BSONInteger(1))
@@ -78,12 +80,13 @@ class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: 
         )
       )
     }
+    auditor.success("Collected Partner Project Transactions (PartnerProjectAggregator)")
   }
 
   /* Funded/Partner Projects: Get Projects from Database*/
   def collectPartnerProjects = {
 
-    auditor.info("Collecting Partner Projects UPDATE TEST")
+    auditor.info("Collecting Partner Projects")
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
  
@@ -150,7 +153,7 @@ class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: 
              .asInstanceOf[String])
              .getOrElse(funding)
 
-        println(s"TEST Used: $project (Recipient: $recipient)")
+        println(s"Used: $project (Recipient: $recipient)")
 
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
@@ -274,9 +277,7 @@ class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: 
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
-    auditor.success("TEST ROSS TEST")
-    auditor.success("Collected Partner Projects")
-    auditor.success("End of PartnerProjectAggregator")
+    auditor.success("Collected Partner Projects (PartnerProjectAggregator)")
   }
   
 }

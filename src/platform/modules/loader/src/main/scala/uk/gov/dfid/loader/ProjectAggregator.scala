@@ -478,6 +478,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
+    auditor.success("ProjectAggregator Class")
     auditor.success("Collected Partner Projects")
   }
 
