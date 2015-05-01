@@ -80,8 +80,8 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       partnerProjects.collectPartnerTransactions  
 
       val timePartPrj2xStart = System.currentTimeMillis
-      partnerProjects2x.collectPartnerProjects
-      partnerProjects2x.collectPartnerTransactions  
+       partnerProjects2x.collectPartnerProjects2x
+      // partnerProjects2x.collectPartnerTransactions2x  
 
       val timeOGDStart = System.currentTimeMillis
       other.collectOtherOrganisationProjects

@@ -22,7 +22,7 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
   /* Funded/Partner Projects: Collecting Transactions */
-  def collectPartnerTransactions = {
+  def collectPartnerTransactions2x = {
 
     val results = db.collection("funded-projects").find(
       BSONDocument(),
@@ -86,9 +86,9 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
 
   /* Funded/Partner Projects: Get Projects from Database*/
 
-  def collectPartnerProjects = {
+  def collectPartnerProjects2x = {
 
-    auditor.info("Collecting Partner Projects")
+    auditor.info("Collecting Partner Projects for IATI 2x onwards")
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
 
@@ -164,7 +164,7 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
              | RETURN  REDUCE(accum = "", txt IN collect(allDesc) : accum + txt + " ") AS description      
             """.stripMargin).toSeq.head("description"))
 
-        println(s"USed: $project (Recipient: $recipient)")
+        println(s"Used: $project (Recipient: $recipient)")
 
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
@@ -288,6 +288,6 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
-    auditor.success("Collected Partner Projects")
+    auditor.success("Collected Partner Projects for IATI 2x onwards")
   }  
 }
