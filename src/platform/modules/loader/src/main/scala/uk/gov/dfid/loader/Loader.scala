@@ -31,7 +31,9 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val aggregator = new Aggregator(engine, mongodb, new ProjectsApi(mongodb), auditor)
       val documents  = new DocumentAggregator(engine, mongodb, auditor)
       val organisations  = new OrganisationAggregator(engine, mongodb, auditor)
-      val projects   = new ProjectAggregator(engine, mongodb, auditor)
+      val dfidProjects   = new DfidProjectAggregator(engine, mongodb, auditor)
+      val partnerProjects   = new PartnerProjectAggregator(engine, mongodb, auditor)
+      val partnerProjects2x   = new PartnerProjectAggregator2x(engine, mongodb, auditor)
       val other      = new OtherOrgAggregator(engine, mongodb, auditor)
       val sectors    = new Sectors(mongodb)
       val indexer    = new Indexer(mongodb, engine, sectors, auditor)
@@ -67,13 +69,19 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       val timeDocStart = System.currentTimeMillis
       documents.collectProjectDocuments
 
-      val timePrjStart = System.currentTimeMillis
-      projects.collectProjectSectorGroups
-      projects.collectTransactions
-      projects.collectPartnerProjects
-      projects.collectPartnerTransactions
-      projects.collectProjectDetails
-      projects.collectProjectLocations
+      val timeDfidPrjStart = System.currentTimeMillis
+      dfidProjects.collectProjectSectorGroups
+      dfidProjects.collectTransactions
+      dfidProjects.collectProjectDetails
+      dfidProjects.collectProjectLocations
+
+      val timePartPrjStart = System.currentTimeMillis
+      partnerProjects.collectPartnerProjects
+      partnerProjects.collectPartnerTransactions  
+
+      val timePartPrj2xStart = System.currentTimeMillis
+      partnerProjects2x.collectPartnerProjects
+      partnerProjects2x.collectPartnerTransactions  
 
       val timeOGDStart = System.currentTimeMillis
       other.collectOtherOrganisationProjects
@@ -91,8 +99,10 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("Mapping and Validation:: " + (timeOrgStart-timeVMStart) )
       auditor.success("Country Operation Plan:: " + (timeAggStart-timeOrgStart) )
       auditor.success("Aggregation:: " + (timeDocStart-timeAggStart) )
-      auditor.success("Project Documents:: " + (timePrjStart-timeDocStart) )
-      auditor.success("Partner project, sector, transaction, locations:: " + (timeOGDStart-timePrjStart) )
+      auditor.success("Project Documents:: " + (timeDfidPrjStart-timeDocStart) )
+      auditor.success("Dfid Projects :: " + (timePartPrjStart-timeDfidPrjStart) )
+      auditor.success("Partner Projects:: " + (timePartPrj2xStart-timePartPrjStart) )
+      auditor.success("Partner Projects IATI 2x:: " + (timeOGDStart-timePartPrj2xStart) )
       auditor.success("OGD Projects and Transactions:: " + (timeIndexStart-timeOGDStart) )
       auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
 

@@ -17,7 +17,7 @@ import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
 import uk.gov.dfid.loader.util.Converter
 import uk.gov.dfid.loader.util.IatiCodeListConverter
 
-class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
+class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
@@ -32,7 +32,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
     val projects = Await.result(results, Duration Inf)
     val whereClause = projects.map(
       _.getAs[BSONString]("funded").map(_.value).get
-    ).mkString("WHERE n.`iati-identifier`? IN ['", "', '", "']")
+    ).mkString("WHERE n.`iati-identifier`? IN ['", "', '", "'] AND n.version IN [2.01]")
 
     engine.execute(
       s"""
@@ -45,9 +45,8 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
         |         txn-[:`transaction-type`]-type,
         |         txn-[r?:`receiver-org`]-receiver,
         |         txn-[p?:`provider-org`]-provider
-        | $whereClause  
-        |          AND n.version = 2.01      
-        |   RETURN ia.`iati-identifier`?           as id,
+        |  $whereClause  
+        |  RETURN ia.`iati-identifier`?           as id,
         |          COALESCE(description.`narrative`?, "") as description,
         |          value.value                    as value,        
         |          COALESCE(receiver.`narrative`?, txn.`receiver-org`?, "") as `receiver-org`,
@@ -93,36 +92,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
 
-    /* Existing Query
-    try{
-      engine.execute(s"""
-                       | START  n=node:entities(type="iati-activity")
-                       | MATCH  n-[:`participating-org`]-o,
-                       |        n-[:`reporting-org`]-ro,
-                       |        n-[:transaction]-t-[:`transaction-type`]-tt,
-                       |        n-[?:description]-d,
-                       |        t-[:value]-v,
-                       |        n-[:`activity-status`]-status,
-                       |        t-[:`provider-org`]-po,
-                       |        n-[?:`recipient-country`]-country,
-                       |        n-[?:`recipient-region`]-region
-                       | WHERE  o.role  = "Funding"
-                       | AND HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Participating.mkString("['","','","']")}                        
-                       | AND    tt.code = "IF"
-                       | AND    HAS(po.`provider-activity-id`)
-                       | RETURN n.`iati-identifier`?      as funded,
-                       |        ro.`reporting-org`        as reporting   ,
-                       |        n.title                   as title       ,
-                       |        COALESCE(d.description?, n.description?, "") as description,
-                       |        po.`provider-activity-id` as funding     ,
-                       |        COALESCE(v.currency?, "GBP")  as currency,
-                       |        SUM(v.value)              as funds       ,
-                       |        status.code?               as status,
-                       |        COALESCE(country.code?,region.code?,"")   as recipient
-                          """.stripMargin).toSeq.foreach { row =>
-      */
-
-      try{
+     try{
       engine.execute(s"""                
                        | START   n=node:entities(type="iati-activities")
                        | MATCH   n-[:`iati-activity`]-ia,
@@ -135,7 +105,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
                        |         t-[:`provider-org`]-po,
                        |         ia-[?:`recipient-country`]-country,
                        |         ia-[?:`recipient-region`]-region
-                       | WHERE   n.version = 2.01
+                       | WHERE   n.version IN [2.01]
                        |         AND o.role  = 1
                        |         AND HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Participating.mkString("['","','","']")}     
                        |         AND tt.code = 1
@@ -154,7 +124,6 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
         val funded      = { if(row("funded").isInstanceOf[String]) row("funded").asInstanceOf[String] else ""}
         val reporting   = { if(row("reporting").isInstanceOf[String]) row("reporting").asInstanceOf[String] else ""}
         val title       = { if(row("title").isInstanceOf[String]) row("title").asInstanceOf[String] else ""}
-      //  val description = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else ""}
         val funding     = { if(row("funding").isInstanceOf[String]) row("funding").asInstanceOf[String] else ""}
         
         val status      = Converter.toLong(row("status"))        
@@ -192,7 +161,7 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
              | WHERE   ia.`iati-identifier`  = '$funded'
              | WITH  DISTINCT d.`narrative` as de
              | WITH  COALESCE(de, "") as allDesc
-             | RETURN  REDUCE(accum = "", txt IN collect(allDesc) | accum + txt + " ") AS description      
+             | RETURN  REDUCE(accum = "", txt IN collect(allDesc) : accum + txt + " ") AS description      
             """.stripMargin).toSeq.head("description"))
 
         println(s"USed: $project (Recipient: $recipient)")

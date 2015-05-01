@@ -16,7 +16,7 @@ import reactivemongo.bson.BSONString
 import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
 import uk.gov.dfid.loader.util.Converter
 
-class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
+class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
@@ -33,29 +33,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       _.getAs[BSONString]("funded").map(_.value).get
     ).mkString("WHERE ia.`iati-identifier`? IN ['", "', '", "'] AND n.version IN [1.05,1.04,1.03,1.02,1.01]")
 
- /*   engine.execute(
-      s"""
-        | START n=node:entities(type="iati-activity")
-        | MATCH n-[:transaction]-txn,
-        |       txn-[:value]-value,
-        |       txn-[:`transaction-date`]-date,
-        |       txn-[:`transaction-type`]-type,
-        |       txn-[r?:`receiver-org`]-receiver,
-        |       txn-[p?:`provider-org`]-provider
-        | $whereClause
-        | RETURN n.`iati-identifier`?           as id,
-        |        COALESCE(txn.description?, "") as description,
-        |        value.value                    as value,        
-        |        COALESCE(receiver.`receiver-org`?, txn.`receiver-org`?, "") as `receiver-org`,
-        |        COALESCE(provider.`provider-org`?,"") as `provider-org`,
-        |        COALESCE(provider.`provider-activity-id`?,"") as `provider-activity-id`,
-        |        date.`iso-date`?                as date,
-        |        type.code?                      as type
-      """.stripMargin).foreach { row => */
-  
-  /*   |          AND n.version IN [1.05,1.04,1.03,1.02,1.01]  */
-
-      engine.execute(
+       engine.execute(
        s"""
         | START n=node:entities(type="iati-activities")
         | MATCH n-[:`iati-activity`]-ia,
@@ -105,39 +83,11 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
   /* Funded/Partner Projects: Get Projects from Database*/
   def collectPartnerProjects = {
 
-    auditor.info("Collecting Partner Projects")
+    auditor.info("Collecting Partner Projects UPDATE TEST")
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
  
- /* old code for 
     try{
-      engine.execute(s"""
-                       | START  n=node:entities(type="iati-activity")
-                       | MATCH  n-[:`participating-org`]-o,
-                       |        n-[:`reporting-org`]-ro,
-                       |        n-[:transaction]-t-[:`transaction-type`]-tt,
-                       |        n-[?:description]-d,
-                       |        t-[:value]-v,
-                       |        n-[:`activity-status`]-status,
-                       |        t-[:`provider-org`]-po,
-                       |        n-[?:`recipient-country`]-country,
-                       |        n-[?:`recipient-region`]-region
-                       | WHERE  o.role  = "Funding"
-                       | AND HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Participating.mkString("['","','","']")}                        
-                       | AND    tt.code = "IF"
-                       | AND    HAS(po.`provider-activity-id`)
-                       | RETURN n.`iati-identifier`?      as funded,
-                       |        ro.`reporting-org`        as reporting   ,
-                       |        n.title                   as title       ,
-                       |        COALESCE(d.description?, n.description?, "") as description,
-                       |        po.`provider-activity-id` as funding     ,
-                       |        COALESCE(v.currency?, "GBP")  as currency,
-                       |        SUM(v.value)              as funds       ,
-                       |        status.code?               as status,
-                       |        COALESCE(country.code?,region.code?,"")   as recipient
-                     """.stripMargin).toSeq.foreach { row =>
-      */
-     try{
       engine.execute(s"""
                         |  START  n=node:entities(type="iati-activities")
                         |  MATCH  n-[:`iati-activity`]-ia,
@@ -200,7 +150,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
              .asInstanceOf[String])
              .getOrElse(funding)
 
-        println(s"USed: $project (Recipient: $recipient)")
+        println(s"TEST Used: $project (Recipient: $recipient)")
 
         // now we need to sum up the project budgets and spend.  this is not specific
         // to dfid itself.  While here we can also grab the status
@@ -324,7 +274,9 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
       case e: Throwable => println(e.getMessage); e.printStackTrace()
     }
 
+    auditor.success("TEST ROSS TEST")
     auditor.success("Collected Partner Projects")
+    auditor.success("End of PartnerProjectAggregator")
   }
   
 }

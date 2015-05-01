@@ -16,7 +16,7 @@ import reactivemongo.bson.BSONString
 import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
 import uk.gov.dfid.loader.util.Converter
 
-class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
+class DfidProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
@@ -82,7 +82,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     auditor.info("Getting project start and end dates")
 
-/*   Pre 2.01 Code 
      engine.execute(
       s"""
         | START n=node:entities(type="iati-activity")
@@ -93,21 +92,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
         | AND   HAS(o.ref) AND o.ref IN ${SupportedOrgRefsForPartners.Reporting.mkString("['","','","']")}
         | RETURN distinct(n.`iati-identifier`?) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
       """.stripMargin).foreach { row =>
-*/        
-       engine.execute(
-      s"""
-       | START n=node:entities(type="iati-activities")
-       | MATCH n-[:`iati-activity`]-ia,
-       |     ia-[:`reporting-org`]-o,
-       |     ia-[:`activity-status`]-a,
-       |      ia-[:`activity-date`]-d
-       | WHERE n.version IN [1.05,1.04,1.03,1.02,1.01]
-       | AND ia.hierarchy! = 1   
-       | AND HAS(o.ref) 
-       | AND o.ref IN ['GB','GB-1'] 
-       | RETURN distinct(ia.`iati-identifier`?) as id, d.type as type, COALESCE(d.`iso-date`?, d.`activity-date`) as date
-      """.stripMargin).foreach { row =>
-
+        
       val id       = { if(row("id").isInstanceOf[String]) row("id").asInstanceOf[String] else "" }
       val dateType = { if(row("type").isInstanceOf[String]) row("type").asInstanceOf[String] else "" }
       val date     = DateTime.parse(row("date").asInstanceOf[String], format) 

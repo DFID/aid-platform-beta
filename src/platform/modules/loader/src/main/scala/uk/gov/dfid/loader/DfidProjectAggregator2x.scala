@@ -1,3 +1,5 @@
+/* File to be completed as part of a later release */
+
 package uk.gov.dfid.loader
 
 import org.neo4j.cypher.ExecutionEngine
@@ -16,7 +18,7 @@ import reactivemongo.bson.BSONString
 import uk.gov.dfid.loader.util.SupportedOrgRefsForPartners
 import uk.gov.dfid.loader.util.Converter
 
-class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
+class DfidProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
@@ -79,7 +81,8 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
   } */
 
   /* DFID Projects: Collect project start and end Dates */
-  def collectProjectDetails = {
+  /* Take the method out for now RC
+    def collectProjectDetails = {
     val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
     auditor.info("Getting project start and end dates")
@@ -118,8 +121,10 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
       }
     }
 
+  End of Class */
   
   /* DFID Projects: Getting Project Sector Groups */
+  /*
   def collectProjectSectorGroups = {
 
     Await.ready(db.collection("project-sector-budgets").drop, Duration.Inf)
@@ -168,9 +173,11 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
       case e: Throwable => println(e.getMessage); println(e.getStackTraceString)
     }
   }
+  comment out the method*/
 
   /* DFID Projects: Insert Project Locations */
 
+  /* Take the method out
   def collectProjectLocations = {
 
     auditor.info("Collecting project locations")
@@ -230,4 +237,6 @@ class ProjectAggregator201(engine: ExecutionEngine, db: DefaultDB, auditor: Data
 
     auditor.success("Collected all project locations")
   }  
+  comment out the method*/
+
 }

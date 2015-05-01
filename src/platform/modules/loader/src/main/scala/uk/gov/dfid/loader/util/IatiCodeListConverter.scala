@@ -3,7 +3,7 @@ package uk.gov.dfid.loader.util
 object IatiCodeListConverter
 {
 
-   def transactionType(input: String) {
+   def transactionType(input: String) : String = {
 
         input match {
             case "1" => "IF"
@@ -19,7 +19,4 @@ object IatiCodeListConverter
             case _ => ""
         }
     }
-
-
-
 }
