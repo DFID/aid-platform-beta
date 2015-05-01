@@ -259,7 +259,7 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
   /* Funded/Partner Projects: Get Projects from Database*/
   def collectPartnerProjects = {
 
-    auditor.info("Collecting Partner Projects")
+    auditor.info("Collecting Partner Projects OLD CODE")
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
  

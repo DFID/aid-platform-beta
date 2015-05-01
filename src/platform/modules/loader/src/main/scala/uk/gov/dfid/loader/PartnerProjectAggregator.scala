@@ -86,7 +86,7 @@ class PartnerProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: 
   /* Funded/Partner Projects: Get Projects from Database*/
   def collectPartnerProjects = {
 
-    auditor.info("Collecting Partner Projects")
+    auditor.info("Collecting Partner Projects (PartnerProjectAggregator)")
 
     Await.ready(db.collection("funded-projects").drop, Duration.Inf)
  
