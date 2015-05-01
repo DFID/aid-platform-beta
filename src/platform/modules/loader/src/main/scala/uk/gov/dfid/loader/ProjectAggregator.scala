@@ -18,6 +18,8 @@ import uk.gov.dfid.loader.util.Converter
 
 class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoadAuditor) {
 
+/* HIDE CODE
+
   private val format = DateTimeFormat.forPattern("yyyy-MM-ddd")
 
   /* Funded/Partner Projects: Collecting Transactions */
@@ -541,4 +543,6 @@ class ProjectAggregator(engine: ExecutionEngine, db: DefaultDB, auditor: DataLoa
 
     auditor.success("Collected all project locations")
   }  
+
+  END OF HIDE CODE*/  
 }
