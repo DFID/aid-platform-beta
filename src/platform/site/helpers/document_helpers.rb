@@ -27,10 +27,6 @@ def r4DApiDocFetch(projectId)
 end
 
 def getR4DSearchLink(object_id)
-	
-	# uri_str = URI.escape(link)
-	# uri = URI.parse(uri_str)
-	# proj_id = uri.path.gsub!(/\D/, "")
 
 	search_uri = "http://r4d.dfid.gov.uk/Search/SearchResults.aspx?search=advancedsearch&SearchType=3&Projects=false&Documents=true&DocumentsOnly=true&ProjectID="+object_id
 
