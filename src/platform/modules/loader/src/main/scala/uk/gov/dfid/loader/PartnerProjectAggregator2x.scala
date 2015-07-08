@@ -24,15 +24,24 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
   /* Funded/Partner Projects: Collecting Transactions */
   def collectPartnerTransactions2x = {
 
+    auditor.info("Collecting Partner Project Transactions for IATI 2x onwards")
+
     val results = db.collection("funded-projects").find(
       BSONDocument(),
       BSONDocument("funded" -> BSONInteger(1))
     ).toList
 
+    auditor.info("Created a list of results")
+
     val projects = Await.result(results, Duration Inf)
+    
+    auditor.info("Created a list of projects")
+
     val whereClause = projects.map(
       _.getAs[BSONString]("funded").map(_.value).get
     ).mkString("WHERE n.`iati-identifier`? IN ['", "', '", "'] AND n.version IN [2.01]")
+
+    auditor.info("Created a list of projects")
 
     engine.execute(
       s"""
@@ -66,6 +75,8 @@ class PartnerProjectAggregator2x(engine: ExecutionEngine, db: DefaultDB, auditor
       val provider         = { if(row("provider-org").isInstanceOf[String]) row("provider-org").asInstanceOf[String] else ""}
       val providerActivity = { if(row("provider-activity-id").isInstanceOf[String]) row("provider-activity-id").asInstanceOf[String] else ""}
       val description      = { if(row("description").isInstanceOf[String]) row("description").asInstanceOf[String] else ""}
+
+      auditor.info("Engine Execute runs ok")
 
       db.collection("transactions").insert(
         BSONDocument(
