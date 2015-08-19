@@ -18,13 +18,14 @@ class CountryResults(engine: ExecutionEngine, db: DefaultDB, auditor: Auditor) {
     auditor.info("Loading country results")
 
     val country_results = db.collection("country-results")
-    val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
-    //val country_results_src = Source.fromURL("https://raw.githubusercontent.com/DFID/aid-platform-beta/master/src/platform/modules/loader/src/main/resources/country_results.csv");
+    //val country_results_src = Source.fromURL(getClass.getResource("/country_results.csv"))
+    val country_results_src = Source.fromURL("https://raw.githubusercontent.com/DFID/aid-platform-beta/master/src/platform/modules/loader/src/main/resources/country_results.csv");
     
     Await.ready(country_results.drop(), Duration.Inf)
 
     auditor.info("Country results dropped, loading source")
     val source = country_results_src.getLines.drop(1).mkString("\n")
+    auditor.info(source)
     auditor.info("parsing source")
     val results = CSV.parse(source)
     auditor.info("processing country results")
