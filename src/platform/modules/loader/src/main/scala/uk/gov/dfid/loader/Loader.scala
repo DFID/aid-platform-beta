@@ -44,10 +44,10 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.drop
       auditor.info("Loading data")
 
-      val timeCRStart = System.currentTimeMillis
-      results.loadCountryResults
+      //val timeCRStart = System.currentTimeMillis
+      //results.loadCountryResults
 
-      val timeSHStart = System.currentTimeMillis
+      //val timeSHStart = System.currentTimeMillis
      // sector_hierarchies_results.loadSectorHierarchies
 
       val timeVMStart = System.currentTimeMillis
@@ -87,7 +87,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
 
       auditor.success("Loading process completed")
       auditor.success("Load performance in milliSecs:: ")
-      auditor.success("Country Result:: " + (timeVMStart-timeCRStart) )
+      //auditor.success("Country Result:: " + (timeVMStart-timeCRStart) )
       auditor.success("Mapping and Validation:: " + (timeOrgStart-timeVMStart) )
       auditor.success("Country Operation Plan:: " + (timeAggStart-timeOrgStart) )
       auditor.success("Aggregation:: " + (timeDocStart-timeAggStart) )
@@ -96,7 +96,7 @@ class Loader @Inject()(manager: GraphDatabaseManager, mongodb: DefaultDB, audito
       auditor.success("OGD Projects and Transactions:: " + (timeIndexStart-timeOGDStart) )
       auditor.success("Indexing in Elastic Search:: " + (end-timeIndexStart) )
 
-      auditor.success("Total Load Time:: " + (end-timeCRStart) )
+      auditor.success("Total Load Time:: " + (end-timeVMStart) )
     }
   }
 
